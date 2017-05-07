@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Linq;
 using System.Runtime.InteropServices;
 using System.Text;
@@ -24,6 +25,18 @@ namespace TabbedTortoiseGit
             _newTab = new TabPage( "+" );
 
             this.TabPages.Add( _newTab );
+        }
+
+        private TabPage GetTabFromPoint( Point p )
+        {
+            for( int i = 0; i < this.TabCount; i++ )
+            {
+                if( this.GetTabRect( i ).Contains( p ) )
+                {
+                    return this.TabPages[ i ];
+                }
+            }
+            return null;
         }
 
         protected void OnNewTabClicked( EventArgs e )
@@ -84,20 +97,6 @@ namespace TabbedTortoiseGit
             base.OnHandleCreated( e );
         }
 
-        protected override void OnMouseDown( MouseEventArgs e )
-        {
-            int lastIndex = this.TabCount - 1;
-
-            if( !this.DesignMode && this.GetTabRect( lastIndex ).Contains( e.Location ) )
-            {
-                OnNewTabClicked( EventArgs.Empty );
-            }
-            else
-            {
-                base.OnMouseDown( e );
-            }
-        }
-
         protected override void OnSelecting( TabControlCancelEventArgs e )
         {
             if( e.TabPage == _newTab )
@@ -112,14 +111,30 @@ namespace TabbedTortoiseGit
 
         protected override void OnMouseClick( MouseEventArgs e )
         {
-            if( e.Button == MouseButtons.Middle )
+            if( !this.DesignMode )
             {
-                TabPage tab = this.TabPages.Cast<TabPage>().Where( ( t, i ) => this.GetTabRect( i ).Contains( e.Location ) ).FirstOrDefault();
-                if( tab != null && tab != _newTab )
+                TabPage tab = this.GetTabFromPoint( e.Location );
+
+                if( tab != null )
                 {
-                    this.TabPages.Remove( tab );
-                    OnTabClosed( new TabClosedEventArgs( tab ) );
-                    return;
+                    if( e.Button == MouseButtons.Middle )
+                    {
+                        if( tab != _newTab )
+                        {
+                            this.SelectedIndex = Math.Max( 0, this.TabPages.IndexOf( tab ) - 1 );
+                            this.TabPages.Remove( tab );
+                            OnTabClosed( new TabClosedEventArgs( tab ) );
+                            return;
+                        }
+                    }
+                    else if( e.Button == MouseButtons.Left )
+                    {
+                        if( tab == _newTab )
+                        {
+                            OnNewTabClicked( EventArgs.Empty );
+                            return;
+                        }
+                    }
                 }
             }
 
