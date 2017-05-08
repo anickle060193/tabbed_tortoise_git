@@ -1,4 +1,5 @@
-﻿using System;
+﻿using LibGit2Sharp;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -9,6 +10,8 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using TabbedTortoiseGit.Properties;
+using System.Configuration;
 
 namespace TabbedTortoiseGit
 {
@@ -24,22 +27,61 @@ namespace TabbedTortoiseGit
         {
             InitializeComponent();
 
-            Process p = CreateInitialLog( @"D:\Users\Adam\Desktop\anickle060193.github.io" );
-            AddNewProcess( p );
+            UpdateFromSettings();
+
+            OpenLog( @"D:\Users\Adam\Desktop\anickle060193.github.io" );
         }
 
-        private Process CreateInitialLog( String path )
+        private void UpdateFromSettings()
         {
+            RecentReposMenu.DropDownItems.Clear();
+            if( Settings.Default.RecentRepos != null )
+            {
+                foreach( String repo in Settings.Default.RecentRepos )
+                {
+                    if( Repository.IsValid( repo ) )
+                    {
+                        RecentReposMenu.DropDownItems.Add( repo ).Click += RecentRepoMenuItem_Click;
+                    }
+                }
+            }
+            RecentReposMenu.Enabled = RecentReposMenu.HasDropDownItems;
+        }
+
+        private void RecentRepoMenuItem_Click( object sender, EventArgs e )
+        {
+            ToolStripItem item = (ToolStripItem)sender;
+            OpenLog( item.Text );
+        }
+
+        private void AddToRecentRepos( String path )
+        {
+            List<String> recentRepos = Settings.Default.RecentRepos != null ? Settings.Default.RecentRepos : new List<String>();
+            if( recentRepos.Contains( path ) )
+            {
+                recentRepos.Remove( path );
+            }
+            recentRepos.Insert( 0, path );
+            Settings.Default.RecentRepos = recentRepos;
+            Settings.Default.Save();
+            UpdateFromSettings();
+        }
+
+        private async void OpenLog( String path )
+        {
+            AddToRecentRepos( path );
+
             ProcessStartInfo info = new ProcessStartInfo()
             {
                 FileName = TORTOISE_GIT_EXE,
                 Arguments = String.Format( SHOW_LOG_COMMAND, path ),
                 WorkingDirectory = path
             };
-            return Process.Start( info );
+            Process p = Process.Start( info );
+            await AddNewProcess( p );
         }
 
-        private async void AddNewProcess( Process p )
+        private async Task AddNewProcess( Process p )
         {
             p.WaitForInputIdle();
             while( !p.HasExited && p.MainWindowHandle == IntPtr.Zero )
@@ -79,6 +121,22 @@ namespace TabbedTortoiseGit
             t.Invoke( (Action<TabPage>)( ( tab ) => tab.Parent.Controls.Remove( tab ) ), t );
         }
 
+        private void FindRepo()
+        {
+            if( FindRepoDialog.ShowDialog() == DialogResult.OK )
+            {
+                String path = FindRepoDialog.SelectedPath;
+                if( !Repository.IsValid( path ) )
+                {
+                    MessageBox.Show( "Directory is not a git repo!", "Invalid Directory", MessageBoxButtons.OK, MessageBoxIcon.Error );
+                }
+                else
+                {
+                    OpenLog( path );
+                }
+            }
+        }
+
         private void Tab_Resize( object sender, EventArgs e )
         {
             TabPage t = (TabPage)sender;
@@ -102,8 +160,7 @@ namespace TabbedTortoiseGit
 
         private void LogTabs_NewTabClicked( object sender, EventArgs e )
         {
-            Process p = CreateInitialLog( @"D:\Users\Adam\Desktop\anickle060193.github.io" );
-            AddNewProcess( p );
+            FindRepo();
         }
 
         private void LogTabs_TabClosed( object sender, TabClosedEventArgs e )
@@ -118,6 +175,11 @@ namespace TabbedTortoiseGit
         private void LogTabs_Selected( object sender, TabControlEventArgs e )
         {
             this.Text = e.TabPage.Text + " - Tabbed TortoiseGit";
+        }
+
+        private void OpenRepoMenuItem_Click( object sender, EventArgs e )
+        {
+            FindRepo();
         }
     }
 }
