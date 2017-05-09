@@ -28,35 +28,25 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.LogTabs = new TabbedTortoiseGit.ExtendedTabControl();
-            this.Menu = new System.Windows.Forms.MenuStrip();
+            this.components = new System.ComponentModel.Container();
+            this.MenuStrip = new System.Windows.Forms.MenuStrip();
             this.OptionsMenu = new System.Windows.Forms.ToolStripMenuItem();
             this.OpenRepoMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.RecentReposMenu = new System.Windows.Forms.ToolStripMenuItem();
             this.FindRepoDialog = new System.Windows.Forms.FolderBrowserDialog();
-            this.Menu.SuspendLayout();
+            this.NewTabContextMenu = new System.Windows.Forms.ContextMenuStrip(this.components);
+            this.LogTabs = new TabbedTortoiseGit.ExtendedTabControl();
+            this.MenuStrip.SuspendLayout();
             this.SuspendLayout();
             // 
-            // LogTabs
+            // MenuStrip
             // 
-            this.LogTabs.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.LogTabs.Location = new System.Drawing.Point(0, 24);
-            this.LogTabs.Name = "LogTabs";
-            this.LogTabs.SelectedIndex = 0;
-            this.LogTabs.Size = new System.Drawing.Size(644, 437);
-            this.LogTabs.TabIndex = 0;
-            this.LogTabs.NewTabClicked += new System.EventHandler(this.LogTabs_NewTabClicked);
-            this.LogTabs.TabClosed += new System.EventHandler<TabbedTortoiseGit.TabClosedEventArgs>(this.LogTabs_TabClosed);
-            this.LogTabs.Selected += new System.Windows.Forms.TabControlEventHandler(this.LogTabs_Selected);
-            // 
-            // Menu
-            // 
-            this.Menu.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.MenuStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.OptionsMenu});
-            this.Menu.Location = new System.Drawing.Point(0, 0);
-            this.Menu.Name = "Menu";
-            this.Menu.Size = new System.Drawing.Size(644, 24);
-            this.Menu.TabIndex = 1;
+            this.MenuStrip.Location = new System.Drawing.Point(0, 0);
+            this.MenuStrip.Name = "MenuStrip";
+            this.MenuStrip.Size = new System.Drawing.Size(644, 24);
+            this.MenuStrip.TabIndex = 1;
             // 
             // OptionsMenu
             // 
@@ -70,7 +60,7 @@
             // OpenRepoMenuItem
             // 
             this.OpenRepoMenuItem.Name = "OpenRepoMenuItem";
-            this.OpenRepoMenuItem.Size = new System.Drawing.Size(145, 22);
+            this.OpenRepoMenuItem.Size = new System.Drawing.Size(166, 22);
             this.OpenRepoMenuItem.Text = "Open";
             this.OpenRepoMenuItem.Click += new System.EventHandler(this.OpenRepoMenuItem_Click);
             // 
@@ -78,12 +68,30 @@
             // 
             this.RecentReposMenu.Enabled = false;
             this.RecentReposMenu.Name = "RecentReposMenu";
-            this.RecentReposMenu.Size = new System.Drawing.Size(145, 22);
+            this.RecentReposMenu.Size = new System.Drawing.Size(166, 22);
             this.RecentReposMenu.Text = "Recent Repos";
             // 
             // FindRepoDialog
             // 
             this.FindRepoDialog.ShowNewFolderButton = false;
+            // 
+            // NewTabContextMenu
+            // 
+            this.NewTabContextMenu.Name = "NewTabContextMenu";
+            this.NewTabContextMenu.Size = new System.Drawing.Size(61, 4);
+            // 
+            // LogTabs
+            // 
+            this.LogTabs.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.LogTabs.Location = new System.Drawing.Point(0, 24);
+            this.LogTabs.Name = "LogTabs";
+            this.LogTabs.NewTabContextMenu = null;
+            this.LogTabs.SelectedIndex = 0;
+            this.LogTabs.Size = new System.Drawing.Size(644, 437);
+            this.LogTabs.TabIndex = 0;
+            this.LogTabs.NewTabClicked += new System.EventHandler(this.LogTabs_NewTabClicked);
+            this.LogTabs.TabClosed += new System.EventHandler<TabbedTortoiseGit.TabClosedEventArgs>(this.LogTabs_TabClosed);
+            this.LogTabs.Selected += new System.Windows.Forms.TabControlEventHandler(this.LogTabs_Selected);
             // 
             // TabbedTortoiseGitForm
             // 
@@ -91,16 +99,16 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(644, 461);
             this.Controls.Add(this.LogTabs);
-            this.Controls.Add(this.Menu);
-            this.MainMenuStrip = this.Menu;
+            this.Controls.Add(this.MenuStrip);
+            this.MainMenuStrip = this.MenuStrip;
             this.MinimumSize = new System.Drawing.Size(660, 500);
             this.Name = "TabbedTortoiseGitForm";
             this.Text = "Tabbed Tortoise Git";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.TabbedTortoiseGitForm_FormClosing);
             this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.TabbedTortoiseGitForm_FormClosed);
             this.Load += new System.EventHandler(this.TabbedTortoiseGitForm_Load);
-            this.Menu.ResumeLayout(false);
-            this.Menu.PerformLayout();
+            this.MenuStrip.ResumeLayout(false);
+            this.MenuStrip.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -109,11 +117,12 @@
         #endregion
 
         private ExtendedTabControl LogTabs;
-        private System.Windows.Forms.MenuStrip Menu;
+        private System.Windows.Forms.MenuStrip MenuStrip;
         private System.Windows.Forms.ToolStripMenuItem OptionsMenu;
         private System.Windows.Forms.ToolStripMenuItem OpenRepoMenuItem;
         private System.Windows.Forms.ToolStripMenuItem RecentReposMenu;
         private System.Windows.Forms.FolderBrowserDialog FindRepoDialog;
+        private System.Windows.Forms.ContextMenuStrip NewTabContextMenu;
     }
 }
 

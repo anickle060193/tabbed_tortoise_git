@@ -25,6 +25,8 @@ namespace TabbedTortoiseGit
         public TabbedTortoiseGitForm()
         {
             InitializeComponent();
+
+            LogTabs.NewTabContextMenu = NewTabContextMenu;
         }
 
         private void UpdateFromSettings()
@@ -50,14 +52,17 @@ namespace TabbedTortoiseGit
         private void UpdateRecentReposFromSettings()
         {
             RecentReposMenu.DropDownItems.Clear();
+            NewTabContextMenu.Items.Clear();
             if( Settings.Default.RecentRepos != null )
             {
                 foreach( String repo in Settings.Default.RecentRepos )
                 {
                     RecentReposMenu.DropDownItems.Add( repo ).Click += RecentRepoMenuItem_Click;
+                    NewTabContextMenu.Items.Add( repo ).Click += RecentRepoMenuItem_Click;
                 }
             }
             RecentReposMenu.Enabled = RecentReposMenu.HasDropDownItems;
+            NewTabContextMenu.Enabled = NewTabContextMenu.Items.Count != 0;
         }
 
         private void RecentRepoMenuItem_Click( object sender, EventArgs e )

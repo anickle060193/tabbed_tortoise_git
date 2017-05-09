@@ -16,6 +16,8 @@ namespace TabbedTortoiseGit
         public event EventHandler NewTabClicked;
         public event EventHandler<TabClosedEventArgs> TabClosed;
 
+        public ContextMenuStrip NewTabContextMenu { get; set; }
+
         private readonly TabPage _newTab;
 
         private bool _inhibitControlActions = false;
@@ -133,6 +135,17 @@ namespace TabbedTortoiseGit
                         {
                             OnNewTabClicked( EventArgs.Empty );
                             return;
+                        }
+                    }
+                    else if( e.Button == MouseButtons.Right )
+                    {
+                        if( tab == _newTab )
+                        {
+                            if( NewTabContextMenu != null )
+                            {
+                                NewTabContextMenu.Show( this, e.Location );
+                                return;
+                            }
                         }
                     }
                 }
