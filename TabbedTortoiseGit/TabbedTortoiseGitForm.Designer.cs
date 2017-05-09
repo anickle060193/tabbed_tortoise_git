@@ -60,7 +60,7 @@
             // OpenRepoMenuItem
             // 
             this.OpenRepoMenuItem.Name = "OpenRepoMenuItem";
-            this.OpenRepoMenuItem.Size = new System.Drawing.Size(166, 22);
+            this.OpenRepoMenuItem.Size = new System.Drawing.Size(145, 22);
             this.OpenRepoMenuItem.Text = "Open";
             this.OpenRepoMenuItem.Click += new System.EventHandler(this.OpenRepoMenuItem_Click);
             // 
@@ -68,7 +68,7 @@
             // 
             this.RecentReposMenu.Enabled = false;
             this.RecentReposMenu.Name = "RecentReposMenu";
-            this.RecentReposMenu.Size = new System.Drawing.Size(166, 22);
+            this.RecentReposMenu.Size = new System.Drawing.Size(145, 22);
             this.RecentReposMenu.Text = "Recent Repos";
             // 
             // FindRepoDialog
@@ -87,7 +87,7 @@
             this.LogTabs.Name = "LogTabs";
             this.LogTabs.NewTabContextMenu = null;
             this.LogTabs.SelectedIndex = 0;
-            this.LogTabs.Size = new System.Drawing.Size(644, 437);
+            this.LogTabs.Size = new System.Drawing.Size(644, 462);
             this.LogTabs.TabIndex = 0;
             this.LogTabs.NewTabClicked += new System.EventHandler(this.LogTabs_NewTabClicked);
             this.LogTabs.TabClosed += new System.EventHandler<TabbedTortoiseGit.TabClosedEventArgs>(this.LogTabs_TabClosed);
@@ -97,11 +97,11 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(644, 461);
+            this.ClientSize = new System.Drawing.Size(644, 486);
             this.Controls.Add(this.LogTabs);
             this.Controls.Add(this.MenuStrip);
             this.MainMenuStrip = this.MenuStrip;
-            this.MinimumSize = new System.Drawing.Size(660, 500);
+            this.MinimumSize = new System.Drawing.Size(660, 525);
             this.Name = "TabbedTortoiseGitForm";
             this.Text = "Tabbed Tortoise Git";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.TabbedTortoiseGitForm_FormClosing);

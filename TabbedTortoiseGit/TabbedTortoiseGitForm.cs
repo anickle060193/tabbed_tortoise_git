@@ -5,6 +5,7 @@ using System.Data;
 using System.Diagnostics;
 using System.Drawing;
 using System.Linq;
+using System.Management;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
@@ -22,11 +23,17 @@ namespace TabbedTortoiseGit
         private readonly List<Process> _processes = new List<Process>();
         private readonly Dictionary<int, TabPage> _tabs = new Dictionary<int, TabPage>();
 
+        private ManagementEventWatcher _watcher;
+
         public TabbedTortoiseGitForm()
         {
             InitializeComponent();
 
             LogTabs.NewTabContextMenu = NewTabContextMenu;
+
+            StartProcessQuery();
+
+            this.Disposed += TabbedTortoiseGitForm_Disposed;
         }
 
         private void UpdateFromSettings()
@@ -65,6 +72,22 @@ namespace TabbedTortoiseGit
             NewTabContextMenu.Enabled = NewTabContextMenu.Items.Count != 0;
         }
 
+        private void StartProcessQuery()
+        {
+            String condition = "TargetInstance ISA 'Win32_Process'" +
+                           "AND TargetInstance.Name = 'TortoiseGitProc.exe'" +
+                           "AND TargetInstance.CommandLine LIKE '%/command:log%'";
+            _watcher = new ManagementEventWatcher( new WqlEventQuery( "__InstanceCreationEvent", new TimeSpan( 10 ), condition ) );
+            _watcher.Options.Timeout = new TimeSpan( 0, 1, 0 );
+            _watcher.EventArrived += Watcher_EventArrived;
+            _watcher.Start();
+        }
+
+        private void TabbedTortoiseGitForm_Disposed( object sender, EventArgs e )
+        {
+            _watcher.Dispose();
+        }
+
         private void RecentRepoMenuItem_Click( object sender, EventArgs e )
         {
             ToolStripItem item = (ToolStripItem)sender;
@@ -99,6 +122,15 @@ namespace TabbedTortoiseGit
 
         private async Task AddNewProcess( Process p )
         {
+            lock( _processes )
+            {
+                if( _processes.Any( ( pf ) => pf.Id == p.Id ) )
+                {
+                    return;
+                }
+                _processes.Add( p );
+            }
+
             p.WaitForInputIdle();
             while( !p.HasExited && p.MainWindowHandle == IntPtr.Zero )
             {
@@ -110,14 +142,15 @@ namespace TabbedTortoiseGit
             LogTabs.SelectedTab = t;
             t.Tag = p;
             _tabs.Add( p.Id, t );
-            _processes.Add( p );
 
-            Native.SetWindowParent( p.MainWindowHandle, t );
             Native.RemoveBorder( p.MainWindowHandle );
+            Native.SetWindowParent( p.MainWindowHandle, t );
 
             t.Resize += Tab_Resize;
             p.EnableRaisingEvents = true;
             p.Exited += Process_Exited;
+
+            this.BringToFront();
         }
 
         private void EndProcess( Process p )
@@ -197,9 +230,12 @@ namespace TabbedTortoiseGit
 
         private void TabbedTortoiseGitForm_FormClosed( object sender, FormClosedEventArgs e )
         {
-            foreach( Process p in _processes )
+            lock( _processes )
             {
-                EndProcess( p );
+                foreach( Process p in _processes )
+                {
+                    EndProcess( p );
+                }
             }
         }
 
@@ -225,6 +261,13 @@ namespace TabbedTortoiseGit
         private void OpenRepoMenuItem_Click( object sender, EventArgs e )
         {
             FindRepo();
+        }
+
+        private void Watcher_EventArrived( object sender, EventArrivedEventArgs e )
+        {
+            ManagementBaseObject o = (ManagementBaseObject)e.NewEvent[ "TargetInstance" ];
+            Process p = Process.GetProcessById( (int)(UInt32)o[ "ProcessId" ] );
+            LogTabs.Invoke( (Func<Process, Task>)AddNewProcess, p );
         }
     }
 }
