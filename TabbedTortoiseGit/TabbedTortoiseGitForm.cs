@@ -16,7 +16,7 @@ namespace TabbedTortoiseGit
 {
     public partial class TabbedTortoiseGitForm : Form
     {
-        public static readonly String TORTOISE_GIT_EXE = @"C:\Program Files\TortoiseGit\bin\TortoiseGitProc.exe";
+        public static readonly String TORTOISE_GIT_EXE = "TortoiseGitProc.exe";
         public static readonly String SHOW_LOG_COMMAND = "/command:log /path \"{0}\"";
 
         private readonly List<Process> _processes = new List<Process>();
