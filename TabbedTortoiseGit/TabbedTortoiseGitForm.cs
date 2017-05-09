@@ -1,5 +1,4 @@
-﻿using LibGit2Sharp;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -39,10 +38,7 @@ namespace TabbedTortoiseGit
             {
                 foreach( String repo in Settings.Default.RecentRepos )
                 {
-                    if( Repository.IsValid( repo ) )
-                    {
-                        RecentReposMenu.DropDownItems.Add( repo ).Click += RecentRepoMenuItem_Click;
-                    }
+                    RecentReposMenu.DropDownItems.Add( repo ).Click += RecentRepoMenuItem_Click;
                 }
             }
             RecentReposMenu.Enabled = RecentReposMenu.HasDropDownItems;
@@ -126,7 +122,7 @@ namespace TabbedTortoiseGit
             if( FindRepoDialog.ShowDialog() == DialogResult.OK )
             {
                 String path = FindRepoDialog.SelectedPath;
-                if( !Repository.IsValid( path ) )
+                if( !Git.IsRepo( path ) )
                 {
                     MessageBox.Show( "Directory is not a git repo!", "Invalid Directory", MessageBoxButtons.OK, MessageBoxIcon.Error );
                 }
