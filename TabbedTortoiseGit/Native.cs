@@ -106,6 +106,14 @@ namespace TabbedTortoiseGit
         public const uint WS_EX_NOACTIVATE = 0x08000000;
         //#endif /* _WIN32_WINNT >= 0x0500 */
 
+        public const int HWND_BROADCAST = 0xffff;
+        public static readonly int WM_SHOWME = RegisterWindowMessage( "WM_SHOWME" );
+
+        [DllImport( "user32" )]
+        public static extern bool PostMessage( IntPtr hwnd, int msg, IntPtr wparam, IntPtr lparam );
+
+        [DllImport( "user32" )]
+        public static extern int RegisterWindowMessage( string message );
 
         [DllImport( "user32.dll", SetLastError = true )]
         internal static extern bool MoveWindow( IntPtr hWnd, int X, int Y, int nWidth, int nHeight, bool bRepaint );

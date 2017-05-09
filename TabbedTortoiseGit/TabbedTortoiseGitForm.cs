@@ -157,8 +157,7 @@ namespace TabbedTortoiseGit
             p.EnableRaisingEvents = true;
             p.Exited += Process_Exited;
 
-            this.Show();
-            this.BringToFront();
+            ShowMe();
         }
 
         private void EndProcess( Process p )
@@ -192,6 +191,16 @@ namespace TabbedTortoiseGit
                     OpenLog( path );
                 }
             }
+        }
+
+        private void ShowMe()
+        {
+            this.Show();
+            if( this.WindowState == FormWindowState.Minimized )
+            {
+                this.WindowState = FormWindowState.Normal;
+            }
+            this.BringToFront();
         }
 
         private void Tab_Resize( object sender, EventArgs e )
@@ -287,6 +296,15 @@ namespace TabbedTortoiseGit
         private void ExitMenuItem_Click( object sender, EventArgs e )
         {
             Application.Exit();
+        }
+
+        protected override void WndProc( ref Message m )
+        {
+            if( m.Msg == Native.WM_SHOWME )
+            {
+                ShowMe();
+            }
+            base.WndProc( ref m );
         }
     }
 }
