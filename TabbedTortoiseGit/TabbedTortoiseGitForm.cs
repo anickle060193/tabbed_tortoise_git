@@ -25,13 +25,29 @@ namespace TabbedTortoiseGit
         public TabbedTortoiseGitForm()
         {
             InitializeComponent();
-
-            UpdateFromSettings();
-
-            OpenLog( @"D:\Users\Adam\Desktop\anickle060193.github.io" );
         }
 
         private void UpdateFromSettings()
+        {
+            if( !Settings.Default.Size.IsEmpty )
+            {
+                this.Size = Settings.Default.Size;
+            }
+
+            if( !Settings.Default.Location.IsEmpty )
+            {
+                this.Location = Settings.Default.Location;
+            }
+
+            if( Settings.Default.Maximized )
+            {
+                this.WindowState = FormWindowState.Maximized;
+            }
+
+            UpdateRecentReposFromSettings();
+        }
+
+        private void UpdateRecentReposFromSettings()
         {
             RecentReposMenu.DropDownItems.Clear();
             if( Settings.Default.RecentRepos != null )
@@ -59,8 +75,7 @@ namespace TabbedTortoiseGit
             }
             recentRepos.Insert( 0, path );
             Settings.Default.RecentRepos = recentRepos;
-            Settings.Default.Save();
-            UpdateFromSettings();
+            UpdateRecentReposFromSettings();
         }
 
         private async void OpenLog( String path )
@@ -146,7 +161,36 @@ namespace TabbedTortoiseGit
             RemoveProcess( (Process)sender );
         }
 
+        private void TabbedTortoiseGitForm_Load( object sender, EventArgs e )
+        {
+            UpdateFromSettings();
+        }
+
         private void TabbedTortoiseGitForm_FormClosing( object sender, FormClosingEventArgs e )
+        {
+            if( this.WindowState == FormWindowState.Maximized )
+            {
+                Settings.Default.Maximized = true;
+                Settings.Default.Size = this.RestoreBounds.Size;
+                Settings.Default.Location = this.RestoreBounds.Location;
+            }
+            else if( this.WindowState == FormWindowState.Minimized )
+            {
+                Settings.Default.Maximized = false;
+                Settings.Default.Size = this.RestoreBounds.Size;
+                Settings.Default.Location = this.RestoreBounds.Location;
+            }
+            else
+            {
+                Settings.Default.Maximized = false;
+                Settings.Default.Size = this.Size;
+                Settings.Default.Location = this.Location;
+            }
+
+            Settings.Default.Save();
+        }
+
+        private void TabbedTortoiseGitForm_FormClosed( object sender, FormClosedEventArgs e )
         {
             foreach( Process p in _processes )
             {

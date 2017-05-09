@@ -31,8 +31,8 @@
             this.LogTabs = new TabbedTortoiseGit.ExtendedTabControl();
             this.Menu = new System.Windows.Forms.MenuStrip();
             this.OptionsMenu = new System.Windows.Forms.ToolStripMenuItem();
-            this.RecentReposMenu = new System.Windows.Forms.ToolStripMenuItem();
             this.OpenRepoMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.RecentReposMenu = new System.Windows.Forms.ToolStripMenuItem();
             this.FindRepoDialog = new System.Windows.Forms.FolderBrowserDialog();
             this.Menu.SuspendLayout();
             this.SuspendLayout();
@@ -67,19 +67,19 @@
             this.OptionsMenu.Size = new System.Drawing.Size(61, 20);
             this.OptionsMenu.Text = "Options";
             // 
+            // OpenRepoMenuItem
+            // 
+            this.OpenRepoMenuItem.Name = "OpenRepoMenuItem";
+            this.OpenRepoMenuItem.Size = new System.Drawing.Size(145, 22);
+            this.OpenRepoMenuItem.Text = "Open";
+            this.OpenRepoMenuItem.Click += new System.EventHandler(this.OpenRepoMenuItem_Click);
+            // 
             // RecentReposMenu
             // 
             this.RecentReposMenu.Enabled = false;
             this.RecentReposMenu.Name = "RecentReposMenu";
-            this.RecentReposMenu.Size = new System.Drawing.Size(152, 22);
+            this.RecentReposMenu.Size = new System.Drawing.Size(145, 22);
             this.RecentReposMenu.Text = "Recent Repos";
-            // 
-            // OpenRepoMenuItem
-            // 
-            this.OpenRepoMenuItem.Name = "OpenRepoMenuItem";
-            this.OpenRepoMenuItem.Size = new System.Drawing.Size(152, 22);
-            this.OpenRepoMenuItem.Text = "Open";
-            this.OpenRepoMenuItem.Click += new System.EventHandler(this.OpenRepoMenuItem_Click);
             // 
             // FindRepoDialog
             // 
@@ -97,6 +97,8 @@
             this.Name = "TabbedTortoiseGitForm";
             this.Text = "Tabbed Tortoise Git";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.TabbedTortoiseGitForm_FormClosing);
+            this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.TabbedTortoiseGitForm_FormClosed);
+            this.Load += new System.EventHandler(this.TabbedTortoiseGitForm_Load);
             this.Menu.ResumeLayout(false);
             this.Menu.PerformLayout();
             this.ResumeLayout(false);
