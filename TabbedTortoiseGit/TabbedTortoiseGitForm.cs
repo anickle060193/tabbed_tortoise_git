@@ -29,11 +29,18 @@ namespace TabbedTortoiseGit
         {
             InitializeComponent();
 
-            LogTabs.NewTabContextMenu = NewTabContextMenu;
-
             StartProcessQuery();
 
             this.Disposed += TabbedTortoiseGitForm_Disposed;
+
+            DisplayNotifyIcon();
+        }
+
+        private void DisplayNotifyIcon()
+        {
+            NotifyIcon.Visible = true;
+            NotifyIcon.Icon = this.Icon;
+            NotifyIcon.DoubleClick += ( sender, e ) => this.Show();
         }
 
         private void UpdateFromSettings()
@@ -150,6 +157,7 @@ namespace TabbedTortoiseGit
             p.EnableRaisingEvents = true;
             p.Exited += Process_Exited;
 
+            this.Show();
             this.BringToFront();
         }
 
@@ -206,6 +214,12 @@ namespace TabbedTortoiseGit
 
         private void TabbedTortoiseGitForm_FormClosing( object sender, FormClosingEventArgs e )
         {
+            if( e.CloseReason == CloseReason.UserClosing )
+            {
+                e.Cancel = true;
+                this.Hide();
+            }
+
             if( this.WindowState == FormWindowState.Maximized )
             {
                 Settings.Default.Maximized = true;
@@ -268,6 +282,11 @@ namespace TabbedTortoiseGit
             ManagementBaseObject o = (ManagementBaseObject)e.NewEvent[ "TargetInstance" ];
             Process p = Process.GetProcessById( (int)(UInt32)o[ "ProcessId" ] );
             LogTabs.Invoke( (Func<Process, Task>)AddNewProcess, p );
+        }
+
+        private void ExitMenuItem_Click( object sender, EventArgs e )
+        {
+            Application.Exit();
         }
     }
 }
