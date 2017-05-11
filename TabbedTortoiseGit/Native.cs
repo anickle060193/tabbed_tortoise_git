@@ -163,6 +163,11 @@ namespace TabbedTortoiseGit
             }
         }
 
+        public const int TCM_SETMINTABWIDTH = 0x1300 + 49;
+
+        [DllImport( "user32.dll" )]
+        public static extern IntPtr SendMessage( IntPtr hWnd, int msg, IntPtr wp, IntPtr lp );
+
         public static void RemoveBorder( IntPtr windowHandle )
         {
             int style = GetWindowLongPtr( windowHandle, GWL_STYLE );

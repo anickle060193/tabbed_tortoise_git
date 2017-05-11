@@ -11,8 +11,6 @@ namespace TabbedTortoiseGit
 {
     class ExtendedTabControl : TabControl
     {
-        private const int TCM_SETMINTABWIDTH = 0x1300 + 49;
-
         public event EventHandler NewTabClicked;
         public event EventHandler<TabClosedEventArgs> TabClosed;
 
@@ -27,28 +25,6 @@ namespace TabbedTortoiseGit
             _newTab = new TabPage( "+" );
 
             this.TabPages.Add( _newTab );
-        }
-
-        private TabPage GetTabFromPoint( Point p )
-        {
-            for( int i = 0; i < this.TabCount; i++ )
-            {
-                if( this.GetTabRect( i ).Contains( p ) )
-                {
-                    return this.TabPages[ i ];
-                }
-            }
-            return null;
-        }
-
-        protected void OnNewTabClicked( EventArgs e )
-        {
-            NewTabClicked( this, e );
-        }
-
-        protected void OnTabClosed( TabClosedEventArgs e )
-        {
-            TabClosed( this, e );
         }
 
         protected override void OnControlAdded( ControlEventArgs e )
@@ -89,12 +65,9 @@ namespace TabbedTortoiseGit
             base.OnControlRemoved( e );
         }
 
-        [DllImport( "user32.dll" )]
-        private static extern IntPtr SendMessage( IntPtr hWnd, int msg, IntPtr wp, IntPtr lp );
-
         protected override void OnHandleCreated( EventArgs e )
         {
-            SendMessage( this.Handle, TCM_SETMINTABWIDTH, IntPtr.Zero, (IntPtr)20 );
+            Native.SendMessage( this.Handle, Native.TCM_SETMINTABWIDTH, IntPtr.Zero, (IntPtr)20 );
 
             base.OnHandleCreated( e );
         }
@@ -152,6 +125,28 @@ namespace TabbedTortoiseGit
             }
 
             base.OnMouseClick( e );
+        }
+
+        protected void OnNewTabClicked( EventArgs e )
+        {
+            NewTabClicked( this, e );
+        }
+
+        protected void OnTabClosed( TabClosedEventArgs e )
+        {
+            TabClosed( this, e );
+        }
+
+        private TabPage GetTabFromPoint( Point p )
+        {
+            for( int i = 0; i < this.TabCount; i++ )
+            {
+                if( this.GetTabRect( i ).Contains( p ) )
+                {
+                    return this.TabPages[ i ];
+                }
+            }
+            return null;
         }
     }
 
