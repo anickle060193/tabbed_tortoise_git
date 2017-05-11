@@ -37,8 +37,9 @@
             this.NewTabContextMenu = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.NotifyIcon = new System.Windows.Forms.NotifyIcon(this.components);
             this.NotifyIconContextMenu = new System.Windows.Forms.ContextMenuStrip(this.components);
-            this.LogTabs = new TabbedTortoiseGit.ExtendedTabControl();
             this.ExitMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.LogTabs = new TabbedTortoiseGit.ExtendedTabControl();
+            this.OpenMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.MenuStrip.SuspendLayout();
             this.NotifyIconContextMenu.SuspendLayout();
             this.SuspendLayout();
@@ -66,7 +67,6 @@
             this.OpenRepoMenuItem.Name = "OpenRepoMenuItem";
             this.OpenRepoMenuItem.Size = new System.Drawing.Size(145, 22);
             this.OpenRepoMenuItem.Text = "Open";
-            this.OpenRepoMenuItem.Click += new System.EventHandler(this.OpenRepoMenuItem_Click);
             // 
             // RecentReposMenu
             // 
@@ -93,9 +93,16 @@
             // NotifyIconContextMenu
             // 
             this.NotifyIconContextMenu.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.OpenMenuItem,
             this.ExitMenuItem});
             this.NotifyIconContextMenu.Name = "NotifyIconContextMenu";
-            this.NotifyIconContextMenu.Size = new System.Drawing.Size(153, 48);
+            this.NotifyIconContextMenu.Size = new System.Drawing.Size(153, 70);
+            // 
+            // ExitMenuItem
+            // 
+            this.ExitMenuItem.Name = "ExitMenuItem";
+            this.ExitMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.ExitMenuItem.Text = "Exit";
             // 
             // LogTabs
             // 
@@ -106,16 +113,12 @@
             this.LogTabs.SelectedIndex = 0;
             this.LogTabs.Size = new System.Drawing.Size(644, 462);
             this.LogTabs.TabIndex = 0;
-            this.LogTabs.NewTabClicked += new System.EventHandler(this.LogTabs_NewTabClicked);
-            this.LogTabs.TabClosed += new System.EventHandler<TabbedTortoiseGit.TabClosedEventArgs>(this.LogTabs_TabClosed);
-            this.LogTabs.Selected += new System.Windows.Forms.TabControlEventHandler(this.LogTabs_Selected);
             // 
-            // ExitMenuItem
+            // OpenMenuItem
             // 
-            this.ExitMenuItem.Name = "ExitMenuItem";
-            this.ExitMenuItem.Size = new System.Drawing.Size(152, 22);
-            this.ExitMenuItem.Text = "Exit";
-            this.ExitMenuItem.Click += new System.EventHandler(this.ExitMenuItem_Click);
+            this.OpenMenuItem.Name = "OpenMenuItem";
+            this.OpenMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.OpenMenuItem.Text = "Open";
             // 
             // TabbedTortoiseGitForm
             // 
@@ -128,9 +131,6 @@
             this.MinimumSize = new System.Drawing.Size(660, 525);
             this.Name = "TabbedTortoiseGitForm";
             this.Text = "Tabbed Tortoise Git";
-            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.TabbedTortoiseGitForm_FormClosing);
-            this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.TabbedTortoiseGitForm_FormClosed);
-            this.Load += new System.EventHandler(this.TabbedTortoiseGitForm_Load);
             this.MenuStrip.ResumeLayout(false);
             this.MenuStrip.PerformLayout();
             this.NotifyIconContextMenu.ResumeLayout(false);
@@ -151,6 +151,7 @@
         private System.Windows.Forms.NotifyIcon NotifyIcon;
         private System.Windows.Forms.ContextMenuStrip NotifyIconContextMenu;
         private System.Windows.Forms.ToolStripMenuItem ExitMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem OpenMenuItem;
     }
 }
 
