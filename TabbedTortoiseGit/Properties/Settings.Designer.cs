@@ -80,5 +80,16 @@ namespace TabbedTortoiseGit.Properties {
                 this["Maximized"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        public global::System.Collections.Generic.List<System.String> DefaultRepos {
+            get {
+                return ((global::System.Collections.Generic.List<System.String>)(this["DefaultRepos"]));
+            }
+            set {
+                this["DefaultRepos"] = value;
+            }
+        }
     }
 }

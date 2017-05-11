@@ -23,16 +23,22 @@ namespace TabbedTortoiseGit
         private readonly List<Process> _processes = new List<Process>();
         private readonly Dictionary<int, TabPage> _tabs = new Dictionary<int, TabPage>();
 
-        private ManagementEventWatcher _watcher;
+        private readonly ManagementEventWatcher _watcher;
 
         public TabbedTortoiseGitForm()
         {
             InitializeComponent();
             InitializeEventHandlers();
 
-            StartProcessQuery();
+            String condition = "TargetInstance ISA 'Win32_Process'" +
+                           "AND TargetInstance.Name = 'TortoiseGitProc.exe'" +
+                           "AND TargetInstance.CommandLine LIKE '%/command:log%'";
+            _watcher = new ManagementEventWatcher( new WqlEventQuery( "__InstanceCreationEvent", new TimeSpan( 10 ), condition ) );
+            _watcher.Options.Timeout = new TimeSpan( 0, 1, 0 );
+            _watcher.EventArrived += Watcher_EventArrived;
+            _watcher.Start();
 
-            DisplayNotifyIcon();
+            NotifyIcon.Icon = this.Icon;
         }
 
         protected override void WndProc( ref Message m )
@@ -42,12 +48,6 @@ namespace TabbedTortoiseGit
                 ShowMe();
             }
             base.WndProc( ref m );
-        }
-
-        private void DisplayNotifyIcon()
-        {
-            NotifyIcon.Visible = true;
-            NotifyIcon.Icon = this.Icon;
         }
 
         private void UpdateFromSettings()
@@ -86,17 +86,6 @@ namespace TabbedTortoiseGit
             NewTabContextMenu.Enabled = NewTabContextMenu.Items.Count != 0;
         }
 
-        private void StartProcessQuery()
-        {
-            String condition = "TargetInstance ISA 'Win32_Process'" +
-                           "AND TargetInstance.Name = 'TortoiseGitProc.exe'" +
-                           "AND TargetInstance.CommandLine LIKE '%/command:log%'";
-            _watcher = new ManagementEventWatcher( new WqlEventQuery( "__InstanceCreationEvent", new TimeSpan( 10 ), condition ) );
-            _watcher.Options.Timeout = new TimeSpan( 0, 1, 0 );
-            _watcher.EventArrived += Watcher_EventArrived;
-            _watcher.Start();
-        }
-
         private void AddToRecentRepos( String path )
         {
             List<String> recentRepos = Settings.Default.RecentRepos != null ? Settings.Default.RecentRepos : new List<String>();
@@ -106,6 +95,7 @@ namespace TabbedTortoiseGit
             }
             recentRepos.Insert( 0, path );
             Settings.Default.RecentRepos = recentRepos;
+            Settings.Default.Save();
             UpdateRecentReposFromSettings();
         }
 
@@ -158,6 +148,7 @@ namespace TabbedTortoiseGit
 
         private void EndProcess( Process p )
         {
+            p.EnableRaisingEvents = false;
             p.Exited -= Process_Exited;
             if( !p.HasExited )
             {

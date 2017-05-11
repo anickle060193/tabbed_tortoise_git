@@ -24,39 +24,11 @@ namespace TabbedTortoiseGit
             LogTabs.Selected += LogTabs_Selected;
 
             OpenRepoMenuItem.Click += OpenRepoMenuItem_Click;
+            ExitMenuItem.Click += ExitMenuItem_Click;
 
             NotifyIcon.DoubleClick += NotifyIcon_DoubleClick;
-            OpenMenuItem.Click += OpenMenuItem_Click;
-            ExitMenuItem.Click += ExitMenuItem_Click;
-        }
-
-        private void OpenMenuItem_Click( object sender, EventArgs e )
-        {
-            this.ShowMe();
-        }
-
-        private void TabbedTortoiseGitForm_Disposed( object sender, EventArgs e )
-        {
-            _watcher.Dispose();
-        }
-
-        private void RecentRepoMenuItem_Click( object sender, EventArgs e )
-        {
-            ToolStripItem item = (ToolStripItem)sender;
-            OpenLog( item.Text );
-        }
-
-        private void Tab_Resize( object sender, EventArgs e )
-        {
-            TabPage t = (TabPage)sender;
-            Process p = (Process)t.Tag;
-
-            Native.ResizeToParent( p.MainWindowHandle, t );
-        }
-
-        private void Process_Exited( object sender, EventArgs e )
-        {
-            RemoveProcess( (Process)sender );
+            OpenNotifyIconMenuItem.Click += OpenNotifyIconMenuItem_Click;
+            ExitNotifyIconMenuItem.Click += ExitMenuItem_Click;
         }
 
         private void TabbedTortoiseGitForm_Load( object sender, EventArgs e )
@@ -105,6 +77,16 @@ namespace TabbedTortoiseGit
             }
         }
 
+        private void TabbedTortoiseGitForm_Disposed( object sender, EventArgs e )
+        {
+            _watcher.Dispose();
+        }
+
+        private void Process_Exited( object sender, EventArgs e )
+        {
+            RemoveProcess( (Process)sender );
+        }
+
         private void LogTabs_NewTabClicked( object sender, EventArgs e )
         {
             FindRepo();
@@ -124,9 +106,28 @@ namespace TabbedTortoiseGit
             this.Text = e.TabPage.Text + " - Tabbed TortoiseGit";
         }
 
+        private void Tab_Resize( object sender, EventArgs e )
+        {
+            TabPage t = (TabPage)sender;
+            Process p = (Process)t.Tag;
+
+            Native.ResizeToParent( p.MainWindowHandle, t );
+        }
+
         private void OpenRepoMenuItem_Click( object sender, EventArgs e )
         {
             FindRepo();
+        }
+
+        private void RecentRepoMenuItem_Click( object sender, EventArgs e )
+        {
+            ToolStripItem item = (ToolStripItem)sender;
+            OpenLog( item.Text );
+        }
+
+        private void ExitMenuItem_Click( object sender, EventArgs e )
+        {
+            Application.Exit();
         }
 
         private void Watcher_EventArrived( object sender, EventArrivedEventArgs e )
@@ -136,12 +137,12 @@ namespace TabbedTortoiseGit
             LogTabs.Invoke( (Func<Process, Task>)AddNewProcess, p );
         }
 
-        private void ExitMenuItem_Click( object sender, EventArgs e )
+        private void NotifyIcon_DoubleClick( object sender, EventArgs e )
         {
-            Application.Exit();
+            this.ShowMe();
         }
 
-        private void NotifyIcon_DoubleClick( object sender, EventArgs e )
+        private void OpenNotifyIconMenuItem_Click( object sender, EventArgs e )
         {
             this.ShowMe();
         }
