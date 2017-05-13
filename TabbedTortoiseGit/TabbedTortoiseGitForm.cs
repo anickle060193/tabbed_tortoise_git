@@ -42,6 +42,7 @@ namespace TabbedTortoiseGit
             _watcher.EventArrived += Watcher_EventArrived;
             _watcher.Start();
 
+            this.Icon = Resources.TortoiseIcon;
             NotifyIcon.Icon = this.Icon;
         }
 

@@ -42,6 +42,7 @@
             this.OpenNotifyIconMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.ExitNotifyIconMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.LogTabs = new TabbedTortoiseGit.ExtendedTabControl();
+            this.AboutMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.MenuStrip.SuspendLayout();
             this.NotifyIconContextMenu.SuspendLayout();
             this.SuspendLayout();
@@ -62,6 +63,7 @@
             this.RecentReposMenu,
             this.toolStripSeparator1,
             this.SettingsMenuItem,
+            this.AboutMenuItem,
             this.ExitMenuItem});
             this.OptionsMenu.Name = "OptionsMenu";
             this.OptionsMenu.Size = new System.Drawing.Size(61, 20);
@@ -70,31 +72,31 @@
             // OpenRepoMenuItem
             // 
             this.OpenRepoMenuItem.Name = "OpenRepoMenuItem";
-            this.OpenRepoMenuItem.Size = new System.Drawing.Size(145, 22);
+            this.OpenRepoMenuItem.Size = new System.Drawing.Size(152, 22);
             this.OpenRepoMenuItem.Text = "Open Repo";
             // 
             // RecentReposMenu
             // 
             this.RecentReposMenu.Enabled = false;
             this.RecentReposMenu.Name = "RecentReposMenu";
-            this.RecentReposMenu.Size = new System.Drawing.Size(145, 22);
+            this.RecentReposMenu.Size = new System.Drawing.Size(152, 22);
             this.RecentReposMenu.Text = "Recent Repos";
             // 
             // toolStripSeparator1
             // 
             this.toolStripSeparator1.Name = "toolStripSeparator1";
-            this.toolStripSeparator1.Size = new System.Drawing.Size(142, 6);
+            this.toolStripSeparator1.Size = new System.Drawing.Size(149, 6);
             // 
             // SettingsMenuItem
             // 
             this.SettingsMenuItem.Name = "SettingsMenuItem";
-            this.SettingsMenuItem.Size = new System.Drawing.Size(145, 22);
+            this.SettingsMenuItem.Size = new System.Drawing.Size(152, 22);
             this.SettingsMenuItem.Text = "Settings";
             // 
             // ExitMenuItem
             // 
             this.ExitMenuItem.Name = "ExitMenuItem";
-            this.ExitMenuItem.Size = new System.Drawing.Size(145, 22);
+            this.ExitMenuItem.Size = new System.Drawing.Size(152, 22);
             this.ExitMenuItem.Text = "Exit";
             // 
             // NewTabContextMenu
@@ -138,6 +140,12 @@
             this.LogTabs.Size = new System.Drawing.Size(644, 462);
             this.LogTabs.TabIndex = 0;
             // 
+            // AboutMenuItem
+            // 
+            this.AboutMenuItem.Name = "AboutMenuItem";
+            this.AboutMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.AboutMenuItem.Text = "About";
+            // 
             // TabbedTortoiseGitForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -172,6 +180,7 @@
         private System.Windows.Forms.ToolStripMenuItem SettingsMenuItem;
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator1;
         private System.Windows.Forms.ToolStripMenuItem ExitMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem AboutMenuItem;
     }
 }
 

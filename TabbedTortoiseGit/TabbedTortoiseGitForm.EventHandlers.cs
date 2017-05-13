@@ -25,6 +25,7 @@ namespace TabbedTortoiseGit
 
             OpenRepoMenuItem.Click += OpenRepoMenuItem_Click;
             SettingsMenuItem.Click += SettingsMenuItem_Click;
+            AboutMenuItem.Click += AboutMenuItem_Click;
             ExitMenuItem.Click += ExitMenuItem_Click;
 
             NotifyIcon.DoubleClick += NotifyIcon_DoubleClick;
@@ -140,6 +141,11 @@ namespace TabbedTortoiseGit
             {
                 UpdateRecentReposFromSettings();
             }
+        }
+
+        private void AboutMenuItem_Click( object sender, EventArgs e )
+        {
+            AboutBox.ShowAbout();
         }
 
         private void RecentRepoMenuItem_Click( object sender, EventArgs e )
