@@ -103,6 +103,13 @@ namespace TabbedTortoiseGit
                 recentRepos.Remove( path );
             }
             recentRepos.Insert( 0, path );
+
+            int maxRecentRepos = Settings.Default.MaxRecentRepos;
+            if( recentRepos.Count > maxRecentRepos )
+            {
+                recentRepos.RemoveRange( maxRecentRepos, recentRepos.Count - maxRecentRepos );
+            }
+
             Settings.Default.RecentRepos = recentRepos;
             Settings.Default.Save();
             UpdateRecentReposFromSettings();

@@ -136,7 +136,10 @@ namespace TabbedTortoiseGit
 
         private void SettingsMenuItem_Click( object sender, EventArgs e )
         {
-            SettingsForm.ShowSettingsDialog();
+            if( SettingsForm.ShowSettingsDialog() )
+            {
+                UpdateRecentReposFromSettings();
+            }
         }
 
         private void RecentRepoMenuItem_Click( object sender, EventArgs e )

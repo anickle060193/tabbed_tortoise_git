@@ -43,6 +43,19 @@ namespace TabbedTortoiseGit
             }
         }
 
+        public int MaxRecentRepos
+        {
+            get
+            {
+                return (int)MaxRecentReposNumeric.Value;
+            }
+
+            set
+            {
+                MaxRecentReposNumeric.Value = value;
+            }
+        }
+
         public static bool ShowSettingsDialog()
         {
             SettingsForm f = new SettingsForm();
@@ -51,11 +64,17 @@ namespace TabbedTortoiseGit
                 f.DefaultRepos = Settings.Default.DefaultRepos.ToArray();
             }
             f.RetainLogsOnClose = Settings.Default.RetainLogsOnClose;
+            f.MaxRecentRepos = Settings.Default.MaxRecentRepos;
 
             if( f.ShowDialog() == DialogResult.OK )
             {
                 Settings.Default.DefaultRepos = f.DefaultRepos.ToList();
                 Settings.Default.RetainLogsOnClose = f.RetainLogsOnClose;
+                Settings.Default.MaxRecentRepos = f.MaxRecentRepos;
+                if( Settings.Default.RecentRepos != null )
+                {
+                    Settings.Default.RecentRepos = Settings.Default.RecentRepos.Take( Settings.Default.MaxRecentRepos ).ToList();
+                }
                 Settings.Default.Save();
                 return true;
             }

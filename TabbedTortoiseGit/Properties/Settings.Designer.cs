@@ -92,5 +92,17 @@ namespace TabbedTortoiseGit.Properties {
                 this["RetainLogsOnClose"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("10")]
+        public int MaxRecentRepos {
+            get {
+                return ((int)(this["MaxRecentRepos"]));
+            }
+            set {
+                this["MaxRecentRepos"] = value;
+            }
+        }
     }
 }
