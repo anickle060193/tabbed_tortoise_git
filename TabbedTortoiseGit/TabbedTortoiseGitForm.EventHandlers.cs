@@ -36,16 +36,7 @@ namespace TabbedTortoiseGit
         {
             UpdateFromSettings();
 
-            if( Settings.Default.DefaultRepos != null )
-            {
-                foreach( String repo in Settings.Default.DefaultRepos )
-                {
-                    if( Git.IsRepo( repo ) )
-                    {
-                        OpenLog( repo );
-                    }
-                }
-            }
+            OpenDefaultRepos();
         }
 
         private void TabbedTortoiseGitForm_FormClosing( object sender, FormClosingEventArgs e )

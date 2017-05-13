@@ -50,6 +50,11 @@ namespace TabbedTortoiseGit
             if( m.Msg == Native.WM_SHOWME )
             {
                 ShowMe();
+
+                if( _processes.Count == 0 )
+                {
+                    OpenDefaultRepos();
+                }
             }
             base.WndProc( ref m );
         }
@@ -210,6 +215,20 @@ namespace TabbedTortoiseGit
                 this.WindowState = FormWindowState.Normal;
             }
             this.BringToFront();
+        }
+
+        private void OpenDefaultRepos()
+        {
+            if( Settings.Default.DefaultRepos != null )
+            {
+                foreach( String repo in Settings.Default.DefaultRepos )
+                {
+                    if( Git.IsRepo( repo ) )
+                    {
+                        OpenLog( repo );
+                    }
+                }
+            }
         }
     }
 }
