@@ -20,9 +20,13 @@ namespace TabbedTortoiseGit
         private readonly TabPage _newTab;
 
         private bool _inhibitControlActions = false;
+        private TabPage _draggingTab;
+        private TabPage _lastSwapped;
 
         public ExtendedTabControl()
         {
+            this.AllowDrop = true;
+
             _newTab = new TabPage( "+" );
 
             this.TabPages.Add( _newTab );
@@ -136,6 +140,66 @@ namespace TabbedTortoiseGit
             base.OnMouseClick( e );
         }
 
+        protected override void OnMouseDown( MouseEventArgs e )
+        {
+            TabPage t = GetTabFromPoint( e.Location );
+            if( t != _newTab )
+            {
+                _draggingTab = t;
+            }
+            else
+            {
+                _draggingTab = null;
+            }
+            _lastSwapped = null;
+
+            base.OnMouseDown( e );
+        }
+
+        protected override void OnMouseUp( MouseEventArgs e )
+        {
+            _draggingTab = null;
+            _lastSwapped = null;
+
+            base.OnMouseUp( e );
+        }
+
+        protected override void OnMouseMove( MouseEventArgs e )
+        {
+            if( e.Button == MouseButtons.Left && _draggingTab != null )
+            {
+                this.DoDragDrop( _draggingTab, DragDropEffects.Move );
+            }
+
+            base.OnMouseMove( e );
+        }
+
+        protected override void OnDragOver( DragEventArgs e )
+        {
+            TabPage draggedTab = (TabPage)e.Data.GetData( typeof( TabPage ) );
+            TabPage pointedTab = GetTabFromPoint( this.PointToClient( new Point( e.X, e.Y ) ) );
+
+            if( pointedTab != draggedTab
+             && pointedTab != _lastSwapped )
+            {
+                _lastSwapped = null;
+            }
+
+            if( draggedTab == _draggingTab
+             && pointedTab != null
+             && pointedTab != _newTab
+             && pointedTab != draggedTab
+             && pointedTab != _lastSwapped
+             && e.AllowedEffect == DragDropEffects.Move )
+            {
+                e.Effect = DragDropEffects.Move;
+                SwapTabs( pointedTab, draggedTab );
+                _lastSwapped = pointedTab;
+            }
+
+            base.OnDragOver( e );
+        }
+
         protected void OnNewTabClicked( EventArgs e )
         {
             NewTabClicked( this, e );
@@ -144,6 +208,30 @@ namespace TabbedTortoiseGit
         protected void OnTabClosed( TabClosedEventArgs e )
         {
             TabClosed( this, e );
+        }
+
+        private void SwapTabs( TabPage source, TabPage destination )
+        {
+            _inhibitControlActions = true;
+
+            int sourceIndex = this.TabPages.IndexOf( source );
+            int destinationIndex = this.TabPages.IndexOf( destination );
+
+            this.TabPages[ sourceIndex ] = destination;
+            this.TabPages[ destinationIndex ] = source;
+
+            if( this.SelectedIndex == sourceIndex )
+            {
+                this.SelectedIndex = destinationIndex;
+            }
+            else if( this.SelectedIndex == destinationIndex )
+            {
+                this.SelectedIndex = sourceIndex;
+            }
+
+            this.Refresh();
+
+            _inhibitControlActions = false;
         }
 
         private TabPage GetTabFromPoint( Point p )
