@@ -132,8 +132,7 @@ namespace TabbedTortoiseGit
         {
             TabPage t = (TabPage)sender;
             TabTag tag = (TabTag)t.Tag;
-
-            Native.ResizeToParent( tag.Process.MainWindowHandle, t );
+            ResizeTab( tag.Process, t );
         }
 
         private void OpenRepoMenuItem_Click( object sender, EventArgs e )

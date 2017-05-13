@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Linq;
 using System.Runtime.InteropServices;
 using System.Text;
@@ -177,12 +178,37 @@ namespace TabbedTortoiseGit
         public static void SetWindowParent( IntPtr windowHandle, Control parent )
         {
             SetParent( windowHandle, parent.Handle );
-            ResizeToParent( windowHandle, parent );
         }
 
-        public static void ResizeToParent( IntPtr windowHandle, Control parent )
+        public static Size ResizeToParent( IntPtr windowHandle, Control parent )
         {
-            MoveWindow( windowHandle, -8, -8, parent.Width + 23, parent.Height + 23, true );
+            int width = parent.Width + 23;
+            int height = parent.Height + 23;
+            MoveWindow( windowHandle, -8, -8, width, height, true );
+
+            RECT size = new RECT();
+            if( GetWindowRect( windowHandle, ref size ) )
+            {
+                int widthDiff = ( size.right - size.left ) - width;
+                int heightDiff = ( size.bottom - size.top ) - height;
+                if( widthDiff > 0 || heightDiff > 0 )
+                {
+                    return new Size( widthDiff, heightDiff );
+                }
+            }
+            return Size.Empty;
         }
+
+        [StructLayout( LayoutKind.Sequential )]
+        public struct RECT
+        {
+            public int left;
+            public int top;
+            public int right;
+            public int bottom;
+        }
+
+        [DllImport( "user32.dll", SetLastError = true )]
+        static extern bool GetWindowRect( IntPtr hWnd, ref RECT Rect );
     }
 }

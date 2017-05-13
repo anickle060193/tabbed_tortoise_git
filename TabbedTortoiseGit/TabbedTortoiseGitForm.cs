@@ -168,12 +168,30 @@ namespace TabbedTortoiseGit
 
             Native.RemoveBorder( p.MainWindowHandle );
             Native.SetWindowParent( p.MainWindowHandle, t );
+            ResizeTab( p, t );
 
             t.Resize += Tab_Resize;
             p.EnableRaisingEvents = true;
             p.Exited += Process_Exited;
 
             ShowMe();
+        }
+
+        private void ResizeTab( Process p, TabPage t )
+        {
+            Size sizeDiff = Native.ResizeToParent( p.MainWindowHandle, t );
+
+            if( sizeDiff.Width > 0 )
+            {
+                this.Width += sizeDiff.Width;
+                this.MinimumSize = new Size( this.Width, this.MinimumSize.Height );
+            }
+
+            if( sizeDiff.Height > 0 )
+            {
+                this.Height += sizeDiff.Height;
+                this.MinimumSize = new Size( this.MinimumSize.Width, this.Height );
+            }
         }
 
         private void EndProcess( Process p )
