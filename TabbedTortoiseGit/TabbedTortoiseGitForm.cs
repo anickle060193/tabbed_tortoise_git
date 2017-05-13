@@ -19,9 +19,6 @@ namespace TabbedTortoiseGit
 {
     public partial class TabbedTortoiseGitForm : Form
     {
-        public static readonly String TORTOISE_GIT_EXE = "TortoiseGitProc.exe";
-        public static readonly String SHOW_LOG_COMMAND = "/command:log /path \"{0}\"";
-
         private readonly CommonOpenFileDialog _folderDialog;
         private readonly ManagementEventWatcher _watcher;
         private readonly List<Process> _processes = new List<Process>();
@@ -139,13 +136,7 @@ namespace TabbedTortoiseGit
         {
             AddToRecentRepos( path );
 
-            ProcessStartInfo info = new ProcessStartInfo()
-            {
-                FileName = TORTOISE_GIT_EXE,
-                Arguments = String.Format( SHOW_LOG_COMMAND, path ),
-                WorkingDirectory = path
-            };
-            Process p = Process.Start( info );
+            Process p = TortoiseGit.Log( path );
             await AddNewLog( p, path );
         }
 

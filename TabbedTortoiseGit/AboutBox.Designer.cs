@@ -28,11 +28,11 @@
         private void InitializeComponent()
         {
             this.TableLayout = new System.Windows.Forms.TableLayoutPanel();
+            this.AttributionsText = new System.Windows.Forms.TextBox();
             this.Logo = new System.Windows.Forms.PictureBox();
             this.ProductNameLabel = new System.Windows.Forms.Label();
             this.VersionLabel = new System.Windows.Forms.Label();
             this.DescriptionText = new System.Windows.Forms.TextBox();
-            this.AttributionsText = new System.Windows.Forms.TextBox();
             this.OK = new System.Windows.Forms.Button();
             this.label1 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
@@ -60,12 +60,27 @@
             this.TableLayout.RowStyles.Add(new System.Windows.Forms.RowStyle());
             this.TableLayout.RowStyles.Add(new System.Windows.Forms.RowStyle());
             this.TableLayout.RowStyles.Add(new System.Windows.Forms.RowStyle());
-            this.TableLayout.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
+            this.TableLayout.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 40F));
             this.TableLayout.RowStyles.Add(new System.Windows.Forms.RowStyle());
-            this.TableLayout.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
+            this.TableLayout.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 60F));
             this.TableLayout.RowStyles.Add(new System.Windows.Forms.RowStyle());
             this.TableLayout.Size = new System.Drawing.Size(639, 265);
             this.TableLayout.TabIndex = 0;
+            // 
+            // AttributionsText
+            // 
+            this.AttributionsText.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.AttributionsText.Location = new System.Drawing.Point(261, 140);
+            this.AttributionsText.Margin = new System.Windows.Forms.Padding(6, 3, 3, 3);
+            this.AttributionsText.Multiline = true;
+            this.AttributionsText.Name = "AttributionsText";
+            this.AttributionsText.ReadOnly = true;
+            this.AttributionsText.Size = new System.Drawing.Size(375, 93);
+            this.AttributionsText.TabIndex = 25;
+            this.AttributionsText.TabStop = false;
+            this.AttributionsText.Text = "Git log functionality provided by TortoiseGit\r\n\r\nTurtle icon made by Freepik from" +
+    " FlatIcon licensed by Creative Commons BY 3.0\r\n\r\nGit action Octicons created by " +
+    "GitHub.";
             // 
             // Logo
             // 
@@ -112,24 +127,10 @@
             this.DescriptionText.Multiline = true;
             this.DescriptionText.Name = "DescriptionText";
             this.DescriptionText.ReadOnly = true;
-            this.DescriptionText.Size = new System.Drawing.Size(375, 76);
+            this.DescriptionText.Size = new System.Drawing.Size(375, 60);
             this.DescriptionText.TabIndex = 23;
             this.DescriptionText.TabStop = false;
             this.DescriptionText.Text = "Description";
-            // 
-            // AttributionsText
-            // 
-            this.AttributionsText.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.AttributionsText.Location = new System.Drawing.Point(261, 156);
-            this.AttributionsText.Margin = new System.Windows.Forms.Padding(6, 3, 3, 3);
-            this.AttributionsText.Multiline = true;
-            this.AttributionsText.Name = "AttributionsText";
-            this.AttributionsText.ReadOnly = true;
-            this.AttributionsText.Size = new System.Drawing.Size(375, 76);
-            this.AttributionsText.TabIndex = 25;
-            this.AttributionsText.TabStop = false;
-            this.AttributionsText.Text = "Git log functionality provided by TortoiseGit\r\n\r\nIcon made by Freepik from FlatIc" +
-    "on licensed by Creative Commons BY 3.0";
             // 
             // OK
             // 
@@ -153,7 +154,7 @@
             // label2
             // 
             this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(258, 140);
+            this.label2.Location = new System.Drawing.Point(258, 124);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(62, 13);
             this.label2.TabIndex = 27;

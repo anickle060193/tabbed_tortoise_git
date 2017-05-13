@@ -44,7 +44,16 @@
             this.ExitNotifyIconMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.TabContextMenu = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.OpenRepoLocationMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.TabContextMenuSeparator = new System.Windows.Forms.ToolStripSeparator();
+            this.CommitMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.FetchMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.PullMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.SwitchMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.PushMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.RebaseMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.SubmoduleUpdateMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.LogTabs = new TabbedTortoiseGit.ExtendedTabControl();
+            this.SyncMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.MenuStrip.SuspendLayout();
             this.NotifyIconContextMenu.SuspendLayout();
             this.TabContextMenu.SuspendLayout();
@@ -142,19 +151,84 @@
             // TabContextMenu
             // 
             this.TabContextMenu.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.OpenRepoLocationMenuItem});
+            this.OpenRepoLocationMenuItem,
+            this.TabContextMenuSeparator,
+            this.CommitMenuItem,
+            this.FetchMenuItem,
+            this.PullMenuItem,
+            this.SwitchMenuItem,
+            this.PushMenuItem,
+            this.RebaseMenuItem,
+            this.SyncMenuItem,
+            this.SubmoduleUpdateMenuItem});
             this.TabContextMenu.Name = "TabContextMenu";
             this.TabContextMenu.RenderMode = System.Windows.Forms.ToolStripRenderMode.Professional;
-            this.TabContextMenu.Size = new System.Drawing.Size(183, 26);
+            this.TabContextMenu.Size = new System.Drawing.Size(183, 230);
             // 
             // OpenRepoLocationMenuItem
             // 
+            this.OpenRepoLocationMenuItem.Image = global::TabbedTortoiseGit.Properties.Resources.OpenLocation;
             this.OpenRepoLocationMenuItem.Name = "OpenRepoLocationMenuItem";
             this.OpenRepoLocationMenuItem.Size = new System.Drawing.Size(182, 22);
             this.OpenRepoLocationMenuItem.Text = "Open Repo Location";
             // 
+            // TabContextMenuSeparator
+            // 
+            this.TabContextMenuSeparator.Name = "TabContextMenuSeparator";
+            this.TabContextMenuSeparator.Size = new System.Drawing.Size(179, 6);
+            // 
+            // CommitMenuItem
+            // 
+            this.CommitMenuItem.Image = global::TabbedTortoiseGit.Properties.Resources.Commit;
+            this.CommitMenuItem.Name = "CommitMenuItem";
+            this.CommitMenuItem.Size = new System.Drawing.Size(182, 22);
+            this.CommitMenuItem.Text = "Commit";
+            // 
+            // FetchMenuItem
+            // 
+            this.FetchMenuItem.Image = global::TabbedTortoiseGit.Properties.Resources.Fetch;
+            this.FetchMenuItem.Name = "FetchMenuItem";
+            this.FetchMenuItem.Size = new System.Drawing.Size(182, 22);
+            this.FetchMenuItem.Text = "Fetch";
+            // 
+            // PullMenuItem
+            // 
+            this.PullMenuItem.Image = global::TabbedTortoiseGit.Properties.Resources.Pull;
+            this.PullMenuItem.Name = "PullMenuItem";
+            this.PullMenuItem.Size = new System.Drawing.Size(182, 22);
+            this.PullMenuItem.Text = "Pull";
+            // 
+            // SwitchMenuItem
+            // 
+            this.SwitchMenuItem.Image = global::TabbedTortoiseGit.Properties.Resources.Switch;
+            this.SwitchMenuItem.Name = "SwitchMenuItem";
+            this.SwitchMenuItem.Size = new System.Drawing.Size(182, 22);
+            this.SwitchMenuItem.Text = "Switch/Checkout";
+            // 
+            // PushMenuItem
+            // 
+            this.PushMenuItem.Image = global::TabbedTortoiseGit.Properties.Resources.Push;
+            this.PushMenuItem.Name = "PushMenuItem";
+            this.PushMenuItem.Size = new System.Drawing.Size(182, 22);
+            this.PushMenuItem.Text = "Push";
+            // 
+            // RebaseMenuItem
+            // 
+            this.RebaseMenuItem.Image = global::TabbedTortoiseGit.Properties.Resources.Rebase;
+            this.RebaseMenuItem.Name = "RebaseMenuItem";
+            this.RebaseMenuItem.Size = new System.Drawing.Size(182, 22);
+            this.RebaseMenuItem.Text = "Rebase";
+            // 
+            // SubmoduleUpdateMenuItem
+            // 
+            this.SubmoduleUpdateMenuItem.Image = global::TabbedTortoiseGit.Properties.Resources.SubmoduleUpdate;
+            this.SubmoduleUpdateMenuItem.Name = "SubmoduleUpdateMenuItem";
+            this.SubmoduleUpdateMenuItem.Size = new System.Drawing.Size(182, 22);
+            this.SubmoduleUpdateMenuItem.Text = "Submodule Update";
+            // 
             // LogTabs
             // 
+            this.LogTabs.AllowDrop = true;
             this.LogTabs.Dock = System.Windows.Forms.DockStyle.Fill;
             this.LogTabs.Location = new System.Drawing.Point(0, 24);
             this.LogTabs.Name = "LogTabs";
@@ -163,6 +237,13 @@
             this.LogTabs.Size = new System.Drawing.Size(644, 462);
             this.LogTabs.TabContextMenu = this.TabContextMenu;
             this.LogTabs.TabIndex = 0;
+            // 
+            // SyncMenuItem
+            // 
+            this.SyncMenuItem.Image = global::TabbedTortoiseGit.Properties.Resources.Sync;
+            this.SyncMenuItem.Name = "SyncMenuItem";
+            this.SyncMenuItem.Size = new System.Drawing.Size(182, 22);
+            this.SyncMenuItem.Text = "Sync";
             // 
             // TabbedTortoiseGitForm
             // 
@@ -202,6 +283,15 @@
         private System.Windows.Forms.ToolStripMenuItem AboutMenuItem;
         private System.Windows.Forms.ContextMenuStrip TabContextMenu;
         private System.Windows.Forms.ToolStripMenuItem OpenRepoLocationMenuItem;
+        private System.Windows.Forms.ToolStripSeparator TabContextMenuSeparator;
+        private System.Windows.Forms.ToolStripMenuItem CommitMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem FetchMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem PullMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem SwitchMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem PushMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem RebaseMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem SubmoduleUpdateMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem SyncMenuItem;
     }
 }
 

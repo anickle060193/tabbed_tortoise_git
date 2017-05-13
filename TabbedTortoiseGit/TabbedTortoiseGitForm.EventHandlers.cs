@@ -38,6 +38,23 @@ namespace TabbedTortoiseGit
             ExitNotifyIconMenuItem.Click += ExitMenuItem_Click;
 
             OpenRepoLocationMenuItem.Click += OpenRepoLocationMenuItem_Click;
+
+            CommitMenuItem.Click += GitCommandMenuItem_Click;
+            CommitMenuItem.Tag = (Func<String, Process>)TortoiseGit.Commit;
+            FetchMenuItem.Click += GitCommandMenuItem_Click;
+            FetchMenuItem.Tag = (Func<String, Process>)TortoiseGit.Fetch;
+            PullMenuItem.Click += GitCommandMenuItem_Click;
+            PullMenuItem.Tag = (Func<String, Process>)TortoiseGit.Pull;
+            SwitchMenuItem.Click += GitCommandMenuItem_Click;
+            SwitchMenuItem.Tag = (Func<String, Process>)TortoiseGit.Switch;
+            PushMenuItem.Click += GitCommandMenuItem_Click;
+            PushMenuItem.Tag = (Func<String, Process>)TortoiseGit.Pull;
+            RebaseMenuItem.Click += GitCommandMenuItem_Click;
+            RebaseMenuItem.Tag = (Func<String, Process>)TortoiseGit.Rebase;
+            SyncMenuItem.Click += GitCommandMenuItem_Click;
+            SyncMenuItem.Tag = (Func<String, Process>)TortoiseGit.Sync;
+            SubmoduleUpdateMenuItem.Click += GitCommandMenuItem_Click;
+            SubmoduleUpdateMenuItem.Tag = (Func<String, Process>)TortoiseGit.SubmoduleUpdate;
         }
 
         private void TabbedTortoiseGitForm_Load( object sender, EventArgs e )
@@ -186,6 +203,15 @@ namespace TabbedTortoiseGit
             {
                 MessageBox.Show( String.Format( "Could not find repo location: \"{0}\"", t.Repo ) );
             }
+        }
+
+        private void GitCommandMenuItem_Click( object sender, EventArgs e )
+        {
+            ToolStripItem c = (ToolStripItem)sender;
+            Func<String, Process> func = (Func<String, Process>)c.Tag;
+
+            TabTag tag = (TabTag)LogTabs.SelectedTab.Tag;
+            func.Invoke( tag.Repo );
         }
     }
 }

@@ -14,5 +14,10 @@ namespace TabbedTortoiseGit
             self.Remove( key );
             return v;
         }
+
+        public static String XFormat( this String format, params Object[] args )
+        {
+            return String.Format( format, args );
+        }
     }
 }
