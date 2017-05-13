@@ -1,4 +1,5 @@
-﻿using Microsoft.WindowsAPICodePack.Dialogs;
+﻿using LibGit2Sharp;
+using Microsoft.WindowsAPICodePack.Dialogs;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -102,7 +103,7 @@ namespace TabbedTortoiseGit
             if( _folderDialog.ShowDialog() == CommonFileDialogResult.Ok )
             {
                 String path = _folderDialog.FileName;
-                if( Git.IsRepo( path ) )
+                if( Repository.IsValid( path ) )
                 {
                     DefaultReposList.Items.Add( path );
                 }

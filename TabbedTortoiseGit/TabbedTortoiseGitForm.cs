@@ -13,6 +13,7 @@ using System.Windows.Forms;
 using TabbedTortoiseGit.Properties;
 using System.Configuration;
 using Microsoft.WindowsAPICodePack.Dialogs;
+using LibGit2Sharp;
 
 namespace TabbedTortoiseGit
 {
@@ -204,7 +205,7 @@ namespace TabbedTortoiseGit
             if( _folderDialog.ShowDialog() == CommonFileDialogResult.Ok )
             {
                 String path = _folderDialog.FileName;
-                if( !Git.IsRepo( path ) )
+                if( !Repository.IsValid( path ) )
                 {
                     MessageBox.Show( "Directory is not a git repo!", "Invalid Directory", MessageBoxButtons.OK, MessageBoxIcon.Error );
                 }
@@ -231,7 +232,7 @@ namespace TabbedTortoiseGit
             {
                 foreach( String repo in Settings.Default.DefaultRepos )
                 {
-                    if( Git.IsRepo( repo ) )
+                    if( Repository.IsValid( repo ) )
                     {
                         OpenLog( repo );
                     }
