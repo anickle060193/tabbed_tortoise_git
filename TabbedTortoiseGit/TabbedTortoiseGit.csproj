@@ -132,9 +132,6 @@
     <None Include="Resources\tortoise.ico" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Resources\big_tortoise.ico" />
-  </ItemGroup>
-  <ItemGroup>
     <None Include="Resources\Tortoise.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
