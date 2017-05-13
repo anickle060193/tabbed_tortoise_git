@@ -19,6 +19,7 @@ namespace TabbedTortoiseGit
         private void InitializeEventHandlers()
         {
             this.Load += TabbedTortoiseGitForm_Load;
+            this.ResizeEnd += TabbedTortoiseGitForm_ResizeEnd;
             this.FormClosing += TabbedTortoiseGitForm_FormClosing;
             this.FormClosed += TabbedTortoiseGitForm_FormClosed;
             this.Disposed += TabbedTortoiseGitForm_Disposed;
@@ -46,6 +47,11 @@ namespace TabbedTortoiseGit
             OpenDefaultRepos();
         }
 
+        private void TabbedTortoiseGitForm_ResizeEnd( object sender, EventArgs e )
+        {
+            SaveWindowState();
+        }
+
         private void TabbedTortoiseGitForm_FormClosing( object sender, FormClosingEventArgs e )
         {
             if( !Settings.Default.RetainLogsOnClose )
@@ -59,26 +65,7 @@ namespace TabbedTortoiseGit
                 this.Hide();
             }
 
-            if( this.WindowState == FormWindowState.Maximized )
-            {
-                Settings.Default.Maximized = true;
-                Settings.Default.Size = this.RestoreBounds.Size;
-                Settings.Default.Location = this.RestoreBounds.Location;
-            }
-            else if( this.WindowState == FormWindowState.Minimized )
-            {
-                Settings.Default.Maximized = false;
-                Settings.Default.Size = this.RestoreBounds.Size;
-                Settings.Default.Location = this.RestoreBounds.Location;
-            }
-            else
-            {
-                Settings.Default.Maximized = false;
-                Settings.Default.Size = this.Size;
-                Settings.Default.Location = this.Location;
-            }
-
-            Settings.Default.Save();
+            SaveWindowState();
         }
 
         private void TabbedTortoiseGitForm_FormClosed( object sender, FormClosedEventArgs e )

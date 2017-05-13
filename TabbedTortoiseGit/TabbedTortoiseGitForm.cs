@@ -269,5 +269,29 @@ namespace TabbedTortoiseGit
                 }
             }
         }
+
+        private void SaveWindowState()
+        {
+            if( this.WindowState == FormWindowState.Maximized )
+            {
+                Settings.Default.Maximized = true;
+                Settings.Default.Size = this.RestoreBounds.Size;
+                Settings.Default.Location = this.RestoreBounds.Location;
+            }
+            else if( this.WindowState == FormWindowState.Minimized )
+            {
+                Settings.Default.Maximized = false;
+                Settings.Default.Size = this.RestoreBounds.Size;
+                Settings.Default.Location = this.RestoreBounds.Location;
+            }
+            else
+            {
+                Settings.Default.Maximized = false;
+                Settings.Default.Size = this.Size;
+                Settings.Default.Location = this.Location;
+            }
+
+            Settings.Default.Save();
+        }
     }
 }
