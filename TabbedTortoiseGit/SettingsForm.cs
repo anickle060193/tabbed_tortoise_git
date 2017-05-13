@@ -103,7 +103,7 @@ namespace TabbedTortoiseGit
             if( _folderDialog.ShowDialog() == CommonFileDialogResult.Ok )
             {
                 String path = _folderDialog.FileName;
-                if( Repository.IsValid( path ) )
+                if( Git.IsRepo( path ) )
                 {
                     DefaultReposList.Items.Add( path );
                 }

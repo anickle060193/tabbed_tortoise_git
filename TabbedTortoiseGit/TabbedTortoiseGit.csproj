@@ -75,6 +75,7 @@
       <SubType>Component</SubType>
     </Compile>
     <Compile Include="Extensions.cs" />
+    <Compile Include="Git.cs" />
     <Compile Include="Native.cs" />
     <Compile Include="Properties\Resources.Designer.cs">
       <AutoGen>True</AutoGen>

@@ -111,12 +111,18 @@ namespace TabbedTortoiseGit
 
         private void AddToRecentRepos( String path )
         {
-            List<String> recentRepos = Settings.Default.RecentRepos != null ? Settings.Default.RecentRepos : new List<String>();
-            if( recentRepos.Contains( path ) )
+            String repo = Git.GetBaseRepoDirectory( path );
+            if( repo == null )
             {
-                recentRepos.Remove( path );
+                return;
             }
-            recentRepos.Insert( 0, path );
+
+            List<String> recentRepos = Settings.Default.RecentRepos != null ? Settings.Default.RecentRepos : new List<String>();
+            if( recentRepos.Contains( repo ) )
+            {
+                recentRepos.Remove( repo );
+            }
+            recentRepos.Insert( 0, repo );
 
             int maxRecentRepos = Settings.Default.MaxRecentRepos;
             if( recentRepos.Count > maxRecentRepos )
@@ -235,7 +241,7 @@ namespace TabbedTortoiseGit
             if( _folderDialog.ShowDialog() == CommonFileDialogResult.Ok )
             {
                 String path = _folderDialog.FileName;
-                if( !Repository.IsValid( path ) )
+                if( !Git.IsRepo( path ) )
                 {
                     MessageBox.Show( "Directory is not a git repo!", "Invalid Directory", MessageBoxButtons.OK, MessageBoxIcon.Error );
                 }
@@ -262,7 +268,7 @@ namespace TabbedTortoiseGit
             {
                 foreach( String repo in Settings.Default.DefaultRepos )
                 {
-                    if( Repository.IsValid( repo ) )
+                    if( Git.IsRepo( repo ) )
                     {
                         OpenLog( repo );
                     }
