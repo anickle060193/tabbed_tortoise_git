@@ -15,6 +15,7 @@ namespace TabbedTortoiseGit
         public event EventHandler<TabClosedEventArgs> TabClosed;
 
         public ContextMenuStrip NewTabContextMenu { get; set; }
+        public ContextMenuStrip TabContextMenu { get; set; }
 
         private readonly TabPage _newTab;
 
@@ -118,6 +119,14 @@ namespace TabbedTortoiseGit
                             {
                                 NewTabContextMenu.Show( this, e.Location );
                                 return;
+                            }
+                        }
+                        else
+                        {
+                            this.SelectedTab = tab;
+                            if( TabContextMenu != null )
+                            {
+                                TabContextMenu.Show( this, e.Location );
                             }
                         }
                     }

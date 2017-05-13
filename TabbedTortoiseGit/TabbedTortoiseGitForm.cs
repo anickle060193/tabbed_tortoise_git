@@ -27,6 +27,18 @@ namespace TabbedTortoiseGit
         private readonly List<Process> _processes = new List<Process>();
         private readonly Dictionary<int, TabPage> _tabs = new Dictionary<int, TabPage>();
 
+        class TabTag
+        {
+            public Process Process { get; private set; }
+            public String Repo { get; private set; }
+
+            public TabTag( Process process, String repo )
+            {
+                Process = process;
+                Repo = repo;
+            }
+        }
+
         public TabbedTortoiseGitForm()
         {
             InitializeComponent();
@@ -128,10 +140,10 @@ namespace TabbedTortoiseGit
                 WorkingDirectory = path
             };
             Process p = Process.Start( info );
-            await AddNewProcess( p );
+            await AddNewLog( p, path );
         }
 
-        private async Task AddNewProcess( Process p )
+        private async Task AddNewLog( Process p, String path )
         {
             lock( _processes )
             {
@@ -148,10 +160,10 @@ namespace TabbedTortoiseGit
                 await Task.Delay( 10 );
             }
 
-            TabPage t = new TabPage( p.MainWindowTitle.Replace( " - Log Messages - TortoiseGit", "" ) );
+            TabPage t = new TabPage( path );
             LogTabs.TabPages.Add( t );
             LogTabs.SelectedTab = t;
-            t.Tag = p;
+            t.Tag = new TabTag( p, path );
             _tabs.Add( p.Id, t );
 
             Native.RemoveBorder( p.MainWindowHandle );

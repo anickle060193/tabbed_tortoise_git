@@ -1,9 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.IO;
 using System.Linq;
 using System.Management;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using TabbedTortoiseGit.Properties;
@@ -12,6 +14,8 @@ namespace TabbedTortoiseGit
 {
     partial class TabbedTortoiseGitForm
     {
+        private static readonly Regex TORTOISE_GIT_COMMAND_LINE_REGEX = new Regex( "/path:\"(?<repo>.*?)\" (/|$)", RegexOptions.IgnoreCase );
+
         private void InitializeEventHandlers()
         {
             this.Load += TabbedTortoiseGitForm_Load;
@@ -31,6 +35,8 @@ namespace TabbedTortoiseGit
             NotifyIcon.DoubleClick += NotifyIcon_DoubleClick;
             OpenNotifyIconMenuItem.Click += OpenNotifyIconMenuItem_Click;
             ExitNotifyIconMenuItem.Click += ExitMenuItem_Click;
+
+            OpenRepoLocationMenuItem.Click += OpenRepoLocationMenuItem_Click;
         }
 
         private void TabbedTortoiseGitForm_Load( object sender, EventArgs e )
@@ -103,11 +109,11 @@ namespace TabbedTortoiseGit
 
         private void LogTabs_TabClosed( object sender, TabClosedEventArgs e )
         {
-            Process p = (Process)e.Tab.Tag;
+            TabTag t = (TabTag)e.Tab.Tag;
 
-            EndProcess( p );
-            _processes.Remove( p );
-            _tabs.Remove( p.Id );
+            EndProcess( t.Process );
+            _processes.Remove( t.Process );
+            _tabs.Remove( t.Process.Id );
         }
 
         private void LogTabs_Selected( object sender, TabControlEventArgs e )
@@ -125,9 +131,9 @@ namespace TabbedTortoiseGit
         private void Tab_Resize( object sender, EventArgs e )
         {
             TabPage t = (TabPage)sender;
-            Process p = (Process)t.Tag;
+            TabTag tag = (TabTag)t.Tag;
 
-            Native.ResizeToParent( p.MainWindowHandle, t );
+            Native.ResizeToParent( tag.Process.MainWindowHandle, t );
         }
 
         private void OpenRepoMenuItem_Click( object sender, EventArgs e )
@@ -162,8 +168,11 @@ namespace TabbedTortoiseGit
         private void Watcher_EventArrived( object sender, EventArrivedEventArgs e )
         {
             ManagementBaseObject o = (ManagementBaseObject)e.NewEvent[ "TargetInstance" ];
+            String commandLine = (String)o[ "CommandLine" ];
+            Match m = TORTOISE_GIT_COMMAND_LINE_REGEX.Match( commandLine );
+            String repo = m.Groups[ "repo" ].Value;
             Process p = Process.GetProcessById( (int)(UInt32)o[ "ProcessId" ] );
-            LogTabs.Invoke( (Func<Process, Task>)AddNewProcess, p );
+            LogTabs.Invoke( (Func<Process, String, Task>)AddNewLog, p, repo );
         }
 
         private void NotifyIcon_DoubleClick( object sender, EventArgs e )
@@ -174,6 +183,23 @@ namespace TabbedTortoiseGit
         private void OpenNotifyIconMenuItem_Click( object sender, EventArgs e )
         {
             this.ShowMe();
+        }
+
+        private void OpenRepoLocationMenuItem_Click( object sender, EventArgs e )
+        {
+            TabTag t = (TabTag)LogTabs.SelectedTab.Tag;
+            if( Directory.Exists( t.Repo ) )
+            {
+                Process.Start( t.Repo );
+            }
+            else if( File.Exists( t.Repo ) )
+            {
+                Process.Start( "explorer.exe", String.Format( "/select, \"{0}\"", t.Repo ) );
+            }
+            else
+            {
+                MessageBox.Show( String.Format( "Could not find repo location: \"{0}\"", t.Repo ) );
+            }
         }
     }
 }
