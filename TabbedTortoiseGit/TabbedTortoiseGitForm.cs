@@ -12,6 +12,7 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using TabbedTortoiseGit.Properties;
 using System.Configuration;
+using Microsoft.WindowsAPICodePack.Dialogs;
 
 namespace TabbedTortoiseGit
 {
@@ -20,15 +21,18 @@ namespace TabbedTortoiseGit
         public static readonly String TORTOISE_GIT_EXE = "TortoiseGitProc.exe";
         public static readonly String SHOW_LOG_COMMAND = "/command:log /path \"{0}\"";
 
+        private readonly CommonOpenFileDialog _folderDialog;
+        private readonly ManagementEventWatcher _watcher;
         private readonly List<Process> _processes = new List<Process>();
         private readonly Dictionary<int, TabPage> _tabs = new Dictionary<int, TabPage>();
-
-        private readonly ManagementEventWatcher _watcher;
 
         public TabbedTortoiseGitForm()
         {
             InitializeComponent();
             InitializeEventHandlers();
+
+            _folderDialog = new CommonOpenFileDialog();
+            _folderDialog.IsFolderPicker = true;
 
             String condition = "TargetInstance ISA 'Win32_Process'" +
                            "AND TargetInstance.Name = 'TortoiseGitProc.exe'" +
@@ -164,11 +168,29 @@ namespace TabbedTortoiseGit
             t.Invoke( (Action<TabPage>)( ( tab ) => tab.Parent.Controls.Remove( tab ) ), t );
         }
 
+        private void RemoveAllProcesses()
+        {
+            lock( _processes )
+            {
+                foreach( Process p in _processes )
+                {
+                    EndProcess( p );
+                }
+                _processes.Clear();
+
+                foreach( TabPage t in _tabs.Values )
+                {
+                    LogTabs.TabPages.Remove( t );
+                }
+                _tabs.Clear();
+            }
+        }
+
         private void FindRepo()
         {
-            if( FindRepoDialog.ShowDialog() == DialogResult.OK )
+            if( _folderDialog.ShowDialog() == CommonFileDialogResult.Ok )
             {
-                String path = FindRepoDialog.SelectedPath;
+                String path = _folderDialog.FileName;
                 if( !Git.IsRepo( path ) )
                 {
                     MessageBox.Show( "Directory is not a git repo!", "Invalid Directory", MessageBoxButtons.OK, MessageBoxIcon.Error );

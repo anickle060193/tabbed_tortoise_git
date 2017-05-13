@@ -24,6 +24,7 @@ namespace TabbedTortoiseGit
             LogTabs.Selected += LogTabs_Selected;
 
             OpenRepoMenuItem.Click += OpenRepoMenuItem_Click;
+            SettingsMenuItem.Click += SettingsMenuItem_Click;
             ExitMenuItem.Click += ExitMenuItem_Click;
 
             NotifyIcon.DoubleClick += NotifyIcon_DoubleClick;
@@ -34,10 +35,26 @@ namespace TabbedTortoiseGit
         private void TabbedTortoiseGitForm_Load( object sender, EventArgs e )
         {
             UpdateFromSettings();
+
+            if( Settings.Default.DefaultRepos != null )
+            {
+                foreach( String repo in Settings.Default.DefaultRepos )
+                {
+                    if( Git.IsRepo( repo ) )
+                    {
+                        OpenLog( repo );
+                    }
+                }
+            }
         }
 
         private void TabbedTortoiseGitForm_FormClosing( object sender, FormClosingEventArgs e )
         {
+            if( !Settings.Default.RetainLogsOnClose )
+            {
+                this.RemoveAllProcesses();
+            }
+
             if( e.CloseReason == CloseReason.UserClosing )
             {
                 e.Cancel = true;
@@ -103,7 +120,14 @@ namespace TabbedTortoiseGit
 
         private void LogTabs_Selected( object sender, TabControlEventArgs e )
         {
-            this.Text = e.TabPage.Text + " - Tabbed TortoiseGit";
+            if( e.TabPage != null )
+            {
+                this.Text = e.TabPage.Text + " - Tabbed TortoiseGit";
+            }
+            else
+            {
+                this.Text = "Tabbed TortoiseGit";
+            }
         }
 
         private void Tab_Resize( object sender, EventArgs e )
@@ -117,6 +141,11 @@ namespace TabbedTortoiseGit
         private void OpenRepoMenuItem_Click( object sender, EventArgs e )
         {
             FindRepo();
+        }
+
+        private void SettingsMenuItem_Click( object sender, EventArgs e )
+        {
+            SettingsForm.ShowSettingsDialog();
         }
 
         private void RecentRepoMenuItem_Click( object sender, EventArgs e )

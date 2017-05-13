@@ -36,17 +36,6 @@ namespace TabbedTortoiseGit.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        public global::System.Collections.Generic.List<System.String> OpenRepos {
-            get {
-                return ((global::System.Collections.Generic.List<System.String>)(this["OpenRepos"]));
-            }
-            set {
-                this["OpenRepos"] = value;
-            }
-        }
-        
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("0, 0")]
         public global::System.Drawing.Size Size {
             get {
@@ -89,6 +78,18 @@ namespace TabbedTortoiseGit.Properties {
             }
             set {
                 this["DefaultRepos"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public bool RetainLogsOnClose {
+            get {
+                return ((bool)(this["RetainLogsOnClose"]));
+            }
+            set {
+                this["RetainLogsOnClose"] = value;
             }
         }
     }
