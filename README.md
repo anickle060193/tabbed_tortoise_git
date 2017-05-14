@@ -3,6 +3,9 @@
 A simple tabbed wrapper for [TortoiseGit](https://tortoisegit.org/) to host multiple TortoiseGit logs within a single application.
 
 
+### Installation
+Download and install [Setup.msi](https://github.com/anickle060193/tabbed_tortoise_git/raw/0.2.0/Setup/Output/Setup.msi).
+
 
 ### Attributions:
 * Git Log functionality provided by [TortoiseGit](https://tortoisegit.org/)
