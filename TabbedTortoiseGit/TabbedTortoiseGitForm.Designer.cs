@@ -43,9 +43,13 @@
             this.OpenNotifyIconMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.ExitNotifyIconMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.TabContextMenu = new System.Windows.Forms.ContextMenuStrip(this.components);
+            this.OpenRepoLocationTabMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.FavoriteRepoTabMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.CloseRepoTabMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.LogTabs = new TabbedTortoiseGit.ExtendedTabControl();
             this.MenuStrip.SuspendLayout();
             this.NotifyIconContextMenu.SuspendLayout();
+            this.TabContextMenu.SuspendLayout();
             this.SuspendLayout();
             // 
             // MenuStrip
@@ -59,6 +63,8 @@
             // 
             // OptionsMenu
             // 
+            this.OptionsMenu.Alignment = System.Windows.Forms.ToolStripItemAlignment.Right;
+            this.OptionsMenu.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
             this.OptionsMenu.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.OpenRepoMenuItem,
             this.RecentReposMenu,
@@ -66,8 +72,10 @@
             this.SettingsMenuItem,
             this.AboutMenuItem,
             this.ExitMenuItem});
+            this.OptionsMenu.Image = global::TabbedTortoiseGit.Properties.Resources.MoreVert;
+            this.OptionsMenu.ImageScaling = System.Windows.Forms.ToolStripItemImageScaling.None;
             this.OptionsMenu.Name = "OptionsMenu";
-            this.OptionsMenu.Size = new System.Drawing.Size(61, 20);
+            this.OptionsMenu.Size = new System.Drawing.Size(26, 20);
             this.OptionsMenu.Text = "Options";
             // 
             // OpenRepoMenuItem
@@ -139,9 +147,32 @@
             // 
             // TabContextMenu
             // 
+            this.TabContextMenu.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.OpenRepoLocationTabMenuItem,
+            this.FavoriteRepoTabMenuItem,
+            this.CloseRepoTabMenuItem});
             this.TabContextMenu.Name = "TabContextMenu";
             this.TabContextMenu.RenderMode = System.Windows.Forms.ToolStripRenderMode.Professional;
-            this.TabContextMenu.Size = new System.Drawing.Size(153, 26);
+            this.TabContextMenu.Size = new System.Drawing.Size(183, 92);
+            // 
+            // OpenRepoLocationTabMenuItem
+            // 
+            this.OpenRepoLocationTabMenuItem.Image = global::TabbedTortoiseGit.Properties.Resources.OpenLocation;
+            this.OpenRepoLocationTabMenuItem.Name = "OpenRepoLocationTabMenuItem";
+            this.OpenRepoLocationTabMenuItem.Size = new System.Drawing.Size(182, 22);
+            this.OpenRepoLocationTabMenuItem.Text = "Open Repo Location";
+            // 
+            // FavoriteRepoTabMenuItem
+            // 
+            this.FavoriteRepoTabMenuItem.Name = "FavoriteRepoTabMenuItem";
+            this.FavoriteRepoTabMenuItem.Size = new System.Drawing.Size(182, 22);
+            this.FavoriteRepoTabMenuItem.Text = "Favorite Repo";
+            // 
+            // CloseRepoTabMenuItem
+            // 
+            this.CloseRepoTabMenuItem.Name = "CloseRepoTabMenuItem";
+            this.CloseRepoTabMenuItem.Size = new System.Drawing.Size(182, 22);
+            this.CloseRepoTabMenuItem.Text = "Close";
             // 
             // LogTabs
             // 
@@ -169,6 +200,7 @@
             this.MenuStrip.ResumeLayout(false);
             this.MenuStrip.PerformLayout();
             this.NotifyIconContextMenu.ResumeLayout(false);
+            this.TabContextMenu.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -191,6 +223,9 @@
         private System.Windows.Forms.ToolStripMenuItem ExitMenuItem;
         private System.Windows.Forms.ToolStripMenuItem AboutMenuItem;
         private System.Windows.Forms.ContextMenuStrip TabContextMenu;
+        private System.Windows.Forms.ToolStripMenuItem OpenRepoLocationTabMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem FavoriteRepoTabMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem CloseRepoTabMenuItem;
     }
 }
 

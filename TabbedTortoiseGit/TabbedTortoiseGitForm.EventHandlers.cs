@@ -33,6 +33,12 @@ namespace TabbedTortoiseGit
             AboutMenuItem.Click += AboutMenuItem_Click;
             ExitMenuItem.Click += ExitMenuItem_Click;
 
+            TabContextMenu.Opening += TabContextMenu_Opening;
+
+            OpenRepoLocationTabMenuItem.Click += OpenRepoLocationTabMenuItem_Click;
+            FavoriteRepoTabMenuItem.Click += FavoriteRepoTabMenuItem_Click;
+            CloseRepoTabMenuItem.Click += CloseRepoTabMenuItem_Click;
+
             NotifyIcon.DoubleClick += NotifyIcon_DoubleClick;
             OpenNotifyIconMenuItem.Click += OpenNotifyIconMenuItem_Click;
             ExitNotifyIconMenuItem.Click += ExitMenuItem_Click;
@@ -120,6 +126,13 @@ namespace TabbedTortoiseGit
             ResizeTab( tag.Process, t );
         }
 
+        private void FavoritedRepoMenuItem_Click( object sender, EventArgs e )
+        {
+            ToolStripItem item = (ToolStripItem)sender;
+            String repo = (String)item.Tag;
+            OpenLog( repo );
+        }
+
         private void OpenRepoMenuItem_Click( object sender, EventArgs e )
         {
             FindRepo();
@@ -170,7 +183,13 @@ namespace TabbedTortoiseGit
             this.ShowMe();
         }
 
-        private void OpenRepoLocationMenuItem_Click( object sender, EventArgs e )
+        private void TabContextMenu_Opening( object sender, System.ComponentModel.CancelEventArgs e )
+        {
+            TabTag t = (TabTag)LogTabs.SelectedTab.Tag;
+            FavoriteRepoTabMenuItem.Checked = IsFavoriteRepo( t.Repo );
+        }
+
+        private void OpenRepoLocationTabMenuItem_Click( object sender, EventArgs e )
         {
             TabTag t = (TabTag)LogTabs.SelectedTab.Tag;
             if( Directory.Exists( t.Repo ) )
@@ -187,7 +206,38 @@ namespace TabbedTortoiseGit
             }
         }
 
-        private void CloseRepoMenuItem_Click( object sender, EventArgs e )
+        private void FavoriteRepoTabMenuItem_Click( object sender, EventArgs e )
+        {
+            TabTag t = (TabTag)LogTabs.SelectedTab.Tag;
+
+            if( FavoriteRepoTabMenuItem.Checked )
+            {
+                RemoveFavoriteRepo( t.Repo );
+            }
+            else
+            {
+                bool added = false;
+                String name = null;
+                while( !added )
+                {
+                    name = InputDialog.ShowInput( "Favorite Repo Name", "Name for \"{0}\"".XFormat( t.Repo ), name );
+                    if( name == null )
+                    {
+                        break;
+                    }
+                    else if( !String.IsNullOrWhiteSpace( name ) )
+                    {
+                        if( AddFavoriteRepo( name, t.Repo ) )
+                        {
+                            FavoriteRepoTabMenuItem.Checked = true;
+                            added = true;
+                        }
+                    }
+                }
+            }
+        }
+
+        private void CloseRepoTabMenuItem_Click( object sender, EventArgs e )
         {
             TabTag t = (TabTag)LogTabs.SelectedTab.Tag;
             this.RemoveLog( t.Process );

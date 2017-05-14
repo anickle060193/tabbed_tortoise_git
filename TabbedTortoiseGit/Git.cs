@@ -27,7 +27,7 @@ namespace TabbedTortoiseGit
             String repo = Repository.Discover( path );
             if( repo != null )
             {
-                return new Repository( repo ).Info.WorkingDirectory;
+                return Util.NormalizePath( new Repository( repo ).Info.WorkingDirectory );
             }
             else
             {

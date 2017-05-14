@@ -115,5 +115,17 @@ namespace TabbedTortoiseGit.Properties {
                 this["TabContextMenuGitActions"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        public string FavoritedRepos {
+            get {
+                return ((string)(this["FavoritedRepos"]));
+            }
+            set {
+                this["FavoritedRepos"] = value;
+            }
+        }
     }
 }

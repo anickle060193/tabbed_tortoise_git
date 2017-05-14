@@ -14,6 +14,7 @@ using TabbedTortoiseGit.Properties;
 using System.Configuration;
 using Microsoft.WindowsAPICodePack.Dialogs;
 using LibGit2Sharp;
+using Newtonsoft.Json;
 
 namespace TabbedTortoiseGit
 {
@@ -89,6 +90,7 @@ namespace TabbedTortoiseGit
 
             UpdateRecentReposFromSettings();
             UpdateTabMenuFromSettings();
+            UpdateFavoriteReposFromSettings();
         }
 
         private void UpdateRecentReposFromSettings()
@@ -116,7 +118,8 @@ namespace TabbedTortoiseGit
             TabContextMenu.SuspendLayout();
 
             TabContextMenu.Items.Clear();
-            TabContextMenu.Items.Add( "Open Repo Location", Resources.OpenLocation, OpenRepoLocationMenuItem_Click );
+            TabContextMenu.Items.Add( OpenRepoLocationTabMenuItem );
+            TabContextMenu.Items.Add( FavoriteRepoTabMenuItem );
 
             if( Settings.Default.TabContextMenuGitActions != null )
             {
@@ -136,9 +139,30 @@ namespace TabbedTortoiseGit
             }
 
             TabContextMenu.Items.Add( "-" );
-            TabContextMenu.Items.Add( "Close", null, CloseRepoMenuItem_Click );
+            TabContextMenu.Items.Add( CloseRepoTabMenuItem );
 
             TabContextMenu.ResumeLayout();
+        }
+
+        private void UpdateFavoriteReposFromSettings()
+        {
+            MenuStrip.SuspendLayout();
+
+            MenuStrip.Items.Clear();
+            MenuStrip.Items.Add( OptionsMenu );
+
+            foreach( KeyValuePair<String, String> kv in GetFavoritedRepos() )
+            {
+                if( Git.IsRepo( kv.Value ) )
+                {
+                    ToolStripItem item = MenuStrip.Items.Add( kv.Key );
+                    item.ToolTipText = kv.Value;
+                    item.Tag = kv.Value;
+                    item.Click += FavoritedRepoMenuItem_Click;
+                }
+            }
+
+            MenuStrip.ResumeLayout();
         }
 
         private void AddToRecentRepos( String path )
@@ -165,6 +189,95 @@ namespace TabbedTortoiseGit
             Settings.Default.RecentRepos = recentRepos;
             Settings.Default.Save();
             UpdateRecentReposFromSettings();
+        }
+
+        private Dictionary<String, String> GetFavoritedRepos()
+        {
+            String favoritedReposString = Settings.Default.FavoritedRepos;
+            Dictionary<String, String> favoriteRepos = null;
+            try
+            {
+                favoriteRepos = JsonConvert.DeserializeObject<Dictionary<String, String>>( favoritedReposString );
+            }
+            catch( JsonReaderException )
+            {
+            }
+
+            if( favoriteRepos == null )
+            {
+                return new Dictionary<String, String>();
+            }
+            else
+            {
+                return favoriteRepos;
+            }
+        }
+
+        private void SaveFavoritedRepos( Dictionary<String, String> favoritedRepos )
+        {
+            String favoritedReposString = JsonConvert.SerializeObject( favoritedRepos );
+            Settings.Default.FavoritedRepos = favoritedReposString;
+            Settings.Default.Save();
+        }
+
+        private bool AddFavoriteRepo( String name, String path )
+        {
+            String repo = Git.GetBaseRepoDirectory( path );
+            if( repo == null )
+            {
+                return false;
+            }
+
+            Dictionary<String, String> f = GetFavoritedRepos();
+
+            if( f.ContainsKey( name ) )
+            {
+                MessageBox.Show( "A favorited repo already exists with name: \"{0}\".".XFormat( name ) );
+                return false;
+            }
+
+            if( f.ContainsValue( repo ) )
+            {
+                MessageBox.Show( "A favorited repo already exists for that repo." );
+                return false;
+            }
+
+            f[ name ] = repo;
+            SaveFavoritedRepos( f );
+
+            UpdateFavoriteReposFromSettings();
+            return true;
+        }
+
+        private void RemoveFavoriteRepo( String path )
+        {
+            String repo = Git.GetBaseRepoDirectory( path );
+            if( repo == null )
+            {
+                return;
+            }
+
+            Dictionary<String, String> f = GetFavoritedRepos();
+
+            foreach( String key in f.Where( kv => kv.Value == repo ).Select( kv => kv.Key ).ToList() )
+            {
+                f.Remove( key );
+            }
+            SaveFavoritedRepos( f );
+
+            UpdateFavoriteReposFromSettings();
+        }
+
+        private bool IsFavoriteRepo( String path )
+        {
+            String repo = Git.GetBaseRepoDirectory( path );
+            if( repo == null )
+            {
+                return false;
+            }
+
+            Dictionary<String, String> f = GetFavoritedRepos();
+            return f.ContainsValue( repo );
         }
 
         private async void OpenLog( String path )
