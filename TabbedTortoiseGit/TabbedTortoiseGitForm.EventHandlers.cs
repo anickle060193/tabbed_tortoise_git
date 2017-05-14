@@ -46,6 +46,13 @@ namespace TabbedTortoiseGit
 
         private void TabbedTortoiseGitForm_Load( object sender, EventArgs e )
         {
+            if( Settings.Default.UpgradeRequired )
+            {
+                Settings.Default.Upgrade();
+                Settings.Default.UpgradeRequired = false;
+                Settings.Default.Save();
+            }
+
             UpdateFromSettings();
 
             OpenDefaultRepos();
