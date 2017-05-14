@@ -88,10 +88,13 @@ namespace TabbedTortoiseGit
             }
 
             UpdateRecentReposFromSettings();
+            UpdateTabMenuFromSettings();
         }
 
         private void UpdateRecentReposFromSettings()
         {
+            NewTabContextMenu.SuspendLayout();
+
             RecentReposMenu.DropDownItems.Clear();
             NewTabContextMenu.Items.Clear();
             if( Settings.Default.RecentRepos != null )
@@ -104,6 +107,38 @@ namespace TabbedTortoiseGit
             }
             RecentReposMenu.Enabled = RecentReposMenu.HasDropDownItems;
             NewTabContextMenu.Enabled = NewTabContextMenu.Items.Count != 0;
+
+            NewTabContextMenu.ResumeLayout();
+        }
+
+        private void UpdateTabMenuFromSettings()
+        {
+            TabContextMenu.SuspendLayout();
+
+            TabContextMenu.Items.Clear();
+            TabContextMenu.Items.Add( "Open Repo Location", Resources.OpenLocation, OpenRepoLocationMenuItem_Click );
+
+            if( Settings.Default.TabContextMenuGitActions != null )
+            {
+                List<TortoiseGitCommand> actions = Settings.Default.TabContextMenuGitActions
+                                                        .Where( action => TortoiseGit.ACTIONS.ContainsKey( action ) )
+                                                        .Select( action => TortoiseGit.ACTIONS[ action ] ).ToList();
+                if( actions.Count > 0 )
+                {
+                    TabContextMenu.Items.Add( "-" );
+
+                    foreach( TortoiseGitCommand action in actions )
+                    {
+                        var menuItem = TabContextMenu.Items.Add( action.Name, action.Icon, GitCommandMenuItem_Click );
+                        menuItem.Tag = action.Func;
+                    }
+                }
+            }
+
+            TabContextMenu.Items.Add( "-" );
+            TabContextMenu.Items.Add( "Close", null, CloseRepoMenuItem_Click );
+
+            TabContextMenu.ResumeLayout();
         }
 
         private void AddToRecentRepos( String path )
@@ -201,7 +236,7 @@ namespace TabbedTortoiseGit
             }
         }
 
-        private void RemoveProcess( Process p )
+        private void RemoveLog( Process p )
         {
             _processes.Remove( p );
 
