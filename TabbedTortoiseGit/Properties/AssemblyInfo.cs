@@ -6,11 +6,11 @@ using System.Runtime.InteropServices;
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
 [assembly: AssemblyTitle( "Tabbed TortoiseGit" )]
-[assembly: AssemblyDescription( "" )]
+[assembly: AssemblyDescription( "A simple tabbed wrapper for TortoiseGit to host multiple TortoiseGit logs within a single application." )]
 [assembly: AssemblyConfiguration( "" )]
 [assembly: AssemblyCompany( "" )]
 [assembly: AssemblyProduct( "Tabbed TortoiseGit" )]
-[assembly: AssemblyCopyright( "Copyright ©  2017" )]
+[assembly: AssemblyCopyright( "" )]
 [assembly: AssemblyTrademark( "" )]
 [assembly: AssemblyCulture( "" )]
 
