@@ -14,19 +14,29 @@ namespace TabbedTortoiseGit
         /// <summary>
         /// The main entry point for the application.
         /// </summary>
-        [ STAThread]
-        static void Main()
+        [STAThread]
+        static void Main( String[] args )
         {
-            if( _mutex.WaitOne( TimeSpan.Zero, true ) )
+            Arguments a = new Arguments();
+            if( CommandLine.Parser.Default.ParseArguments( args, a ) )
             {
-                Application.EnableVisualStyles();
-                Application.SetCompatibleTextRenderingDefault( false );
-                Application.Run( new TabbedTortoiseGitForm() );
-                _mutex.ReleaseMutex();
-            }
-            else
-            {
-                Native.PostMessage( (IntPtr)Native.HWND_BROADCAST, Native.WM_SHOWME, IntPtr.Zero, IntPtr.Zero );
+                if( _mutex.WaitOne( TimeSpan.Zero, true ) )
+                {
+                    Application.EnableVisualStyles();
+                    Application.SetCompatibleTextRenderingDefault( false );
+
+                    TabbedTortoiseGitForm f = new TabbedTortoiseGitForm();
+                    if( !a.Startup )
+                    {
+                        f.Show();
+                    }
+                    Application.Run();
+                    _mutex.ReleaseMutex();
+                }
+                else
+                {
+                    Native.PostMessage( (IntPtr)Native.HWND_BROADCAST, Native.WM_SHOWME, IntPtr.Zero, IntPtr.Zero );
+                }
             }
         }
     }

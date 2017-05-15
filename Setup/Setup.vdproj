@@ -2926,7 +2926,7 @@
             "{970C0BB2-C7D0-45D7-ABFA-7EC378858BC0}:_A871364F6BA24732A764104FE6F51275"
             {
             "Name" = "8:Tabbed TortoiseGit"
-            "Arguments" = "8:"
+            "Arguments" = "8:--startup"
             "Description" = "8:"
             "ShowCmd" = "3:1"
             "IconIndex" = "3:0"
@@ -3338,7 +3338,7 @@
         {
             "{5259A561-127C-4D43-A0A1-72F10C7B3BF8}:_160F0C2105ED43BEB9FF74D75B8A5D4F"
             {
-            "SourcePath" = "8:..\\TabbedTortoiseGit\\obj\\Release\\Tabbed TortoiseGit.exe"
+            "SourcePath" = "8:..\\TabbedTortoiseGit\\obj\\Debug\\Tabbed TortoiseGit.exe"
             "TargetName" = "8:"
             "Tag" = "8:"
             "Folder" = "8:_E3807B2F33FD4261B64F191A30468331"
