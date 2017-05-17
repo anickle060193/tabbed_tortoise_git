@@ -1,6 +1,8 @@
-﻿using System;
+﻿using log4net;
+using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
@@ -9,7 +11,9 @@ namespace TabbedTortoiseGit
 {
     static class Program
     {
-        static Mutex _mutex = new Mutex( true, "{fa53bc4a-ae04-444f-9c4e-0cf94346e62e}" );
+        private static ILog LOG = LogManager.GetLogger( typeof( Program ) );
+
+        private static Mutex _mutex = new Mutex( true, "{fa53bc4a-ae04-444f-9c4e-0cf94346e62e}" );
 
         /// <summary>
         /// The main entry point for the application.
@@ -17,6 +21,12 @@ namespace TabbedTortoiseGit
         [STAThread]
         static void Main( String[] args )
         {
+            LOG.Debug( "Application Startup" );
+            LOG.DebugFormat( "Version: {0}", Assembly.GetExecutingAssembly().GetName().Version );
+
+            Application.ThreadException += Application_ThreadException;
+            AppDomain.CurrentDomain.UnhandledException += CurrentDomain_UnhandledException;
+
             Arguments a = new Arguments();
             if( CommandLine.Parser.Default.ParseArguments( args, a ) )
             {
@@ -25,6 +35,7 @@ namespace TabbedTortoiseGit
                     Application.EnableVisualStyles();
                     Application.SetCompatibleTextRenderingDefault( false );
 
+                    LOG.Debug( "Starting Tabbed TortoiseGit" );
                     TabbedTortoiseGitForm f = new TabbedTortoiseGitForm();
                     if( !a.Startup )
                     {
@@ -35,9 +46,22 @@ namespace TabbedTortoiseGit
                 }
                 else
                 {
+                    LOG.Debug( "Tabbed TortoiseGit instance already exists" );
                     Native.PostMessage( (IntPtr)Native.HWND_BROADCAST, Native.WM_SHOWME, IntPtr.Zero, IntPtr.Zero );
                 }
             }
+
+            LOG.Debug( "Application End" );
+        }
+
+        private static void CurrentDomain_UnhandledException( object sender, UnhandledExceptionEventArgs e )
+        {
+            LOG.Fatal( "AppDomain UnhandledException Occurred", (Exception)e.ExceptionObject );
+        }
+
+        private static void Application_ThreadException( object sender, ThreadExceptionEventArgs e )
+        {
+            LOG.Fatal( "Application ThreadException Occurred", e.Exception );
         }
     }
 }

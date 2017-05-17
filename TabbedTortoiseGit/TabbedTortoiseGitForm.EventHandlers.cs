@@ -1,4 +1,7 @@
-﻿using System;
+﻿using log4net;
+using log4net.Appender;
+using log4net.Repository.Hierarchy;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
@@ -29,6 +32,7 @@ namespace TabbedTortoiseGit
             LogTabs.Selected += LogTabs_Selected;
 
             OpenRepoMenuItem.Click += OpenRepoMenuItem_Click;
+            OpenLogFileLocationMenuItem.Click += OpenLogFileLocationMenuItem_Click;
             SettingsMenuItem.Click += SettingsMenuItem_Click;
             AboutMenuItem.Click += AboutMenuItem_Click;
             ExitMenuItem.Click += ExitMenuItem_Click;
@@ -145,6 +149,17 @@ namespace TabbedTortoiseGit
             FindRepo();
         }
 
+        private void OpenLogFileLocationMenuItem_Click( object sender, EventArgs e )
+        {
+            FileAppender rootAppender = ( (Hierarchy)LogManager.GetRepository() )
+                                         .Root.Appenders.OfType<FileAppender>()
+                                         .FirstOrDefault();
+            if( rootAppender != null )
+            {
+                Util.OpenInExplorer( rootAppender.File );
+            }
+        }
+
         private void SettingsMenuItem_Click( object sender, EventArgs e )
         {
             if( SettingsForm.ShowSettingsDialog() )
@@ -195,7 +210,9 @@ namespace TabbedTortoiseGit
             String commandLine = (String)o[ "CommandLine" ];
             Match m = TORTOISE_GIT_COMMAND_LINE_REGEX.Match( commandLine );
             String repo = m.Groups[ "repo" ].Value;
-            Process p = Process.GetProcessById( (int)(UInt32)o[ "ProcessId" ] );
+            int pid = (int)(UInt32)o[ "ProcessId" ];
+            LOG.DebugFormat( "Watcher_EventArrived - CommandLine: {0} - Repo: {1} - PID: {2}", commandLine, repo, pid );
+            Process p = Process.GetProcessById( pid );
             LogTabs.Invoke( (Func<Process, String, Task>)AddNewLog, p, repo );
         }
 
@@ -218,18 +235,7 @@ namespace TabbedTortoiseGit
         private void OpenRepoLocationTabMenuItem_Click( object sender, EventArgs e )
         {
             TabTag t = (TabTag)LogTabs.SelectedTab.Tag;
-            if( Directory.Exists( t.Repo ) )
-            {
-                Process.Start( t.Repo );
-            }
-            else if( File.Exists( t.Repo ) )
-            {
-                Process.Start( "explorer.exe", String.Format( "/select, \"{0}\"", t.Repo ) );
-            }
-            else
-            {
-                MessageBox.Show( String.Format( "Could not find repo location: \"{0}\"", t.Repo ) );
-            }
+            Util.OpenInExplorer( t.Repo );
         }
 
         private void FavoriteRepoTabMenuItem_Click( object sender, EventArgs e )

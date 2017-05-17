@@ -15,11 +15,15 @@ using System.Configuration;
 using Microsoft.WindowsAPICodePack.Dialogs;
 using LibGit2Sharp;
 using Newtonsoft.Json;
+using log4net;
+using log4net.Config;
 
 namespace TabbedTortoiseGit
 {
     public partial class TabbedTortoiseGitForm : Form
     {
+        private static readonly ILog LOG = LogManager.GetLogger( typeof( TabbedTortoiseGitForm ) );
+
         private readonly CommonOpenFileDialog _folderDialog;
         private readonly ManagementEventWatcher _watcher;
         private readonly List<Process> _processes = new List<Process>();
@@ -299,11 +303,16 @@ namespace TabbedTortoiseGit
                 _processes.Add( p );
             }
 
+            LOG.DebugFormat( "AddNewLog - Path: {0} - PID: {1}", path, p.Id );
+            LOG.DebugFormat( "AddNewLog - Start WaitForInputIdle - Path: {0} - PID: {1}", path, p.Id );
             p.WaitForInputIdle();
+            LOG.DebugFormat( "AddNewLog - End WaitForInputIdle - Path: {0} - PID: {1}", path, p.Id );
+            LOG.DebugFormat( "AddNewLog - Start Wait for MainWindowHandle - Path: {0} - PID: {1}", path, p.Id );
             while( !p.HasExited && p.MainWindowHandle == IntPtr.Zero )
             {
                 await Task.Delay( 10 );
             }
+            LOG.DebugFormat( "AddNewLog - End Wait for MainWindowHandle - Path: {0} - PID: {1}", path, p.Id );
 
             TabPage t = new TabPage( path );
             LogTabs.TabPages.Add( t );

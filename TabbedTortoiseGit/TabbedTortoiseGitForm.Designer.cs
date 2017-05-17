@@ -47,6 +47,7 @@
             this.FavoriteRepoTabMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.CloseRepoTabMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.LogTabs = new TabbedTortoiseGit.ExtendedTabControl();
+            this.OpenLogFileLocationMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.MenuStrip.SuspendLayout();
             this.NotifyIconContextMenu.SuspendLayout();
             this.TabContextMenu.SuspendLayout();
@@ -69,6 +70,7 @@
             this.OpenRepoMenuItem,
             this.RecentReposMenu,
             this.OptionsMenuSeparator1,
+            this.OpenLogFileLocationMenuItem,
             this.SettingsMenuItem,
             this.AboutMenuItem,
             this.ExitMenuItem});
@@ -81,37 +83,37 @@
             // OpenRepoMenuItem
             // 
             this.OpenRepoMenuItem.Name = "OpenRepoMenuItem";
-            this.OpenRepoMenuItem.Size = new System.Drawing.Size(145, 22);
+            this.OpenRepoMenuItem.Size = new System.Drawing.Size(196, 22);
             this.OpenRepoMenuItem.Text = "Open Repo";
             // 
             // RecentReposMenu
             // 
             this.RecentReposMenu.Enabled = false;
             this.RecentReposMenu.Name = "RecentReposMenu";
-            this.RecentReposMenu.Size = new System.Drawing.Size(145, 22);
+            this.RecentReposMenu.Size = new System.Drawing.Size(196, 22);
             this.RecentReposMenu.Text = "Recent Repos";
             // 
             // OptionsMenuSeparator1
             // 
             this.OptionsMenuSeparator1.Name = "OptionsMenuSeparator1";
-            this.OptionsMenuSeparator1.Size = new System.Drawing.Size(142, 6);
+            this.OptionsMenuSeparator1.Size = new System.Drawing.Size(193, 6);
             // 
             // SettingsMenuItem
             // 
             this.SettingsMenuItem.Name = "SettingsMenuItem";
-            this.SettingsMenuItem.Size = new System.Drawing.Size(145, 22);
+            this.SettingsMenuItem.Size = new System.Drawing.Size(196, 22);
             this.SettingsMenuItem.Text = "Settings";
             // 
             // AboutMenuItem
             // 
             this.AboutMenuItem.Name = "AboutMenuItem";
-            this.AboutMenuItem.Size = new System.Drawing.Size(145, 22);
+            this.AboutMenuItem.Size = new System.Drawing.Size(196, 22);
             this.AboutMenuItem.Text = "About";
             // 
             // ExitMenuItem
             // 
             this.ExitMenuItem.Name = "ExitMenuItem";
-            this.ExitMenuItem.Size = new System.Drawing.Size(145, 22);
+            this.ExitMenuItem.Size = new System.Drawing.Size(196, 22);
             this.ExitMenuItem.Text = "Exit";
             // 
             // NewTabContextMenu
@@ -153,7 +155,7 @@
             this.CloseRepoTabMenuItem});
             this.TabContextMenu.Name = "TabContextMenu";
             this.TabContextMenu.RenderMode = System.Windows.Forms.ToolStripRenderMode.Professional;
-            this.TabContextMenu.Size = new System.Drawing.Size(183, 92);
+            this.TabContextMenu.Size = new System.Drawing.Size(183, 70);
             // 
             // OpenRepoLocationTabMenuItem
             // 
@@ -185,6 +187,12 @@
             this.LogTabs.Size = new System.Drawing.Size(644, 462);
             this.LogTabs.TabContextMenu = this.TabContextMenu;
             this.LogTabs.TabIndex = 0;
+            // 
+            // OpenLogFileLocationMenuItem
+            // 
+            this.OpenLogFileLocationMenuItem.Name = "OpenLogFileLocationMenuItem";
+            this.OpenLogFileLocationMenuItem.Size = new System.Drawing.Size(196, 22);
+            this.OpenLogFileLocationMenuItem.Text = "Open Log File Location";
             // 
             // TabbedTortoiseGitForm
             // 
@@ -226,6 +234,7 @@
         private System.Windows.Forms.ToolStripMenuItem OpenRepoLocationTabMenuItem;
         private System.Windows.Forms.ToolStripMenuItem FavoriteRepoTabMenuItem;
         private System.Windows.Forms.ToolStripMenuItem CloseRepoTabMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem OpenLogFileLocationMenuItem;
     }
 }
 
