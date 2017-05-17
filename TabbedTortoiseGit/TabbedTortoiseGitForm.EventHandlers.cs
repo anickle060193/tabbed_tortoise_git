@@ -25,7 +25,6 @@ namespace TabbedTortoiseGit
             this.ResizeEnd += TabbedTortoiseGitForm_ResizeEnd;
             this.FormClosing += TabbedTortoiseGitForm_FormClosing;
             this.FormClosed += TabbedTortoiseGitForm_FormClosed;
-            this.Disposed += TabbedTortoiseGitForm_Disposed;
 
             LogTabs.NewTabClicked += LogTabs_NewTabClicked;
             LogTabs.TabClosed += LogTabs_TabClosed;
@@ -96,11 +95,8 @@ namespace TabbedTortoiseGit
                     EndProcess( p );
                 }
             }
-        }
 
-        private void TabbedTortoiseGitForm_Disposed( object sender, EventArgs e )
-        {
-            _watcher.Dispose();
+            _watcher.Stop();
         }
 
         private void Process_Exited( object sender, EventArgs e )
