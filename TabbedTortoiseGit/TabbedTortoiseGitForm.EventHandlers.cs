@@ -167,7 +167,26 @@ namespace TabbedTortoiseGit
 
         private void ExitMenuItem_Click( object sender, EventArgs e )
         {
-            Application.Exit();
+            if( Settings.Default.ConfirmOnClose )
+            {
+                CloseConfirmationDialog d = new CloseConfirmationDialog( this.Visible );
+                DialogResult result = d.ShowDialog();
+                if( result == DialogResult.Yes
+                 || result == DialogResult.No )
+                {
+                    Settings.Default.ConfirmOnClose = !d.DontAskAgain;
+                    Settings.Default.Save();
+
+                    if( result == DialogResult.Yes )
+                    {
+                        Application.Exit();
+                    }
+                }
+            }
+            else
+            {
+                Application.Exit();
+            }
         }
 
         private void Watcher_EventArrived( object sender, EventArrivedEventArgs e )

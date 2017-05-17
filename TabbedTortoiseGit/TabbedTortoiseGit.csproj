@@ -84,6 +84,12 @@
       <DependentUpon>AboutBox.cs</DependentUpon>
     </Compile>
     <Compile Include="Arguments.cs" />
+    <Compile Include="CloseConfirmationDialog.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="CloseConfirmationDialog.Designer.cs">
+      <DependentUpon>CloseConfirmationDialog.cs</DependentUpon>
+    </Compile>
     <Compile Include="ExtendedTabControl.cs">
       <SubType>Component</SubType>
     </Compile>
@@ -128,6 +134,9 @@
     <Compile Include="Util.cs" />
     <EmbeddedResource Include="AboutBox.resx">
       <DependentUpon>AboutBox.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="CloseConfirmationDialog.resx">
+      <DependentUpon>CloseConfirmationDialog.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="InputDialog.resx">
       <DependentUpon>InputDialog.cs</DependentUpon>
