@@ -294,19 +294,17 @@ namespace TabbedTortoiseGit
 
         private async Task AddNewLog( Process p, String path )
         {
+            LOG.DebugFormat( "AddNewLog - Path: {0} - PID: {1}", path, p.Id );
             lock( _processes )
             {
                 if( _processes.Any( ( pf ) => pf.Id == p.Id ) )
                 {
+                    LOG.DebugFormat( "AddNewLog - Process already under control - Path: {0} - PID: {1}", path, p.Id );
                     return;
                 }
                 _processes.Add( p );
             }
 
-            LOG.DebugFormat( "AddNewLog - Path: {0} - PID: {1}", path, p.Id );
-            LOG.DebugFormat( "AddNewLog - Start WaitForInputIdle - Path: {0} - PID: {1}", path, p.Id );
-            p.WaitForInputIdle();
-            LOG.DebugFormat( "AddNewLog - End WaitForInputIdle - Path: {0} - PID: {1}", path, p.Id );
             LOG.DebugFormat( "AddNewLog - Start Wait for MainWindowHandle - Path: {0} - PID: {1}", path, p.Id );
             while( !p.HasExited && p.MainWindowHandle == IntPtr.Zero )
             {
