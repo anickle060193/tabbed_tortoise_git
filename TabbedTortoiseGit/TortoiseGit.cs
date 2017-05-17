@@ -47,15 +47,20 @@ namespace TabbedTortoiseGit
 
         private static readonly String TORTOISE_GIT_EXE = "TortoiseGitProc.exe";
 
-        private static Process PathCommand( String command, String path )
+        private static Process TortoiseGitCommand( String command, String workingDirectroy )
         {
             ProcessStartInfo info = new ProcessStartInfo()
             {
                 FileName = TORTOISE_GIT_EXE,
-                Arguments = "/command:{0} /path:\"{1}\"".XFormat( command, path ),
-                WorkingDirectory = path
+                Arguments = command,
+                WorkingDirectory = workingDirectroy
             };
             return Process.Start( info );
+        }
+
+        private static Process PathCommand( String command, String path )
+        {
+            return TortoiseGitCommand( "/command:{0} /path:\"{1}\"".XFormat( command, path ), path );
         }
 
         public static Process Fetch( String path )
@@ -100,7 +105,7 @@ namespace TabbedTortoiseGit
 
         public static Process SubmoduleUpdate( String path )
         {
-            return PathCommand( "subupdate", path );
+            return TortoiseGitCommand( "/command:subupdate /path:\"{0}\" /bkpath:\"{0}\"".XFormat( path ), path );
         }
     }
 }
