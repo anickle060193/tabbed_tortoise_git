@@ -2802,15 +2802,15 @@
         {
         "Name" = "8:Microsoft Visual Studio"
         "ProductName" = "8:Tabbed TortoiseGit"
-        "ProductCode" = "8:{E9A16AD1-7959-4C15-9571-312C7B2D9E56}"
-        "PackageCode" = "8:{FB3FBD3A-89F7-4764-946B-242FBDD369A1}"
+        "ProductCode" = "8:{558C095E-CE8D-4B55-BE05-43C11DCECE90}"
+        "PackageCode" = "8:{54533121-2808-4116-B6B1-5983256B9F2B}"
         "UpgradeCode" = "8:{3DE2617B-9A43-49DF-AE0C-4DD2428C49F0}"
         "AspNetVersion" = "8:4.0.30319.0"
         "RestartWWWService" = "11:FALSE"
         "RemovePreviousVersions" = "11:TRUE"
         "DetectNewerInstalledVersion" = "11:FALSE"
         "InstallAllUsers" = "11:FALSE"
-        "ProductVersion" = "8:0.2.0"
+        "ProductVersion" = "8:0.3.0"
         "Manufacturer" = "8:TabbedTortoiseGit"
         "ARPHELPTELEPHONE" = "8:"
         "ARPHELPLINK" = "8:"
@@ -3338,7 +3338,7 @@
         {
             "{5259A561-127C-4D43-A0A1-72F10C7B3BF8}:_160F0C2105ED43BEB9FF74D75B8A5D4F"
             {
-            "SourcePath" = "8:..\\TabbedTortoiseGit\\obj\\Debug\\Tabbed TortoiseGit.exe"
+            "SourcePath" = "8:..\\TabbedTortoiseGit\\obj\\Release\\Tabbed TortoiseGit.exe"
             "TargetName" = "8:"
             "Tag" = "8:"
             "Folder" = "8:_E3807B2F33FD4261B64F191A30468331"
