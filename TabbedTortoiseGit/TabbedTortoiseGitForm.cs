@@ -43,6 +43,8 @@ namespace TabbedTortoiseGit
 
         public TabbedTortoiseGitForm()
         {
+            LOG.Debug( "Control Constructor" );
+
             InitializeComponent();
             InitializeEventHandlers();
 
@@ -174,6 +176,7 @@ namespace TabbedTortoiseGit
             String repo = Git.GetBaseRepoDirectory( path );
             if( repo == null )
             {
+                LOG.ErrorFormat( "Failed to add recent repo - Path: {0}", path );
                 return;
             }
 
@@ -203,8 +206,10 @@ namespace TabbedTortoiseGit
             {
                 favoriteRepos = JsonConvert.DeserializeObject<Dictionary<String, String>>( favoritedReposString );
             }
-            catch( JsonReaderException )
+            catch( JsonReaderException e )
             {
+                LOG.ErrorFormat( "Failed to parse Favorite Repos setting - Favorited Repos: {0}", favoritedReposString );
+                LOG.Error( e );
             }
 
             if( favoriteRepos == null )
@@ -229,6 +234,7 @@ namespace TabbedTortoiseGit
             String repo = Git.GetBaseRepoDirectory( path );
             if( repo == null )
             {
+                LOG.ErrorFormat( "Failed to add favorite repo: {0}", path );
                 return false;
             }
 
@@ -258,6 +264,7 @@ namespace TabbedTortoiseGit
             String repo = Git.GetBaseRepoDirectory( path );
             if( repo == null )
             {
+                LOG.ErrorFormat( "Failed to remove favorite repo - Path: {0}", path );
                 return;
             }
 
@@ -348,16 +355,24 @@ namespace TabbedTortoiseGit
 
         private void EndProcess( Process p )
         {
+            LOG.DebugFormat( "EndProcess - {0}", p.Id );
+
             p.EnableRaisingEvents = false;
             p.Exited -= Process_Exited;
             if( !p.HasExited )
             {
                 p.Kill();
             }
+            else
+            {
+                LOG.DebugFormat( "EndProcess - Process has already exited: {0}", p.Id );
+            }
         }
 
         private void RemoveLog( Process p )
         {
+            LOG.DebugFormat( "RemoveLog - {0}", p.Id );
+
             _processes.Remove( p );
 
             TabPage t = _tabs.Pluck( p.Id );
@@ -368,6 +383,8 @@ namespace TabbedTortoiseGit
         {
             lock( _processes )
             {
+                LOG.DebugFormat( "RemoveAllProcesses - Count: {0}", _processes.Count );
+
                 foreach( Process p in _processes )
                 {
                     EndProcess( p );
@@ -384,15 +401,19 @@ namespace TabbedTortoiseGit
 
         private void FindRepo()
         {
+            LOG.Debug( "FindRepo" );
+
             if( _folderDialog.ShowDialog() == CommonFileDialogResult.Ok )
             {
                 String path = _folderDialog.FileName;
                 if( !Git.IsRepo( path ) )
                 {
+                    LOG.DebugFormat( "FindRepo - Invalid repo: {0}", path );
                     MessageBox.Show( "Directory is not a git repo!", "Invalid Directory", MessageBoxButtons.OK, MessageBoxIcon.Error );
                 }
                 else
                 {
+                    LOG.DebugFormat( "FindRepo - Opening repo: {0}", path );
                     OpenLog( path );
                 }
             }
@@ -410,6 +431,8 @@ namespace TabbedTortoiseGit
 
         private void OpenDefaultRepos()
         {
+            LOG.Debug( "OpenDefaultRepos" );
+
             if( Settings.Default.DefaultRepos != null )
             {
                 foreach( String repo in Settings.Default.DefaultRepos )

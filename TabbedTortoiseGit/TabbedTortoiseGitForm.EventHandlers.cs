@@ -17,7 +17,7 @@ namespace TabbedTortoiseGit
 {
     partial class TabbedTortoiseGitForm
     {
-        private static readonly Regex TORTOISE_GIT_COMMAND_LINE_REGEX = new Regex( "/path:\"(?<repo>.*?)\" (/|$)", RegexOptions.IgnoreCase );
+        private static readonly Regex TORTOISE_GIT_COMMAND_LINE_REGEX = new Regex( "/path:\"(?<repo>.*?)\"", RegexOptions.IgnoreCase );
 
         private void InitializeEventHandlers()
         {
@@ -52,6 +52,7 @@ namespace TabbedTortoiseGit
         {
             if( Settings.Default.UpgradeRequired )
             {
+                LOG.Debug( "Upgrading settings" );
                 Settings.Default.Upgrade();
                 Settings.Default.UpgradeRequired = false;
                 Settings.Default.Save();
@@ -69,6 +70,7 @@ namespace TabbedTortoiseGit
 
         private void TabbedTortoiseGitForm_FormClosing( object sender, FormClosingEventArgs e )
         {
+            LOG.Debug( "Form Closing" );
             if( !Settings.Default.RetainLogsOnClose )
             {
                 this.RemoveAllProcesses();
@@ -76,6 +78,7 @@ namespace TabbedTortoiseGit
 
             if( e.CloseReason == CloseReason.UserClosing )
             {
+                LOG.Debug( "Form Closing - Cancelled User Closing" );
                 e.Cancel = true;
                 this.Hide();
             }
@@ -85,6 +88,7 @@ namespace TabbedTortoiseGit
 
         private void TabbedTortoiseGitForm_FormClosed( object sender, FormClosedEventArgs e )
         {
+            LOG.Debug( "Form Closed" );
             lock( _processes )
             {
                 foreach( Process p in _processes )
@@ -101,7 +105,11 @@ namespace TabbedTortoiseGit
 
         private void Process_Exited( object sender, EventArgs e )
         {
-            RemoveLog( (Process)sender );
+            Process p = (Process)sender;
+
+            LOG.DebugFormat( "Process Exited - ID: {0}", p.Id );
+
+            RemoveLog( p );
         }
 
         private void LogTabs_NewTabClicked( object sender, EventArgs e )
@@ -112,6 +120,8 @@ namespace TabbedTortoiseGit
         private void LogTabs_TabClosed( object sender, TabClosedEventArgs e )
         {
             TabTag t = (TabTag)e.Tab.Tag;
+
+            LOG.DebugFormat( "Tab Closed - Repo: {0} - ID: {1}", t.Repo, t.Process.Id );
 
             EndProcess( t.Process );
             _processes.Remove( t.Process );

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using log4net;
+using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
@@ -17,6 +18,8 @@ namespace TabbedTortoiseGit
         public ContextMenuStrip NewTabContextMenu { get; set; }
         public ContextMenuStrip TabContextMenu { get; set; }
 
+        private static readonly ILog LOG = LogManager.GetLogger( typeof( ExtendedTabControl ) );
+
         private readonly TabPage _newTab;
 
         private bool _inhibitControlActions = false;
@@ -25,6 +28,8 @@ namespace TabbedTortoiseGit
 
         public ExtendedTabControl()
         {
+            LOG.Debug( "Control Constructor" );
+
             this.AllowDrop = true;
 
             _newTab = new TabPage( "+" );
@@ -50,10 +55,12 @@ namespace TabbedTortoiseGit
             {
                 if( this.TabPages.IndexOf( t ) == this.TabCount - 1 )
                 {
+                    LOG.DebugFormat( "Tab Inserted After New Tab - Tab Text: {0}", t.Text );
                     _inhibitControlActions = true;
                     this.TabPages.Remove( t );
                     this.TabPages.Insert( this.TabCount - 1, t );
                     _inhibitControlActions = false;
+                    return;
                 }
             }
 
@@ -81,6 +88,7 @@ namespace TabbedTortoiseGit
         {
             if( e.TabPage == _newTab )
             {
+                LOG.Debug( "Cancelled selection of New Tab" );
                 e.Cancel = true;
             }
             else
@@ -131,6 +139,7 @@ namespace TabbedTortoiseGit
                             if( TabContextMenu != null )
                             {
                                 TabContextMenu.Show( this, e.Location );
+                                return;
                             }
                         }
                     }
@@ -168,6 +177,7 @@ namespace TabbedTortoiseGit
         {
             if( e.Button == MouseButtons.Left && _draggingTab != null )
             {
+                LOG.DebugFormat( "Do Drag Drop - Dragging Tab Text: {0}", _draggingTab.Text );
                 this.DoDragDrop( _draggingTab, DragDropEffects.Move );
             }
 
@@ -192,6 +202,7 @@ namespace TabbedTortoiseGit
              && pointedTab != _lastSwapped
              && e.AllowedEffect == DragDropEffects.Move )
             {
+                LOG.DebugFormat( "Drag Over - Tabs Swapped - Dragging Tab: {0} - Other Tab: {1}", draggedTab.Text, pointedTab.Text );
                 e.Effect = DragDropEffects.Move;
                 SwapTabs( pointedTab, draggedTab );
                 _lastSwapped = pointedTab;
