@@ -44,6 +44,19 @@ namespace TabbedTortoiseGit
             }
         }
 
+        public bool ConfirmOnClose
+        {
+            get
+            {
+                return ConfirmOnCloseCheck.Checked;
+            }
+
+            set
+            {
+                ConfirmOnCloseCheck.Checked = value;
+            }
+        }
+
         public int MaxRecentRepos
         {
             get
@@ -92,6 +105,7 @@ namespace TabbedTortoiseGit
                 f.DefaultRepos = Settings.Default.DefaultRepos.ToArray();
             }
             f.RetainLogsOnClose = Settings.Default.RetainLogsOnClose;
+            f.ConfirmOnClose = Settings.Default.ConfirmOnClose;
             f.MaxRecentRepos = Settings.Default.MaxRecentRepos;
             if( Settings.Default.TabContextMenuGitActions != null )
             {
@@ -102,6 +116,7 @@ namespace TabbedTortoiseGit
             {
                 Settings.Default.DefaultRepos = f.DefaultRepos.ToList();
                 Settings.Default.RetainLogsOnClose = f.RetainLogsOnClose;
+                Settings.Default.ConfirmOnClose = f.ConfirmOnClose;
                 Settings.Default.MaxRecentRepos = f.MaxRecentRepos;
                 if( Settings.Default.RecentRepos != null )
                 {

@@ -47,6 +47,7 @@ namespace TabbedTortoiseGit
             this.UnusedGitActionsLabel = new System.Windows.Forms.Label();
             this.UsedGItActionsLabel = new System.Windows.Forms.Label();
             this.TabContextMenuGitActionsGroup = new System.Windows.Forms.GroupBox();
+            this.ConfirmOnCloseCheck = new System.Windows.Forms.CheckBox();
             this.DefaultReposGroup.SuspendLayout();
             this.OtherSettingsGroup.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.MaxRecentReposNumeric)).BeginInit();
@@ -81,7 +82,7 @@ namespace TabbedTortoiseGit
             // 
             this.OK.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.OK.DialogResult = System.Windows.Forms.DialogResult.OK;
-            this.OK.Location = new System.Drawing.Point(236, 463);
+            this.OK.Location = new System.Drawing.Point(236, 479);
             this.OK.Name = "OK";
             this.OK.Size = new System.Drawing.Size(75, 23);
             this.OK.TabIndex = 3;
@@ -92,7 +93,7 @@ namespace TabbedTortoiseGit
             // 
             this.Cancel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.Cancel.DialogResult = System.Windows.Forms.DialogResult.Cancel;
-            this.Cancel.Location = new System.Drawing.Point(317, 463);
+            this.Cancel.Location = new System.Drawing.Point(317, 479);
             this.Cancel.Name = "Cancel";
             this.Cancel.Size = new System.Drawing.Size(75, 23);
             this.Cancel.TabIndex = 4;
@@ -149,19 +150,20 @@ namespace TabbedTortoiseGit
             // 
             this.OtherSettingsGroup.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
+            this.OtherSettingsGroup.Controls.Add(this.ConfirmOnCloseCheck);
             this.OtherSettingsGroup.Controls.Add(this.MaxRecentReposNumeric);
             this.OtherSettingsGroup.Controls.Add(this.MaxRecentReposLabel);
             this.OtherSettingsGroup.Controls.Add(this.RetainLogsOnCloseCheck);
             this.OtherSettingsGroup.Location = new System.Drawing.Point(12, 187);
             this.OtherSettingsGroup.Name = "OtherSettingsGroup";
-            this.OtherSettingsGroup.Size = new System.Drawing.Size(380, 75);
+            this.OtherSettingsGroup.Size = new System.Drawing.Size(380, 95);
             this.OtherSettingsGroup.TabIndex = 8;
             this.OtherSettingsGroup.TabStop = false;
             this.OtherSettingsGroup.Text = "Other Settings";
             // 
             // MaxRecentReposNumeric
             // 
-            this.MaxRecentReposNumeric.Location = new System.Drawing.Point(114, 42);
+            this.MaxRecentReposNumeric.Location = new System.Drawing.Point(115, 42);
             this.MaxRecentReposNumeric.Minimum = new decimal(new int[] {
             1,
             0,
@@ -179,7 +181,7 @@ namespace TabbedTortoiseGit
             // MaxRecentReposLabel
             // 
             this.MaxRecentReposLabel.AutoSize = true;
-            this.MaxRecentReposLabel.Location = new System.Drawing.Point(6, 44);
+            this.MaxRecentReposLabel.Location = new System.Drawing.Point(7, 44);
             this.MaxRecentReposLabel.Name = "MaxRecentReposLabel";
             this.MaxRecentReposLabel.Size = new System.Drawing.Size(102, 13);
             this.MaxRecentReposLabel.TabIndex = 8;
@@ -246,12 +248,23 @@ namespace TabbedTortoiseGit
             this.TabContextMenuGitActionsGroup.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.TabContextMenuGitActionsGroup.Controls.Add(this.GitActionsLayout);
-            this.TabContextMenuGitActionsGroup.Location = new System.Drawing.Point(12, 268);
+            this.TabContextMenuGitActionsGroup.Location = new System.Drawing.Point(12, 288);
             this.TabContextMenuGitActionsGroup.Name = "TabContextMenuGitActionsGroup";
             this.TabContextMenuGitActionsGroup.Size = new System.Drawing.Size(380, 182);
             this.TabContextMenuGitActionsGroup.TabIndex = 11;
             this.TabContextMenuGitActionsGroup.TabStop = false;
             this.TabContextMenuGitActionsGroup.Text = "Tab Context Menu Git Actions";
+            // 
+            // ConfirmOnCloseCheck
+            // 
+            this.ConfirmOnCloseCheck.AutoSize = true;
+            this.ConfirmOnCloseCheck.CheckAlign = System.Drawing.ContentAlignment.MiddleRight;
+            this.ConfirmOnCloseCheck.Location = new System.Drawing.Point(6, 68);
+            this.ConfirmOnCloseCheck.Name = "ConfirmOnCloseCheck";
+            this.ConfirmOnCloseCheck.Size = new System.Drawing.Size(133, 17);
+            this.ConfirmOnCloseCheck.TabIndex = 10;
+            this.ConfirmOnCloseCheck.Text = "Prompt Before Closing:";
+            this.ConfirmOnCloseCheck.UseVisualStyleBackColor = true;
             // 
             // SettingsForm
             // 
@@ -259,7 +272,7 @@ namespace TabbedTortoiseGit
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.CancelButton = this.Cancel;
-            this.ClientSize = new System.Drawing.Size(404, 498);
+            this.ClientSize = new System.Drawing.Size(404, 514);
             this.Controls.Add(this.TabContextMenuGitActionsGroup);
             this.Controls.Add(this.OtherSettingsGroup);
             this.Controls.Add(this.DefaultReposGroup);
@@ -303,5 +316,6 @@ namespace TabbedTortoiseGit
         private GroupBox TabContextMenuGitActionsGroup;
         private Label UnusedGitActionsLabel;
         private Label UsedGItActionsLabel;
+        private CheckBox ConfirmOnCloseCheck;
     }
 }
