@@ -1,4 +1,5 @@
 ﻿using LibGit2Sharp;
+using log4net;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -36,6 +37,8 @@ namespace TabbedTortoiseGit
             }
         }
 
+        private static readonly ILog LOG = LogManager.GetLogger( typeof( FastSubmoduleUpdateForm ) );
+
         public String Repo { get; private set; }
 
         private readonly Repository _repo;
@@ -51,6 +54,7 @@ namespace TabbedTortoiseGit
             _rows = new List<SubmoduleRow>();
             foreach( Submodule s in _repo.Submodules )
             {
+                LOG.DebugFormat( "New Row - Name: {0} - Path: {1}", s.Name, s.Path );
                 SubmoduleRow row = new SubmoduleRow( s );
                 _rows.Add( row );
                 SubmoduleCheckList.Items.Add( row );
@@ -85,9 +89,15 @@ namespace TabbedTortoiseGit
         {
             if( SubmoduleCheckList.CheckedItems.Count > 0 )
             {
+                LOG.DebugFormat( "UpdateSubmodules" );
                 this.Close();
                 var processes = SubmoduleCheckList.CheckedItems.Cast<SubmoduleRow>().Select( row => UpdateSubmodule( Repo, row.Submodule.Path ) );
                 ProcessProgressForm.ShowProgress( Repo + " - Fast Submodule Update", "Submodule Update Completed", processes );
+            }
+            else
+            {
+                LOG.DebugFormat( "UpdateSubmodules - No Submodules Selected" );
+                MessageBox.Show( "No submodules selected" );
             }
         }
 
@@ -97,6 +107,9 @@ namespace TabbedTortoiseGit
             p.StartInfo.FileName = "git.exe";
             p.StartInfo.Arguments = "submodule update --init --recursive --force -- \"{0}\"".XFormat( submodulePath );
             p.StartInfo.WorkingDirectory = repoPath;
+
+            LOG.DebugFormat( "UpdateSubmodule - Filename: {0} - Arguments: {1} - Working Directory: {2}", p.StartInfo.FileName, p.StartInfo.Arguments, p.StartInfo.WorkingDirectory );
+
             return p;
         }
     }
