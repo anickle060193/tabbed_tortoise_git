@@ -10,7 +10,7 @@ using TabbedTortoiseGit.Properties;
 
 namespace TabbedTortoiseGit
 {
-    public delegate Process TortoiseGitCommandFunc( String path );
+    public delegate void TortoiseGitCommandFunc( String path );
 
     public class TortoiseGitCommand
     {
@@ -40,7 +40,8 @@ namespace TabbedTortoiseGit
                 new TortoiseGitCommand( "Push", TortoiseGit.Push, Resources.Push ),
                 new TortoiseGitCommand( "Rebase", TortoiseGit.Rebase, Resources.Rebase ),
                 new TortoiseGitCommand( "Sync", TortoiseGit.Sync, Resources.Sync ),
-                new TortoiseGitCommand( "Submodule Update", TortoiseGit.SubmoduleUpdate, Resources.SubmoduleUpdate )
+                new TortoiseGitCommand( "Submodule Update", TortoiseGit.SubmoduleUpdate, Resources.SubmoduleUpdate ),
+                new TortoiseGitCommand( "Fast Submodule Update", TortoiseGit.FastSubmoduleUpdate, Resources.SubmoduleUpdate )
             };
             ACTIONS = commands.ToImmutableDictionary( command => command.Name );
         }
@@ -63,49 +64,55 @@ namespace TabbedTortoiseGit
             return TortoiseGitCommand( "/command:{0} /path:\"{1}\"".XFormat( command, path ), path );
         }
 
-        public static Process Fetch( String path )
-        {
-            return PathCommand( "fetch", path );
-        }
-
-        public static Process Commit( String path )
-        {
-            return PathCommand( "commit", path );
-        }
-
         public static Process Log( String path )
         {
             return PathCommand( "log", path );
         }
 
-        public static Process Switch( String path )
+        public static void Fetch( String path )
         {
-            return PathCommand( "switch", path );
+            PathCommand( "fetch", path );
         }
 
-        public static Process Pull( String path )
+        public static void Commit( String path )
         {
-            return PathCommand( "pull", path );
+            PathCommand( "commit", path );
         }
 
-        public static Process Push( String path )
+        public static void Switch( String path )
         {
-            return PathCommand( "push", path );
+            PathCommand( "switch", path );
         }
 
-        public static Process Rebase( String path )
+        public static void Pull( String path )
         {
-            return PathCommand( "rebase", path );
+            PathCommand( "pull", path );
         }
 
-        public static Process Sync( String path )
+        public static void Push( String path )
         {
-            return PathCommand( "sync", path );
+            PathCommand( "push", path );
         }
 
-        public static Process SubmoduleUpdate( String path )
+        public static void Rebase( String path )
         {
-            return TortoiseGitCommand( "/command:subupdate /path:\"{0}\" /bkpath:\"{0}\"".XFormat( path ), path );
+            PathCommand( "rebase", path );
+        }
+
+        public static void Sync( String path )
+        {
+            PathCommand( "sync", path );
+        }
+
+        public static void SubmoduleUpdate( String path )
+        {
+            TortoiseGitCommand( "/command:subupdate /path:\"{0}\" /bkpath:\"{0}\"".XFormat( path ), path );
+        }
+
+        public static void FastSubmoduleUpdate( String path )
+        {
+            FastSubmoduleUpdateForm f = new FastSubmoduleUpdateForm( path );
+            f.Show();
         }
     }
 }
