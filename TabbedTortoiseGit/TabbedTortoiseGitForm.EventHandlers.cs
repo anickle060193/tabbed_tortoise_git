@@ -138,9 +138,12 @@ namespace TabbedTortoiseGit
 
         private void Tab_Resize( object sender, EventArgs e )
         {
-            TabPage t = (TabPage)sender;
-            TabTag tag = (TabTag)t.Tag;
-            ResizeTab( tag.Process, t );
+            if( this.WindowState != FormWindowState.Minimized )
+            {
+                TabPage t = (TabPage)sender;
+                TabTag tag = (TabTag)t.Tag;
+                ResizeTab( tag.Process, t );
+            }
         }
 
         private void FavoritedRepoMenuItem_Click( object sender, EventArgs e )
