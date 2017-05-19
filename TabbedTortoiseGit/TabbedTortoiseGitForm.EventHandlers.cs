@@ -17,7 +17,7 @@ namespace TabbedTortoiseGit
 {
     partial class TabbedTortoiseGitForm
     {
-        private static readonly Regex TORTOISE_GIT_COMMAND_LINE_REGEX = new Regex( "/path:\"(?<repo>.*?)\"", RegexOptions.IgnoreCase );
+        private static readonly Regex TORTOISE_GIT_COMMAND_LINE_REGEX = new Regex( "/path:\"?(?<repo>.*?)\"? *( /|$)", RegexOptions.IgnoreCase );
 
         private void InitializeEventHandlers()
         {
