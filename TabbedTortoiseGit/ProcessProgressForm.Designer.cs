@@ -28,22 +28,20 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.CloseButton = new System.Windows.Forms.Button();
+            this.Cancel = new System.Windows.Forms.Button();
             this.Worker = new System.ComponentModel.BackgroundWorker();
             this.Output = new System.Windows.Forms.RichTextBox();
             this.SuspendLayout();
             // 
-            // CloseButton
+            // Cancel
             // 
-            this.CloseButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.CloseButton.DialogResult = System.Windows.Forms.DialogResult.Cancel;
-            this.CloseButton.Enabled = false;
-            this.CloseButton.Location = new System.Drawing.Point(697, 346);
-            this.CloseButton.Name = "CloseButton";
-            this.CloseButton.Size = new System.Drawing.Size(75, 23);
-            this.CloseButton.TabIndex = 1;
-            this.CloseButton.Text = "Close";
-            this.CloseButton.UseVisualStyleBackColor = true;
+            this.Cancel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.Cancel.Location = new System.Drawing.Point(697, 346);
+            this.Cancel.Name = "Cancel";
+            this.Cancel.Size = new System.Drawing.Size(75, 23);
+            this.Cancel.TabIndex = 1;
+            this.Cancel.Text = "Cancel";
+            this.Cancel.UseVisualStyleBackColor = true;
             // 
             // Output
             // 
@@ -63,10 +61,10 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.CancelButton = this.CloseButton;
+            this.CancelButton = this.Cancel;
             this.ClientSize = new System.Drawing.Size(784, 381);
             this.Controls.Add(this.Output);
-            this.Controls.Add(this.CloseButton);
+            this.Controls.Add(this.Cancel);
             this.MaximizeBox = false;
             this.MinimizeBox = false;
             this.MinimumSize = new System.Drawing.Size(250, 150);
@@ -79,7 +77,7 @@
         }
 
         #endregion
-        private System.Windows.Forms.Button CloseButton;
+        private System.Windows.Forms.Button Cancel;
         private System.ComponentModel.BackgroundWorker Worker;
         private System.Windows.Forms.RichTextBox Output;
     }

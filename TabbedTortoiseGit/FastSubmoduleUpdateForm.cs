@@ -45,7 +45,13 @@ namespace TabbedTortoiseGit
         private readonly Repository _repo;
         private readonly List<SubmoduleRow> _rows;
 
-        public FastSubmoduleUpdateForm( String repo )
+        public static void UpdateSubmodules( String repo )
+        {
+            FastSubmoduleUpdateForm f = new FastSubmoduleUpdateForm( repo );
+            f.ShowDialog();
+        }
+
+        private FastSubmoduleUpdateForm( String repo )
         {
             InitializeComponent();
             this.Icon = Resources.TortoiseIcon;

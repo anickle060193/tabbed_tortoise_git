@@ -25,7 +25,8 @@ namespace TabbedTortoiseGit
         private readonly ConcurrentQueue<Process> _processes = new ConcurrentQueue<Process>();
         private readonly ConcurrentDictionary<int, Process> _runningProcesses = new ConcurrentDictionary<int, Process>();
 
-        private bool _canExit;
+        private bool _cancel;
+        private bool _completed;
 
         public String Title
         {
@@ -55,10 +56,12 @@ namespace TabbedTortoiseGit
             InitializeComponent();
             this.Icon = Resources.TortoiseIcon;
 
-            _canExit = false;
+            _cancel = false;
 
             this.Shown += ( sender, e ) => Worker.RunWorkerAsync();
             this.FormClosing += ProcessProgressForm_FormClosing;
+
+            Cancel.Click += Cancel_Click;
 
             Worker.DoWork += Worker_DoWork;
             Worker.RunWorkerCompleted += Worker_RunWorkerCompleted;
@@ -79,12 +82,26 @@ namespace TabbedTortoiseGit
             p.Exited += Process_Exited;
         }
 
+        private void Cancel_Click( object sender, EventArgs e )
+        {
+            if( _completed )
+            {
+                this.Close();
+            }
+            else
+            {
+                this.CancelProcesses();
+            }
+        }
+
         private void ProcessProgressForm_FormClosing( object sender, FormClosingEventArgs e )
         {
             LOG.Debug( "Form Closing" );
-            if( !_canExit )
+
+            if( !_completed )
             {
-                LOG.Debug( "Form Closing - Cancelled" );
+                LOG.Debug( "Form Closing - Not Completed, Cancelling Processes" );
+                this.CancelProcesses();
                 e.Cancel = true;
             }
         }
@@ -98,20 +115,43 @@ namespace TabbedTortoiseGit
         private void Worker_RunWorkerCompleted( object sender, RunWorkerCompletedEventArgs e )
         {
             LOG.Debug( "Worker - Work Completed" );
-            CloseButton.Enabled = true;
-            LogOutput( Environment.NewLine + this.CompletedText, Color.Blue );
-            _canExit = true;
+            _completed = true;
+            if( !_cancel )
+            {
+                LogOutput( Environment.NewLine + this.CompletedText, Color.Blue );
+            }
+            else
+            {
+                LogOutput( Environment.NewLine + "Cancelled", Color.DarkBlue );
+            }
+            Cancel.Text = "Close";
+            Cancel.Enabled = true;
+        }
+
+        private void CancelProcesses()
+        {
+            if( !_cancel )
+            {
+                _cancel = true;
+                Cancel.Enabled = false;
+                Cancel.Text = "Cancelling...";
+                LogOutput( "Cancelling! Waiting on remaining tasks to finish...", Color.DarkBlue );
+            }
         }
 
         private void RunProcesses()
         {
             LOG.DebugFormat( "RunProcesses - Process Count: {0}", _processes.Count );
 
-            while( !_processes.IsEmpty )
+            while( !_cancel && !_processes.IsEmpty )
             {
-                while( _runningProcesses.Count >= 6 )
+                while( !_cancel && _runningProcesses.Count >= 6 )
                 {
                     Thread.Sleep( 50 );
+                }
+                if( _cancel )
+                {
+                    break;
                 }
                 Process p;
                 if( _processes.TryDequeue( out p ) )
@@ -132,7 +172,7 @@ namespace TabbedTortoiseGit
             LOG.Debug( "RunProcesses - Start Wait for All HasExited" );
             while( !_runningProcesses.IsEmpty )
             {
-                Thread.Sleep( 50 );
+                Thread.Sleep( 20 );
             }
             LOG.Debug( "RunProcesses - End Wait for All HasExited" );
         }

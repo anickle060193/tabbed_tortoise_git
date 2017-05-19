@@ -111,8 +111,7 @@ namespace TabbedTortoiseGit
 
         public static void FastSubmoduleUpdate( String path )
         {
-            FastSubmoduleUpdateForm f = new FastSubmoduleUpdateForm( path );
-            f.Show();
+            FastSubmoduleUpdateForm.UpdateSubmodules( path );
         }
     }
 }
