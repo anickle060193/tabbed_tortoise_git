@@ -72,14 +72,20 @@ namespace TabbedTortoiseGit
 
         private void TabbedTortoiseGitForm_FormClosing( object sender, FormClosingEventArgs e )
         {
-            LOG.Debug( "Form Closing" );
-            if( !Settings.Default.RetainLogsOnClose )
-            {
-                this.RemoveAllProcesses();
-            }
-
             if( e.CloseReason == CloseReason.UserClosing )
             {
+                if( !this.ConfirmClose() )
+                {
+                    e.Cancel = true;
+                    return;
+                }
+
+                LOG.Debug( "Form Closing" );
+                if( !Settings.Default.RetainLogsOnClose )
+                {
+                    this.RemoveAllProcesses();
+                }
+
                 LOG.Debug( "Form Closing - Cancelled User Closing" );
                 e.Cancel = true;
                 this.Hide();
@@ -194,23 +200,7 @@ namespace TabbedTortoiseGit
 
         private void ExitMenuItem_Click( object sender, EventArgs e )
         {
-            if( Settings.Default.ConfirmOnClose )
-            {
-                CloseConfirmationDialog d = new CloseConfirmationDialog( this.Visible );
-                DialogResult result = d.ShowDialog();
-                if( result == DialogResult.Yes
-                 || result == DialogResult.No )
-                {
-                    Settings.Default.ConfirmOnClose = !d.DontAskAgain;
-                    Settings.Default.Save();
-
-                    if( result == DialogResult.Yes )
-                    {
-                        Application.Exit();
-                    }
-                }
-            }
-            else
+            if( this.ConfirmClose() )
             {
                 Application.Exit();
             }

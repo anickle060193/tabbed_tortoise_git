@@ -475,5 +475,31 @@ namespace TabbedTortoiseGit
 
             Settings.Default.Save();
         }
+
+        private bool ConfirmClose()
+        {
+            if( Settings.Default.ConfirmOnClose )
+            {
+                CloseConfirmationDialog d = new CloseConfirmationDialog( this.Visible );
+                DialogResult result = d.ShowDialog();
+                if( result == DialogResult.Yes
+                 || result == DialogResult.No )
+                {
+                    Settings.Default.ConfirmOnClose = !d.DontAskAgain;
+                    Settings.Default.Save();
+
+                    if( result == DialogResult.Yes )
+                    {
+                        return true;
+                    }
+                }
+
+                return false;
+            }
+            else
+            {
+                return true;
+            }
+        }
     }
 }
