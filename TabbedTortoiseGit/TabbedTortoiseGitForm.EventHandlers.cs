@@ -59,7 +59,10 @@ namespace TabbedTortoiseGit
 
             UpdateFromSettings();
 
-            OpenDefaultRepos();
+            if( !_startup )
+            {
+                OpenDefaultRepos();
+            }
         }
 
         private void TabbedTortoiseGitForm_ResizeEnd( object sender, EventArgs e )

@@ -21,7 +21,7 @@ namespace TabbedTortoiseGit
         [STAThread]
         static void Main( String[] args )
         {
-            LOG.DebugFormat( "Application Startup - Args: {0}", args );
+            LOG.DebugFormat( "Application Startup - Args: {0}", String.Join( ", ", args ) );
             LOG.DebugFormat( "Version: {0}", Assembly.GetExecutingAssembly().GetName().Version );
 
             Application.ThreadException += Application_ThreadException;
@@ -36,10 +36,11 @@ namespace TabbedTortoiseGit
                     Application.SetCompatibleTextRenderingDefault( false );
 
                     LOG.Debug( "Starting Tabbed TortoiseGit" );
-                    TabbedTortoiseGitForm f = new TabbedTortoiseGitForm();
-                    if( !a.Startup )
+                    TabbedTortoiseGitForm f = new TabbedTortoiseGitForm( a.Startup );
+                    f.Show();
+                    if( a.Startup )
                     {
-                        f.Show();
+                        f.Hide();
                     }
                     Application.Run();
                     _mutex.ReleaseMutex();

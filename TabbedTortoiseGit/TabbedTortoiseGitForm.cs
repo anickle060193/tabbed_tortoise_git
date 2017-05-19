@@ -28,6 +28,7 @@ namespace TabbedTortoiseGit
         private readonly ManagementEventWatcher _watcher;
         private readonly List<Process> _processes = new List<Process>();
         private readonly Dictionary<int, TabPage> _tabs = new Dictionary<int, TabPage>();
+        private readonly bool _startup;
 
         class TabTag
         {
@@ -41,12 +42,18 @@ namespace TabbedTortoiseGit
             }
         }
 
-        public TabbedTortoiseGitForm()
+        public TabbedTortoiseGitForm() : this( false )
         {
-            LOG.Debug( "Control Constructor" );
+        }
+
+        public TabbedTortoiseGitForm( bool startup )
+        {
+            LOG.DebugFormat( "Control Constructor - Startup: {0}", startup );
 
             InitializeComponent();
             InitializeEventHandlers();
+
+            _startup = startup;
 
             _folderDialog = new CommonOpenFileDialog();
             _folderDialog.IsFolderPicker = true;
