@@ -38,7 +38,7 @@
             this.CloseButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.CloseButton.DialogResult = System.Windows.Forms.DialogResult.Cancel;
             this.CloseButton.Enabled = false;
-            this.CloseButton.Location = new System.Drawing.Point(497, 346);
+            this.CloseButton.Location = new System.Drawing.Point(697, 346);
             this.CloseButton.Name = "CloseButton";
             this.CloseButton.Size = new System.Drawing.Size(75, 23);
             this.CloseButton.TabIndex = 1;
@@ -55,7 +55,7 @@
             this.Output.Location = new System.Drawing.Point(12, 12);
             this.Output.Name = "Output";
             this.Output.ReadOnly = true;
-            this.Output.Size = new System.Drawing.Size(560, 328);
+            this.Output.Size = new System.Drawing.Size(760, 328);
             this.Output.TabIndex = 2;
             this.Output.Text = "";
             // 
@@ -64,7 +64,7 @@
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.CancelButton = this.CloseButton;
-            this.ClientSize = new System.Drawing.Size(584, 381);
+            this.ClientSize = new System.Drawing.Size(784, 381);
             this.Controls.Add(this.Output);
             this.Controls.Add(this.CloseButton);
             this.MaximizeBox = false;
@@ -72,6 +72,7 @@
             this.MinimumSize = new System.Drawing.Size(250, 150);
             this.Name = "ProcessProgressForm";
             this.ShowInTaskbar = false;
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
             this.Text = "Progress";
             this.ResumeLayout(false);
 

@@ -1,5 +1,6 @@
 ﻿using log4net;
 using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -11,6 +12,7 @@ using System.Text.RegularExpressions;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using TabbedTortoiseGit.Properties;
 
 namespace TabbedTortoiseGit
 {
@@ -20,7 +22,8 @@ namespace TabbedTortoiseGit
 
         private static readonly Regex NEWLINE_REGEX = new Regex( "[\r\n]+" );
 
-        private readonly List<Process> _processes = new List<Process>();
+        private readonly ConcurrentQueue<Process> _processes = new ConcurrentQueue<Process>();
+        private readonly ConcurrentDictionary<int, Process> _runningProcesses = new ConcurrentDictionary<int, Process>();
 
         private bool _canExit;
 
@@ -50,6 +53,7 @@ namespace TabbedTortoiseGit
         private ProcessProgressForm()
         {
             InitializeComponent();
+            this.Icon = Resources.TortoiseIcon;
 
             _canExit = false;
 
@@ -63,7 +67,7 @@ namespace TabbedTortoiseGit
         private void AddProcess( Process p )
         {
             LOG.DebugFormat( "AddProcess - Filename: {0} - Arguments: {1} - Working Directory: {2}", p.StartInfo.FileName, p.StartInfo.Arguments, p.StartInfo.WorkingDirectory );
-            _processes.Add( p );
+            _processes.Enqueue( p );
 
             p.StartInfo.RedirectStandardOutput = true;
             p.StartInfo.RedirectStandardError = true;
@@ -72,6 +76,7 @@ namespace TabbedTortoiseGit
             p.EnableRaisingEvents = true;
             p.OutputDataReceived += Process_OutputDataReceived;
             p.ErrorDataReceived += Process_ErrorDataReceived;
+            p.Exited += Process_Exited;
         }
 
         private void ProcessProgressForm_FormClosing( object sender, FormClosingEventArgs e )
@@ -94,7 +99,7 @@ namespace TabbedTortoiseGit
         {
             LOG.Debug( "Worker - Work Completed" );
             CloseButton.Enabled = true;
-            LogOutput( this.CompletedText, Color.Blue );
+            LogOutput( Environment.NewLine + this.CompletedText, Color.Blue );
             _canExit = true;
         }
 
@@ -102,19 +107,32 @@ namespace TabbedTortoiseGit
         {
             LOG.DebugFormat( "RunProcesses - Process Count: {0}", _processes.Count );
 
-            foreach( Process p in _processes )
+            while( !_processes.IsEmpty )
             {
-                LOG.DebugFormat( "RunProcesses - Filename: {0} - Arguments: {1} - Working Directory: {2}", p.StartInfo.FileName, p.StartInfo.Arguments, p.StartInfo.WorkingDirectory );
-                Output.Invoke( (Action<String>)LogOutput, "{0} {1}".XFormat( p.StartInfo.FileName, p.StartInfo.Arguments ) );
-                p.Start();
-                p.BeginOutputReadLine();
-                p.BeginErrorReadLine();
+                while( _runningProcesses.Count >= 6 )
+                {
+                    Thread.Sleep( 50 );
+                }
+                Process p;
+                if( _processes.TryDequeue( out p ) )
+                {
+                    LOG.DebugFormat( "RunProcesses - Filename: {0} - Arguments: {1} - Working Directory: {2}", p.StartInfo.FileName, p.StartInfo.Arguments, p.StartInfo.WorkingDirectory );
+                    Output.Invoke( (Action<String, Color>)LogOutput, "{0} {1}".XFormat( p.StartInfo.FileName, p.StartInfo.Arguments ), Color.Green );
+                    p.Start();
+                    _runningProcesses[ p.Id ] = p;
+                    p.BeginOutputReadLine();
+                    p.BeginErrorReadLine();
+                }
+                else
+                {
+                    LOG.ErrorFormat( "RunProcesses - Failed to dequeue process - Count: {0}", _processes.Count );
+                }
             }
 
             LOG.Debug( "RunProcesses - Start Wait for All HasExited" );
-            while( !_processes.All( p => p.HasExited ) )
+            while( !_runningProcesses.IsEmpty )
             {
-                Thread.Sleep( 10 );
+                Thread.Sleep( 50 );
             }
             LOG.Debug( "RunProcesses - End Wait for All HasExited" );
         }
@@ -143,6 +161,16 @@ namespace TabbedTortoiseGit
         private void Process_ErrorDataReceived( object sender, DataReceivedEventArgs e )
         {
             Output.Invoke( (Action<String, Color>)LogOutput, e.Data, Color.Red );
+        }
+
+        private void Process_Exited( object sender, EventArgs e )
+        {
+            Process p = (Process)sender;
+            Process removed;
+            if( !_runningProcesses.TryRemove( p.Id, out removed ) )
+            {
+                LOG.ErrorFormat( "Process_Exited - Failed to remove running process - Process ID: {0}", p.Id );
+            }
         }
     }
 }

@@ -11,6 +11,7 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using TabbedTortoiseGit.Properties;
 
 namespace TabbedTortoiseGit
 {
@@ -47,6 +48,7 @@ namespace TabbedTortoiseGit
         public FastSubmoduleUpdateForm( String repo )
         {
             InitializeComponent();
+            this.Icon = Resources.TortoiseIcon;
 
             Repo = repo;
             _repo = new Repository( repo );
