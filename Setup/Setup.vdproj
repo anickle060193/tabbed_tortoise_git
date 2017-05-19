@@ -2814,6 +2814,17 @@
             "Property" = "8:ProgramMenuFolder"
                 "Folders"
                 {
+                    "{9EF0B969-E518-4E46-987F-47570745A589}:_F948D52D871D4FBAA1A1713FB2A52A75"
+                    {
+                    "Name" = "8:Tabbed TortoiseGit"
+                    "AlwaysCreate" = "11:FALSE"
+                    "Condition" = "8:"
+                    "Transitive" = "11:FALSE"
+                    "Property" = "8:_8E5F830851C345B887DE29C77802909F"
+                        "Folders"
+                        {
+                        }
+                    }
                 }
             }
             "{3C67513D-01DD-4637-8A68-80971EB9504F}:_E3807B2F33FD4261B64F191A30468331"
@@ -3009,6 +3020,20 @@
         }
         "Shortcut"
         {
+            "{970C0BB2-C7D0-45D7-ABFA-7EC378858BC0}:_76D59B4E31374D06952B13B663CEFFAA"
+            {
+            "Name" = "8:Tabbed TortoiseGit"
+            "Arguments" = "8:"
+            "Description" = "8:"
+            "ShowCmd" = "3:1"
+            "IconIndex" = "3:0"
+            "Transitive" = "11:FALSE"
+            "Target" = "8:_160F0C2105ED43BEB9FF74D75B8A5D4F"
+            "Folder" = "8:_F948D52D871D4FBAA1A1713FB2A52A75"
+            "WorkingFolder" = "8:_E3807B2F33FD4261B64F191A30468331"
+            "Icon" = "8:_4962C04BD3FC4F55AF5E70FA6BBBDE4F"
+            "Feature" = "8:"
+            }
             "{970C0BB2-C7D0-45D7-ABFA-7EC378858BC0}:_A871364F6BA24732A764104FE6F51275"
             {
             "Name" = "8:Tabbed TortoiseGit"
