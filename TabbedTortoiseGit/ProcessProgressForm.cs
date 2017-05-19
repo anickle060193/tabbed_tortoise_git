@@ -93,7 +93,7 @@ namespace TabbedTortoiseGit
         private void Worker_RunWorkerCompleted( object sender, RunWorkerCompletedEventArgs e )
         {
             LOG.Debug( "Worker - Work Completed" );
-            Close.Enabled = true;
+            CloseButton.Enabled = true;
             LogOutput( this.CompletedText, Color.Blue );
             _canExit = true;
         }
