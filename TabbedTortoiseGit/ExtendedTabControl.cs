@@ -21,10 +21,9 @@ namespace TabbedTortoiseGit
         private static readonly ILog LOG = LogManager.GetLogger( typeof( ExtendedTabControl ) );
 
         private readonly TabPage _newTab;
+        private readonly ExtendedTabControlDragDropHelper _dragDropHelper;
 
         private bool _inhibitControlActions = false;
-        private TabPage _draggingTab;
-        private TabPage _lastSwapped;
 
         public ExtendedTabControl()
         {
@@ -35,6 +34,9 @@ namespace TabbedTortoiseGit
             _newTab = new TabPage( "+" );
 
             this.TabPages.Add( _newTab );
+
+            _dragDropHelper = new ExtendedTabControlDragDropHelper();
+            _dragDropHelper.AddControl( this );
         }
 
         protected override void OnControlAdded( ControlEventArgs e )
@@ -149,68 +151,6 @@ namespace TabbedTortoiseGit
             base.OnMouseClick( e );
         }
 
-        protected override void OnMouseDown( MouseEventArgs e )
-        {
-            TabPage t = GetTabFromPoint( e.Location );
-            if( t != _newTab )
-            {
-                _draggingTab = t;
-            }
-            else
-            {
-                _draggingTab = null;
-            }
-            _lastSwapped = null;
-
-            base.OnMouseDown( e );
-        }
-
-        protected override void OnMouseUp( MouseEventArgs e )
-        {
-            _draggingTab = null;
-            _lastSwapped = null;
-
-            base.OnMouseUp( e );
-        }
-
-        protected override void OnMouseMove( MouseEventArgs e )
-        {
-            if( e.Button == MouseButtons.Left && _draggingTab != null )
-            {
-                LOG.DebugFormat( "Do Drag Drop - Dragging Tab Text: {0}", _draggingTab.Text );
-                this.DoDragDrop( _draggingTab, DragDropEffects.Move );
-            }
-
-            base.OnMouseMove( e );
-        }
-
-        protected override void OnDragOver( DragEventArgs e )
-        {
-            TabPage draggedTab = (TabPage)e.Data.GetData( typeof( TabPage ) );
-            TabPage pointedTab = GetTabFromPoint( this.PointToClient( new Point( e.X, e.Y ) ) );
-
-            if( pointedTab != draggedTab
-             && pointedTab != _lastSwapped )
-            {
-                _lastSwapped = null;
-            }
-
-            if( draggedTab == _draggingTab
-             && pointedTab != null
-             && pointedTab != _newTab
-             && pointedTab != draggedTab
-             && pointedTab != _lastSwapped
-             && e.AllowedEffect == DragDropEffects.Move )
-            {
-                LOG.DebugFormat( "Drag Over - Tabs Swapped - Dragging Tab: {0} - Other Tab: {1}", draggedTab.Text, pointedTab.Text );
-                e.Effect = DragDropEffects.Move;
-                SwapTabs( pointedTab, draggedTab );
-                _lastSwapped = pointedTab;
-            }
-
-            base.OnDragOver( e );
-        }
-
         protected void OnNewTabClicked( EventArgs e )
         {
             NewTabClicked( this, e );
@@ -255,6 +195,41 @@ namespace TabbedTortoiseGit
                 }
             }
             return null;
+        }
+
+        class ExtendedTabControlDragDropHelper : DragDropHelper<ExtendedTabControl, TabPage>
+        {
+            protected override bool AllowDrag( ExtendedTabControl parent, TabPage item, int index )
+            {
+                return ( item != parent._newTab );
+            }
+
+            protected override bool GetItemFromPoint( ExtendedTabControl parent, Point p, out TabPage item, out int itemIndex )
+            {
+                TabPage t = parent.GetTabFromPoint( p );
+                if( t != null )
+                {
+                    item = t;
+                    itemIndex = parent.TabPages.IndexOf( item );
+                    return true;
+                }
+                else
+                {
+                    item = null;
+                    itemIndex = -1;
+                    return false;
+                }
+            }
+
+            protected override bool SwapItems( ExtendedTabControl dragParent, TabPage dragItem, int dragItemIndex, ExtendedTabControl pointedParent, TabPage pointedItem, int pointedItemIndex )
+            {
+                if( pointedItem != pointedParent._newTab )
+                {
+                    pointedParent.SwapTabs( dragItem, pointedItem );
+                    return true;
+                }
+                return false;
+            }
         }
     }
 

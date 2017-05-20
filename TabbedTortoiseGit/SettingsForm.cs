@@ -130,6 +130,7 @@ namespace TabbedTortoiseGit
         }
 
         private readonly CommonOpenFileDialog _folderDialog;
+        private readonly CheckListDragDrophelper _dragDropHelper;
 
         public SettingsForm()
         {
@@ -145,45 +146,8 @@ namespace TabbedTortoiseGit
 
             this.GitActionsCheckList.Items.AddRange( TortoiseGit.ACTIONS.Keys.ToArray() );
 
-            var helper = new CheckListDragDrophelper( GitActionsCheckList );
-        }
-
-        class CheckListDragDrophelper : DragDropHelper<CheckedListBox, String>
-        {
-            public CheckListDragDrophelper( params CheckedListBox[] checkLists ) : base( checkLists )
-            {
-            }
-
-            protected override bool GetItemFromPoint( CheckedListBox parent, Point p, out String item, out int itemIndex )
-            {
-                int index = parent.IndexFromPoint( p );
-                if( index != CheckedListBox.NoMatches )
-                {
-                    item = (String)parent.Items[ index ];
-                    itemIndex = index;
-                    return true;
-                }
-                else
-                {
-                    item = null;
-                    itemIndex = -1;
-                    return false;
-                }
-            }
-
-            protected override void SwapItems( CheckedListBox dragParent, string dragItem, int dragItemIndex, CheckedListBox pointedParent, string pointedItem, int pointedItemIndex )
-            {
-                bool dragItemChecked = dragParent.GetItemChecked( dragItemIndex );
-                bool pointedItemChecked = pointedParent.GetItemChecked( pointedItemIndex );
-
-                dragParent.Items[ dragItemIndex ] = pointedItem;
-                dragParent.SetItemChecked( dragItemIndex, pointedItemChecked );
-                dragParent.SetSelected( dragItemIndex, false );
-
-                pointedParent.Items[ pointedItemIndex ] = dragItem;
-                pointedParent.SetItemChecked( pointedItemIndex, dragItemChecked );
-                pointedParent.SetSelected( pointedItemIndex, true );
-            }
+            _dragDropHelper = new CheckListDragDrophelper();
+            _dragDropHelper.AddControl( GitActionsCheckList );
         }
 
         private void AddDefaultRepo_Click( object sender, EventArgs e )
@@ -224,6 +188,47 @@ namespace TabbedTortoiseGit
             else
             {
                 RemoveDefaultRepo.Enabled = false;
+            }
+        }
+
+        class CheckListDragDrophelper : DragDropHelper<CheckedListBox, String>
+        {
+            protected override bool AllowDrag( CheckedListBox parent, string item, int index )
+            {
+                return true;
+            }
+
+            protected override bool GetItemFromPoint( CheckedListBox parent, Point p, out String item, out int itemIndex )
+            {
+                int index = parent.IndexFromPoint( p );
+                if( index != CheckedListBox.NoMatches )
+                {
+                    item = (String)parent.Items[ index ];
+                    itemIndex = index;
+                    return true;
+                }
+                else
+                {
+                    item = null;
+                    itemIndex = -1;
+                    return false;
+                }
+            }
+
+            protected override bool SwapItems( CheckedListBox dragParent, string dragItem, int dragItemIndex, CheckedListBox pointedParent, string pointedItem, int pointedItemIndex )
+            {
+                bool dragItemChecked = dragParent.GetItemChecked( dragItemIndex );
+                bool pointedItemChecked = pointedParent.GetItemChecked( pointedItemIndex );
+
+                dragParent.Items[ dragItemIndex ] = pointedItem;
+                dragParent.SetItemChecked( dragItemIndex, pointedItemChecked );
+                dragParent.SetSelected( dragItemIndex, false );
+
+                pointedParent.Items[ pointedItemIndex ] = dragItem;
+                pointedParent.SetItemChecked( pointedItemIndex, dragItemChecked );
+                pointedParent.SetSelected( pointedItemIndex, true );
+
+                return true;
             }
         }
     }
