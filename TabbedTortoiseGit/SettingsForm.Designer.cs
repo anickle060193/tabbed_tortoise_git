@@ -43,8 +43,8 @@ namespace TabbedTortoiseGit
             this.MaxRecentReposNumeric = new System.Windows.Forms.NumericUpDown();
             this.MaxRecentReposLabel = new System.Windows.Forms.Label();
             this.TabContextMenuGitActionsGroup = new System.Windows.Forms.GroupBox();
-            this.GitActionsCheckList = new System.Windows.Forms.CheckedListBox();
             this.GitActionsLabel = new System.Windows.Forms.Label();
+            this.GitActionsCheckList = new System.Windows.Forms.CheckedListBox();
             this.DefaultReposGroup.SuspendLayout();
             this.OtherSettingsGroup.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.MaxRecentReposNumeric)).BeginInit();
@@ -150,7 +150,7 @@ namespace TabbedTortoiseGit
             this.OtherSettingsGroup.Controls.Add(this.MaxRecentReposNumeric);
             this.OtherSettingsGroup.Controls.Add(this.MaxRecentReposLabel);
             this.OtherSettingsGroup.Controls.Add(this.RetainLogsOnCloseCheck);
-            this.OtherSettingsGroup.Location = new System.Drawing.Point(12, 187);
+            this.OtherSettingsGroup.Location = new System.Drawing.Point(12, 375);
             this.OtherSettingsGroup.Name = "OtherSettingsGroup";
             this.OtherSettingsGroup.Size = new System.Drawing.Size(380, 95);
             this.OtherSettingsGroup.TabIndex = 8;
@@ -200,12 +200,21 @@ namespace TabbedTortoiseGit
             | System.Windows.Forms.AnchorStyles.Right)));
             this.TabContextMenuGitActionsGroup.Controls.Add(this.GitActionsLabel);
             this.TabContextMenuGitActionsGroup.Controls.Add(this.GitActionsCheckList);
-            this.TabContextMenuGitActionsGroup.Location = new System.Drawing.Point(12, 288);
+            this.TabContextMenuGitActionsGroup.Location = new System.Drawing.Point(12, 187);
             this.TabContextMenuGitActionsGroup.Name = "TabContextMenuGitActionsGroup";
             this.TabContextMenuGitActionsGroup.Size = new System.Drawing.Size(380, 182);
             this.TabContextMenuGitActionsGroup.TabIndex = 11;
             this.TabContextMenuGitActionsGroup.TabStop = false;
             this.TabContextMenuGitActionsGroup.Text = "Tab Context Menu Git Actions";
+            // 
+            // GitActionsLabel
+            // 
+            this.GitActionsLabel.AutoSize = true;
+            this.GitActionsLabel.Location = new System.Drawing.Point(7, 166);
+            this.GitActionsLabel.Name = "GitActionsLabel";
+            this.GitActionsLabel.Size = new System.Drawing.Size(279, 13);
+            this.GitActionsLabel.TabIndex = 1;
+            this.GitActionsLabel.Text = "Note: Drag and drop items to change context menu order.";
             // 
             // GitActionsCheckList
             // 
@@ -219,15 +228,6 @@ namespace TabbedTortoiseGit
             this.GitActionsCheckList.Name = "GitActionsCheckList";
             this.GitActionsCheckList.Size = new System.Drawing.Size(368, 144);
             this.GitActionsCheckList.TabIndex = 0;
-            // 
-            // GitActionsLabel
-            // 
-            this.GitActionsLabel.AutoSize = true;
-            this.GitActionsLabel.Location = new System.Drawing.Point(7, 166);
-            this.GitActionsLabel.Name = "GitActionsLabel";
-            this.GitActionsLabel.Size = new System.Drawing.Size(279, 13);
-            this.GitActionsLabel.TabIndex = 1;
-            this.GitActionsLabel.Text = "Note: Drag and drop items to change context menu order.";
             // 
             // SettingsForm
             // 
