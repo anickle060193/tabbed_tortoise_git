@@ -36,8 +36,12 @@
             this.OK = new System.Windows.Forms.Button();
             this.label1 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
+            this.ButtonLayout = new System.Windows.Forms.TableLayoutPanel();
+            this.ViewGithub = new System.Windows.Forms.Button();
+            this.OpenDebugLog = new System.Windows.Forms.Button();
             this.TableLayout.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.Logo)).BeginInit();
+            this.ButtonLayout.SuspendLayout();
             this.SuspendLayout();
             // 
             // TableLayout
@@ -50,9 +54,9 @@
             this.TableLayout.Controls.Add(this.ProductNameLabel, 1, 0);
             this.TableLayout.Controls.Add(this.VersionLabel, 1, 1);
             this.TableLayout.Controls.Add(this.DescriptionText, 1, 3);
-            this.TableLayout.Controls.Add(this.OK, 1, 6);
-            this.TableLayout.Controls.Add(this.label1, 1, 2);
             this.TableLayout.Controls.Add(this.label2, 1, 4);
+            this.TableLayout.Controls.Add(this.label1, 1, 2);
+            this.TableLayout.Controls.Add(this.ButtonLayout, 1, 6);
             this.TableLayout.Dock = System.Windows.Forms.DockStyle.Fill;
             this.TableLayout.Location = new System.Drawing.Point(9, 9);
             this.TableLayout.Name = "TableLayout";
@@ -64,18 +68,19 @@
             this.TableLayout.RowStyles.Add(new System.Windows.Forms.RowStyle());
             this.TableLayout.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 60F));
             this.TableLayout.RowStyles.Add(new System.Windows.Forms.RowStyle());
+            this.TableLayout.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
             this.TableLayout.Size = new System.Drawing.Size(639, 265);
             this.TableLayout.TabIndex = 0;
             // 
             // AttributionsText
             // 
             this.AttributionsText.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.AttributionsText.Location = new System.Drawing.Point(261, 140);
+            this.AttributionsText.Location = new System.Drawing.Point(261, 137);
             this.AttributionsText.Margin = new System.Windows.Forms.Padding(6, 3, 3, 3);
             this.AttributionsText.Multiline = true;
             this.AttributionsText.Name = "AttributionsText";
             this.AttributionsText.ReadOnly = true;
-            this.AttributionsText.Size = new System.Drawing.Size(375, 93);
+            this.AttributionsText.Size = new System.Drawing.Size(375, 89);
             this.AttributionsText.TabIndex = 25;
             this.AttributionsText.TabStop = false;
             this.AttributionsText.Text = "Git log functionality provided by TortoiseGit\r\n\r\nTurtle icon made by Freepik from" +
@@ -127,16 +132,15 @@
             this.DescriptionText.Multiline = true;
             this.DescriptionText.Name = "DescriptionText";
             this.DescriptionText.ReadOnly = true;
-            this.DescriptionText.Size = new System.Drawing.Size(375, 60);
+            this.DescriptionText.Size = new System.Drawing.Size(375, 57);
             this.DescriptionText.TabIndex = 23;
             this.DescriptionText.TabStop = false;
             this.DescriptionText.Text = "Description";
             // 
             // OK
             // 
-            this.OK.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.OK.DialogResult = System.Windows.Forms.DialogResult.Cancel;
-            this.OK.Location = new System.Drawing.Point(561, 239);
+            this.OK.Location = new System.Drawing.Point(300, 3);
             this.OK.Name = "OK";
             this.OK.Size = new System.Drawing.Size(75, 23);
             this.OK.TabIndex = 24;
@@ -154,11 +158,53 @@
             // label2
             // 
             this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(258, 124);
+            this.label2.Location = new System.Drawing.Point(258, 121);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(62, 13);
             this.label2.TabIndex = 27;
             this.label2.Text = "Attributions:";
+            // 
+            // ButtonLayout
+            // 
+            this.ButtonLayout.AutoSize = true;
+            this.ButtonLayout.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
+            this.ButtonLayout.ColumnCount = 4;
+            this.ButtonLayout.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
+            this.ButtonLayout.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
+            this.ButtonLayout.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            this.ButtonLayout.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
+            this.ButtonLayout.Controls.Add(this.OpenDebugLog, 1, 0);
+            this.ButtonLayout.Controls.Add(this.ViewGithub, 0, 0);
+            this.ButtonLayout.Controls.Add(this.OK, 3, 0);
+            this.ButtonLayout.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.ButtonLayout.Location = new System.Drawing.Point(258, 232);
+            this.ButtonLayout.Name = "ButtonLayout";
+            this.ButtonLayout.RowCount = 1;
+            this.ButtonLayout.RowStyles.Add(new System.Windows.Forms.RowStyle());
+            this.ButtonLayout.Size = new System.Drawing.Size(378, 30);
+            this.ButtonLayout.TabIndex = 28;
+            // 
+            // ViewGithub
+            // 
+            this.ViewGithub.AutoSize = true;
+            this.ViewGithub.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
+            this.ViewGithub.Location = new System.Drawing.Point(3, 3);
+            this.ViewGithub.Name = "ViewGithub";
+            this.ViewGithub.Size = new System.Drawing.Size(74, 23);
+            this.ViewGithub.TabIndex = 25;
+            this.ViewGithub.Text = "View Github";
+            this.ViewGithub.UseVisualStyleBackColor = true;
+            // 
+            // OpenDebugLog
+            // 
+            this.OpenDebugLog.AutoSize = true;
+            this.OpenDebugLog.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
+            this.OpenDebugLog.Location = new System.Drawing.Point(83, 3);
+            this.OpenDebugLog.Name = "OpenDebugLog";
+            this.OpenDebugLog.Size = new System.Drawing.Size(99, 23);
+            this.OpenDebugLog.TabIndex = 26;
+            this.OpenDebugLog.Text = "Open Debug Log";
+            this.OpenDebugLog.UseVisualStyleBackColor = true;
             // 
             // AboutBox
             // 
@@ -180,6 +226,8 @@
             this.TableLayout.ResumeLayout(false);
             this.TableLayout.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.Logo)).EndInit();
+            this.ButtonLayout.ResumeLayout(false);
+            this.ButtonLayout.PerformLayout();
             this.ResumeLayout(false);
 
         }
@@ -195,5 +243,8 @@
         private System.Windows.Forms.Button OK;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Label label2;
+        private System.Windows.Forms.TableLayoutPanel ButtonLayout;
+        private System.Windows.Forms.Button OpenDebugLog;
+        private System.Windows.Forms.Button ViewGithub;
     }
 }

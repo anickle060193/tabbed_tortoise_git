@@ -31,7 +31,6 @@ namespace TabbedTortoiseGit
             LogTabs.Selected += LogTabs_Selected;
 
             OpenRepoMenuItem.Click += OpenRepoMenuItem_Click;
-            OpenLogFileLocationMenuItem.Click += OpenLogFileLocationMenuItem_Click;
             SettingsMenuItem.Click += SettingsMenuItem_Click;
             AboutMenuItem.Click += AboutMenuItem_Click;
             ExitMenuItem.Click += ExitMenuItem_Click;
@@ -165,17 +164,6 @@ namespace TabbedTortoiseGit
         private void OpenRepoMenuItem_Click( object sender, EventArgs e )
         {
             FindRepo();
-        }
-
-        private void OpenLogFileLocationMenuItem_Click( object sender, EventArgs e )
-        {
-            FileAppender rootAppender = ( (Hierarchy)LogManager.GetRepository() )
-                                         .Root.Appenders.OfType<FileAppender>()
-                                         .FirstOrDefault();
-            if( rootAppender != null )
-            {
-                Util.OpenInExplorer( rootAppender.File );
-            }
         }
 
         private void SettingsMenuItem_Click( object sender, EventArgs e )

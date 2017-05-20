@@ -1,4 +1,7 @@
-﻿using System;
+﻿using log4net;
+using log4net.Appender;
+using log4net.Repository.Hierarchy;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Diagnostics;
@@ -19,11 +22,28 @@ namespace TabbedTortoiseGit
             this.ProductNameLabel.Text = AssemblyProduct;
             this.VersionLabel.Text = String.Format( "Version {0}", AssemblyVersion );
             this.DescriptionText.Text = AssemblyDescription;
+
+            ViewGithub.Click += ViewGithub_Click;
+            OpenDebugLog.Click += OpenDebugLog_Click;
         }
 
         public static void ShowAbout()
         {
             new AboutBox().ShowDialog();
+        }
+
+        private void ViewGithub_Click( object sender, EventArgs e )
+        {
+            Process.Start( "https://github.com/anickle060193/tabbed_tortoise_git" );
+        }
+
+        private void OpenDebugLog_Click( object sender, EventArgs e )
+        {
+            FileAppender rootAppender = ( (Hierarchy)LogManager.GetRepository() ).Root.Appenders.OfType<FileAppender>().FirstOrDefault();
+            if( rootAppender != null )
+            {
+                Util.OpenInExplorer( rootAppender.File );
+            }
         }
 
         #region Assembly Attribute Accessors
