@@ -26,7 +26,7 @@
     <Setting Name="TabContextMenuGitActions" Type="System.Collections.Generic.List&lt;System.String&gt;" Scope="User">
       <Value Profile="(Default)" />
     </Setting>
-    <Setting Name="FavoritedRepos" Type="System.String" Scope="User">
+    <Setting Name="FavoriteReposString" Type="System.String" Scope="User">
       <Value Profile="(Default)" />
     </Setting>
     <Setting Name="UpgradeRequired" Type="System.Boolean" Scope="User">

@@ -119,12 +119,12 @@ namespace TabbedTortoiseGit.Properties {
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("")]
-        public string FavoritedRepos {
+        public string FavoriteReposString {
             get {
-                return ((string)(this["FavoritedRepos"]));
+                return ((string)(this["FavoriteReposString"]));
             }
             set {
-                this["FavoritedRepos"] = value;
+                this["FavoriteReposString"] = value;
             }
         }
         

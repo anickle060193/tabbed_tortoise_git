@@ -112,14 +112,13 @@ namespace TabbedTortoiseGit
 
             RecentReposMenu.DropDownItems.Clear();
             NewTabContextMenu.Items.Clear();
-            if( Settings.Default.RecentRepos != null )
+
+            foreach( String repo in Settings.Default.RecentRepos )
             {
-                foreach( String repo in Settings.Default.RecentRepos )
-                {
-                    RecentReposMenu.DropDownItems.Add( repo ).Click += RecentRepoMenuItem_Click;
-                    NewTabContextMenu.Items.Add( repo ).Click += RecentRepoMenuItem_Click;
-                }
+                RecentReposMenu.DropDownItems.Add( repo ).Click += RecentRepoMenuItem_Click;
+                NewTabContextMenu.Items.Add( repo ).Click += RecentRepoMenuItem_Click;
             }
+
             RecentReposMenu.Enabled = RecentReposMenu.HasDropDownItems;
             NewTabContextMenu.Enabled = NewTabContextMenu.Items.Count != 0;
 
@@ -134,20 +133,17 @@ namespace TabbedTortoiseGit
             TabContextMenu.Items.Add( OpenRepoLocationTabMenuItem );
             TabContextMenu.Items.Add( FavoriteRepoTabMenuItem );
 
-            if( Settings.Default.TabContextMenuGitActions != null )
+            List<TortoiseGitCommand> actions = Settings.Default.TabContextMenuGitActions
+                                                    .Where( action => TortoiseGit.ACTIONS.ContainsKey( action ) )
+                                                    .Select( action => TortoiseGit.ACTIONS[ action ] ).ToList();
+            if( actions.Count > 0 )
             {
-                List<TortoiseGitCommand> actions = Settings.Default.TabContextMenuGitActions
-                                                        .Where( action => TortoiseGit.ACTIONS.ContainsKey( action ) )
-                                                        .Select( action => TortoiseGit.ACTIONS[ action ] ).ToList();
-                if( actions.Count > 0 )
-                {
-                    TabContextMenu.Items.Add( "-" );
+                TabContextMenu.Items.Add( "-" );
 
-                    foreach( TortoiseGitCommand action in actions )
-                    {
-                        var menuItem = TabContextMenu.Items.Add( action.Name, action.Icon, GitCommandMenuItem_Click );
-                        menuItem.Tag = action.Func;
-                    }
+                foreach( TortoiseGitCommand action in actions )
+                {
+                    var menuItem = TabContextMenu.Items.Add( action.Name, action.Icon, GitCommandMenuItem_Click );
+                    menuItem.Tag = action.Func;
                 }
             }
 
@@ -164,7 +160,7 @@ namespace TabbedTortoiseGit
             MenuStrip.Items.Clear();
             MenuStrip.Items.Add( OptionsMenu );
 
-            foreach( KeyValuePair<String, String> kv in GetFavoritedRepos() )
+            foreach( KeyValuePair<String, String> kv in Settings.Default.FavoriteRepos )
             {
                 if( Git.IsRepo( kv.Value ) )
                 {
@@ -187,53 +183,20 @@ namespace TabbedTortoiseGit
                 return;
             }
 
-            List<String> recentRepos = Settings.Default.RecentRepos != null ? Settings.Default.RecentRepos : new List<String>();
-            if( recentRepos.Contains( repo ) )
+            if( Settings.Default.RecentRepos.Contains( repo ) )
             {
-                recentRepos.Remove( repo );
+                Settings.Default.RecentRepos.Remove( repo );
             }
-            recentRepos.Insert( 0, repo );
+            Settings.Default.RecentRepos.Insert( 0, repo );
 
             int maxRecentRepos = Settings.Default.MaxRecentRepos;
-            if( recentRepos.Count > maxRecentRepos )
+            if( Settings.Default.RecentRepos.Count > maxRecentRepos )
             {
-                recentRepos.RemoveRange( maxRecentRepos, recentRepos.Count - maxRecentRepos );
+                Settings.Default.RecentRepos.RemoveRange( maxRecentRepos, Settings.Default.RecentRepos.Count - maxRecentRepos );
             }
 
-            Settings.Default.RecentRepos = recentRepos;
             Settings.Default.Save();
             UpdateRecentReposFromSettings();
-        }
-
-        private Dictionary<String, String> GetFavoritedRepos()
-        {
-            String favoritedReposString = Settings.Default.FavoritedRepos;
-            Dictionary<String, String> favoriteRepos = null;
-            try
-            {
-                favoriteRepos = JsonConvert.DeserializeObject<Dictionary<String, String>>( favoritedReposString );
-            }
-            catch( JsonReaderException e )
-            {
-                LOG.ErrorFormat( "Failed to parse Favorite Repos setting - Favorited Repos: {0}", favoritedReposString );
-                LOG.Error( e );
-            }
-
-            if( favoriteRepos == null )
-            {
-                return new Dictionary<String, String>();
-            }
-            else
-            {
-                return favoriteRepos;
-            }
-        }
-
-        private void SaveFavoritedRepos( Dictionary<String, String> favoritedRepos )
-        {
-            String favoritedReposString = JsonConvert.SerializeObject( favoritedRepos );
-            Settings.Default.FavoritedRepos = favoritedReposString;
-            Settings.Default.Save();
         }
 
         private bool AddFavoriteRepo( String name, String path )
@@ -245,22 +208,23 @@ namespace TabbedTortoiseGit
                 return false;
             }
 
-            Dictionary<String, String> f = GetFavoritedRepos();
+            Dictionary<String, String> favoriteRepos = Settings.Default.FavoriteRepos;
 
-            if( f.ContainsKey( name ) )
+            if( favoriteRepos.ContainsKey( name ) )
             {
                 MessageBox.Show( "A favorited repo already exists with name: \"{0}\".".XFormat( name ) );
                 return false;
             }
 
-            if( f.ContainsValue( repo ) )
+            if( favoriteRepos.ContainsValue( repo ) )
             {
                 MessageBox.Show( "A favorited repo already exists for that repo." );
                 return false;
             }
 
-            f[ name ] = repo;
-            SaveFavoritedRepos( f );
+            favoriteRepos[ name ] = repo;
+            Settings.Default.FavoriteRepos = favoriteRepos;
+            Settings.Default.Save();
 
             UpdateFavoriteReposFromSettings();
             return true;
@@ -275,13 +239,14 @@ namespace TabbedTortoiseGit
                 return;
             }
 
-            Dictionary<String, String> f = GetFavoritedRepos();
+            Dictionary<String, String> favoriteRepos = Settings.Default.FavoriteRepos;
 
-            foreach( String key in f.Where( kv => kv.Value == repo ).Select( kv => kv.Key ).ToList() )
+            foreach( String key in favoriteRepos.Where( kv => kv.Value == repo ).Select( kv => kv.Key ).ToList() )
             {
-                f.Remove( key );
+                favoriteRepos.Remove( key );
             }
-            SaveFavoritedRepos( f );
+            Settings.Default.FavoriteRepos = favoriteRepos;
+            Settings.Default.Save();
 
             UpdateFavoriteReposFromSettings();
         }
@@ -294,8 +259,7 @@ namespace TabbedTortoiseGit
                 return false;
             }
 
-            Dictionary<String, String> f = GetFavoritedRepos();
-            return f.ContainsValue( repo );
+            return Settings.Default.FavoriteRepos.ContainsValue( repo );
         }
 
         private async void OpenLog( String path )
@@ -440,14 +404,11 @@ namespace TabbedTortoiseGit
         {
             LOG.Debug( "OpenDefaultRepos" );
 
-            if( Settings.Default.DefaultRepos != null )
+            foreach( String repo in Settings.Default.DefaultRepos )
             {
-                foreach( String repo in Settings.Default.DefaultRepos )
+                if( Git.IsRepo( repo ) )
                 {
-                    if( Git.IsRepo( repo ) )
-                    {
-                        OpenLog( repo );
-                    }
+                    OpenLog( repo );
                 }
             }
         }
