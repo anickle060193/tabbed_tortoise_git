@@ -15,7 +15,40 @@ namespace TabbedTortoiseGit
 {
     public partial class SettingsForm : Form
     {
-        private readonly CommonOpenFileDialog _folderDialog;
+        public static bool ShowSettingsDialog()
+        {
+            SettingsForm f = new SettingsForm();
+            if( Settings.Default.DefaultRepos != null )
+            {
+                f.DefaultRepos = Settings.Default.DefaultRepos.ToArray();
+            }
+            f.RetainLogsOnClose = Settings.Default.RetainLogsOnClose;
+            f.ConfirmOnClose = Settings.Default.ConfirmOnClose;
+            f.MaxRecentRepos = Settings.Default.MaxRecentRepos;
+            if( Settings.Default.TabContextMenuGitActions != null )
+            {
+                f.TabContextMenuGitActions = Settings.Default.TabContextMenuGitActions;
+            }
+
+            if( f.ShowDialog() == DialogResult.OK )
+            {
+                Settings.Default.DefaultRepos = f.DefaultRepos.ToList();
+                Settings.Default.RetainLogsOnClose = f.RetainLogsOnClose;
+                Settings.Default.ConfirmOnClose = f.ConfirmOnClose;
+                Settings.Default.MaxRecentRepos = f.MaxRecentRepos;
+                if( Settings.Default.RecentRepos != null )
+                {
+                    Settings.Default.RecentRepos = Settings.Default.RecentRepos.Take( Settings.Default.MaxRecentRepos ).ToList();
+                }
+                Settings.Default.TabContextMenuGitActions = f.TabContextMenuGitActions;
+                Settings.Default.Save();
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
 
         public String[] DefaultRepos
         {
@@ -74,63 +107,29 @@ namespace TabbedTortoiseGit
         {
             get
             {
-                return UsedGitActions.Items.Cast<String>().ToList();
+                return GitActionsCheckList.CheckedItems.Cast<String>().ToList();
             }
 
             set
             {
-                foreach( String action in value )
+                for( int i = 0; i < GitActionsCheckList.Items.Count; i++ )
+                {
+                    GitActionsCheckList.SetItemChecked( i, false );
+                }
+                foreach( String action in value.Reverse<String>() )
                 {
                     if( TortoiseGit.ACTIONS.ContainsKey( action ) )
                     {
-                        if( UnusedGitActions.Items.Contains( action ) )
-                        {
-                            UnusedGitActions.Items.Remove( action );
-                        }
-
-                        if( !UsedGitActions.Items.Contains( action ) )
-                        {
-                            UsedGitActions.Items.Add( action );
-                        }
+                        GitActionsCheckList.Items.Remove( action );
+                        GitActionsCheckList.Items.Insert( 0, action );
+                        int index = GitActionsCheckList.Items.IndexOf( action );
+                        GitActionsCheckList.SetItemChecked( index, true );
                     }
                 }
             }
         }
 
-        public static bool ShowSettingsDialog()
-        {
-            SettingsForm f = new SettingsForm();
-            if( Settings.Default.DefaultRepos != null )
-            {
-                f.DefaultRepos = Settings.Default.DefaultRepos.ToArray();
-            }
-            f.RetainLogsOnClose = Settings.Default.RetainLogsOnClose;
-            f.ConfirmOnClose = Settings.Default.ConfirmOnClose;
-            f.MaxRecentRepos = Settings.Default.MaxRecentRepos;
-            if( Settings.Default.TabContextMenuGitActions != null )
-            {
-                f.TabContextMenuGitActions = Settings.Default.TabContextMenuGitActions;
-            }
-
-            if( f.ShowDialog() == DialogResult.OK )
-            {
-                Settings.Default.DefaultRepos = f.DefaultRepos.ToList();
-                Settings.Default.RetainLogsOnClose = f.RetainLogsOnClose;
-                Settings.Default.ConfirmOnClose = f.ConfirmOnClose;
-                Settings.Default.MaxRecentRepos = f.MaxRecentRepos;
-                if( Settings.Default.RecentRepos != null )
-                {
-                    Settings.Default.RecentRepos = Settings.Default.RecentRepos.Take( Settings.Default.MaxRecentRepos ).ToList();
-                }
-                Settings.Default.TabContextMenuGitActions = f.TabContextMenuGitActions;
-                Settings.Default.Save();
-                return true;
-            }
-            else
-            {
-                return false;
-            }
-        }
+        private readonly CommonOpenFileDialog _folderDialog;
 
         public SettingsForm()
         {
@@ -144,75 +143,46 @@ namespace TabbedTortoiseGit
 
             this.DefaultReposList.SelectedValueChanged += DefaultReposList_SelectedValueChanged;
 
-            this.UnusedGitActions.Items.AddRange( TortoiseGit.ACTIONS.Keys.ToArray() );
+            this.GitActionsCheckList.Items.AddRange( TortoiseGit.ACTIONS.Keys.ToArray() );
 
-            this.UnusedGitActions.AllowDrop = true;
-            this.UnusedGitActions.MouseDown += GitActions_MouseDown;
-            this.UnusedGitActions.DragOver += GitActions_DragOver;
-            this.UnusedGitActions.DragDrop += GitActions_DragDrop;
-
-            this.UsedGitActions.AllowDrop = true;
-            this.UsedGitActions.MouseDown += GitActions_MouseDown;
-            this.UsedGitActions.DragOver += GitActions_DragOver;
-            this.UsedGitActions.DragDrop += GitActions_DragDrop;
+            var helper = new CheckListDragDrophelper( GitActionsCheckList );
         }
 
-        private ListBox _fromListBox;
-        private int _fromIndex;
-
-        private void GitActions_MouseDown( object sender, MouseEventArgs e )
+        class CheckListDragDrophelper : DragDropHelper<CheckedListBox, String>
         {
-            ListBox listBox = (ListBox)sender;
-
-            if( listBox.Items.Count == 0 )
+            public CheckListDragDrophelper( params CheckedListBox[] checkLists ) : base( checkLists )
             {
-                return;
             }
 
-            int index = listBox.IndexFromPoint( e.Location );
-            if( index >= 0 )
+            protected override bool GetItemFromPoint( CheckedListBox parent, Point p, out String item, out int itemIndex )
             {
-                _fromListBox = listBox;
-                _fromIndex = index;
-                String s = (String)listBox.Items[ index ];
-
-                DoDragDrop( s, DragDropEffects.Move );
-            }
-        }
-
-        private void GitActions_DragOver( object sender, DragEventArgs e )
-        {
-            if( e.Data.GetDataPresent( DataFormats.StringFormat ) )
-            {
-                e.Effect = DragDropEffects.Move;
-            }
-        }
-
-        private void GitActions_DragDrop( object sender, DragEventArgs e )
-        {
-            ListBox listBox = (ListBox)sender;
-
-            if( e.Data.GetDataPresent( DataFormats.StringFormat ) )
-            {
-                String s = (String)e.Data.GetData( DataFormats.StringFormat );
-                _fromListBox.Items.RemoveAt( _fromIndex );
-                if( listBox.Items.Count == 0 )
+                int index = parent.IndexFromPoint( p );
+                if( index != CheckedListBox.NoMatches )
                 {
-                    listBox.Items.Add( s );
+                    item = (String)parent.Items[ index ];
+                    itemIndex = index;
+                    return true;
                 }
                 else
                 {
-                    Point clientPoint = listBox.PointToClient( new Point( e.X, e.Y ) );
-                    int index = listBox.IndexFromPoint( clientPoint );
-                    if( index < 0 )
-                    {
-                        listBox.Items.Insert( listBox.Items.Count, s );
-                    }
-                    else
-                    {
-                        listBox.Items.Insert( index, s );
-                    }
+                    item = null;
+                    itemIndex = -1;
+                    return false;
                 }
+            }
+
+            protected override void SwapItems( CheckedListBox dragParent, string dragItem, int dragItemIndex, CheckedListBox pointedParent, string pointedItem, int pointedItemIndex )
+            {
+                bool dragItemChecked = dragParent.GetItemChecked( dragItemIndex );
+                bool pointedItemChecked = pointedParent.GetItemChecked( pointedItemIndex );
+
+                dragParent.Items[ dragItemIndex ] = pointedItem;
+                dragParent.SetItemChecked( dragItemIndex, pointedItemChecked );
+                dragParent.SetSelected( dragItemIndex, false );
+
+                pointedParent.Items[ pointedItemIndex ] = dragItem;
+                pointedParent.SetItemChecked( pointedItemIndex, dragItemChecked );
+                pointedParent.SetSelected( pointedItemIndex, true );
             }
         }
 

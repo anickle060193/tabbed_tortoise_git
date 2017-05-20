@@ -39,19 +39,15 @@ namespace TabbedTortoiseGit
             this.DefaultReposNote = new System.Windows.Forms.Label();
             this.RetainLogsOnCloseCheck = new System.Windows.Forms.CheckBox();
             this.OtherSettingsGroup = new System.Windows.Forms.GroupBox();
+            this.ConfirmOnCloseCheck = new System.Windows.Forms.CheckBox();
             this.MaxRecentReposNumeric = new System.Windows.Forms.NumericUpDown();
             this.MaxRecentReposLabel = new System.Windows.Forms.Label();
-            this.UnusedGitActions = new System.Windows.Forms.ListBox();
-            this.GitActionsLayout = new System.Windows.Forms.TableLayoutPanel();
-            this.UsedGitActions = new System.Windows.Forms.ListBox();
-            this.UnusedGitActionsLabel = new System.Windows.Forms.Label();
-            this.UsedGItActionsLabel = new System.Windows.Forms.Label();
             this.TabContextMenuGitActionsGroup = new System.Windows.Forms.GroupBox();
-            this.ConfirmOnCloseCheck = new System.Windows.Forms.CheckBox();
+            this.GitActionsCheckList = new System.Windows.Forms.CheckedListBox();
+            this.GitActionsLabel = new System.Windows.Forms.Label();
             this.DefaultReposGroup.SuspendLayout();
             this.OtherSettingsGroup.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.MaxRecentReposNumeric)).BeginInit();
-            this.GitActionsLayout.SuspendLayout();
             this.TabContextMenuGitActionsGroup.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -161,6 +157,17 @@ namespace TabbedTortoiseGit
             this.OtherSettingsGroup.TabStop = false;
             this.OtherSettingsGroup.Text = "Other Settings";
             // 
+            // ConfirmOnCloseCheck
+            // 
+            this.ConfirmOnCloseCheck.AutoSize = true;
+            this.ConfirmOnCloseCheck.CheckAlign = System.Drawing.ContentAlignment.MiddleRight;
+            this.ConfirmOnCloseCheck.Location = new System.Drawing.Point(6, 68);
+            this.ConfirmOnCloseCheck.Name = "ConfirmOnCloseCheck";
+            this.ConfirmOnCloseCheck.Size = new System.Drawing.Size(133, 17);
+            this.ConfirmOnCloseCheck.TabIndex = 10;
+            this.ConfirmOnCloseCheck.Text = "Prompt Before Closing:";
+            this.ConfirmOnCloseCheck.UseVisualStyleBackColor = true;
+            // 
             // MaxRecentReposNumeric
             // 
             this.MaxRecentReposNumeric.Location = new System.Drawing.Point(115, 42);
@@ -187,67 +194,12 @@ namespace TabbedTortoiseGit
             this.MaxRecentReposLabel.TabIndex = 8;
             this.MaxRecentReposLabel.Text = "Max Recent Repos:";
             // 
-            // UnusedGitActions
-            // 
-            this.UnusedGitActions.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.UnusedGitActions.FormattingEnabled = true;
-            this.UnusedGitActions.IntegralHeight = false;
-            this.UnusedGitActions.Location = new System.Drawing.Point(3, 16);
-            this.UnusedGitActions.Name = "UnusedGitActions";
-            this.UnusedGitActions.Size = new System.Drawing.Size(181, 144);
-            this.UnusedGitActions.TabIndex = 9;
-            // 
-            // GitActionsLayout
-            // 
-            this.GitActionsLayout.ColumnCount = 2;
-            this.GitActionsLayout.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
-            this.GitActionsLayout.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
-            this.GitActionsLayout.Controls.Add(this.UsedGitActions, 1, 1);
-            this.GitActionsLayout.Controls.Add(this.UnusedGitActions, 0, 1);
-            this.GitActionsLayout.Controls.Add(this.UnusedGitActionsLabel, 0, 0);
-            this.GitActionsLayout.Controls.Add(this.UsedGItActionsLabel, 1, 0);
-            this.GitActionsLayout.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.GitActionsLayout.Location = new System.Drawing.Point(3, 16);
-            this.GitActionsLayout.Name = "GitActionsLayout";
-            this.GitActionsLayout.RowCount = 2;
-            this.GitActionsLayout.RowStyles.Add(new System.Windows.Forms.RowStyle());
-            this.GitActionsLayout.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.GitActionsLayout.Size = new System.Drawing.Size(374, 163);
-            this.GitActionsLayout.TabIndex = 10;
-            // 
-            // UsedGitActions
-            // 
-            this.UsedGitActions.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.UsedGitActions.FormattingEnabled = true;
-            this.UsedGitActions.IntegralHeight = false;
-            this.UsedGitActions.Location = new System.Drawing.Point(190, 16);
-            this.UsedGitActions.Name = "UsedGitActions";
-            this.UsedGitActions.Size = new System.Drawing.Size(181, 144);
-            this.UsedGitActions.TabIndex = 10;
-            // 
-            // UnusedGitActionsLabel
-            // 
-            this.UnusedGitActionsLabel.AutoSize = true;
-            this.UnusedGitActionsLabel.Location = new System.Drawing.Point(3, 0);
-            this.UnusedGitActionsLabel.Name = "UnusedGitActionsLabel";
-            this.UnusedGitActionsLabel.Size = new System.Drawing.Size(101, 13);
-            this.UnusedGitActionsLabel.TabIndex = 11;
-            this.UnusedGitActionsLabel.Text = "Unused Git Actions:";
-            // 
-            // UsedGItActionsLabel
-            // 
-            this.UsedGItActionsLabel.AutoSize = true;
-            this.UsedGItActionsLabel.Location = new System.Drawing.Point(190, 0);
-            this.UsedGItActionsLabel.Name = "UsedGItActionsLabel";
-            this.UsedGItActionsLabel.Size = new System.Drawing.Size(89, 13);
-            this.UsedGItActionsLabel.TabIndex = 12;
-            this.UsedGItActionsLabel.Text = "Used Git Actions:";
-            // 
             // TabContextMenuGitActionsGroup
             // 
             this.TabContextMenuGitActionsGroup.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.TabContextMenuGitActionsGroup.Controls.Add(this.GitActionsLayout);
+            this.TabContextMenuGitActionsGroup.Controls.Add(this.GitActionsLabel);
+            this.TabContextMenuGitActionsGroup.Controls.Add(this.GitActionsCheckList);
             this.TabContextMenuGitActionsGroup.Location = new System.Drawing.Point(12, 288);
             this.TabContextMenuGitActionsGroup.Name = "TabContextMenuGitActionsGroup";
             this.TabContextMenuGitActionsGroup.Size = new System.Drawing.Size(380, 182);
@@ -255,16 +207,27 @@ namespace TabbedTortoiseGit
             this.TabContextMenuGitActionsGroup.TabStop = false;
             this.TabContextMenuGitActionsGroup.Text = "Tab Context Menu Git Actions";
             // 
-            // ConfirmOnCloseCheck
+            // GitActionsCheckList
             // 
-            this.ConfirmOnCloseCheck.AutoSize = true;
-            this.ConfirmOnCloseCheck.CheckAlign = System.Drawing.ContentAlignment.MiddleRight;
-            this.ConfirmOnCloseCheck.Location = new System.Drawing.Point(6, 68);
-            this.ConfirmOnCloseCheck.Name = "ConfirmOnCloseCheck";
-            this.ConfirmOnCloseCheck.Size = new System.Drawing.Size(133, 17);
-            this.ConfirmOnCloseCheck.TabIndex = 10;
-            this.ConfirmOnCloseCheck.Text = "Prompt Before Closing:";
-            this.ConfirmOnCloseCheck.UseVisualStyleBackColor = true;
+            this.GitActionsCheckList.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.GitActionsCheckList.CheckOnClick = true;
+            this.GitActionsCheckList.FormattingEnabled = true;
+            this.GitActionsCheckList.IntegralHeight = false;
+            this.GitActionsCheckList.Location = new System.Drawing.Point(6, 19);
+            this.GitActionsCheckList.Name = "GitActionsCheckList";
+            this.GitActionsCheckList.Size = new System.Drawing.Size(368, 144);
+            this.GitActionsCheckList.TabIndex = 0;
+            // 
+            // GitActionsLabel
+            // 
+            this.GitActionsLabel.AutoSize = true;
+            this.GitActionsLabel.Location = new System.Drawing.Point(7, 166);
+            this.GitActionsLabel.Name = "GitActionsLabel";
+            this.GitActionsLabel.Size = new System.Drawing.Size(279, 13);
+            this.GitActionsLabel.TabIndex = 1;
+            this.GitActionsLabel.Text = "Note: Drag and drop items to change context menu order.";
             // 
             // SettingsForm
             // 
@@ -278,6 +241,7 @@ namespace TabbedTortoiseGit
             this.Controls.Add(this.DefaultReposGroup);
             this.Controls.Add(this.Cancel);
             this.Controls.Add(this.OK);
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
             this.MaximizeBox = false;
             this.MinimizeBox = false;
             this.MinimumSize = new System.Drawing.Size(420, 220);
@@ -291,9 +255,8 @@ namespace TabbedTortoiseGit
             this.OtherSettingsGroup.ResumeLayout(false);
             this.OtherSettingsGroup.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.MaxRecentReposNumeric)).EndInit();
-            this.GitActionsLayout.ResumeLayout(false);
-            this.GitActionsLayout.PerformLayout();
             this.TabContextMenuGitActionsGroup.ResumeLayout(false);
+            this.TabContextMenuGitActionsGroup.PerformLayout();
             this.ResumeLayout(false);
 
         }
@@ -310,12 +273,9 @@ namespace TabbedTortoiseGit
         private GroupBox OtherSettingsGroup;
         private NumericUpDown MaxRecentReposNumeric;
         private Label MaxRecentReposLabel;
-        private ListBox UnusedGitActions;
-        private TableLayoutPanel GitActionsLayout;
-        private ListBox UsedGitActions;
         private GroupBox TabContextMenuGitActionsGroup;
-        private Label UnusedGitActionsLabel;
-        private Label UsedGItActionsLabel;
         private CheckBox ConfirmOnCloseCheck;
+        private CheckedListBox GitActionsCheckList;
+        private Label GitActionsLabel;
     }
 }

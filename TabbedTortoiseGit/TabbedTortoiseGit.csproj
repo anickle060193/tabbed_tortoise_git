@@ -94,6 +94,7 @@
     <Compile Include="CloseConfirmationDialog.Designer.cs">
       <DependentUpon>CloseConfirmationDialog.cs</DependentUpon>
     </Compile>
+    <Compile Include="DragDropHelper.cs" />
     <Compile Include="ExtendedTabControl.cs">
       <SubType>Component</SubType>
     </Compile>
