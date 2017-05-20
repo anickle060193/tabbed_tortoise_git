@@ -1,4 +1,5 @@
-﻿using System;
+﻿using log4net;
+using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
@@ -10,6 +11,8 @@ namespace TabbedTortoiseGit
 {
     abstract class DragDropHelper<TControl, T> where TControl : Control
     {
+        private readonly ILog LOG;
+
         private bool _hasItem;
         private Point _dragStart;
 
@@ -23,11 +26,16 @@ namespace TabbedTortoiseGit
 
         public DragDropHelper()
         {
+            LOG =  LogManager.GetLogger( this.GetType() );
+            LOG.DebugFormat( "DragDropHelper Constructor - Control Type: {0} - Item Type: {1}", typeof( TControl ), typeof( T ) );
+
             ClearDragDrop();
         }
 
         public void AddControl( TControl c )
         {
+            LOG.DebugFormat( "Add Control - Text: {0}", c.Text );
+
             c.AllowDrop = true;
             c.MouseDown += Control_MouseDown;
             c.MouseMove += Control_MouseMove;
@@ -91,6 +99,7 @@ namespace TabbedTortoiseGit
                 if( ( p.X - _dragStart.X ) > SystemInformation.DragSize.Width
                  && ( p.Y - _dragStart.Y ) > SystemInformation.DragSize.Height )
                 {
+                    LOG.DebugFormat( "Start Drag/Drop - Drag Item: {0}", _dragItem );
                     parent.DoDragDrop( _dragItem, DragDropEffects.Move );
                     ClearDragDrop();
                 }
@@ -99,7 +108,11 @@ namespace TabbedTortoiseGit
 
         private void Control_MouseUp( object sender, MouseEventArgs e )
         {
-            ClearDragDrop();
+            if( _hasItem )
+            {
+                LOG.DebugFormat( "Cancel Drag/Drop - Drag Item: {0}", _dragItem );
+                ClearDragDrop();
+            }
         }
 
         private void Control_DragOver( object sender, DragEventArgs e )
@@ -117,6 +130,7 @@ namespace TabbedTortoiseGit
                 {
                     if( SwapItems( _dragItemParent, _dragItem, _dragItemIndex, pointedParent, pointedItem, pointedItemIndex ) )
                     {
+                        LOG.DebugFormat( "Swapped Items - Drag Item: {0} - Pointed Item: {1}", _dragItem, pointedItem );
                         e.Effect = DragDropEffects.Move;
 
                         _dragItemIndex = pointedItemIndex;
