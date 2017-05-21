@@ -6,6 +6,7 @@ using System.Reflection;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using Tabs;
 
 namespace TabbedTortoiseGit
 {
@@ -21,6 +22,11 @@ namespace TabbedTortoiseGit
         [STAThread]
         static void Main( String[] args )
         {
+            Application.EnableVisualStyles();
+            Application.SetCompatibleTextRenderingDefault( false );
+            Application.Run( new TestTabForm() );
+            return;
+
             LOG.DebugFormat( "Application Startup - Args: {0}", String.Join( ", ", args ) );
             LOG.DebugFormat( "Version: {0}", Assembly.GetExecutingAssembly().GetName().Version );
 

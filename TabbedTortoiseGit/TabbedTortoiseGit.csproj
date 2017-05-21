@@ -232,6 +232,12 @@
   <ItemGroup>
     <None Include="Resources\more_vert.png" />
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Tabs\Tabs.csproj">
+      <Project>{5c8a6d79-fd9c-4ddc-8cfe-522cd27e8eab}</Project>
+      <Name>Tabs</Name>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
     <PropertyGroup>
