@@ -75,7 +75,6 @@
             this.tabHeader1.Dock = System.Windows.Forms.DockStyle.Top;
             this.tabHeader1.Location = new System.Drawing.Point(0, 0);
             this.tabHeader1.Name = "tabHeader1";
-            this.tabHeader1.SelectedIndex = 4;
             this.tabHeader1.Size = new System.Drawing.Size(647, 25);
             this.tabHeader1.TabIndex = 2;
             this.tabHeader1.Text = "tabHeader1";

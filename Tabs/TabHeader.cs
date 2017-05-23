@@ -27,7 +27,7 @@ namespace Tabs
         private readonly TabHeaderDragDropHelper _dragDropHelper;
 
         private int _tabWidth = 120;
-        private int _selectedIndex = 0;
+        private int _selectedIndex = -1;
 
         public event EventHandler NewTabClick;
         public event EventHandler<TabClickEventArgs> TabClick;
@@ -46,7 +46,7 @@ namespace Tabs
         [Browsable( false )]
         public TabCollection Tabs { get { return _collection; } }
 
-        [DefaultValue( 0 )]
+        [Browsable( false )]
         public int SelectedIndex
         {
             get { return _selectedIndex; }
@@ -62,7 +62,7 @@ namespace Tabs
         {
             get
             {
-                if( 0 <= SelectedIndex )
+                if( 0 <= SelectedIndex && SelectedIndex < this.TabCount )
                 {
                     return Tabs[ SelectedIndex ];
                 }
@@ -87,13 +87,6 @@ namespace Tabs
 
             CreateBaseTabDrawPath();
             CreateNewTabButtonPath();
-
-            for( int i = 0; i < 5; i++ )
-            {
-                Tab t = new Tab( String.Format( "Tab {0}", i ) );
-                t.Owner = this;
-                Tabs.Add( t );
-            }
         }
 
         private void CreateBaseTabDrawPath()
