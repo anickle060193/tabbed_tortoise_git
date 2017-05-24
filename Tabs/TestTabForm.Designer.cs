@@ -63,6 +63,7 @@
             // 
             // menuStrip1
             // 
+            this.menuStrip1.BackColor = System.Drawing.SystemColors.Control;
             this.menuStrip1.Location = new System.Drawing.Point(0, 0);
             this.menuStrip1.Name = "menuStrip1";
             this.menuStrip1.Size = new System.Drawing.Size(647, 24);
@@ -71,7 +72,6 @@
             // 
             // tabHeader1
             // 
-            this.tabHeader1.AllowDrop = true;
             this.tabHeader1.Dock = System.Windows.Forms.DockStyle.Top;
             this.tabHeader1.Location = new System.Drawing.Point(0, 0);
             this.tabHeader1.Name = "tabHeader1";

@@ -46,6 +46,9 @@
     <Compile Include="Extensions.cs" />
     <Compile Include="ILog.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Tab.cs">
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Include="TabHeader.cs">
       <SubType>Component</SubType>
     </Compile>

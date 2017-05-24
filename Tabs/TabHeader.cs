@@ -27,6 +27,9 @@ namespace Tabs
         private readonly TabHeaderDragDropHelper _dragDropHelper;
 
         private int _tabWidth = 120;
+        private Color _tabColor = Color.FromArgb( 218, 218, 218 );
+        private Color _selectedTabColor = Color.FromArgb( 242, 242, 242 );
+        private Color _tabBorderColor = Color.FromArgb( 181, 181, 181 );
         private int _selectedIndex = -1;
 
         public event EventHandler NewTabClick;
@@ -47,6 +50,7 @@ namespace Tabs
         public TabCollection Tabs { get { return _collection; } }
 
         [Browsable( false )]
+        [DesignerSerializationVisibility( DesignerSerializationVisibility.Hidden )]
         public int SelectedIndex
         {
             get { return _selectedIndex; }
@@ -58,6 +62,7 @@ namespace Tabs
         }
 
         [Browsable( false )]
+        [DesignerSerializationVisibility( DesignerSerializationVisibility.Hidden )]
         public Tab SelectedTab
         {
             get
@@ -76,8 +81,83 @@ namespace Tabs
         [Browsable( false )]
         public int TabCount { get { return _collection.Count; } }
 
+        [DefaultValue( typeof( Color ), "218, 218, 218" )]
+        public Color TabColor
+        {
+            get
+            {
+                return _tabColor;
+            }
+
+            set
+            {
+                this._tabColor = value;
+                this.Invalidate();
+            }
+        }
+
+        [DefaultValue( typeof( Color ), "242, 242, 242" )]
+        public Color SelectedTabColor
+        {
+            get
+            {
+                return _selectedTabColor;
+            }
+
+            set
+            {
+                this._selectedTabColor = value;
+                this.Invalidate();
+            }
+        }
+
+        [DefaultValue( typeof( Color ), "181, 181, 181" )]
+        public Color TabBorderColor
+        {
+            get
+            {
+                return _tabBorderColor;
+            }
+
+            set
+            {
+                this._tabBorderColor = value;
+                this.Invalidate();
+            }
+        }
+
+        [DefaultValue( typeof( Color ), "White" )]
+        public override Color BackColor
+        {
+            get
+            {
+                return base.BackColor;
+            }
+
+            set
+            {
+                base.BackColor = value;
+            }
+        }
+
+        [DefaultValue( true )]
+        public override bool AllowDrop
+        {
+            get
+            {
+                return base.AllowDrop;
+            }
+
+            set
+            {
+                base.AllowDrop = value;
+            }
+        }
+
         public TabHeader()
         {
+            this.BackColor = Color.White;
+
             _dragDropHelper = new TabHeaderDragDropHelper();
             _dragDropHelper.AddControl( this );
 
@@ -117,28 +197,23 @@ namespace Tabs
             return p;
         }
 
-        private GraphicsPath CreateTabPath( int index )
-        {
-            GraphicsPath p = CreateTabDrawPath( index );
-            p.CloseFigure();
-            return p;
-        }
-
         private Tab GetTabFromPoint( Point p )
         {
             if( SelectedTab != null )
             {
-                if( SelectedTab.IsUnderPoint( p ) )
+                GraphicsPath path = CreateTabDrawPath( SelectedIndex );
+                if( path.IsVisible( p ) )
                 {
                     return SelectedTab;
                 }
             }
 
-            foreach( Tab t in Tabs )
+            for( int i = 0; i < this.TabCount; i++ )
             {
-                if( t.IsUnderPoint( p ) )
+                GraphicsPath path = CreateTabDrawPath( i );
+                if( path.IsVisible( p ) )
                 {
-                    return t;
+                    return this.Tabs[ i ];
                 }
             }
 
@@ -149,6 +224,8 @@ namespace Tabs
         {
             Graphics g = e.Graphics;
             g.SmoothingMode = SmoothingMode.AntiAlias;
+
+            g.Clear( SystemColors.ControlLightLight );
 
             CreateBaseTabDrawPath();
             for( int i = TabCount - 1; i >= 0; i-- )
@@ -164,34 +241,37 @@ namespace Tabs
                 PaintTab( g, SelectedTab, SelectedIndex, true );
             }
 
+            PaintBottomBorder( g );
+
             PaintNewTab( g );
         }
 
         private void PaintTab( Graphics g, Tab t, int index, bool selected )
         {
-            GraphicsPath p = CreateTabDrawPath( index );
+            GraphicsPath path = CreateTabDrawPath( index );
 
-            GraphicsPath tPath = (GraphicsPath)p.Clone();
-            tPath.CloseAllFigures();
-            t.SetPath( tPath );
-
-            RectangleF bounds = p.GetBounds();
+            RectangleF bounds = path.GetBounds();
             if( selected )
             {
-                int bY = this.Height - BOTTOM_BORDER_HEIGHT;
-                p.LineTo( this.Width, bY );
-                p.LineTo( this.Width, this.Height - 1 );
-                p.LineTo( -1, this.Height - 1 );
-                p.LineTo( -1, bY );
-                p.CloseFigure();
-                g.FillPath( SystemBrushes.ControlLightLight, p );
-                g.DrawPath( SystemPens.ControlDark, p );
+                using( Brush b = new SolidBrush( SelectedTabColor ) )
+                {
+                    g.FillPath( b, path );
+                }
+                using( Pen p = new Pen( TabBorderColor ) )
+                {
+                    g.DrawPath( p, path );
+                }
             }
             else
             {
-                p.CloseAllFigures();
-                g.FillPath( SystemBrushes.ControlLight, p );
-                g.DrawPath( SystemPens.ControlDark, p );
+                using( Brush b = new SolidBrush( TabColor ) )
+                {
+                    g.FillPath( b, path );
+                }
+                using( Pen p = new Pen( TabBorderColor ) )
+                {
+                    g.DrawPath( p, path );
+                }
             }
 
             SizeF size = g.MeasureString( t.Text, this.Font );
@@ -232,8 +312,14 @@ namespace Tabs
             CreateNewTabButtonPath();
             RectangleF bounds = _newTabGraphicsPath.GetBounds();
 
-            g.FillPath( SystemBrushes.ControlLight, _newTabGraphicsPath );
-            g.DrawPath( SystemPens.ControlDark, _newTabGraphicsPath );
+            using( Brush b = new SolidBrush( TabColor ) )
+            {
+                g.FillPath( b, _newTabGraphicsPath );
+            }
+            using( Pen p = new Pen( TabBorderColor ) )
+            {
+                g.DrawPath( SystemPens.ControlDark, _newTabGraphicsPath );
+            }
 
             SizeF size = g.MeasureString( "+", this.Font );
             float sX = bounds.Left + ( bounds.Width - size.Width ) / 2;
@@ -244,9 +330,40 @@ namespace Tabs
             }
         }
 
+        private void PaintBottomBorder( Graphics g )
+        {
+            int bY = this.Height - BOTTOM_BORDER_HEIGHT - 1;
+            PointF left = new PointF( 0.0f, bY );
+            PointF right = new PointF( this.Width, bY );
+
+            using( Brush b = new SolidBrush( SelectedTabColor ) )
+            {
+                g.FillRectangle( b, 0, bY, this.Width, BOTTOM_BORDER_HEIGHT + 1 );
+            }
+
+            if( SelectedIndex != -1 )
+            {
+                GraphicsPath tabPath = CreateTabDrawPath( SelectedIndex );
+                RectangleF tabBounds = tabPath.GetBounds();
+                using( Pen p = new Pen( TabBorderColor ) )
+                {
+                    g.DrawLines( p, new[] { left, new PointF( tabBounds.Left, bY ) } );
+                    g.DrawLines( p, new[] { new PointF( tabBounds.Right, bY ), right } );
+                }
+            }
+            else
+            {
+                using( Pen p = new Pen( TabBorderColor ) )
+                {
+                    g.DrawLines( p, new[] { left, right } );
+                }
+            }
+        }
+
         protected override void OnMouseClick( MouseEventArgs e )
         {
-            if( _newTabGraphicsPath.IsVisible( e.Location ) )
+            if( e.Button == MouseButtons.Left
+             && _newTabGraphicsPath.IsVisible( e.Location ) )
             {
                 OnNewTabClick( EventArgs.Empty );
                 return;
@@ -321,9 +438,7 @@ namespace Tabs
             public Tab Add( String text )
             {
                 Tab t = new Tab( text );
-                t.Owner = _owner;
                 this.Add( t );
-                _owner.Invalidate();
                 return t;
             }
 
@@ -441,31 +556,6 @@ namespace Tabs
                 }
                 return true;
             }
-        }
-    }
-
-    public class Tab
-    {
-        private GraphicsPath _path;
-        private RectangleF _bounds;
-
-        public String Text { get; set; }
-        public TabHeader Owner { get; set; }
-
-        public Tab( String text )
-        {
-            Text = text;
-        }
-
-        public void SetPath( GraphicsPath p )
-        {
-            _path = p;
-            _bounds = _path.GetBounds();
-        }
-
-        public bool IsUnderPoint( Point p )
-        {
-            return _bounds.Contains( p.X, p.Y ) && _path.IsVisible( p );
         }
     }
 

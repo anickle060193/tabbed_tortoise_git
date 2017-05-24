@@ -12,6 +12,8 @@ namespace Tabs
 {
     public partial class TestTabForm : Form
     {
+        private int tabNumber = 0;
+
         public TestTabForm()
         {
             InitializeComponent();
@@ -33,7 +35,7 @@ namespace Tabs
         private void TabHeader1_NewTabClick( object sender, EventArgs e )
         {
             textBox1.AppendText( "New Tab" + Environment.NewLine );
-            tabHeader1.Tabs.Add( "New Tab" );
+            tabHeader1.Tabs.Add( "New Tab " + ( tabNumber++ ).ToString() );
         }
 
         private void TabHeader1_TabClick( object sender, TabClickEventArgs e )

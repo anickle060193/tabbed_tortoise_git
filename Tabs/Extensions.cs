@@ -12,7 +12,6 @@ namespace Tabs
     {
         public static void MoveTo( this GraphicsPath path, int x, int y )
         {
-            path.StartFigure();
             path.AddLine( x, y, x, y );
         }
 
