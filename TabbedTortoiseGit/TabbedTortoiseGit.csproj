@@ -136,6 +136,7 @@
     <Compile Include="SettingsForm.Designer.cs">
       <DependentUpon>SettingsForm.cs</DependentUpon>
     </Compile>
+    <Compile Include="TTG.cs" />
     <Compile Include="TabbedTortoiseGitForm.cs">
       <SubType>Form</SubType>
     </Compile>

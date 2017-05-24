@@ -45,6 +45,7 @@ namespace TabbedTortoiseGit
             this.TabContextMenuGitActionsGroup = new System.Windows.Forms.GroupBox();
             this.GitActionsLabel = new System.Windows.Forms.Label();
             this.GitActionsCheckList = new System.Windows.Forms.CheckedListBox();
+            this.RunOnStartupCheck = new System.Windows.Forms.CheckBox();
             this.DefaultReposGroup.SuspendLayout();
             this.OtherSettingsGroup.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.MaxRecentReposNumeric)).BeginInit();
@@ -78,7 +79,7 @@ namespace TabbedTortoiseGit
             // 
             this.OK.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.OK.DialogResult = System.Windows.Forms.DialogResult.OK;
-            this.OK.Location = new System.Drawing.Point(236, 479);
+            this.OK.Location = new System.Drawing.Point(236, 500);
             this.OK.Name = "OK";
             this.OK.Size = new System.Drawing.Size(75, 23);
             this.OK.TabIndex = 3;
@@ -89,7 +90,7 @@ namespace TabbedTortoiseGit
             // 
             this.Cancel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.Cancel.DialogResult = System.Windows.Forms.DialogResult.Cancel;
-            this.Cancel.Location = new System.Drawing.Point(317, 479);
+            this.Cancel.Location = new System.Drawing.Point(317, 500);
             this.Cancel.Name = "Cancel";
             this.Cancel.Size = new System.Drawing.Size(75, 23);
             this.Cancel.TabIndex = 4;
@@ -146,13 +147,14 @@ namespace TabbedTortoiseGit
             // 
             this.OtherSettingsGroup.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
+            this.OtherSettingsGroup.Controls.Add(this.RunOnStartupCheck);
             this.OtherSettingsGroup.Controls.Add(this.ConfirmOnCloseCheck);
             this.OtherSettingsGroup.Controls.Add(this.MaxRecentReposNumeric);
             this.OtherSettingsGroup.Controls.Add(this.MaxRecentReposLabel);
             this.OtherSettingsGroup.Controls.Add(this.RetainLogsOnCloseCheck);
             this.OtherSettingsGroup.Location = new System.Drawing.Point(12, 375);
             this.OtherSettingsGroup.Name = "OtherSettingsGroup";
-            this.OtherSettingsGroup.Size = new System.Drawing.Size(380, 95);
+            this.OtherSettingsGroup.Size = new System.Drawing.Size(380, 116);
             this.OtherSettingsGroup.TabIndex = 8;
             this.OtherSettingsGroup.TabStop = false;
             this.OtherSettingsGroup.Text = "Other Settings";
@@ -229,13 +231,24 @@ namespace TabbedTortoiseGit
             this.GitActionsCheckList.Size = new System.Drawing.Size(368, 144);
             this.GitActionsCheckList.TabIndex = 0;
             // 
+            // RunOnStartupCheck
+            // 
+            this.RunOnStartupCheck.AutoSize = true;
+            this.RunOnStartupCheck.CheckAlign = System.Drawing.ContentAlignment.MiddleRight;
+            this.RunOnStartupCheck.Location = new System.Drawing.Point(6, 91);
+            this.RunOnStartupCheck.Name = "RunOnStartupCheck";
+            this.RunOnStartupCheck.Size = new System.Drawing.Size(99, 17);
+            this.RunOnStartupCheck.TabIndex = 11;
+            this.RunOnStartupCheck.Text = "Run on startup:";
+            this.RunOnStartupCheck.UseVisualStyleBackColor = true;
+            // 
             // SettingsForm
             // 
             this.AcceptButton = this.OK;
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.CancelButton = this.Cancel;
-            this.ClientSize = new System.Drawing.Size(404, 514);
+            this.ClientSize = new System.Drawing.Size(404, 535);
             this.Controls.Add(this.TabContextMenuGitActionsGroup);
             this.Controls.Add(this.OtherSettingsGroup);
             this.Controls.Add(this.DefaultReposGroup);
@@ -277,5 +290,6 @@ namespace TabbedTortoiseGit
         private CheckBox ConfirmOnCloseCheck;
         private CheckedListBox GitActionsCheckList;
         private Label GitActionsLabel;
+        private CheckBox RunOnStartupCheck;
     }
 }

@@ -18,17 +18,12 @@ namespace TabbedTortoiseGit
         public static bool ShowSettingsDialog()
         {
             SettingsForm f = new SettingsForm();
-            if( Settings.Default.DefaultRepos != null )
-            {
-                f.DefaultRepos = Settings.Default.DefaultRepos.ToArray();
-            }
+            f.DefaultRepos = Settings.Default.DefaultRepos.ToArray();
             f.RetainLogsOnClose = Settings.Default.RetainLogsOnClose;
             f.ConfirmOnClose = Settings.Default.ConfirmOnClose;
             f.MaxRecentRepos = Settings.Default.MaxRecentRepos;
-            if( Settings.Default.TabContextMenuGitActions != null )
-            {
-                f.TabContextMenuGitActions = Settings.Default.TabContextMenuGitActions;
-            }
+            f.TabContextMenuGitActions = Settings.Default.TabContextMenuGitActions;
+            f.RunOnStartup = TTG.RunOnStartup;
 
             if( f.ShowDialog() == DialogResult.OK )
             {
@@ -36,12 +31,11 @@ namespace TabbedTortoiseGit
                 Settings.Default.RetainLogsOnClose = f.RetainLogsOnClose;
                 Settings.Default.ConfirmOnClose = f.ConfirmOnClose;
                 Settings.Default.MaxRecentRepos = f.MaxRecentRepos;
-                if( Settings.Default.RecentRepos != null )
-                {
-                    Settings.Default.RecentRepos = Settings.Default.RecentRepos.Take( Settings.Default.MaxRecentRepos ).ToList();
-                }
+                Settings.Default.RecentRepos = Settings.Default.RecentRepos.Take( Settings.Default.MaxRecentRepos ).ToList();
                 Settings.Default.TabContextMenuGitActions = f.TabContextMenuGitActions;
                 Settings.Default.Save();
+
+                TTG.RunOnStartup = f.RunOnStartup;
                 return true;
             }
             else
@@ -100,6 +94,19 @@ namespace TabbedTortoiseGit
             set
             {
                 MaxRecentReposNumeric.Value = value;
+            }
+        }
+
+        public bool RunOnStartup
+        {
+            get
+            {
+                return RunOnStartupCheck.Checked;
+            }
+
+            set
+            {
+                RunOnStartupCheck.Checked = value;
             }
         }
 
