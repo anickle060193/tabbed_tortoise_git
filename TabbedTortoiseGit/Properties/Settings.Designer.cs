@@ -187,5 +187,17 @@ namespace TabbedTortoiseGit.Properties {
                 this["FastSubmoduleUpdateForceChecked"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("6")]
+        public int FastSubmoduleUpdateMaxProcesses {
+            get {
+                return ((int)(this["FastSubmoduleUpdateMaxProcesses"]));
+            }
+            set {
+                this["FastSubmoduleUpdateMaxProcesses"] = value;
+            }
+        }
     }
 }

@@ -57,6 +57,29 @@ namespace TabbedTortoiseGit.Properties
         public Settings()
         {
             this.SettingsLoaded += Settings_SettingsLoaded;
+            this.SettingChanging += Settings_SettingChanging;
+        }
+
+        private void Settings_SettingChanging( object sender, SettingChangingEventArgs e )
+        {
+            if( e.SettingName == nameof( Settings.Default.MaxRecentRepos ) )
+            {
+                int maxRecentRepos = (int)e.NewValue;
+                if( maxRecentRepos <= 0 )
+                {
+                    LOG.DebugFormat( "Settings Changing - Invalid Max Recent Repos: {0}", maxRecentRepos );
+                    e.Cancel = true;
+                }
+            }
+            else if( e.SettingName == nameof( Settings.Default.FastSubmoduleUpdateMaxProcesses ) )
+            {
+                int maxProcesses = (int)e.NewValue;
+                if( maxProcesses <= 0 )
+                {
+                    LOG.DebugFormat( "Settings Changing - Invalid Max Fast Submodule Update Processes: {0}", maxProcesses );
+                    e.Cancel = true;
+                }
+            }
         }
 
         private void Settings_SettingsLoaded( object sender, SettingsLoadedEventArgs e )
@@ -99,6 +122,18 @@ namespace TabbedTortoiseGit.Properties
             if( Settings.Default.TabContextMenuGitActions == null )
             {
                 Settings.Default.TabContextMenuGitActions = new List<String>( TortoiseGit.ACTIONS.Keys );
+            }
+
+            if( Settings.Default.MaxRecentRepos <= 0 )
+            {
+                LOG.DebugFormat( "Settings Load - Invalid Max Recent Repos: {0}", Settings.Default.MaxRecentRepos );
+                Settings.Default.MaxRecentRepos = 10;
+            }
+
+            if( Settings.Default.FastSubmoduleUpdateMaxProcesses <= 0 )
+            {
+                LOG.DebugFormat( "Settings Load - Invalid Max Fast Submodule Update Processes: {0}", Settings.Default.FastSubmoduleUpdateMaxProcesses );
+                Settings.Default.FastSubmoduleUpdateMaxProcesses = 6;
             }
 
             Settings.Default.Save();

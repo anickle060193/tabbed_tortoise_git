@@ -38,12 +38,15 @@ namespace TabbedTortoiseGit
 
         public String CompletedText { get; set; }
 
-        public static void ShowProgress( String title, String completedText, IEnumerable<Process> processes )
+        public int MaxProcesses { get; set; }
+
+        public static void ShowProgress( String title, String completedText, IEnumerable<Process> processes, int maxProcesses )
         {
             LOG.DebugFormat( "ShowProgress - Title: {0} - Completed Text: {1}", title, completedText );
             ProcessProgressForm f = new ProcessProgressForm();
             f.Title = title;
             f.CompletedText = completedText;
+            f.MaxProcesses = maxProcesses;
             foreach( Process p in processes )
             {
                 f.AddProcess( p );
@@ -55,6 +58,8 @@ namespace TabbedTortoiseGit
         {
             InitializeComponent();
             this.Icon = Resources.TortoiseIcon;
+
+            MaxProcesses = 6;
 
             _cancel = false;
 
@@ -145,7 +150,7 @@ namespace TabbedTortoiseGit
 
             while( !_cancel && !_processes.IsEmpty )
             {
-                while( !_cancel && _runningProcesses.Count >= 6 )
+                while( !_cancel && _runningProcesses.Count >= MaxProcesses )
                 {
                     Thread.Sleep( 50 );
                 }

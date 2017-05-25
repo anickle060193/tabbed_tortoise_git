@@ -101,7 +101,7 @@ namespace TabbedTortoiseGit
             InitCheck.Checked = Settings.Default.FastSubmoduleUpdateInitChecked;
             RecursiveCheck.Checked = Settings.Default.FastSubmoduleUpdateRecursiveChecked;
             ForceCheck.Checked = Settings.Default.FastSubmoduleUpdateForceChecked;
-            LOG.DebugFormat( "UpdateFromSettings - Init: {0} - Recursive: {1} - Force: {2}", InitCheck.Checked, RecursiveCheck.Checked, ForceCheck.Checked );
+            MaxProcessCountNumeric.Value = Settings.Default.FastSubmoduleUpdateMaxProcesses;
         }
 
         private void SetChecked( bool value )
@@ -121,15 +121,17 @@ namespace TabbedTortoiseGit
                 bool init = InitCheck.Checked;
                 bool recursive = RecursiveCheck.Checked;
                 bool force = ForceCheck.Checked;
+                int maxProcesses = (int)MaxProcessCountNumeric.Value;
 
                 Settings.Default.FastSubmoduleUpdateInitChecked = init;
                 Settings.Default.FastSubmoduleUpdateRecursiveChecked = recursive;
                 Settings.Default.FastSubmoduleUpdateForceChecked = force;
+                Settings.Default.FastSubmoduleUpdateMaxProcesses = maxProcesses;
                 Settings.Default.Save();
 
                 this.Close();
                 var processes = SubmoduleCheckList.CheckedItems.Cast<String>().Select( submodule => UpdateSubmodule( Repo, submodule, init, recursive, force ) );
-                ProcessProgressForm.ShowProgress( Repo + " - Fast Submodule Update", "Submodule Update Completed", processes );
+                ProcessProgressForm.ShowProgress( Repo + " - Fast Submodule Update", "Submodule Update Completed", processes, maxProcesses );
             }
             else
             {
