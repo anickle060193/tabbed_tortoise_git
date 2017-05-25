@@ -52,7 +52,7 @@ namespace TabbedTortoiseGit
 
             if( !_startup )
             {
-                OpenDefaultRepos();
+                OpenStartupRepos();
             }
         }
 
@@ -201,11 +201,23 @@ namespace TabbedTortoiseGit
         private void NotifyIcon_DoubleClick( object sender, EventArgs e )
         {
             this.ShowMe();
+
+            if( Settings.Default.OpenStartupReposOnReOpen
+             && !Settings.Default.RetainLogsOnClose )
+            {
+                OpenStartupRepos();
+            }
         }
 
         private void OpenNotifyIconMenuItem_Click( object sender, EventArgs e )
         {
             this.ShowMe();
+
+            if( Settings.Default.OpenStartupReposOnReOpen
+             && !Settings.Default.RetainLogsOnClose )
+            {
+                OpenStartupRepos();
+            }
         }
 
         private void TabContextMenu_Opening( object sender, System.ComponentModel.CancelEventArgs e )

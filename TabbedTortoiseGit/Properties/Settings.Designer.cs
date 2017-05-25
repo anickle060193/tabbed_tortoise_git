@@ -72,12 +72,12 @@ namespace TabbedTortoiseGit.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        public global::System.Collections.Generic.List<System.String> DefaultRepos {
+        public global::System.Collections.Generic.List<System.String> StartupRepos {
             get {
-                return ((global::System.Collections.Generic.List<System.String>)(this["DefaultRepos"]));
+                return ((global::System.Collections.Generic.List<System.String>)(this["StartupRepos"]));
             }
             set {
-                this["DefaultRepos"] = value;
+                this["StartupRepos"] = value;
             }
         }
         
@@ -197,6 +197,18 @@ namespace TabbedTortoiseGit.Properties {
             }
             set {
                 this["FastSubmoduleUpdateMaxProcesses"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("True")]
+        public bool OpenStartupReposOnReOpen {
+            get {
+                return ((bool)(this["OpenStartupReposOnReOpen"]));
+            }
+            set {
+                this["OpenStartupReposOnReOpen"] = value;
             }
         }
     }

@@ -18,7 +18,8 @@ namespace TabbedTortoiseGit
         public static bool ShowSettingsDialog()
         {
             SettingsForm f = new SettingsForm();
-            f.DefaultRepos = Settings.Default.DefaultRepos.ToArray();
+            f.StartupRepos = Settings.Default.StartupRepos.ToArray();
+            f.OpenStartupReposOnReOpen = Settings.Default.OpenStartupReposOnReOpen;
             f.RetainLogsOnClose = Settings.Default.RetainLogsOnClose;
             f.ConfirmOnClose = Settings.Default.ConfirmOnClose;
             f.MaxRecentRepos = Settings.Default.MaxRecentRepos;
@@ -27,7 +28,8 @@ namespace TabbedTortoiseGit
 
             if( f.ShowDialog() == DialogResult.OK )
             {
-                Settings.Default.DefaultRepos = f.DefaultRepos.ToList();
+                Settings.Default.StartupRepos = f.StartupRepos.ToList();
+                Settings.Default.OpenStartupReposOnReOpen = f.OpenStartupReposOnReOpen;
                 Settings.Default.RetainLogsOnClose = f.RetainLogsOnClose;
                 Settings.Default.ConfirmOnClose = f.ConfirmOnClose;
                 Settings.Default.MaxRecentRepos = f.MaxRecentRepos;
@@ -44,17 +46,30 @@ namespace TabbedTortoiseGit
             }
         }
 
-        public String[] DefaultRepos
+        public String[] StartupRepos
         {
             get
             {
-                return DefaultReposList.Items.Cast<String>().ToArray();
+                return StartupReposList.Items.Cast<String>().ToArray();
             }
 
             set
             {
-                DefaultReposList.Items.Clear();
-                DefaultReposList.Items.AddRange( value );
+                StartupReposList.Items.Clear();
+                StartupReposList.Items.AddRange( value );
+            }
+        }
+
+        public bool OpenStartupReposOnReOpen
+        {
+            get
+            {
+                return OpenStartupReposOnReOpenCheck.Checked;
+            }
+
+            set
+            {
+                OpenStartupReposOnReOpenCheck.Checked = value;
             }
         }
 
@@ -149,7 +164,7 @@ namespace TabbedTortoiseGit
             this.AddDefaultRepo.Click += AddDefaultRepo_Click;
             this.RemoveDefaultRepo.Click += RemoveDefaultRepo_Click;
 
-            this.DefaultReposList.SelectedValueChanged += DefaultReposList_SelectedValueChanged;
+            this.StartupReposList.SelectedValueChanged += DefaultReposList_SelectedValueChanged;
 
             this.GitActionsCheckList.Items.AddRange( TortoiseGit.ACTIONS.Keys.ToArray() );
 
@@ -164,7 +179,7 @@ namespace TabbedTortoiseGit
                 String path = _folderDialog.FileName;
                 if( Git.IsRepo( path ) )
                 {
-                    DefaultReposList.Items.Add( path );
+                    StartupReposList.Items.Add( path );
                 }
                 else
                 {
@@ -175,9 +190,9 @@ namespace TabbedTortoiseGit
 
         private void RemoveDefaultRepo_Click( object sender, EventArgs e )
         {
-            foreach( String defaultRepo in this.DefaultReposList.SelectedItems.Cast<String>().ToArray() )
+            foreach( String defaultRepo in this.StartupReposList.SelectedItems.Cast<String>().ToArray() )
             {
-                this.DefaultReposList.Items.Remove( defaultRepo );
+                this.StartupReposList.Items.Remove( defaultRepo );
             }
         }
 
@@ -188,7 +203,7 @@ namespace TabbedTortoiseGit
 
         private void UpdateDefaultReposActions()
         {
-            if( this.DefaultReposList.SelectedItems.Count != 0 )
+            if( this.StartupReposList.SelectedItems.Count != 0 )
             {
                 RemoveDefaultRepo.Enabled = true;
             }

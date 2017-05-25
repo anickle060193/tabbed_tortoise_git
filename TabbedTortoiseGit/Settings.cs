@@ -15,12 +15,23 @@ namespace TabbedTortoiseGit.Properties
         [UserScopedSetting]
         [DebuggerNonUserCode]
         [DefaultSettingValue( "" )]
-        [Obsolete( "User FavoriteRepos instead." )]
+        [Obsolete( "User FavoriteRepos instead.", true )]
         [NoSettingsVersionUpgrade]
         public String FavoritedRepos
         {
-            get { throw new NotSupportedException( "FavoritedRepos is obsolete." ); }
-            set { throw new NotSupportedException( "FavoritedRepos is obsolete." ); }
+            get { throw new NotSupportedException( "FavoritedRepos is obsolete. Use FavoriteRepos." ); }
+            set { throw new NotSupportedException( "FavoritedRepos is obsolete. Use FavoriteRepos." ); }
+        }
+
+        [UserScopedSetting]
+        [DebuggerNonUserCode]
+        [DefaultSettingValue( "" )]
+        [Obsolete( "User StartupRepos instead.", true )]
+        [NoSettingsVersionUpgrade]
+        public List<String> DefaultRepos
+        {
+            get { throw new NotSupportedException( "DefaultRepos is obsolete. Use StartupRepos." ); }
+            set { throw new NotSupportedException( "DefaultRepos is obsolete. Use StartupRepos." ); }
         }
 
         public Dictionary<String,String> FavoriteRepos
@@ -96,17 +107,32 @@ namespace TabbedTortoiseGit.Properties
                     if( oldValue != null && oldValue is String )
                     {
                         Settings.Default.FavoriteReposString = (String)oldValue;
+                        LOG.Debug( "Upgraded FavoritedRepos to FavoriteReposString" );
                     }
                 }
-                catch( Exception ex )
+                catch( SettingsPropertyNotFoundException ex )
                 {
                     LOG.Error( "Failed to upgrade FavoritedRepos setting", ex );
                 }
+
+                try
+                {
+                    Object oldValue = Settings.Default.GetPreviousVersion( "DefaultRepos" );
+                    if( oldValue != null && oldValue is List<String> )
+                    {
+                        Settings.Default.StartupRepos = (List<String>)oldValue;
+                        LOG.Debug( "Upgraded DefaultRepos to StartupRepos" );
+                    }
+                }
+                catch( SettingsPropertyNotFoundException ex )
+                {
+                    LOG.Error( "Failed to upgrade DefaultRepos setting", ex );
+                }
             }
 
-            if( Settings.Default.DefaultRepos == null )
+            if( Settings.Default.StartupRepos == null )
             {
-                Settings.Default.DefaultRepos = new List<String>();
+                Settings.Default.StartupRepos = new List<String>();
             }
 
             if( Settings.Default.FavoriteReposString == null )

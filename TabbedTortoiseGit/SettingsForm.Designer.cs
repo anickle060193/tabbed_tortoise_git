@@ -30,45 +30,47 @@ namespace TabbedTortoiseGit
         /// </summary>
         private void InitializeComponent()
         {
-            this.DefaultReposList = new System.Windows.Forms.ListBox();
+            this.components = new System.ComponentModel.Container();
+            this.StartupReposList = new System.Windows.Forms.ListBox();
             this.AddDefaultRepo = new System.Windows.Forms.Button();
             this.OK = new System.Windows.Forms.Button();
             this.Cancel = new System.Windows.Forms.Button();
             this.RemoveDefaultRepo = new System.Windows.Forms.Button();
-            this.DefaultReposGroup = new System.Windows.Forms.GroupBox();
-            this.DefaultReposNote = new System.Windows.Forms.Label();
+            this.StartupReposGroup = new System.Windows.Forms.GroupBox();
             this.RetainLogsOnCloseCheck = new System.Windows.Forms.CheckBox();
             this.OtherSettingsGroup = new System.Windows.Forms.GroupBox();
+            this.RunOnStartupCheck = new System.Windows.Forms.CheckBox();
             this.ConfirmOnCloseCheck = new System.Windows.Forms.CheckBox();
             this.MaxRecentReposNumeric = new System.Windows.Forms.NumericUpDown();
             this.MaxRecentReposLabel = new System.Windows.Forms.Label();
             this.TabContextMenuGitActionsGroup = new System.Windows.Forms.GroupBox();
             this.GitActionsLabel = new System.Windows.Forms.Label();
             this.GitActionsCheckList = new System.Windows.Forms.CheckedListBox();
-            this.RunOnStartupCheck = new System.Windows.Forms.CheckBox();
-            this.DefaultReposGroup.SuspendLayout();
+            this.OpenStartupReposOnReOpenCheck = new System.Windows.Forms.CheckBox();
+            this.SettingsToolTip = new System.Windows.Forms.ToolTip(this.components);
+            this.StartupReposGroup.SuspendLayout();
             this.OtherSettingsGroup.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.MaxRecentReposNumeric)).BeginInit();
             this.TabContextMenuGitActionsGroup.SuspendLayout();
             this.SuspendLayout();
             // 
-            // DefaultReposList
+            // StartupReposList
             // 
-            this.DefaultReposList.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            this.StartupReposList.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.DefaultReposList.FormattingEnabled = true;
-            this.DefaultReposList.IntegralHeight = false;
-            this.DefaultReposList.Location = new System.Drawing.Point(6, 19);
-            this.DefaultReposList.Name = "DefaultReposList";
-            this.DefaultReposList.SelectionMode = System.Windows.Forms.SelectionMode.MultiExtended;
-            this.DefaultReposList.Size = new System.Drawing.Size(368, 99);
-            this.DefaultReposList.TabIndex = 1;
+            this.StartupReposList.FormattingEnabled = true;
+            this.StartupReposList.IntegralHeight = false;
+            this.StartupReposList.Location = new System.Drawing.Point(6, 19);
+            this.StartupReposList.Name = "StartupReposList";
+            this.StartupReposList.SelectionMode = System.Windows.Forms.SelectionMode.MultiSimple;
+            this.StartupReposList.Size = new System.Drawing.Size(368, 121);
+            this.StartupReposList.TabIndex = 1;
             // 
             // AddDefaultRepo
             // 
             this.AddDefaultRepo.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.AddDefaultRepo.Location = new System.Drawing.Point(97, 124);
+            this.AddDefaultRepo.Location = new System.Drawing.Point(97, 146);
             this.AddDefaultRepo.Name = "AddDefaultRepo";
             this.AddDefaultRepo.Size = new System.Drawing.Size(85, 23);
             this.AddDefaultRepo.TabIndex = 2;
@@ -79,7 +81,7 @@ namespace TabbedTortoiseGit
             // 
             this.OK.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.OK.DialogResult = System.Windows.Forms.DialogResult.OK;
-            this.OK.Location = new System.Drawing.Point(236, 500);
+            this.OK.Location = new System.Drawing.Point(236, 526);
             this.OK.Name = "OK";
             this.OK.Size = new System.Drawing.Size(75, 23);
             this.OK.TabIndex = 3;
@@ -90,7 +92,7 @@ namespace TabbedTortoiseGit
             // 
             this.Cancel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.Cancel.DialogResult = System.Windows.Forms.DialogResult.Cancel;
-            this.Cancel.Location = new System.Drawing.Point(317, 500);
+            this.Cancel.Location = new System.Drawing.Point(317, 526);
             this.Cancel.Name = "Cancel";
             this.Cancel.Size = new System.Drawing.Size(75, 23);
             this.Cancel.TabIndex = 4;
@@ -100,37 +102,27 @@ namespace TabbedTortoiseGit
             // RemoveDefaultRepo
             // 
             this.RemoveDefaultRepo.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.RemoveDefaultRepo.Location = new System.Drawing.Point(6, 124);
+            this.RemoveDefaultRepo.Location = new System.Drawing.Point(6, 146);
             this.RemoveDefaultRepo.Name = "RemoveDefaultRepo";
             this.RemoveDefaultRepo.Size = new System.Drawing.Size(85, 23);
             this.RemoveDefaultRepo.TabIndex = 5;
             this.RemoveDefaultRepo.Text = "Remove Repo";
             this.RemoveDefaultRepo.UseVisualStyleBackColor = true;
             // 
-            // DefaultReposGroup
+            // StartupReposGroup
             // 
-            this.DefaultReposGroup.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            this.StartupReposGroup.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.DefaultReposGroup.Controls.Add(this.DefaultReposNote);
-            this.DefaultReposGroup.Controls.Add(this.DefaultReposList);
-            this.DefaultReposGroup.Controls.Add(this.RemoveDefaultRepo);
-            this.DefaultReposGroup.Controls.Add(this.AddDefaultRepo);
-            this.DefaultReposGroup.Location = new System.Drawing.Point(12, 12);
-            this.DefaultReposGroup.Name = "DefaultReposGroup";
-            this.DefaultReposGroup.Size = new System.Drawing.Size(380, 169);
-            this.DefaultReposGroup.TabIndex = 6;
-            this.DefaultReposGroup.TabStop = false;
-            this.DefaultReposGroup.Text = "Default Repos";
-            // 
-            // DefaultReposNote
-            // 
-            this.DefaultReposNote.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.DefaultReposNote.AutoSize = true;
-            this.DefaultReposNote.Location = new System.Drawing.Point(6, 150);
-            this.DefaultReposNote.Name = "DefaultReposNote";
-            this.DefaultReposNote.Size = new System.Drawing.Size(364, 13);
-            this.DefaultReposNote.TabIndex = 6;
-            this.DefaultReposNote.Text = "Note: Default repos are opened when Tabbed TortoiseGit is initially opened.";
+            this.StartupReposGroup.Controls.Add(this.OpenStartupReposOnReOpenCheck);
+            this.StartupReposGroup.Controls.Add(this.StartupReposList);
+            this.StartupReposGroup.Controls.Add(this.RemoveDefaultRepo);
+            this.StartupReposGroup.Controls.Add(this.AddDefaultRepo);
+            this.StartupReposGroup.Location = new System.Drawing.Point(12, 12);
+            this.StartupReposGroup.Name = "StartupReposGroup";
+            this.StartupReposGroup.Size = new System.Drawing.Size(380, 198);
+            this.StartupReposGroup.TabIndex = 6;
+            this.StartupReposGroup.TabStop = false;
+            this.StartupReposGroup.Text = "Startup Repos";
             // 
             // RetainLogsOnCloseCheck
             // 
@@ -152,12 +144,23 @@ namespace TabbedTortoiseGit
             this.OtherSettingsGroup.Controls.Add(this.MaxRecentReposNumeric);
             this.OtherSettingsGroup.Controls.Add(this.MaxRecentReposLabel);
             this.OtherSettingsGroup.Controls.Add(this.RetainLogsOnCloseCheck);
-            this.OtherSettingsGroup.Location = new System.Drawing.Point(12, 375);
+            this.OtherSettingsGroup.Location = new System.Drawing.Point(12, 404);
             this.OtherSettingsGroup.Name = "OtherSettingsGroup";
             this.OtherSettingsGroup.Size = new System.Drawing.Size(380, 116);
             this.OtherSettingsGroup.TabIndex = 8;
             this.OtherSettingsGroup.TabStop = false;
             this.OtherSettingsGroup.Text = "Other Settings";
+            // 
+            // RunOnStartupCheck
+            // 
+            this.RunOnStartupCheck.AutoSize = true;
+            this.RunOnStartupCheck.CheckAlign = System.Drawing.ContentAlignment.MiddleRight;
+            this.RunOnStartupCheck.Location = new System.Drawing.Point(6, 91);
+            this.RunOnStartupCheck.Name = "RunOnStartupCheck";
+            this.RunOnStartupCheck.Size = new System.Drawing.Size(99, 17);
+            this.RunOnStartupCheck.TabIndex = 11;
+            this.RunOnStartupCheck.Text = "Run on startup:";
+            this.RunOnStartupCheck.UseVisualStyleBackColor = true;
             // 
             // ConfirmOnCloseCheck
             // 
@@ -202,7 +205,7 @@ namespace TabbedTortoiseGit
             | System.Windows.Forms.AnchorStyles.Right)));
             this.TabContextMenuGitActionsGroup.Controls.Add(this.GitActionsLabel);
             this.TabContextMenuGitActionsGroup.Controls.Add(this.GitActionsCheckList);
-            this.TabContextMenuGitActionsGroup.Location = new System.Drawing.Point(12, 187);
+            this.TabContextMenuGitActionsGroup.Location = new System.Drawing.Point(12, 216);
             this.TabContextMenuGitActionsGroup.Name = "TabContextMenuGitActionsGroup";
             this.TabContextMenuGitActionsGroup.Size = new System.Drawing.Size(380, 182);
             this.TabContextMenuGitActionsGroup.TabIndex = 11;
@@ -230,17 +233,19 @@ namespace TabbedTortoiseGit
             this.GitActionsCheckList.Name = "GitActionsCheckList";
             this.GitActionsCheckList.Size = new System.Drawing.Size(368, 144);
             this.GitActionsCheckList.TabIndex = 0;
+            this.SettingsToolTip.SetToolTip(this.GitActionsCheckList, "Only valid when \"Retain Logs on Close\" is disabled.\r\n");
             // 
-            // RunOnStartupCheck
+            // OpenStartupReposOnReOpenCheck
             // 
-            this.RunOnStartupCheck.AutoSize = true;
-            this.RunOnStartupCheck.CheckAlign = System.Drawing.ContentAlignment.MiddleRight;
-            this.RunOnStartupCheck.Location = new System.Drawing.Point(6, 91);
-            this.RunOnStartupCheck.Name = "RunOnStartupCheck";
-            this.RunOnStartupCheck.Size = new System.Drawing.Size(99, 17);
-            this.RunOnStartupCheck.TabIndex = 11;
-            this.RunOnStartupCheck.Text = "Run on startup:";
-            this.RunOnStartupCheck.UseVisualStyleBackColor = true;
+            this.OpenStartupReposOnReOpenCheck.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.OpenStartupReposOnReOpenCheck.AutoSize = true;
+            this.OpenStartupReposOnReOpenCheck.Location = new System.Drawing.Point(6, 175);
+            this.OpenStartupReposOnReOpenCheck.Name = "OpenStartupReposOnReOpenCheck";
+            this.OpenStartupReposOnReOpenCheck.Size = new System.Drawing.Size(277, 17);
+            this.OpenStartupReposOnReOpenCheck.TabIndex = 6;
+            this.OpenStartupReposOnReOpenCheck.Text = "Open Startup Repos when re-opened from Task Tray";
+            this.SettingsToolTip.SetToolTip(this.OpenStartupReposOnReOpenCheck, "Only valid when \"Retain Logs on Close\" is disabled.");
+            this.OpenStartupReposOnReOpenCheck.UseVisualStyleBackColor = true;
             // 
             // SettingsForm
             // 
@@ -248,23 +253,23 @@ namespace TabbedTortoiseGit
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.CancelButton = this.Cancel;
-            this.ClientSize = new System.Drawing.Size(404, 535);
+            this.ClientSize = new System.Drawing.Size(404, 561);
             this.Controls.Add(this.TabContextMenuGitActionsGroup);
             this.Controls.Add(this.OtherSettingsGroup);
-            this.Controls.Add(this.DefaultReposGroup);
+            this.Controls.Add(this.StartupReposGroup);
             this.Controls.Add(this.Cancel);
             this.Controls.Add(this.OK);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
             this.MaximizeBox = false;
             this.MinimizeBox = false;
-            this.MinimumSize = new System.Drawing.Size(420, 220);
+            this.MinimumSize = new System.Drawing.Size(420, 575);
             this.Name = "SettingsForm";
             this.ShowIcon = false;
             this.ShowInTaskbar = false;
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
             this.Text = "Settings";
-            this.DefaultReposGroup.ResumeLayout(false);
-            this.DefaultReposGroup.PerformLayout();
+            this.StartupReposGroup.ResumeLayout(false);
+            this.StartupReposGroup.PerformLayout();
             this.OtherSettingsGroup.ResumeLayout(false);
             this.OtherSettingsGroup.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.MaxRecentReposNumeric)).EndInit();
@@ -275,13 +280,12 @@ namespace TabbedTortoiseGit
         }
 
         #endregion
-        private System.Windows.Forms.ListBox DefaultReposList;
+        private System.Windows.Forms.ListBox StartupReposList;
         private System.Windows.Forms.Button AddDefaultRepo;
         private Button OK;
         private Button Cancel;
         private Button RemoveDefaultRepo;
-        private GroupBox DefaultReposGroup;
-        private Label DefaultReposNote;
+        private GroupBox StartupReposGroup;
         private CheckBox RetainLogsOnCloseCheck;
         private GroupBox OtherSettingsGroup;
         private NumericUpDown MaxRecentReposNumeric;
@@ -291,5 +295,7 @@ namespace TabbedTortoiseGit
         private CheckedListBox GitActionsCheckList;
         private Label GitActionsLabel;
         private CheckBox RunOnStartupCheck;
+        private CheckBox OpenStartupReposOnReOpenCheck;
+        private ToolTip SettingsToolTip;
     }
 }

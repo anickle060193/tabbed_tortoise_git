@@ -78,7 +78,7 @@ namespace TabbedTortoiseGit
 
                 if( _processes.Count == 0 )
                 {
-                    OpenDefaultRepos();
+                    OpenStartupRepos();
                 }
             }
             base.WndProc( ref m );
@@ -400,11 +400,11 @@ namespace TabbedTortoiseGit
             this.BringToFront();
         }
 
-        private void OpenDefaultRepos()
+        private void OpenStartupRepos()
         {
-            LOG.Debug( "OpenDefaultRepos" );
+            LOG.Debug( nameof( OpenStartupRepos ) );
 
-            foreach( String repo in Settings.Default.DefaultRepos )
+            foreach( String repo in Settings.Default.StartupRepos )
             {
                 if( Git.IsRepo( repo ) )
                 {
