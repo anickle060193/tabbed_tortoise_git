@@ -19,8 +19,8 @@ namespace TabbedTortoiseGit.Properties
         [NoSettingsVersionUpgrade]
         public String FavoritedRepos
         {
-            get { throw new NotSupportedException( "FavoirtedRepos is obsolete." ); }
-            set { throw new NotSupportedException( "FavoirtedRepos is obsolete." ); }
+            get { throw new NotSupportedException( "FavoritedRepos is obsolete." ); }
+            set { throw new NotSupportedException( "FavoritedRepos is obsolete." ); }
         }
 
         public Dictionary<String,String> FavoriteRepos
