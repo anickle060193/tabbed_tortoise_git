@@ -151,5 +151,41 @@ namespace TabbedTortoiseGit.Properties {
                 this["ConfirmOnClose"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("True")]
+        public bool FastSubmoduleUpdateInitChecked {
+            get {
+                return ((bool)(this["FastSubmoduleUpdateInitChecked"]));
+            }
+            set {
+                this["FastSubmoduleUpdateInitChecked"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("True")]
+        public bool FastSubmoduleUpdateRecursiveChecked {
+            get {
+                return ((bool)(this["FastSubmoduleUpdateRecursiveChecked"]));
+            }
+            set {
+                this["FastSubmoduleUpdateRecursiveChecked"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("True")]
+        public bool FastSubmoduleUpdateForceChecked {
+            get {
+                return ((bool)(this["FastSubmoduleUpdateForceChecked"]));
+            }
+            set {
+                this["FastSubmoduleUpdateForceChecked"] = value;
+            }
+        }
     }
 }

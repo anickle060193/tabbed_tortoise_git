@@ -17,33 +17,11 @@ namespace TabbedTortoiseGit
 {
     public partial class FastSubmoduleUpdateForm : Form
     {
-        class SubmoduleRow
-        {
-            public Submodule Submodule { get; private set; }
-            public String Name { get; private set; }
-            public int Progress { get; set; }
-            public bool Checked { get; set; }
-
-            public SubmoduleRow( Submodule s )
-            {
-                Submodule = s;
-                Name = Submodule.Name;
-                Progress = 0;
-                Checked = false;
-            }
-
-            public override string ToString()
-            {
-                return Name;
-            }
-        }
-
         private static readonly ILog LOG = LogManager.GetLogger( typeof( FastSubmoduleUpdateForm ) );
 
         public String Repo { get; private set; }
 
         private readonly Repository _repo;
-        private readonly List<SubmoduleRow> _rows;
 
         public static void UpdateSubmodules( String repo )
         {
@@ -54,35 +32,76 @@ namespace TabbedTortoiseGit
         private FastSubmoduleUpdateForm( String repo )
         {
             InitializeComponent();
+            UpdateFromSettings();
+
             this.Icon = Resources.TortoiseIcon;
 
             Repo = repo;
             _repo = new Repository( repo );
 
-            _rows = new List<SubmoduleRow>();
             foreach( Submodule s in _repo.Submodules )
             {
-                LOG.DebugFormat( "New Row - Name: {0} - Path: {1}", s.Name, s.Path );
-                SubmoduleRow row = new SubmoduleRow( s );
-                _rows.Add( row );
-                SubmoduleCheckList.Items.Add( row );
+                LOG.DebugFormat( "Submodule - {0}", s.Path );
+                SubmoduleCheckList.Items.Add( s.Path );
             }
 
             SetChecked( true );
 
-
             Cancel.Click += ( sender, e ) => this.Close();
             UpdateSubmodulesButton.Click += UpdateSubmodulesButton_Click;
+            SelectModifiedSubmodules.Click += SelectModifiedSubmodules_Click;
             SelectAllSubmodules.Click += ( sender, e ) => SetChecked( true );
             SelectNoneSubmodules.Click += ( sender, e ) => SetChecked( false );
 
             this.Disposed += ( sender, e ) => _repo.Dispose();
         }
 
+        private async void SelectModifiedSubmodules_Click( object sender, EventArgs e )
+        {
+            LOG.DebugFormat( "Select Modified Submodules - Repo: {0}", Repo );
+            String previousText = SelectModifiedSubmodules.Text;
+            SelectModifiedSubmodules.Enabled = false;
+            SelectModifiedSubmodules.Text = "Getting submodule status...";
+
+            UpdateSubmodulesButton.Enabled = false;
+
+            LOG.Debug( "Select Modified Submodules - Get Modified Submodules - Start" );
+            List<String> modifiedSubmodules = await Git.GetModifiedSubmodules( Repo );
+            LOG.Debug( "Select Modified Submodules - Get Modified Submodules - End" );
+
+            SetChecked( false );
+
+            foreach( String submodule in modifiedSubmodules )
+            {
+                int index = SubmoduleCheckList.Items.IndexOf( submodule );
+                if( index != ListBox.NoMatches )
+                {
+                    LOG.DebugFormat( "Select Modified Submodules - Modified Submodule: {0}", submodule );
+                    SubmoduleCheckList.SetItemChecked( index, true );
+                }
+                else
+                {
+                    LOG.ErrorFormat( "Select Modified Submodules - Modified Submodule: {0} - Could not find", submodule );
+                }
+            }
+
+            UpdateSubmodulesButton.Enabled = true;
+            SelectModifiedSubmodules.Enabled = true;
+            SelectModifiedSubmodules.Text = previousText;
+        }
+
         private void UpdateSubmodulesButton_Click( object sender, EventArgs e )
         {
             UpdateSubmodulesButton.Enabled = false;
             UpdateSubmodules();
+        }
+
+        private void UpdateFromSettings()
+        {
+            InitCheck.Checked = Settings.Default.FastSubmoduleUpdateInitChecked;
+            RecursiveCheck.Checked = Settings.Default.FastSubmoduleUpdateRecursiveChecked;
+            ForceCheck.Checked = Settings.Default.FastSubmoduleUpdateForceChecked;
+            LOG.DebugFormat( "UpdateFromSettings - Init: {0} - Recursive: {1} - Force: {2}", InitCheck.Checked, RecursiveCheck.Checked, ForceCheck.Checked );
         }
 
         private void SetChecked( bool value )
@@ -98,8 +117,18 @@ namespace TabbedTortoiseGit
             if( SubmoduleCheckList.CheckedItems.Count > 0 )
             {
                 LOG.DebugFormat( "UpdateSubmodules" );
+
+                bool init = InitCheck.Checked;
+                bool recursive = RecursiveCheck.Checked;
+                bool force = ForceCheck.Checked;
+
+                Settings.Default.FastSubmoduleUpdateInitChecked = init;
+                Settings.Default.FastSubmoduleUpdateRecursiveChecked = recursive;
+                Settings.Default.FastSubmoduleUpdateForceChecked = force;
+                Settings.Default.Save();
+
                 this.Close();
-                var processes = SubmoduleCheckList.CheckedItems.Cast<SubmoduleRow>().Select( row => UpdateSubmodule( Repo, row.Submodule.Path ) );
+                var processes = SubmoduleCheckList.CheckedItems.Cast<String>().Select( submodule => UpdateSubmodule( Repo, submodule, init, recursive, force ) );
                 ProcessProgressForm.ShowProgress( Repo + " - Fast Submodule Update", "Submodule Update Completed", processes );
             }
             else
@@ -109,11 +138,26 @@ namespace TabbedTortoiseGit
             }
         }
 
-        public Process UpdateSubmodule( String repoPath, String submodulePath )
+        public Process UpdateSubmodule( String repoPath, String submodulePath, bool init, bool recursive, bool force )
         {
+            StringBuilder args = new StringBuilder( "submodule update " );
+            if( init )
+            {
+                args.Append( "--init " );
+            }
+            if( recursive )
+            {
+                args.Append( "--recursive " );
+            }
+            if( force )
+            {
+                args.Append( "--force " );
+            }
+            args.AppendFormat( "-- \"{0}\"", submodulePath );
+
             Process p = new Process();
             p.StartInfo.FileName = "git.exe";
-            p.StartInfo.Arguments = "submodule update --init --recursive --force -- \"{0}\"".XFormat( submodulePath );
+            p.StartInfo.Arguments = args.ToString();
             p.StartInfo.WorkingDirectory = repoPath;
 
             LOG.DebugFormat( "UpdateSubmodule - Filename: {0} - Arguments: {1} - Working Directory: {2}", p.StartInfo.FileName, p.StartInfo.Arguments, p.StartInfo.WorkingDirectory );
