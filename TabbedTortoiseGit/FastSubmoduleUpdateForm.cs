@@ -64,28 +64,40 @@ namespace TabbedTortoiseGit
             SelectModifiedSubmodules.Text = "Getting submodule status...";
 
             UpdateSubmodulesButton.Enabled = false;
+            SelectAllSubmodules.Enabled = false;
+            SelectNoneSubmodules.Enabled = false;
 
-            LOG.Debug( "Select Modified Submodules - Get Modified Submodules - Start" );
-            List<String> modifiedSubmodules = await Git.GetModifiedSubmodules( Repo );
-            LOG.Debug( "Select Modified Submodules - Get Modified Submodules - End" );
-
-            SetChecked( false );
-
-            foreach( String submodule in modifiedSubmodules )
+            try
             {
-                int index = SubmoduleCheckList.Items.IndexOf( submodule );
-                if( index != ListBox.NoMatches )
+                LOG.Debug( "Select Modified Submodules - Get Modified Submodules - Start" );
+                List<String> modifiedSubmodules = await Git.GetModifiedSubmodules( Repo );
+                LOG.Debug( "Select Modified Submodules - Get Modified Submodules - End" );
+
+                SetChecked( false );
+
+                foreach( String submodule in modifiedSubmodules )
                 {
-                    LOG.DebugFormat( "Select Modified Submodules - Modified Submodule: {0}", submodule );
-                    SubmoduleCheckList.SetItemChecked( index, true );
+                    int index = SubmoduleCheckList.Items.IndexOf( submodule );
+                    if( index != ListBox.NoMatches )
+                    {
+                        LOG.DebugFormat( "Select Modified Submodules - Modified Submodule: {0}", submodule );
+                        SubmoduleCheckList.SetItemChecked( index, true );
+                    }
+                    else
+                    {
+                        LOG.ErrorFormat( "Select Modified Submodules - Modified Submodule: {0} - Could not find", submodule );
+                    }
                 }
-                else
-                {
-                    LOG.ErrorFormat( "Select Modified Submodules - Modified Submodule: {0} - Could not find", submodule );
-                }
+            }
+            catch( Exception ex )
+            {
+                LOG.Error( "An error occured while selecting modified submodules", ex );
             }
 
             UpdateSubmodulesButton.Enabled = true;
+            SelectAllSubmodules.Enabled = true;
+            SelectNoneSubmodules.Enabled = true;
+
             SelectModifiedSubmodules.Enabled = true;
             SelectModifiedSubmodules.Text = previousText;
         }
