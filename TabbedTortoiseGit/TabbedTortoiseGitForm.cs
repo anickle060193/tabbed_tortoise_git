@@ -75,13 +75,11 @@ namespace TabbedTortoiseGit
             if( m.Msg == Native.WM_SHOWME )
             {
                 ShowMe();
-
-                if( _processes.Count == 0 )
-                {
-                    OpenStartupRepos();
-                }
             }
-            base.WndProc( ref m );
+            else
+            {
+                base.WndProc( ref m );
+            }
         }
 
         private void UpdateFromSettings()
@@ -262,7 +260,7 @@ namespace TabbedTortoiseGit
             return Settings.Default.FavoriteRepos.ContainsValue( repo );
         }
 
-        private async void OpenLog( String path )
+        private async Task OpenLog( String path )
         {
             AddToRecentRepos( path );
 
@@ -370,7 +368,7 @@ namespace TabbedTortoiseGit
             }
         }
 
-        private void FindRepo()
+        private async Task FindRepo()
         {
             LOG.Debug( "FindRepo" );
 
@@ -385,7 +383,7 @@ namespace TabbedTortoiseGit
                 else
                 {
                     LOG.DebugFormat( "FindRepo - Opening repo: {0}", path );
-                    OpenLog( path );
+                    await OpenLog( path );
                 }
             }
         }
@@ -400,7 +398,7 @@ namespace TabbedTortoiseGit
             this.BringToFront();
         }
 
-        private void OpenStartupRepos()
+        private async Task OpenStartupRepos()
         {
             LOG.Debug( nameof( OpenStartupRepos ) );
 
@@ -408,7 +406,7 @@ namespace TabbedTortoiseGit
             {
                 if( Git.IsRepo( repo ) )
                 {
-                    OpenLog( repo );
+                    await OpenLog( repo );
                 }
             }
         }

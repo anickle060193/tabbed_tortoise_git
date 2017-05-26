@@ -46,13 +46,13 @@ namespace TabbedTortoiseGit
             ExitNotifyIconMenuItem.Click += ExitMenuItem_Click;
         }
 
-        private void TabbedTortoiseGitForm_Load( object sender, EventArgs e )
+        private async void TabbedTortoiseGitForm_Load( object sender, EventArgs e )
         {
             UpdateFromSettings();
 
             if( !_startup )
             {
-                OpenStartupRepos();
+                await OpenStartupRepos();
             }
         }
 
@@ -108,9 +108,9 @@ namespace TabbedTortoiseGit
             RemoveLog( p );
         }
 
-        private void LogTabs_NewTabClicked( object sender, EventArgs e )
+        private async void LogTabs_NewTabClicked( object sender, EventArgs e )
         {
-            FindRepo();
+            await FindRepo();
         }
 
         private void LogTabs_TabClosed( object sender, TabClosedEventArgs e )
@@ -146,16 +146,16 @@ namespace TabbedTortoiseGit
             }
         }
 
-        private void FavoritedRepoMenuItem_Click( object sender, EventArgs e )
+        private async void FavoritedRepoMenuItem_Click( object sender, EventArgs e )
         {
             ToolStripItem item = (ToolStripItem)sender;
             String repo = (String)item.Tag;
-            OpenLog( repo );
+            await OpenLog( repo );
         }
 
-        private void OpenRepoMenuItem_Click( object sender, EventArgs e )
+        private async void OpenRepoMenuItem_Click( object sender, EventArgs e )
         {
-            FindRepo();
+            await FindRepo();
         }
 
         private void SettingsMenuItem_Click( object sender, EventArgs e )
@@ -172,10 +172,10 @@ namespace TabbedTortoiseGit
             AboutBox.ShowAbout();
         }
 
-        private void RecentRepoMenuItem_Click( object sender, EventArgs e )
+        private async void RecentRepoMenuItem_Click( object sender, EventArgs e )
         {
             ToolStripItem item = (ToolStripItem)sender;
-            OpenLog( item.Text );
+            await OpenLog( item.Text );
         }
 
         private void ExitMenuItem_Click( object sender, EventArgs e )
@@ -198,25 +198,25 @@ namespace TabbedTortoiseGit
             LogTabs.Invoke( (Func<Process, String, Task>)AddNewLog, p, repo );
         }
 
-        private void NotifyIcon_DoubleClick( object sender, EventArgs e )
+        private async void NotifyIcon_DoubleClick( object sender, EventArgs e )
         {
             this.ShowMe();
 
             if( Settings.Default.OpenStartupReposOnReOpen
              && !Settings.Default.RetainLogsOnClose )
             {
-                OpenStartupRepos();
+                await OpenStartupRepos();
             }
         }
 
-        private void OpenNotifyIconMenuItem_Click( object sender, EventArgs e )
+        private async void OpenNotifyIconMenuItem_Click( object sender, EventArgs e )
         {
             this.ShowMe();
 
             if( Settings.Default.OpenStartupReposOnReOpen
              && !Settings.Default.RetainLogsOnClose )
             {
-                OpenStartupRepos();
+                await OpenStartupRepos();
             }
         }
 
