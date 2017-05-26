@@ -75,11 +75,19 @@ namespace TabbedTortoiseGit
             if( m.Msg == Native.WM_SHOWME )
             {
                 ShowMe();
+                return;
             }
-            else
+
+            if( m.Msg == KeyHook.WM_HOTKEY )
             {
-                base.WndProc( ref m );
+                if( m.WParam.ToInt32() == KeyHook.HOTKEY_NEW_TAB )
+                {
+                    FindRepo();
+                    return;
+                }
             }
+
+            base.WndProc( ref m );
         }
 
         private void UpdateFromSettings()
@@ -294,6 +302,7 @@ namespace TabbedTortoiseGit
             t.Tag = new TabTag( p, path );
             _tabs.Add( p.Id, t );
 
+            KeyHook.RegisterNewTabHotKey( p.MainWindowHandle );
             Native.RemoveBorder( p.MainWindowHandle );
             Native.SetWindowParent( p.MainWindowHandle, t );
             ResizeTab( p, t );

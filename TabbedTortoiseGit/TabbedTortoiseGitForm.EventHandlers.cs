@@ -54,6 +54,8 @@ namespace TabbedTortoiseGit
             {
                 await OpenStartupRepos();
             }
+
+            KeyHook.RegisterNewTabHotKey( this.Handle );
         }
 
         private void TabbedTortoiseGitForm_ResizeEnd( object sender, EventArgs e )
