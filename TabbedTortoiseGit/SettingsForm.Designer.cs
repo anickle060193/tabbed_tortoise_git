@@ -37,6 +37,7 @@ namespace TabbedTortoiseGit
             this.Cancel = new System.Windows.Forms.Button();
             this.RemoveDefaultRepo = new System.Windows.Forms.Button();
             this.StartupReposGroup = new System.Windows.Forms.GroupBox();
+            this.OpenStartupReposOnReOpenCheck = new System.Windows.Forms.CheckBox();
             this.RetainLogsOnCloseCheck = new System.Windows.Forms.CheckBox();
             this.OtherSettingsGroup = new System.Windows.Forms.GroupBox();
             this.RunOnStartupCheck = new System.Windows.Forms.CheckBox();
@@ -46,7 +47,6 @@ namespace TabbedTortoiseGit
             this.TabContextMenuGitActionsGroup = new System.Windows.Forms.GroupBox();
             this.GitActionsLabel = new System.Windows.Forms.Label();
             this.GitActionsCheckList = new System.Windows.Forms.CheckedListBox();
-            this.OpenStartupReposOnReOpenCheck = new System.Windows.Forms.CheckBox();
             this.SettingsToolTip = new System.Windows.Forms.ToolTip(this.components);
             this.StartupReposGroup.SuspendLayout();
             this.OtherSettingsGroup.SuspendLayout();
@@ -123,6 +123,18 @@ namespace TabbedTortoiseGit
             this.StartupReposGroup.TabIndex = 6;
             this.StartupReposGroup.TabStop = false;
             this.StartupReposGroup.Text = "Startup Repos";
+            // 
+            // OpenStartupReposOnReOpenCheck
+            // 
+            this.OpenStartupReposOnReOpenCheck.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.OpenStartupReposOnReOpenCheck.AutoSize = true;
+            this.OpenStartupReposOnReOpenCheck.Location = new System.Drawing.Point(6, 175);
+            this.OpenStartupReposOnReOpenCheck.Name = "OpenStartupReposOnReOpenCheck";
+            this.OpenStartupReposOnReOpenCheck.Size = new System.Drawing.Size(277, 17);
+            this.OpenStartupReposOnReOpenCheck.TabIndex = 6;
+            this.OpenStartupReposOnReOpenCheck.Text = "Open Startup Repos when re-opened from Task Tray";
+            this.SettingsToolTip.SetToolTip(this.OpenStartupReposOnReOpenCheck, "Only valid when \"Retain Logs on Close\" is disabled.");
+            this.OpenStartupReposOnReOpenCheck.UseVisualStyleBackColor = true;
             // 
             // RetainLogsOnCloseCheck
             // 
@@ -226,7 +238,6 @@ namespace TabbedTortoiseGit
             this.GitActionsCheckList.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.GitActionsCheckList.CheckOnClick = true;
             this.GitActionsCheckList.FormattingEnabled = true;
             this.GitActionsCheckList.IntegralHeight = false;
             this.GitActionsCheckList.Location = new System.Drawing.Point(6, 19);
@@ -234,18 +245,6 @@ namespace TabbedTortoiseGit
             this.GitActionsCheckList.Size = new System.Drawing.Size(368, 144);
             this.GitActionsCheckList.TabIndex = 0;
             this.SettingsToolTip.SetToolTip(this.GitActionsCheckList, "Only valid when \"Retain Logs on Close\" is disabled.\r\n");
-            // 
-            // OpenStartupReposOnReOpenCheck
-            // 
-            this.OpenStartupReposOnReOpenCheck.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.OpenStartupReposOnReOpenCheck.AutoSize = true;
-            this.OpenStartupReposOnReOpenCheck.Location = new System.Drawing.Point(6, 175);
-            this.OpenStartupReposOnReOpenCheck.Name = "OpenStartupReposOnReOpenCheck";
-            this.OpenStartupReposOnReOpenCheck.Size = new System.Drawing.Size(277, 17);
-            this.OpenStartupReposOnReOpenCheck.TabIndex = 6;
-            this.OpenStartupReposOnReOpenCheck.Text = "Open Startup Repos when re-opened from Task Tray";
-            this.SettingsToolTip.SetToolTip(this.OpenStartupReposOnReOpenCheck, "Only valid when \"Retain Logs on Close\" is disabled.");
-            this.OpenStartupReposOnReOpenCheck.UseVisualStyleBackColor = true;
             // 
             // SettingsForm
             // 
