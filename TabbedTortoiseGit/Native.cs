@@ -11,13 +11,46 @@ namespace TabbedTortoiseGit
 {
     static class Native
     {
-        public static readonly int GWL_WNDPROC = -4;
-        public static readonly int GWL_HINSTANCE = -6;
-        public static readonly int GWL_HWNDPARENT = -8;
-        public static readonly int GWL_STYLE = -16;
-        public static readonly int GWL_EXSTYLE = -20;
-        public static readonly int GWL_USERDATA = -21;
-        public static readonly int GWL_ID = -12;
+        public static class WindowMessage
+        {
+            public const int NCHITTEST = 0x0084;
+        }
+
+        public static class HitTestValues
+        {
+            public const int ERROR = -2;
+            public const int TRANSPARENT = -1;
+            public const int NOWHERE = 0;
+            public const int CLIENT = 1;
+            public const int CAPTION = 2;
+            public const int SYSMENU = 3;
+            public const int GROWBOX = 4;
+            public const int MENU = 5;
+            public const int HSCROLL = 6;
+            public const int VSCROLL = 7;
+            public const int MINBUTTON = 8;
+            public const int MAXBUTTON = 9;
+            public const int LEFT = 10;
+            public const int RIGHT = 11;
+            public const int TOP = 12;
+            public const int TOPLEFT = 13;
+            public const int TOPRIGHT = 14;
+            public const int BOTTOM = 15;
+            public const int BOTTOMLEFT = 16;
+            public const int BOTTOMRIGHT = 17;
+            public const int BORDER = 18;
+            public const int OBJECT = 19;
+            public const int CLOSE = 20;
+            public const int HELP = 21;
+        }
+
+        public const int GWL_WNDPROC = -4;
+        public const int GWL_HINSTANCE = -6;
+        public const int GWL_HWNDPARENT = -8;
+        public const int GWL_STYLE = -16;
+        public const int GWL_EXSTYLE = -20;
+        public const int GWL_USERDATA = -21;
+        public const int GWL_ID = -12;
 
         public const uint WS_OVERLAPPED = 0x00000000;
         public const uint WS_POPUP = 0x80000000;

@@ -211,5 +211,17 @@ namespace TabbedTortoiseGit.Properties {
                 this["OpenStartupReposOnReOpen"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public bool FastSubmoduleUpdateShowOnlyModifiedSubmodulesChecked {
+            get {
+                return ((bool)(this["FastSubmoduleUpdateShowOnlyModifiedSubmodulesChecked"]));
+            }
+            set {
+                this["FastSubmoduleUpdateShowOnlyModifiedSubmodulesChecked"] = value;
+            }
+        }
     }
 }

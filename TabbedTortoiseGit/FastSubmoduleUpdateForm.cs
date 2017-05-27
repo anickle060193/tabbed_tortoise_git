@@ -19,9 +19,11 @@ namespace TabbedTortoiseGit
     {
         private static readonly ILog LOG = LogManager.GetLogger( typeof( FastSubmoduleUpdateForm ) );
 
-        public String Repo { get; private set; }
+        private readonly List<String> _submodules;
+        private readonly Dictionary<String, bool> _checkedSubmodules;
+        private List<String> _modifiedSubmodules;
 
-        private readonly Repository _repo;
+        public String Repo { get; private set; }
 
         public static void UpdateSubmodules( String repo )
         {
@@ -37,45 +39,142 @@ namespace TabbedTortoiseGit
             this.Icon = Resources.TortoiseIcon;
 
             Repo = repo;
-            _repo = new Repository( repo );
 
-            foreach( Submodule s in _repo.Submodules )
+            using( Repository r = new Repository( Repo ) )
             {
-                LOG.DebugFormat( "Submodule - {0}", s.Path );
-                SubmoduleCheckList.Items.Add( s.Path );
+                _submodules = new List<String>();
+                _checkedSubmodules = new Dictionary<String, bool>();
+
+                foreach( Submodule s in r.Submodules )
+                {
+                    LOG.DebugFormat( "Submodule - {0}", s.Path );
+                    _submodules.Add( s.Path );
+                    _checkedSubmodules[ s.Path ] = true;
+                    SubmoduleCheckList.Items.Add( s.Path );
+                }
             }
 
-            SetChecked( true );
+            UpdateChecked();
 
-            Cancel.Click += ( sender, e ) => this.Close();
+            this.Load += FastSubmoduleUpdateForm_Load;
+            Cancel.Click += Cancel_Click;
+            SubmoduleCheckList.ItemCheck += SubmoduleCheckList_ItemCheck;
             UpdateSubmodulesButton.Click += UpdateSubmodulesButton_Click;
             SelectModifiedSubmodules.Click += SelectModifiedSubmodules_Click;
-            SelectAllSubmodules.Click += ( sender, e ) => SetChecked( true );
-            SelectNoneSubmodules.Click += ( sender, e ) => SetChecked( false );
-
-            this.Disposed += ( sender, e ) => _repo.Dispose();
+            SelectAllSubmodules.Click += SelectAllSubmodules_Click;
+            SelectNoneSubmodules.Click += SelectNoneSubmodules_Click;
+            ShowModifiedSubmodulesOnlyCheck.CheckedChanged += ShowModifiedSubmodulesOnlyCheck_CheckedChanged;
+            InitCheck.CheckedChanged += InitCheck_CheckedChanged;
+            RecursiveCheck.CheckedChanged += RecursiveCheck_CheckedChanged;
+            ForceCheck.CheckedChanged += ForceCheck_CheckedChanged;
         }
 
-        private async void SelectModifiedSubmodules_Click( object sender, EventArgs e )
+        protected override void WndProc( ref Message m )
         {
-            LOG.DebugFormat( "Select Modified Submodules - Repo: {0}", Repo );
-            String previousText = SelectModifiedSubmodules.Text;
-            SelectModifiedSubmodules.Enabled = false;
-            SelectModifiedSubmodules.Text = "Getting submodule status...";
+            base.WndProc( ref m );
 
-            UpdateSubmodulesButton.Enabled = false;
-            SelectAllSubmodules.Enabled = false;
-            SelectNoneSubmodules.Enabled = false;
+            if( m.Msg == Native.WindowMessage.NCHITTEST )
+            {
+                switch( m.Result.ToInt32() )
+                {
+                    case Native.HitTestValues.LEFT:
+                    case Native.HitTestValues.RIGHT:
+                        m.Result = new IntPtr( Native.HitTestValues.CAPTION );
+                        break;
 
+                    case Native.HitTestValues.TOPLEFT:
+                    case Native.HitTestValues.TOPRIGHT:
+                        m.Result = new IntPtr( Native.HitTestValues.TOP );
+                        break;
+
+                    case Native.HitTestValues.BOTTOMLEFT:
+                    case Native.HitTestValues.BOTTOMRIGHT:
+                        m.Result = new IntPtr( Native.HitTestValues.BOTTOM );
+                        break;
+                }
+            }
+        }
+
+        private async void FastSubmoduleUpdateForm_Load( object sender, EventArgs e )
+        {
+            LOG.Debug( "Load" );
+
+            LOG.Debug( "Load - Get Modified Submodules - Start" );
             try
             {
-                LOG.Debug( "Select Modified Submodules - Get Modified Submodules - Start" );
-                List<String> modifiedSubmodules = await Git.GetModifiedSubmodules( Repo );
-                LOG.Debug( "Select Modified Submodules - Get Modified Submodules - End" );
+                _modifiedSubmodules = await Git.GetModifiedSubmodules( Repo );
+            }
+            catch( Exception ex )
+            {
+                LOG.Error( "An error occured while retrieving modified submodules.", ex );
+            }
+            LOG.Debug( "Load - Get Modified Submodules - End" );
 
+            SelectModifiedSubmodules.Text = "Select Modified Submodules";
+            SelectModifiedSubmodules.Enabled = true;
+            ShowModifiedSubmodulesOnlyCheck.Enabled = true;
+
+            UpdateSubmoduleList();
+        }
+
+        private void Cancel_Click( object sender, EventArgs e )
+        {
+            this.Close();
+        }
+
+        private void SubmoduleCheckList_ItemCheck( object sender, ItemCheckEventArgs e )
+        {
+            String submodule = (String)SubmoduleCheckList.Items[ e.Index ];
+            _checkedSubmodules[ submodule ] = e.NewValue == CheckState.Checked;
+
+            SubmoduleCheckList.BeginInvoke( (Action)UpdateSubmoduleUpdateButton );
+        }
+
+        private void SelectNoneSubmodules_Click( object sender, EventArgs e )
+        {
+            SetChecked( false );
+        }
+
+        private void SelectAllSubmodules_Click( object sender, EventArgs e )
+        {
+            SetChecked( true );
+        }
+
+        private void ShowModifiedSubmodulesOnlyCheck_CheckedChanged( object sender, EventArgs e )
+        {
+            Settings.Default.FastSubmoduleUpdateShowOnlyModifiedSubmodulesChecked = ShowModifiedSubmodulesOnlyCheck.Checked;
+            Settings.Default.Save();
+
+            UpdateSubmoduleList();
+        }
+
+        private void InitCheck_CheckedChanged( object sender, EventArgs e )
+        {
+            Settings.Default.FastSubmoduleUpdateInitChecked = InitCheck.Checked;
+            Settings.Default.Save();
+        }
+
+        private void RecursiveCheck_CheckedChanged( object sender, EventArgs e )
+        {
+            Settings.Default.FastSubmoduleUpdateRecursiveChecked = RecursiveCheck.Checked;
+            Settings.Default.Save();
+        }
+
+        private void ForceCheck_CheckedChanged( object sender, EventArgs e )
+        {
+            Settings.Default.FastSubmoduleUpdateForceChecked = ForceCheck.Checked;
+            Settings.Default.Save();
+        }
+
+        private void SelectModifiedSubmodules_Click( object sender, EventArgs e )
+        {
+            LOG.DebugFormat( "Select Modified Submodules - Repo: {0}", Repo );
+
+            if( _modifiedSubmodules != null )
+            {
                 SetChecked( false );
 
-                foreach( String submodule in modifiedSubmodules )
+                foreach( String submodule in _modifiedSubmodules )
                 {
                     int index = SubmoduleCheckList.Items.IndexOf( submodule );
                     if( index != ListBox.NoMatches )
@@ -89,17 +188,10 @@ namespace TabbedTortoiseGit
                     }
                 }
             }
-            catch( Exception ex )
+            else
             {
-                LOG.Error( "An error occured while selecting modified submodules", ex );
+                LOG.Error( "Select Modified Submodules - Modified Submodules == null" );
             }
-
-            UpdateSubmodulesButton.Enabled = true;
-            SelectAllSubmodules.Enabled = true;
-            SelectNoneSubmodules.Enabled = true;
-
-            SelectModifiedSubmodules.Enabled = true;
-            SelectModifiedSubmodules.Text = previousText;
         }
 
         private void UpdateSubmodulesButton_Click( object sender, EventArgs e )
@@ -114,14 +206,57 @@ namespace TabbedTortoiseGit
             RecursiveCheck.Checked = Settings.Default.FastSubmoduleUpdateRecursiveChecked;
             ForceCheck.Checked = Settings.Default.FastSubmoduleUpdateForceChecked;
             MaxProcessCountNumeric.Value = Settings.Default.FastSubmoduleUpdateMaxProcesses;
+            ShowModifiedSubmodulesOnlyCheck.Checked = Settings.Default.FastSubmoduleUpdateShowOnlyModifiedSubmodulesChecked;
         }
 
         private void SetChecked( bool value )
         {
-            for( int i = 0; i < SubmoduleCheckList.Items.Count; i++ )
+            foreach( String key in _checkedSubmodules.Keys.ToList() )
             {
-                SubmoduleCheckList.SetItemChecked( i, value );
+                _checkedSubmodules[ key ] = value;
             }
+            UpdateChecked();
+        }
+
+        private void UpdateChecked()
+        {
+            List<String> submodules = SubmoduleCheckList.Items.Cast<String>().ToList();
+            foreach( var s in submodules.Select( ( submodule, i ) => new { Submodule = submodule, Index = i } ) )
+            {
+                SubmoduleCheckList.SetItemChecked( s.Index, _checkedSubmodules[ s.Submodule ] );
+            }
+            UpdateSubmoduleUpdateButton();
+        }
+
+        private void UpdateSubmoduleUpdateButton()
+        {
+            if( SubmoduleCheckList.CheckedItems.Count == 0 )
+            {
+                UpdateSubmodulesButton.Enabled = false;
+            }
+            else
+            {
+                UpdateSubmodulesButton.Enabled = true;
+            }
+        }
+
+        private void UpdateSubmoduleList()
+        {
+            List<String> checkedSubmodules = SubmoduleCheckList.CheckedItems.Cast<String>().ToList();
+
+            SubmoduleCheckList.Items.Clear();
+
+            if( ShowModifiedSubmodulesOnlyCheck.Checked
+             && _modifiedSubmodules != null )
+            {
+                SubmoduleCheckList.Items.AddRange( _modifiedSubmodules.ToArray() );
+            }
+            else
+            {
+                SubmoduleCheckList.Items.AddRange( _submodules.ToArray() );
+            }
+
+            UpdateChecked();
         }
 
         private void UpdateSubmodules()
@@ -141,8 +276,9 @@ namespace TabbedTortoiseGit
                 Settings.Default.FastSubmoduleUpdateMaxProcesses = maxProcesses;
                 Settings.Default.Save();
 
+                List<String> checkedSubmodules = SubmoduleCheckList.CheckedItems.Cast<String>().ToList();
                 this.Close();
-                var processes = SubmoduleCheckList.CheckedItems.Cast<String>().Select( submodule => UpdateSubmodule( Repo, submodule, init, recursive, force ) );
+                var processes = checkedSubmodules.Select( submodule => CreateUpdateSubmoduleProcess( Repo, submodule, init, recursive, force ) );
                 ProcessProgressForm.ShowProgress( Repo + " - Fast Submodule Update", "Submodule Update Completed", processes, maxProcesses );
             }
             else
@@ -152,7 +288,7 @@ namespace TabbedTortoiseGit
             }
         }
 
-        public Process UpdateSubmodule( String repoPath, String submodulePath, bool init, bool recursive, bool force )
+        public Process CreateUpdateSubmoduleProcess( String repoPath, String submodulePath, bool init, bool recursive, bool force )
         {
             StringBuilder args = new StringBuilder( "submodule update " );
             if( init )
