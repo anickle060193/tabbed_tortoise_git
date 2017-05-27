@@ -15,6 +15,15 @@ namespace TabbedTortoiseGit
 {
     partial class AboutBox : Form
     {
+        private static readonly ILog LOG = LogManager.GetLogger( typeof( AboutBox ) );
+
+        public static void ShowAbout()
+        {
+            new AboutBox().ShowDialog();
+        }
+
+        private String _updateUrl;
+
         public AboutBox()
         {
             InitializeComponent();
@@ -23,13 +32,36 @@ namespace TabbedTortoiseGit
             this.VersionLabel.Text = String.Format( "Version {0}", AssemblyVersion );
             this.DescriptionText.Text = AssemblyDescription;
 
+            this.Load += AboutBox_Load;
+
+            UpdateButton.Click += UpdateButton_Click;
             ViewGithub.Click += ViewGithub_Click;
             OpenDebugLog.Click += OpenDebugLog_Click;
         }
 
-        public static void ShowAbout()
+        private async void AboutBox_Load( object sender, EventArgs e )
         {
-            new AboutBox().ShowDialog();
+            UpdateCheck versionCheck = await TTG.IsUpToDate();
+            if( versionCheck != null )
+            {
+                _updateUrl = versionCheck.UpdateUrl;
+
+                LOG.DebugFormat( "Newer Version Available - New: {0} - Current: {1}", versionCheck.NewerVersion, AssemblyVersion );
+
+                UpdateCheckLabel.Text = "Version {0} is available.".XFormat( versionCheck.NewerVersion );
+                UpdateButton.Enabled = true;
+            }
+            else
+            {
+                UpdateCheckLabel.Text = AssemblyTitle + " is up to date.";
+                LOG.DebugFormat( "Update to Date - Version: {0}", AssemblyVersion );
+            }
+        }
+
+        private void UpdateButton_Click( object sender, EventArgs e )
+        {
+            LOG.DebugFormat( "Updating - Url: {0}", _updateUrl );
+            Process.Start( _updateUrl );
         }
 
         private void ViewGithub_Click( object sender, EventArgs e )
@@ -69,7 +101,7 @@ namespace TabbedTortoiseGit
         {
             get
             {
-                return Assembly.GetExecutingAssembly().GetName().Version.ToString();
+                return Assembly.GetExecutingAssembly().GetName().Version.ToString( 3 );
             }
         }
 
