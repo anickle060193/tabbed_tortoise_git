@@ -35,6 +35,7 @@
             this.Cancel = new System.Windows.Forms.Button();
             this.MaxProcessesLabel = new System.Windows.Forms.Label();
             this.MaxProcessesNumeric = new System.Windows.Forms.NumericUpDown();
+            this.ShowProgressCheck = new System.Windows.Forms.CheckBox();
             this.OptionsGroup.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.MaxProcessesNumeric)).BeginInit();
             this.SuspendLayout();
@@ -43,6 +44,7 @@
             // 
             this.OptionsGroup.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
+            this.OptionsGroup.Controls.Add(this.ShowProgressCheck);
             this.OptionsGroup.Controls.Add(this.MaxProcessesNumeric);
             this.OptionsGroup.Controls.Add(this.MaxProcessesLabel);
             this.OptionsGroup.Controls.Add(this.PruneCheck);
@@ -126,6 +128,16 @@
             0,
             0});
             // 
+            // ShowProgressCheck
+            // 
+            this.ShowProgressCheck.AutoSize = true;
+            this.ShowProgressCheck.Location = new System.Drawing.Point(127, 19);
+            this.ShowProgressCheck.Name = "ShowProgressCheck";
+            this.ShowProgressCheck.Size = new System.Drawing.Size(97, 17);
+            this.ShowProgressCheck.TabIndex = 4;
+            this.ShowProgressCheck.Text = "Show Progress";
+            this.ShowProgressCheck.UseVisualStyleBackColor = true;
+            // 
             // FastFetchDialog
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -156,5 +168,6 @@
         private System.Windows.Forms.Button Cancel;
         private System.Windows.Forms.NumericUpDown MaxProcessesNumeric;
         private System.Windows.Forms.Label MaxProcessesLabel;
+        private System.Windows.Forms.CheckBox ShowProgressCheck;
     }
 }

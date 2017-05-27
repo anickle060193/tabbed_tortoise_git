@@ -16,9 +16,9 @@ using TabbedTortoiseGit.Properties;
 
 namespace TabbedTortoiseGit
 {
-    public partial class ProcessProgressForm : Form
+    public partial class ProcessProgressDialog : Form
     {
-        private static readonly ILog LOG = LogManager.GetLogger( typeof( ProcessProgressForm ) );
+        private static readonly ILog LOG = LogManager.GetLogger( typeof( ProcessProgressDialog ) );
 
         private static readonly Regex NEWLINE_REGEX = new Regex( "[\r\n]+" );
 
@@ -37,16 +37,45 @@ namespace TabbedTortoiseGit
         }
 
         public String CompletedText { get; set; }
-
         public int MaxProcesses { get; set; }
+        public Color CommandTextColor { get; set; }
+        public Color ErrorTextColor { get; set; }
+        public Color CompletedTextColor { get; set; }
+        public Color CancelledTextColor { get; set; }
 
         public static void ShowProgress( String title, String completedText, IEnumerable<Process> processes, int maxProcesses )
         {
+            ShowProgress( title, completedText, processes, maxProcesses, null );
+        }
+
+        public static void ShowProgress( String title, String completedText, IEnumerable<Process> processes, int maxProcesses, ProcessProgressOptions options )
+        {
             LOG.DebugFormat( "ShowProgress - Title: {0} - Completed Text: {1}", title, completedText );
-            ProcessProgressForm f = new ProcessProgressForm();
+            ProcessProgressDialog f = new ProcessProgressDialog();
             f.Title = title;
             f.CompletedText = completedText;
             f.MaxProcesses = maxProcesses;
+
+            if( options != null )
+            {
+                if( options.CommandTextColor != Color.Empty )
+                {
+                    f.CommandTextColor = options.CommandTextColor;
+                }
+                if( options.ErrorTextColor != Color.Empty )
+                {
+                    f.ErrorTextColor = options.ErrorTextColor;
+                }
+                if( options.CompletedTextColor != Color.Empty )
+                {
+                    f.CompletedTextColor = options.CompletedTextColor;
+                }
+                if( options.CancelledTextColor != Color.Empty )
+                {
+                    f.CancelledTextColor = options.CancelledTextColor;
+                }
+            }
+
             foreach( Process p in processes )
             {
                 f.AddProcess( p );
@@ -54,12 +83,17 @@ namespace TabbedTortoiseGit
             f.ShowDialog();
         }
 
-        private ProcessProgressForm()
+        private ProcessProgressDialog()
         {
             InitializeComponent();
             this.Icon = Resources.TortoiseIcon;
 
             MaxProcesses = 6;
+
+            CommandTextColor = Color.Green;
+            ErrorTextColor = Color.DarkRed;
+            CompletedTextColor = Color.Blue;
+            CancelledTextColor = Color.DarkBlue;
 
             _cancel = false;
 
@@ -123,11 +157,11 @@ namespace TabbedTortoiseGit
             _completed = true;
             if( !_cancel )
             {
-                LogOutput( Environment.NewLine + this.CompletedText, Color.Blue );
+                LogOutput( Environment.NewLine + this.CompletedText, CompletedTextColor );
             }
             else
             {
-                LogOutput( Environment.NewLine + "Cancelled", Color.DarkBlue );
+                LogOutput( Environment.NewLine + "Cancelled", CancelledTextColor );
             }
             Cancel.Text = "Close";
             Cancel.Enabled = true;
@@ -140,7 +174,7 @@ namespace TabbedTortoiseGit
                 _cancel = true;
                 Cancel.Enabled = false;
                 Cancel.Text = "Cancelling...";
-                LogOutput( "Cancelling! Waiting on remaining tasks to finish...", Color.DarkBlue );
+                LogOutput( "Cancelling! Waiting on remaining tasks to finish...", CancelledTextColor );
             }
         }
 
@@ -162,7 +196,7 @@ namespace TabbedTortoiseGit
                 if( _processes.TryDequeue( out p ) )
                 {
                     LOG.DebugFormat( "RunProcesses - Filename: {0} - Arguments: {1} - Working Directory: {2}", p.StartInfo.FileName, p.StartInfo.Arguments, p.StartInfo.WorkingDirectory );
-                    Output.Invoke( (Action<String, Color>)LogOutput, "{0} {1}".XFormat( p.StartInfo.FileName, p.StartInfo.Arguments ), Color.Green );
+                    Output.Invoke( (Action<String, Color>)LogOutput, "{0} {1}".XFormat( p.StartInfo.FileName, p.StartInfo.Arguments ), CommandTextColor );
                     p.Start();
                     _runningProcesses[ p.Id ] = p;
                     p.BeginOutputReadLine();
@@ -205,7 +239,7 @@ namespace TabbedTortoiseGit
 
         private void Process_ErrorDataReceived( object sender, DataReceivedEventArgs e )
         {
-            Output.Invoke( (Action<String, Color>)LogOutput, e.Data, Color.Red );
+            Output.Invoke( (Action<String, Color>)LogOutput, e.Data, ErrorTextColor );
         }
 
         private void Process_Exited( object sender, EventArgs e )
@@ -217,5 +251,13 @@ namespace TabbedTortoiseGit
                 LOG.ErrorFormat( "Process_Exited - Failed to remove running process - Process ID: {0}", p.Id );
             }
         }
+    }
+
+    public class ProcessProgressOptions
+    {
+        public Color CommandTextColor { get; set; }
+        public Color ErrorTextColor { get; set; }
+        public Color CompletedTextColor { get; set; }
+        public Color CancelledTextColor { get; set; }
     }
 }

@@ -271,5 +271,17 @@ namespace TabbedTortoiseGit.Properties {
                 this["FastFetchMaxProcesses"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public bool FastFetchShowProgress {
+            get {
+                return ((bool)(this["FastFetchShowProgress"]));
+            }
+            set {
+                this["FastFetchShowProgress"] = value;
+            }
+        }
     }
 }

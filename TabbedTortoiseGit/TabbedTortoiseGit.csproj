@@ -119,11 +119,11 @@
       <DependentUpon>InputDialog.cs</DependentUpon>
     </Compile>
     <Compile Include="Native.cs" />
-    <Compile Include="ProcessProgressForm.cs">
+    <Compile Include="ProcessProgressDialog.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="ProcessProgressForm.Designer.cs">
-      <DependentUpon>ProcessProgressForm.cs</DependentUpon>
+    <Compile Include="ProcessProgressDialog.Designer.cs">
+      <DependentUpon>ProcessProgressDialog.cs</DependentUpon>
     </Compile>
     <Compile Include="Properties\Resources.Designer.cs">
       <AutoGen>True</AutoGen>
@@ -172,8 +172,8 @@
     <EmbeddedResource Include="InputDialog.resx">
       <DependentUpon>InputDialog.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="ProcessProgressForm.resx">
-      <DependentUpon>ProcessProgressForm.cs</DependentUpon>
+    <EmbeddedResource Include="ProcessProgressDialog.resx">
+      <DependentUpon>ProcessProgressDialog.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>

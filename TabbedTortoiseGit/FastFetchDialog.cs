@@ -36,6 +36,7 @@ namespace TabbedTortoiseGit
 
             TagsCheck.CheckedChanged += TagsCheck_CheckedChanged;
             PruneCheck.CheckedChanged += PruneCheck_CheckedChanged;
+            ShowProgressCheck.CheckedChanged += ShowProgressCheck_CheckedChanged;
             MaxProcessesNumeric.ValueChanged += MaxProcessesNumeric_ValueChanged;
 
             Ok.Click += Ok_Click;
@@ -51,6 +52,12 @@ namespace TabbedTortoiseGit
         private void PruneCheck_CheckedChanged( object sender, EventArgs e )
         {
             Settings.Default.FastFetchPruneChecked = PruneCheck.Checked;
+            Settings.Default.Save();
+        }
+
+        private void ShowProgressCheck_CheckedChanged( object sender, EventArgs e )
+        {
+            Settings.Default.FastFetchShowProgress = ShowProgressCheck.Checked;
             Settings.Default.Save();
         }
 
@@ -74,12 +81,18 @@ namespace TabbedTortoiseGit
         {
             TagsCheck.Checked = Settings.Default.FastFetchTagsChecked;
             PruneCheck.Checked = Settings.Default.FastFetchPruneChecked;
+            ShowProgressCheck.Checked = Settings.Default.FastFetchShowProgress;
             MaxProcessesNumeric.Value = Settings.Default.FastFetchMaxProcesses;
         }
 
         private Process CreateFetchProcess( String path, bool tags, bool prune, bool isSubmodule )
         {
             StringBuilder args = new StringBuilder( "fetch " );
+
+            if( ShowProgressCheck.Checked )
+            {
+                args.Append( "--progress " );
+            }
 
             if( tags )
             {
@@ -127,7 +140,13 @@ namespace TabbedTortoiseGit
             }
 
             this.Close();
-            ProcessProgressForm.ShowProgress( "Fast Fetch", "Fast Fetch Completed", fetchProcesses, maxProcesses );
+
+            ProcessProgressOptions options = new ProcessProgressOptions()
+            {
+                ErrorTextColor = Color.Black
+            };
+
+            ProcessProgressDialog.ShowProgress( this.Text, "Fast Fetch Completed", fetchProcesses, maxProcesses, options );
         }
     }
 }

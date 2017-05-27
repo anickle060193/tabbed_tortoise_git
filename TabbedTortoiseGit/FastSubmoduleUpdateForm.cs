@@ -295,7 +295,7 @@ namespace TabbedTortoiseGit
                 List<String> checkedSubmodules = SubmoduleCheckList.CheckedItems.Cast<String>().ToList();
                 this.Close();
                 var processes = checkedSubmodules.Select( submodule => CreateUpdateSubmoduleProcess( Repo, submodule, init, recursive, force ) );
-                ProcessProgressForm.ShowProgress( Repo + " - Fast Submodule Update", "Submodule Update Completed", processes, maxProcesses );
+                ProcessProgressDialog.ShowProgress( Repo + " - Fast Submodule Update", "Submodule Update Completed", processes, maxProcesses );
             }
             else
             {
