@@ -115,6 +115,11 @@ namespace TabbedTortoiseGit
             ShowModifiedSubmodulesOnlyCheck.Enabled = true;
 
             UpdateSubmoduleList();
+
+            if( Settings.Default.FastSubmoduleUpdateCheckModifiedSubmodulesByDefault )
+            {
+                SetModifiedSubmodulesChecked();
+            }
         }
 
         private void Cancel_Click( object sender, EventArgs e )
@@ -168,30 +173,7 @@ namespace TabbedTortoiseGit
 
         private void SelectModifiedSubmodules_Click( object sender, EventArgs e )
         {
-            LOG.DebugFormat( "Select Modified Submodules - Repo: {0}", Repo );
-
-            if( _modifiedSubmodules != null )
-            {
-                SetChecked( false );
-
-                foreach( String submodule in _modifiedSubmodules )
-                {
-                    int index = SubmoduleCheckList.Items.IndexOf( submodule );
-                    if( index != ListBox.NoMatches )
-                    {
-                        LOG.DebugFormat( "Select Modified Submodules - Modified Submodule: {0}", submodule );
-                        SubmoduleCheckList.SetItemChecked( index, true );
-                    }
-                    else
-                    {
-                        LOG.ErrorFormat( "Select Modified Submodules - Modified Submodule: {0} - Could not find", submodule );
-                    }
-                }
-            }
-            else
-            {
-                LOG.Error( "Select Modified Submodules - Modified Submodules == null" );
-            }
+            SetModifiedSubmodulesChecked();
         }
 
         private void UpdateSubmodulesButton_Click( object sender, EventArgs e )
@@ -216,6 +198,32 @@ namespace TabbedTortoiseGit
                 _checkedSubmodules[ key ] = value;
             }
             UpdateChecked();
+        }
+
+        private void SetModifiedSubmodulesChecked()
+        {
+            if( _modifiedSubmodules != null )
+            {
+                SetChecked( false );
+
+                foreach( String submodule in _modifiedSubmodules )
+                {
+                    int index = SubmoduleCheckList.Items.IndexOf( submodule );
+                    if( index != ListBox.NoMatches )
+                    {
+                        LOG.DebugFormat( "Set Modified Submodules Checked - Modified Submodule: {0}", submodule );
+                        SubmoduleCheckList.SetItemChecked( index, true );
+                    }
+                    else
+                    {
+                        LOG.ErrorFormat( "Set Modified Submodules Checked - Modified Submodule: {0} - Could not find", submodule );
+                    }
+                }
+            }
+            else
+            {
+                LOG.Error( "Set Modified Submodules Checked - Modified Submodules == null" );
+            }
         }
 
         private void UpdateChecked()

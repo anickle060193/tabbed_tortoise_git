@@ -18,26 +18,33 @@ namespace TabbedTortoiseGit
         public static bool ShowSettingsDialog()
         {
             SettingsForm f = new SettingsForm();
+
             f.StartupRepos = Settings.Default.StartupRepos.ToArray();
             f.OpenStartupReposOnReOpen = Settings.Default.OpenStartupReposOnReOpen;
-            f.RetainLogsOnClose = Settings.Default.RetainLogsOnClose;
-            f.ConfirmOnClose = Settings.Default.ConfirmOnClose;
-            f.MaxRecentRepos = Settings.Default.MaxRecentRepos;
+
             f.TabContextMenuGitActions = Settings.Default.TabContextMenuGitActions;
+            f.CheckModifiedSubmodulesByDefault = Settings.Default.FastSubmoduleUpdateCheckModifiedSubmodulesByDefault;
+
+            f.RetainLogsOnClose = Settings.Default.RetainLogsOnClose;
+            f.MaxRecentRepos = Settings.Default.MaxRecentRepos;
+            f.ConfirmOnClose = Settings.Default.ConfirmOnClose;
             f.RunOnStartup = TTG.RunOnStartup;
 
             if( f.ShowDialog() == DialogResult.OK )
             {
                 Settings.Default.StartupRepos = f.StartupRepos.ToList();
                 Settings.Default.OpenStartupReposOnReOpen = f.OpenStartupReposOnReOpen;
+
+                Settings.Default.TabContextMenuGitActions = f.TabContextMenuGitActions;
+                Settings.Default.FastSubmoduleUpdateCheckModifiedSubmodulesByDefault = f.CheckModifiedSubmodulesByDefault;
+
                 Settings.Default.RetainLogsOnClose = f.RetainLogsOnClose;
-                Settings.Default.ConfirmOnClose = f.ConfirmOnClose;
                 Settings.Default.MaxRecentRepos = f.MaxRecentRepos;
                 Settings.Default.RecentRepos = Settings.Default.RecentRepos.Take( Settings.Default.MaxRecentRepos ).ToList();
-                Settings.Default.TabContextMenuGitActions = f.TabContextMenuGitActions;
+                Settings.Default.ConfirmOnClose = f.ConfirmOnClose;
+                TTG.RunOnStartup = f.RunOnStartup;
                 Settings.Default.Save();
 
-                TTG.RunOnStartup = f.RunOnStartup;
                 return true;
             }
             else
@@ -73,58 +80,6 @@ namespace TabbedTortoiseGit
             }
         }
 
-        public bool RetainLogsOnClose
-        {
-            get
-            {
-                return RetainLogsOnCloseCheck.Checked;
-            }
-
-            set
-            {
-                RetainLogsOnCloseCheck.Checked = value;
-            }
-        }
-
-        public bool ConfirmOnClose
-        {
-            get
-            {
-                return ConfirmOnCloseCheck.Checked;
-            }
-
-            set
-            {
-                ConfirmOnCloseCheck.Checked = value;
-            }
-        }
-
-        public int MaxRecentRepos
-        {
-            get
-            {
-                return (int)MaxRecentReposNumeric.Value;
-            }
-
-            set
-            {
-                MaxRecentReposNumeric.Value = value;
-            }
-        }
-
-        public bool RunOnStartup
-        {
-            get
-            {
-                return RunOnStartupCheck.Checked;
-            }
-
-            set
-            {
-                RunOnStartupCheck.Checked = value;
-            }
-        }
-
         public List<String> TabContextMenuGitActions
         {
             get
@@ -148,6 +103,71 @@ namespace TabbedTortoiseGit
                         GitActionsCheckList.SetItemChecked( index, true );
                     }
                 }
+            }
+        }
+
+        public bool CheckModifiedSubmodulesByDefault
+        {
+            get
+            {
+                return CheckModifiedSubmodulesByDefaultCheck.Checked;
+            }
+
+            set
+            {
+                CheckModifiedSubmodulesByDefaultCheck.Checked = value;
+            }
+        }
+
+        public bool RetainLogsOnClose
+        {
+            get
+            {
+                return RetainLogsOnCloseCheck.Checked;
+            }
+
+            set
+            {
+                RetainLogsOnCloseCheck.Checked = value;
+            }
+        }
+
+        public int MaxRecentRepos
+        {
+            get
+            {
+                return (int)MaxRecentReposNumeric.Value;
+            }
+
+            set
+            {
+                MaxRecentReposNumeric.Value = value;
+            }
+        }
+
+        public bool ConfirmOnClose
+        {
+            get
+            {
+                return ConfirmOnCloseCheck.Checked;
+            }
+
+            set
+            {
+                ConfirmOnCloseCheck.Checked = value;
+            }
+        }
+
+        public bool RunOnStartup
+        {
+            get
+            {
+                return RunOnStartupCheck.Checked;
+            }
+
+            set
+            {
+                RunOnStartupCheck.Checked = value;
             }
         }
 
