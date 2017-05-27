@@ -73,7 +73,7 @@ namespace TabbedTortoiseGit.Properties
 
         private void Settings_SettingChanging( object sender, SettingChangingEventArgs e )
         {
-            if( e.SettingName == "MaxRecentRepos" )
+            if( e.SettingName == nameof( Settings.Default.MaxRecentRepos ) )
             {
                 int maxRecentRepos = (int)e.NewValue;
                 if( maxRecentRepos <= 0 )
@@ -82,7 +82,7 @@ namespace TabbedTortoiseGit.Properties
                     e.Cancel = true;
                 }
             }
-            else if( e.SettingName == "FastSubmoduleUpdateMaxProcesses" )
+            else if( e.SettingName == nameof( Settings.Default.FastSubmoduleUpdateMaxProcesses ) )
             {
                 int maxProcesses = (int)e.NewValue;
                 if( maxProcesses <= 0 )

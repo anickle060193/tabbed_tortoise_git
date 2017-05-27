@@ -75,19 +75,11 @@ namespace TabbedTortoiseGit
             if( m.Msg == Native.WM_SHOWME )
             {
                 ShowMe();
-                return;
             }
-
-            if( m.Msg == KeyHook.WM_HOTKEY )
+            else
             {
-                if( m.WParam.ToInt32() == KeyHook.HOTKEY_NEW_TAB )
-                {
-                    FindRepo();
-                    return;
-                }
+                base.WndProc( ref m );
             }
-
-            base.WndProc( ref m );
         }
 
         private void UpdateFromSettings()
@@ -302,7 +294,6 @@ namespace TabbedTortoiseGit
             t.Tag = new TabTag( p, path );
             _tabs.Add( p.Id, t );
 
-            KeyHook.RegisterNewTabHotKey( p.MainWindowHandle );
             Native.RemoveBorder( p.MainWindowHandle );
             Native.SetWindowParent( p.MainWindowHandle, t );
             ResizeTab( p, t );
@@ -409,7 +400,7 @@ namespace TabbedTortoiseGit
 
         private async Task OpenStartupRepos()
         {
-            LOG.Debug( "OpenStartupRepos" );
+            LOG.Debug( nameof( OpenStartupRepos ) );
 
             foreach( String repo in Settings.Default.StartupRepos )
             {
