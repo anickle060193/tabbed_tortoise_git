@@ -235,5 +235,41 @@ namespace TabbedTortoiseGit.Properties {
                 this["FastSubmoduleUpdateCheckModifiedSubmodulesByDefault"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("True")]
+        public bool FastFetchTagsChecked {
+            get {
+                return ((bool)(this["FastFetchTagsChecked"]));
+            }
+            set {
+                this["FastFetchTagsChecked"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("True")]
+        public bool FastFetchPruneChecked {
+            get {
+                return ((bool)(this["FastFetchPruneChecked"]));
+            }
+            set {
+                this["FastFetchPruneChecked"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("6")]
+        public int FastFetchMaxProcesses {
+            get {
+                return ((int)(this["FastFetchMaxProcesses"]));
+            }
+            set {
+                this["FastFetchMaxProcesses"] = value;
+            }
+        }
     }
 }

@@ -91,6 +91,15 @@ namespace TabbedTortoiseGit.Properties
                     e.Cancel = true;
                 }
             }
+            else if( e.SettingName == nameof( Settings.Default.FastFetchMaxProcesses ) )
+            {
+                int maxProcesses = (int)e.NewValue;
+                if( maxProcesses <= 0 )
+                {
+                    LOG.DebugFormat( "Settings Changing - Invalid Max Fast Fetch Processes: {0}", maxProcesses );
+                    e.Cancel = true;
+                }
+            }
         }
 
         private void Settings_SettingsLoaded( object sender, SettingsLoadedEventArgs e )
@@ -160,6 +169,12 @@ namespace TabbedTortoiseGit.Properties
             {
                 LOG.DebugFormat( "Settings Load - Invalid Max Fast Submodule Update Processes: {0}", Settings.Default.FastSubmoduleUpdateMaxProcesses );
                 Settings.Default.FastSubmoduleUpdateMaxProcesses = 6;
+            }
+
+            if( Settings.Default.FastFetchMaxProcesses <= 0 )
+            {
+                LOG.DebugFormat( "Settings Load - Invalid Max Fast Fetch Processes: {0}", Settings.Default.FastFetchMaxProcesses );
+                Settings.Default.FastFetchMaxProcesses = 6;
             }
 
             Settings.Default.Save();

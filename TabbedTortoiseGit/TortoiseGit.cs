@@ -34,6 +34,7 @@ namespace TabbedTortoiseGit
             List<TortoiseGitCommand> commands = new List<TortoiseGitCommand>()
             {
                 new TortoiseGitCommand( "Fetch", TortoiseGit.Fetch, Resources.Fetch ),
+                new TortoiseGitCommand( "Fast Fetch", TortoiseGit.FastFetch, Resources.Fetch ),
                 new TortoiseGitCommand( "Commit", TortoiseGit.Commit, Resources.Commit ),
                 new TortoiseGitCommand( "Switch/Checkout", TortoiseGit.Switch, Resources.Switch ),
                 new TortoiseGitCommand( "Pull", TortoiseGit.Pull, Resources.Pull ),
@@ -72,6 +73,11 @@ namespace TabbedTortoiseGit
         public static void Fetch( String path )
         {
             PathCommand( "fetch", path );
+        }
+
+        public static void FastFetch( String path )
+        {
+            FastFetchDialog.FastFetch( path );
         }
 
         public static void Commit( String path )
