@@ -40,6 +40,8 @@ namespace TabbedTortoiseGit
 
             Repo = repo;
 
+            this.Text = "{0} - {1}".XFormat( Repo, this.Text );
+
             using( Repository r = new Repository( Repo ) )
             {
                 _submodules = new List<String>();
@@ -57,16 +59,22 @@ namespace TabbedTortoiseGit
             UpdateChecked();
 
             this.Load += FastSubmoduleUpdateForm_Load;
+
             Cancel.Click += Cancel_Click;
-            SubmoduleCheckList.ItemCheck += SubmoduleCheckList_ItemCheck;
             UpdateSubmodulesButton.Click += UpdateSubmodulesButton_Click;
+
+            SubmoduleCheckList.ItemCheck += SubmoduleCheckList_ItemCheck;
+
             SelectModifiedSubmodules.Click += SelectModifiedSubmodules_Click;
             SelectAllSubmodules.Click += SelectAllSubmodules_Click;
             SelectNoneSubmodules.Click += SelectNoneSubmodules_Click;
+
             ShowModifiedSubmodulesOnlyCheck.CheckedChanged += ShowModifiedSubmodulesOnlyCheck_CheckedChanged;
+
             InitCheck.CheckedChanged += InitCheck_CheckedChanged;
             RecursiveCheck.CheckedChanged += RecursiveCheck_CheckedChanged;
             ForceCheck.CheckedChanged += ForceCheck_CheckedChanged;
+            MaxProcessCountNumeric.ValueChanged += MaxProcessCountNumeric_ValueChanged;
         }
 
         protected override void WndProc( ref Message m )
@@ -168,6 +176,12 @@ namespace TabbedTortoiseGit
         private void ForceCheck_CheckedChanged( object sender, EventArgs e )
         {
             Settings.Default.FastSubmoduleUpdateForceChecked = ForceCheck.Checked;
+            Settings.Default.Save();
+        }
+
+        private void MaxProcessCountNumeric_ValueChanged( object sender, EventArgs e )
+        {
+            Settings.Default.FastSubmoduleUpdateMaxProcesses = (int)MaxProcessCountNumeric.Value;
             Settings.Default.Save();
         }
 
@@ -277,12 +291,6 @@ namespace TabbedTortoiseGit
                 bool recursive = RecursiveCheck.Checked;
                 bool force = ForceCheck.Checked;
                 int maxProcesses = (int)MaxProcessCountNumeric.Value;
-
-                Settings.Default.FastSubmoduleUpdateInitChecked = init;
-                Settings.Default.FastSubmoduleUpdateRecursiveChecked = recursive;
-                Settings.Default.FastSubmoduleUpdateForceChecked = force;
-                Settings.Default.FastSubmoduleUpdateMaxProcesses = maxProcesses;
-                Settings.Default.Save();
 
                 List<String> checkedSubmodules = SubmoduleCheckList.CheckedItems.Cast<String>().ToList();
                 this.Close();
