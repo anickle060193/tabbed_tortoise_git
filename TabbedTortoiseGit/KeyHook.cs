@@ -28,7 +28,7 @@ namespace TabbedTortoiseGit
 
         public static void RegisterNewTabHotKey( IntPtr hWnd )
         {
-            KeyHook.RegisterHotKey( hWnd, HOTKEY_NEW_TAB, MOD_CONTROL, (int)Keys.T );
+            //KeyHook.RegisterHotKey( hWnd, HOTKEY_NEW_TAB, MOD_CONTROL, (int)Keys.T );
         }
     }
 }

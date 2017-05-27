@@ -409,7 +409,7 @@ namespace TabbedTortoiseGit
 
         private async Task OpenStartupRepos()
         {
-            LOG.Debug( nameof( OpenStartupRepos ) );
+            LOG.Debug( "OpenStartupRepos" );
 
             foreach( String repo in Settings.Default.StartupRepos )
             {
