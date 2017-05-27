@@ -511,5 +511,10 @@ namespace TabbedTortoiseGit
                 }
             }
         }
+
+        private async void NewTabHotKey_HotKeyPressed( object sender, EventArgs e )
+        {
+            await FindRepo();
+        }
     }
 }

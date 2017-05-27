@@ -38,6 +38,8 @@ namespace TabbedTortoiseGit
 
         private ToolStripDropDownMenu _currentFavoriteDropDown;
         private bool _favoriteRepoContextMenuOpen;
+		
+        private HotKey _newTabHotKey;
 
         class TabTag
         {
@@ -78,6 +80,9 @@ namespace TabbedTortoiseGit
             _watcher.Options.Timeout = new TimeSpan( 0, 1, 0 );
             _watcher.EventArrived += Watcher_EventArrived;
             _watcher.Start();
+
+            _newTabHotKey = new HotKey( KeyModifier.Shift, Keys.T );
+            _newTabHotKey.HotKeyPressed += NewTabHotKey_HotKeyPressed;
 
             this.Icon = Resources.TortoiseIcon;
             NotifyIcon.Icon = this.Icon;
@@ -335,6 +340,8 @@ namespace TabbedTortoiseGit
             Native.SetWindowParent( p.MainWindowHandle, t );
             ResizeTab( p, t );
 
+            _newTabHotKey?.AddHandle( p.MainWindowHandle );
+
             t.Resize += Tab_Resize;
             p.EnableRaisingEvents = true;
             p.Exited += Process_Exited;
@@ -372,6 +379,7 @@ namespace TabbedTortoiseGit
 
                 p.EnableRaisingEvents = false;
                 p.Exited -= Process_Exited;
+            	_newTabHotKey?.RemoveHandle( p.MainWindowHandle );
 
                 _processes.Remove( p );
 
