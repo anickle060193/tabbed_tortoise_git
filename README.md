@@ -4,7 +4,7 @@ A simple tabbed wrapper for [TortoiseGit](https://tortoisegit.org/) to host mult
 
 
 ### Installation
-Download and install [Setup.msi](https://github.com/anickle060193/tabbed_tortoise_git/raw/0.10.1/Setup/Output/Setup.msi).
+Download and install [Setup.msi](https://github.com/anickle060193/tabbed_tortoise_git/raw/0.11.0/Setup/Output/Setup.msi).
 
 
 ### Attributions:
