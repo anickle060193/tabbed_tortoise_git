@@ -74,7 +74,7 @@ namespace TabbedTortoiseGit
                 LOG.Debug( "Form Closing" );
                 if( !Settings.Default.RetainLogsOnClose )
                 {
-                    this.RemoveAllProcesses();
+                    this.RemoveAllLogs();
                 }
 
                 LOG.Debug( "Form Closing - Cancelled User Closing" );
@@ -88,15 +88,10 @@ namespace TabbedTortoiseGit
         private void TabbedTortoiseGitForm_FormClosed( object sender, FormClosedEventArgs e )
         {
             LOG.Debug( "Form Closed" );
-            lock( _processes )
-            {
-                foreach( Process p in _processes )
-                {
-                    EndProcess( p );
-                }
-            }
 
             _watcher.Stop();
+
+            RemoveAllLogs();
         }
 
         private void Process_Exited( object sender, EventArgs e )
@@ -105,7 +100,7 @@ namespace TabbedTortoiseGit
 
             LOG.DebugFormat( "Process Exited - ID: {0}", p.Id );
 
-            RemoveLog( p );
+            this.BeginInvoke( (Action<Process>)RemoveLog, p );
         }
 
         private async void LogTabs_NewTabClicked( object sender, EventArgs e )
@@ -119,9 +114,7 @@ namespace TabbedTortoiseGit
 
             LOG.DebugFormat( "Tab Closed - Repo: {0} - ID: {1}", t.Repo, t.Process.Id );
 
-            EndProcess( t.Process );
-            _processes.Remove( t.Process );
-            _tabs.Remove( t.Process.Id );
+            RemoveLog( t.Process );
         }
 
         private void LogTabs_Selected( object sender, TabControlEventArgs e )
@@ -195,7 +188,7 @@ namespace TabbedTortoiseGit
             int pid = (int)(UInt32)o[ "ProcessId" ];
             LOG.DebugFormat( "Watcher_EventArrived - CommandLine: {0} - Repo: {1} - PID: {2}", commandLine, repo, pid );
             Process p = Process.GetProcessById( pid );
-            LogTabs.Invoke( (Func<Process, String, Task>)AddNewLog, p, repo );
+            this.BeginInvoke( (Func<Process, String, Task>)AddNewLog, p, repo );
         }
 
         private async void NotifyIcon_DoubleClick( object sender, EventArgs e )
@@ -267,7 +260,6 @@ namespace TabbedTortoiseGit
         {
             TabTag t = (TabTag)LogTabs.SelectedTab.Tag;
             this.RemoveLog( t.Process );
-            this.EndProcess( t.Process );
         }
 
         private void GitCommandMenuItem_Click( object sender, EventArgs e )

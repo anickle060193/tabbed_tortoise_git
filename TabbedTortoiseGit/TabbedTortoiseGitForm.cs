@@ -322,49 +322,48 @@ namespace TabbedTortoiseGit
             }
         }
 
-        private void EndProcess( Process p )
-        {
-            LOG.DebugFormat( "EndProcess - {0}", p.Id );
-
-            p.EnableRaisingEvents = false;
-            p.Exited -= Process_Exited;
-            if( !p.HasExited )
-            {
-                p.Kill();
-            }
-            else
-            {
-                LOG.DebugFormat( "EndProcess - Process has already exited: {0}", p.Id );
-            }
-        }
-
         private void RemoveLog( Process p )
         {
             LOG.DebugFormat( "RemoveLog - {0}", p.Id );
 
-            _processes.Remove( p );
+            lock( _processes )
+            {
+                p.EnableRaisingEvents = false;
+                p.Exited -= Process_Exited;
 
-            TabPage t = _tabs.Pluck( p.Id );
-            t.Invoke( (Action<TabPage>)( ( tab ) => tab.Parent.Controls.Remove( tab ) ), t );
+                _processes.Remove( p );
+
+                TabPage t = _tabs.Pluck( p.Id );
+                if( t.Parent != null )
+                {
+                    t.Parent.Controls.Remove( t );
+                }
+                else
+                {
+                    LOG.DebugFormat( "RemoveLog - Tab has already been removed: {0}", t.Text );
+                }
+
+                if( !p.HasExited )
+                {
+                    p.Kill();
+                }
+                else
+                {
+                    LOG.DebugFormat( "RemoveLog - Process has already exited: {0}", p.Id );
+                }
+            }
         }
 
-        private void RemoveAllProcesses()
+        private void RemoveAllLogs()
         {
             lock( _processes )
             {
-                LOG.DebugFormat( "RemoveAllProcesses - Count: {0}", _processes.Count );
+                LOG.DebugFormat( "RemoveAllLogs - Count: {0}", _processes.Count );
 
-                foreach( Process p in _processes )
+                while( _processes.Count > 0 )
                 {
-                    EndProcess( p );
+                    RemoveLog( _processes.First() );
                 }
-                _processes.Clear();
-
-                foreach( TabPage t in _tabs.Values )
-                {
-                    LogTabs.TabPages.Remove( t );
-                }
-                _tabs.Clear();
             }
         }
 
