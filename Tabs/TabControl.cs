@@ -2,7 +2,6 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel;
-using System.ComponentModel.Design;
 using System.Drawing;
 using System.Drawing.Drawing2D;
 using System.Linq;
@@ -12,7 +11,6 @@ using System.Windows.Forms;
 
 namespace Tabs
 {
-    [Designer( "System.Windows.Forms.Design.ParentControlDesigner, System.Design", typeof( IDesigner ) )]
     public class TabControl : Control
     {
         private static readonly int TAB_HEIGHT = 28;
@@ -34,21 +32,17 @@ namespace Tabs
         private Color _selectedTabColor = Color.FromArgb( 242, 242, 242 );
         private Color _tabBorderColor = Color.FromArgb( 181, 181, 181 );
         private int _selectedIndex = -1;
-        private MenuStrip _mainMenuStrip;
 
         public event EventHandler NewTabClick;
         public event EventHandler<TabClickEventArgs> TabClick;
         public event EventHandler SelectedIndexChanged;
+        public event EventHandler<TabClosedEventArgs> TabClosed;
 
-        [Browsable( false )]
-        [DesignerSerializationVisibility( DesignerSerializationVisibility.Hidden )]
-        protected override Padding DefaultMargin
-        {
-            get
-            {
-                return Padding.Empty;
-            }
-        }
+        private bool InsertingItem { get; set; }
+        private bool RemovingItem { get; set; }
+
+        [DefaultValue( true )]
+        public bool CloseTabOnMiddleClick { get; set; }
 
         [DefaultValue( 200 )]
         public int MaximumTabWidth
@@ -147,6 +141,16 @@ namespace Tabs
             }
         }
 
+        [Browsable( false )]
+        [DesignerSerializationVisibility( DesignerSerializationVisibility.Hidden )]
+        protected override Padding DefaultMargin
+        {
+            get
+            {
+                return Padding.Empty;
+            }
+        }
+
         [DefaultValue( typeof( Color ), "White" )]
         public override Color BackColor
         {
@@ -175,37 +179,10 @@ namespace Tabs
             }
         }
 
-        [DefaultValue( typeof( MenuStrip ), "(none)" )]
-        public MenuStrip MainMenuStrip
-        {
-            get { return _mainMenuStrip; }
-            set
-            {
-                if( _mainMenuStrip != value )
-                {
-                    if( _mainMenuStrip != null )
-                    {
-                        _mainMenuStrip.Parent = null;
-                    }
-
-                    _mainMenuStrip = value;
-
-                    if( _mainMenuStrip != null )
-                    {
-                        _mainMenuStrip.BackColor = SystemColors.Control;
-                    }
-
-                    PerformLayout();
-                }
-            }
-        }
-
-        private bool InsertingItem { get; set; }
-        private bool RemovingItem { get; set; }
-
         public TabControl()
         {
             this.BackColor = Color.White;
+            this.CloseTabOnMiddleClick = true;
 
             _dragDropHelper = new TabHeaderDragDropHelper();
             _dragDropHelper.AddControl( this );
@@ -459,9 +436,17 @@ namespace Tabs
                 Tab t = GetTabFromPoint( e.Location );
                 if( t != null )
                 {
-                    SelectedIndex = Tabs.IndexOf( t );
-                    OnTabClick( new TabClickEventArgs( t, e ) );
-                    return;
+                    if( e.Button == MouseButtons.Middle
+                     && this.CloseTabOnMiddleClick )
+                    {
+                        this.Tabs.Remove( this.SelectedTab );
+                    }
+                    else
+                    {
+                        SelectedIndex = Tabs.IndexOf( t );
+                        OnTabClick( new TabClickEventArgs( t, e ) );
+                        return;
+                    }
                 }
             }
 
@@ -470,15 +455,7 @@ namespace Tabs
 
         protected override void OnLayout( LayoutEventArgs e )
         {
-            //base.OnLayout( e );
-
-            int y = TAB_HEIGHT + BOTTOM_BORDER_HEIGHT;
-
-            if( this.MainMenuStrip != null )
-            {
-                this.MainMenuStrip.Location = new Point( 0, y );
-                y += this.MainMenuStrip.Height;
-            }
+            base.OnLayout( e );
 
             foreach( Tab t in Tabs )
             {
@@ -487,6 +464,7 @@ namespace Tabs
 
             if( this.SelectedTab != null )
             {
+                int y = TAB_HEIGHT + BOTTOM_BORDER_HEIGHT;
                 this.SelectedTab.Location = new Point( 0, y );
                 this.SelectedTab.Size = new Size( this.ClientSize.Width, this.ClientSize.Height - y );
                 this.SelectedTab.Visible = true;
@@ -509,6 +487,11 @@ namespace Tabs
         protected void OnSelectedIndexChanged( EventArgs e )
         {
             SelectedIndexChanged?.Invoke( this, e );
+        }
+
+        protected void OnTabClosed( TabClosedEventArgs e )
+        {
+            TabClosed?.Invoke( this, e );
         }
 
         public class TabCollection : IList<Tab>
@@ -650,6 +633,8 @@ namespace Tabs
                     }
                 }
                 _owner.Invalidate();
+
+                _owner.OnTabClosed( new TabClosedEventArgs( tab ) );
             }
 
             IEnumerator IEnumerable.GetEnumerator()
@@ -719,16 +704,7 @@ namespace Tabs
 
             public override void Add( Control value )
             {
-                if( value is MenuStrip )
-                {
-                    if( this.Owner.MainMenuStrip != null )
-                    {
-                        throw new ArgumentException( "TabControl can only have a single MenuStrip." );
-                    }
-                    this.Owner.MainMenuStrip = (MenuStrip)value;
-                    base.Add( value );
-                }
-                else if( value is Tab )
+                if( value is Tab )
                 {
                     if( !this.Owner.InsertingItem )
                     {
@@ -755,13 +731,6 @@ namespace Tabs
                         Owner.Tabs.Remove( (Tab)value );
                     }
                 }
-                else if( value is MenuStrip )
-                {
-                    if( value == Owner.MainMenuStrip )
-                    {
-                        Owner.MainMenuStrip = null;
-                    }
-                }
             }
         }
     }
@@ -774,5 +743,15 @@ namespace Tabs
         }
 
         public Tab Tab { get; private set; }
+    }
+
+    public class TabClosedEventArgs : EventArgs
+    {
+        public Tab Tab { get; private set; }
+
+        public TabClosedEventArgs( Tab tab )
+        {
+            Tab = tab;
+        }
     }
 }

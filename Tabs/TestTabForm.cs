@@ -19,8 +19,13 @@ namespace Tabs
             InitializeComponent();
 
             tabControl1.NewTabClick += TabControl1_NewTabClick;
-            addTabToolStripMenuItem.Click += TabControl1_NewTabClick;
             tabControl1.Click += TabControl1_Click;
+            tabControl1.TabClosed += TabControl1_TabClosed;
+        }
+
+        private void TabControl1_TabClosed( object sender, TabClosedEventArgs e )
+        {
+            Console.WriteLine( "Tab Closed: {0}", e.Tab );
         }
 
         private void TabControl1_Click( object sender, EventArgs e )
@@ -34,7 +39,7 @@ namespace Tabs
             t.Controls.Add( new Button()
             {
                 Text = String.Format( "Tab {0}", t.Text ),
-                Visible = true
+                UseVisualStyleBackColor = true
             } );
             t.Click += T_Click;
         }
