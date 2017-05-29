@@ -31,8 +31,10 @@
             this.textBox1 = new System.Windows.Forms.TextBox();
             this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
             this.menuStrip1 = new System.Windows.Forms.MenuStrip();
+            this.testToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.tabHeader1 = new Tabs.TabHeader();
             this.tableLayoutPanel1.SuspendLayout();
+            this.menuStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
             // textBox1
@@ -40,43 +42,52 @@
             this.textBox1.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.textBox1.Location = new System.Drawing.Point(3, 27);
+            this.textBox1.Location = new System.Drawing.Point(3, 59);
             this.textBox1.Multiline = true;
             this.textBox1.Name = "textBox1";
-            this.textBox1.Size = new System.Drawing.Size(641, 206);
+            this.textBox1.Size = new System.Drawing.Size(641, 199);
             this.textBox1.TabIndex = 1;
             // 
             // tableLayoutPanel1
             // 
             this.tableLayoutPanel1.ColumnCount = 1;
             this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanel1.Controls.Add(this.textBox1, 0, 1);
-            this.tableLayoutPanel1.Controls.Add(this.menuStrip1, 0, 0);
+            this.tableLayoutPanel1.Controls.Add(this.textBox1, 0, 2);
+            this.tableLayoutPanel1.Controls.Add(this.menuStrip1, 0, 1);
+            this.tableLayoutPanel1.Controls.Add(this.tabHeader1, 0, 0);
             this.tableLayoutPanel1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.tableLayoutPanel1.Location = new System.Drawing.Point(0, 25);
+            this.tableLayoutPanel1.Location = new System.Drawing.Point(0, 0);
             this.tableLayoutPanel1.Name = "tableLayoutPanel1";
-            this.tableLayoutPanel1.RowCount = 2;
+            this.tableLayoutPanel1.RowCount = 3;
+            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle());
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle());
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanel1.Size = new System.Drawing.Size(647, 236);
+            this.tableLayoutPanel1.Size = new System.Drawing.Size(647, 261);
             this.tableLayoutPanel1.TabIndex = 3;
             // 
             // menuStrip1
             // 
-            this.menuStrip1.BackColor = System.Drawing.SystemColors.Control;
-            this.menuStrip1.Location = new System.Drawing.Point(0, 0);
+            this.menuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.testToolStripMenuItem});
+            this.menuStrip1.Location = new System.Drawing.Point(0, 32);
             this.menuStrip1.Name = "menuStrip1";
             this.menuStrip1.Size = new System.Drawing.Size(647, 24);
             this.menuStrip1.TabIndex = 2;
             this.menuStrip1.Text = "menuStrip1";
+            // 
+            // testToolStripMenuItem
+            // 
+            this.testToolStripMenuItem.Name = "testToolStripMenuItem";
+            this.testToolStripMenuItem.Size = new System.Drawing.Size(40, 20);
+            this.testToolStripMenuItem.Text = "Test";
             // 
             // tabHeader1
             // 
             this.tabHeader1.Dock = System.Windows.Forms.DockStyle.Top;
             this.tabHeader1.Location = new System.Drawing.Point(0, 0);
             this.tabHeader1.Name = "tabHeader1";
-            this.tabHeader1.Size = new System.Drawing.Size(647, 25);
-            this.tabHeader1.TabIndex = 2;
+            this.tabHeader1.Size = new System.Drawing.Size(647, 32);
+            this.tabHeader1.TabIndex = 3;
             this.tabHeader1.Text = "tabHeader1";
             // 
             // TestTabForm
@@ -85,19 +96,22 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(647, 261);
             this.Controls.Add(this.tableLayoutPanel1);
-            this.Controls.Add(this.tabHeader1);
+            this.MainMenuStrip = this.menuStrip1;
             this.Name = "TestTabForm";
             this.Text = "TestTabForm";
             this.tableLayoutPanel1.ResumeLayout(false);
             this.tableLayoutPanel1.PerformLayout();
+            this.menuStrip1.ResumeLayout(false);
+            this.menuStrip1.PerformLayout();
             this.ResumeLayout(false);
 
         }
 
         #endregion
         private System.Windows.Forms.TextBox textBox1;
-        private TabHeader tabHeader1;
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel1;
         private System.Windows.Forms.MenuStrip menuStrip1;
+        private TabHeader tabHeader1;
+        private System.Windows.Forms.ToolStripMenuItem testToolStripMenuItem;
     }
 }

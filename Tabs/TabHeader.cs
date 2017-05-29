@@ -13,6 +13,7 @@ namespace Tabs
 {
     public class TabHeader : Control
     {
+        private static readonly int TAB_HEIGHT = 28;
         private static readonly double TAB_INCLINE_ANGLE = 65 * ( Math.PI ) / 180;
         private static readonly int BOTTOM_BORDER_HEIGHT = 4;
 
@@ -26,7 +27,7 @@ namespace Tabs
         private readonly TabCollection _collection;
         private readonly TabHeaderDragDropHelper _dragDropHelper;
 
-        private int _tabWidth = 120;
+        private int _maximumTabWidth = 200;
         private Color _tabColor = Color.FromArgb( 218, 218, 218 );
         private Color _selectedTabColor = Color.FromArgb( 242, 242, 242 );
         private Color _tabBorderColor = Color.FromArgb( 181, 181, 181 );
@@ -35,13 +36,21 @@ namespace Tabs
         public event EventHandler NewTabClick;
         public event EventHandler<TabClickEventArgs> TabClick;
 
-        [DefaultValue( 120 )]
-        public int TabWidth
+        protected override Padding DefaultMargin
         {
-            get { return _tabWidth; }
+            get
+            {
+                return Padding.Empty;
+            }
+        }
+
+        [DefaultValue( 200 )]
+        public int MaximumTabWidth
+        {
+            get { return _maximumTabWidth; }
             set
             {
-                _tabWidth = value;
+                _maximumTabWidth = value;
                 Invalidate();
             }
         }
@@ -174,11 +183,23 @@ namespace Tabs
             int h = this.Height - BOTTOM_BORDER_HEIGHT;
             int tabInclineWidth = (int)( h / Math.Tan( TAB_INCLINE_ANGLE ) );
             _tabOverlapWidth = tabInclineWidth / 2;
+
+            int tabAreaWidth = this.Width - NEW_TAB_BUTTON_WIDTH - _tabOverlapWidth;
+            int tabWidth = this.MaximumTabWidth;
+            if( this.TabCount == 0 )
+            {
+                tabWidth = Math.Min( tabWidth, tabAreaWidth );
+            }
+            else
+            {
+                tabWidth = Math.Min( tabWidth, (int)( (float)tabAreaWidth / this.TabCount ) + _tabOverlapWidth );
+            }
+
             int bY = h;
             int tY = 0;
             int blX = _tabOverlapWidth;
             int tlX = blX + tabInclineWidth;
-            int brX = blX + this.TabWidth;
+            int brX = blX + tabWidth;
             int trX = brX - tabInclineWidth;
 
             _tabGraphicsPath.Reset();
@@ -189,8 +210,10 @@ namespace Tabs
 
         private GraphicsPath CreateTabDrawPath( int index )
         {
+            float tabWidth = _tabGraphicsPath.GetBounds().Width;
+
             Matrix m = new Matrix();
-            m.Translate( ( this.TabWidth - 2 * _tabOverlapWidth ) * index, 0 );
+            m.Translate( ( tabWidth - 2 * _tabOverlapWidth ) * index, 0 );
 
             GraphicsPath p = (GraphicsPath)_tabGraphicsPath.Clone();
             p.Transform( m );
@@ -218,6 +241,11 @@ namespace Tabs
             }
 
             return null;
+        }
+
+        protected override void SetBoundsCore( int x, int y, int width, int height, BoundsSpecified specified )
+        {
+            base.SetBoundsCore( x, y, width, TAB_HEIGHT + BOTTOM_BORDER_HEIGHT, specified );
         }
 
         protected override void OnPaint( PaintEventArgs e )
@@ -279,7 +307,10 @@ namespace Tabs
             float sY = bounds.Top + ( bounds.Height - size.Height ) / 2;
             using( SolidBrush b = new SolidBrush( this.ForeColor ) )
             {
+                Region oldClip = g.Clip;
+                g.Clip = new Region( path );
                 g.DrawString( t.Text, this.Font, b, sX, sY );
+                g.Clip = oldClip;
             }
         }
 
@@ -360,6 +391,22 @@ namespace Tabs
             }
         }
 
+        protected override void OnMouseDown( MouseEventArgs e )
+        {
+            base.OnMouseDown( e );
+
+            if( e.Button == MouseButtons.Left )
+            {
+                Tab t = GetTabFromPoint( e.Location );
+                if( t != null )
+                {
+                    SelectedIndex = Tabs.IndexOf( t );
+                    OnTabClick( new TabClickEventArgs( t, e ) );
+                    return;
+                }
+            }
+        }
+
         protected override void OnMouseClick( MouseEventArgs e )
         {
             if( e.Button == MouseButtons.Left
@@ -369,12 +416,15 @@ namespace Tabs
                 return;
             }
 
-            Tab t = GetTabFromPoint( e.Location );
-            if( t != null )
+            if( e.Button != MouseButtons.Left )
             {
-                SelectedIndex = Tabs.IndexOf( t );
-                OnTabClick( new TabClickEventArgs( t, e ) );
-                return;
+                Tab t = GetTabFromPoint( e.Location );
+                if( t != null )
+                {
+                    SelectedIndex = Tabs.IndexOf( t );
+                    OnTabClick( new TabClickEventArgs( t, e ) );
+                    return;
+                }
             }
 
             base.OnMouseClick( e );

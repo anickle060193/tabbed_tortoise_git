@@ -18,18 +18,10 @@ namespace Tabs
         {
             InitializeComponent();
 
+            this.MaximizedBounds = Screen.FromControl( this ).WorkingArea;
+
             tabHeader1.TabClick += TabHeader1_TabClick;
             tabHeader1.NewTabClick += TabHeader1_NewTabClick;
-        }
-
-        protected override CreateParams CreateParams
-        {
-            get
-            {
-                CreateParams p = base.CreateParams;
-                p.Style &= ~0x00C00000;
-                return p;
-            }
         }
 
         private void TabHeader1_NewTabClick( object sender, EventArgs e )

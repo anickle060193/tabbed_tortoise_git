@@ -50,8 +50,6 @@ namespace Tabs
 
         private void ClearDragDrop()
         {
-            AllowReSwap = false;
-
             _hasItem = false;
             _dragStart = Point.Empty;
 

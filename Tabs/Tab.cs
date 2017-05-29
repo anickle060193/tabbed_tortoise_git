@@ -19,6 +19,11 @@ namespace Tabs
             set
             {
                 base.Text = value;
+                
+                if( this.Parent != null )
+                {
+                    this.Parent.Invalidate();
+                }
             }
         }
 
