@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.ComponentModel.Design;
 using System.Drawing;
 using System.Drawing.Drawing2D;
 using System.Linq;
@@ -11,7 +12,8 @@ using System.Windows.Forms;
 
 namespace Tabs
 {
-    public class TabHeader : Control
+    [Designer( "System.Windows.Forms.Design.ParentControlDesigner, System.Design", typeof( IDesigner ) )]
+    public class TabControl : Control
     {
         private static readonly int TAB_HEIGHT = 28;
         private static readonly double TAB_INCLINE_ANGLE = 65 * ( Math.PI ) / 180;
@@ -32,10 +34,14 @@ namespace Tabs
         private Color _selectedTabColor = Color.FromArgb( 242, 242, 242 );
         private Color _tabBorderColor = Color.FromArgb( 181, 181, 181 );
         private int _selectedIndex = -1;
+        private MenuStrip _mainMenuStrip;
 
         public event EventHandler NewTabClick;
         public event EventHandler<TabClickEventArgs> TabClick;
+        public event EventHandler SelectedIndexChanged;
 
+        [Browsable( false )]
+        [DesignerSerializationVisibility( DesignerSerializationVisibility.Hidden )]
         protected override Padding DefaultMargin
         {
             get
@@ -65,8 +71,14 @@ namespace Tabs
             get { return _selectedIndex; }
             set
             {
-                _selectedIndex = value;
-                Invalidate();
+                if( _selectedIndex != value )
+                {
+                    _selectedIndex = value;
+                    OnSelectedIndexChanged( EventArgs.Empty );
+
+                    PerformLayout();
+                    Invalidate();
+                }
             }
         }
 
@@ -163,7 +175,35 @@ namespace Tabs
             }
         }
 
-        public TabHeader()
+        [DefaultValue( typeof( MenuStrip ), "(none)" )]
+        public MenuStrip MainMenuStrip
+        {
+            get { return _mainMenuStrip; }
+            set
+            {
+                if( _mainMenuStrip != value )
+                {
+                    if( _mainMenuStrip != null )
+                    {
+                        _mainMenuStrip.Parent = null;
+                    }
+
+                    _mainMenuStrip = value;
+
+                    if( _mainMenuStrip != null )
+                    {
+                        _mainMenuStrip.BackColor = SystemColors.Control;
+                    }
+
+                    PerformLayout();
+                }
+            }
+        }
+
+        private bool InsertingItem { get; set; }
+        private bool RemovingItem { get; set; }
+
+        public TabControl()
         {
             this.BackColor = Color.White;
 
@@ -178,13 +218,17 @@ namespace Tabs
             CreateNewTabButtonPath();
         }
 
+        protected override Control.ControlCollection CreateControlsInstance()
+        {
+            return new ControlCollection( this );
+        }
+
         private void CreateBaseTabDrawPath()
         {
-            int h = this.Height - BOTTOM_BORDER_HEIGHT;
-            int tabInclineWidth = (int)( h / Math.Tan( TAB_INCLINE_ANGLE ) );
+            int tabInclineWidth = (int)( TAB_HEIGHT / Math.Tan( TAB_INCLINE_ANGLE ) );
             _tabOverlapWidth = tabInclineWidth / 2;
 
-            int tabAreaWidth = this.Width - NEW_TAB_BUTTON_WIDTH - _tabOverlapWidth;
+            int tabAreaWidth = this.Width - (int)_newTabGraphicsPath.GetBounds().Width - 2 * _tabOverlapWidth;
             int tabWidth = this.MaximumTabWidth;
             if( this.TabCount == 0 )
             {
@@ -195,7 +239,7 @@ namespace Tabs
                 tabWidth = Math.Min( tabWidth, (int)( (float)tabAreaWidth / this.TabCount ) + _tabOverlapWidth );
             }
 
-            int bY = h;
+            int bY = TAB_HEIGHT;
             int tY = 0;
             int blX = _tabOverlapWidth;
             int tlX = blX + tabInclineWidth;
@@ -241,11 +285,6 @@ namespace Tabs
             }
 
             return null;
-        }
-
-        protected override void SetBoundsCore( int x, int y, int width, int height, BoundsSpecified specified )
-        {
-            base.SetBoundsCore( x, y, width, TAB_HEIGHT + BOTTOM_BORDER_HEIGHT, specified );
         }
 
         protected override void OnPaint( PaintEventArgs e )
@@ -318,9 +357,8 @@ namespace Tabs
         {
             RectangleF lastTabRect = CreateTabDrawPath( this.TabCount - 1 ).GetBounds();
 
-            int totalHeight = this.Height - BOTTOM_BORDER_HEIGHT;
-            int h = (int)( totalHeight * NEW_TAB_HEIGHT_PERCENTAGE );
-            int tY = ( totalHeight - h ) / 2;
+            int h = (int)( TAB_HEIGHT * NEW_TAB_HEIGHT_PERCENTAGE );
+            int tY = ( TAB_HEIGHT - h ) / 2;
             int bY = tY + h;
 
             int tabInclineWidth = (int)( h / Math.Tan( TAB_INCLINE_ANGLE ) );
@@ -363,13 +401,13 @@ namespace Tabs
 
         private void PaintBottomBorder( Graphics g )
         {
-            int bY = this.Height - BOTTOM_BORDER_HEIGHT - 1;
+            int bY = TAB_HEIGHT;
             PointF left = new PointF( 0.0f, bY );
             PointF right = new PointF( this.Width, bY );
 
             using( Brush b = new SolidBrush( SelectedTabColor ) )
             {
-                g.FillRectangle( b, 0, bY, this.Width, BOTTOM_BORDER_HEIGHT + 1 );
+                g.FillRectangle( b, 0, bY, this.Width, this.Height - bY );
             }
 
             if( SelectedIndex != -1 )
@@ -430,21 +468,54 @@ namespace Tabs
             base.OnMouseClick( e );
         }
 
+        protected override void OnLayout( LayoutEventArgs e )
+        {
+            //base.OnLayout( e );
+
+            int y = TAB_HEIGHT + BOTTOM_BORDER_HEIGHT;
+
+            if( this.MainMenuStrip != null )
+            {
+                this.MainMenuStrip.Location = new Point( 0, y );
+                y += this.MainMenuStrip.Height;
+            }
+
+            foreach( Tab t in Tabs )
+            {
+                t.Visible = false;
+            }
+
+            if( this.SelectedTab != null )
+            {
+                this.SelectedTab.Location = new Point( 0, y );
+                this.SelectedTab.Size = new Size( this.ClientSize.Width, this.ClientSize.Height - y );
+                this.SelectedTab.Visible = true;
+                this.SelectedTab.BringToFront();
+            }
+
+            this.Invalidate();
+        }
+
         protected void OnNewTabClick( EventArgs e )
         {
-            NewTabClick( this, e );
+            NewTabClick?.Invoke( this, e );
         }
 
         protected void OnTabClick( TabClickEventArgs e )
         {
-            TabClick( this, e );
+            TabClick?.Invoke( this, e );
+        }
+
+        protected void OnSelectedIndexChanged( EventArgs e )
+        {
+            SelectedIndexChanged?.Invoke( this, e );
         }
 
         public class TabCollection : IList<Tab>
         {
-            private readonly TabHeader _owner;
+            private readonly TabControl _owner;
 
-            public TabCollection( TabHeader owner )
+            public TabCollection( TabControl owner )
             {
                 _owner = owner;
             }
@@ -458,8 +529,16 @@ namespace Tabs
 
                 set
                 {
-                    _owner._tabs[ index ] = value;
-                    _owner.Invalidate();
+                    if( this[ index ] != value )
+                    {
+                        _owner.RemovingItem = true;
+                        _owner.Controls.Remove( this[ index ] );
+                        _owner.RemovingItem = false;
+                        _owner.InsertingItem = true;
+                        _owner.Controls.Add( value );
+                        _owner.InsertingItem = false;
+                        _owner._tabs[ index ] = value;
+                    }
                 }
             }
 
@@ -520,9 +599,18 @@ namespace Tabs
 
             public void Insert( int index, Tab item )
             {
-                _owner._tabs.Insert( index, item );
-                _owner.SelectedIndex = index;
-                _owner.Invalidate();
+                try
+                {
+                    _owner.InsertingItem = true;
+                    _owner._tabs.Insert( index, item );
+                    _owner.Controls.Add( item );
+                    _owner.SelectedIndex = index;
+                    _owner.Invalidate();
+                }
+                finally
+                {
+                    _owner.InsertingItem = false;
+                }
             }
 
             public bool Remove( Tab item )
@@ -542,7 +630,11 @@ namespace Tabs
 
             public void RemoveAt( int index )
             {
+                Tab tab = _owner._tabs[ index ];
                 _owner._tabs.RemoveAt( index );
+                _owner.RemovingItem = true;
+                _owner.Controls.Remove( tab );
+                _owner.RemovingItem = false;
                 if( index == _owner.SelectedIndex )
                 {
                     if( _owner.TabCount > 0 )
@@ -566,19 +658,19 @@ namespace Tabs
             }
         }
 
-        class TabHeaderDragDropHelper : DragDropHelper<TabHeader, Tab>
+        class TabHeaderDragDropHelper : DragDropHelper<TabControl, Tab>
         {
             public TabHeaderDragDropHelper()
             {
                 AllowReSwap = true;
             }
 
-            protected override bool AllowDrag( TabHeader parent, Tab item, int index )
+            protected override bool AllowDrag( TabControl parent, Tab item, int index )
             {
                 return true;
             }
 
-            protected override bool GetItemFromPoint( TabHeader parent, Point p, out Tab item, out int itemIndex )
+            protected override bool GetItemFromPoint( TabControl parent, Point p, out Tab item, out int itemIndex )
             {
                 Tab t = parent.GetTabFromPoint( p );
                 if( t != null )
@@ -595,16 +687,81 @@ namespace Tabs
                 }
             }
 
-            protected override bool SwapItems( TabHeader dragParent, Tab dragItem, int dragItemIndex, TabHeader pointedParent, Tab pointedItem, int pointedItemIndex )
+            protected override bool SwapItems( TabControl dragParent, Tab dragItem, int dragItemIndex, TabControl pointedParent, Tab pointedItem, int pointedItemIndex )
             {
-                dragParent.Tabs[ dragItemIndex ] = pointedItem;
-                pointedParent.Tabs[ pointedItemIndex ] = dragItem;
-
                 if( dragParent == pointedParent )
                 {
+                    dragParent._tabs[ dragItemIndex ] = pointedItem;
+                    dragParent._tabs[ pointedItemIndex ] = dragItem;
                     dragParent.SelectedIndex = pointedItemIndex;
+                    return true;
                 }
-                return true;
+                else
+                {
+                    return false;
+                }
+            }
+        }
+
+        public new class ControlCollection : Control.ControlCollection
+        {
+            public new TabControl Owner
+            {
+                get
+                {
+                    return (TabControl)base.Owner;
+                }
+            }
+
+            public ControlCollection( TabControl owner ) : base( owner )
+            {
+            }
+
+            public override void Add( Control value )
+            {
+                if( value is MenuStrip )
+                {
+                    if( this.Owner.MainMenuStrip != null )
+                    {
+                        throw new ArgumentException( "TabControl can only have a single MenuStrip." );
+                    }
+                    this.Owner.MainMenuStrip = (MenuStrip)value;
+                    base.Add( value );
+                }
+                else if( value is Tab )
+                {
+                    if( !this.Owner.InsertingItem )
+                    {
+                        this.Owner.Tabs.Add( (Tab)value );
+                    }
+
+                    value.Visible = false;
+                    base.Add( value );
+                }
+                else
+                {
+                    throw new ArgumentException( "Only Tabs can be added to a TabControl." );
+                }
+            }
+
+            public override void Remove( Control value )
+            {
+                base.Remove( value );
+
+                if( value is Tab )
+                {
+                    if( !Owner.RemovingItem )
+                    {
+                        Owner.Tabs.Remove( (Tab)value );
+                    }
+                }
+                else if( value is MenuStrip )
+                {
+                    if( value == Owner.MainMenuStrip )
+                    {
+                        Owner.MainMenuStrip = null;
+                    }
+                }
             }
         }
     }

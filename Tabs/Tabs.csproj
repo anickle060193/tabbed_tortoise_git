@@ -48,7 +48,7 @@
     <Compile Include="Tab.cs">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="TabHeader.cs">
+    <Compile Include="TabControl.cs">
       <SubType>Component</SubType>
     </Compile>
     <Compile Include="TestTabForm.cs">

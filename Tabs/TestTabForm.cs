@@ -12,35 +12,36 @@ namespace Tabs
 {
     public partial class TestTabForm : Form
     {
-        private int tabNumber = 0;
+        private int tabCount = 0;
 
         public TestTabForm()
         {
             InitializeComponent();
 
-            this.MaximizedBounds = Screen.FromControl( this ).WorkingArea;
-
-            tabHeader1.TabClick += TabHeader1_TabClick;
-            tabHeader1.NewTabClick += TabHeader1_NewTabClick;
+            tabControl1.NewTabClick += TabControl1_NewTabClick;
+            addTabToolStripMenuItem.Click += TabControl1_NewTabClick;
+            tabControl1.Click += TabControl1_Click;
         }
 
-        private void TabHeader1_NewTabClick( object sender, EventArgs e )
+        private void TabControl1_Click( object sender, EventArgs e )
         {
-            textBox1.AppendText( "New Tab" + Environment.NewLine );
-            tabHeader1.Tabs.Add( "New Tab " + ( tabNumber++ ).ToString() );
+            Console.WriteLine( "Tab Control Clicked" );
         }
 
-        private void TabHeader1_TabClick( object sender, TabClickEventArgs e )
+        private void TabControl1_NewTabClick( object sender, EventArgs e )
         {
-            if( e.Button == MouseButtons.Middle )
+            Tab t = tabControl1.Tabs.Add( ( tabCount++ ).ToString() );
+            t.Controls.Add( new Button()
             {
-                tabHeader1.Tabs.Remove( e.Tab );
-                textBox1.AppendText( e.Tab.Text + " - Removed" + Environment.NewLine );
-            }
-            else
-            {
-                textBox1.AppendText( e.Tab.Text + Environment.NewLine );
-            }
+                Text = String.Format( "Tab {0}", t.Text ),
+                Visible = true
+            } );
+            t.Click += T_Click;
+        }
+
+        private void T_Click( object sender, EventArgs e )
+        {
+            Console.WriteLine( ( (Tab)sender ).Text );
         }
     }
 }
