@@ -13,18 +13,9 @@ namespace Tabs
 {
     public class TabControl : Control
     {
-        private static readonly int TAB_HEIGHT = 28;
-        private static readonly double TAB_INCLINE_ANGLE = 65 * ( Math.PI ) / 180;
-        private static readonly int BOTTOM_BORDER_HEIGHT = 4;
-
-        private static readonly int NEW_TAB_BUTTON_WIDTH = 28;
-        private static readonly float NEW_TAB_HEIGHT_PERCENTAGE = 0.65f;
-
-        private int _tabOverlapWidth;
-        private readonly GraphicsPath _tabGraphicsPath = new GraphicsPath();
-        private readonly GraphicsPath _newTabGraphicsPath = new GraphicsPath();
         private readonly List<Tab> _tabs = new List<Tab>();
         private readonly TabCollection _collection;
+        private readonly TabPainter _painter;
         private readonly TabHeaderDragDropHelper _dragDropHelper;
 
         private int _maximumTabWidth = 200;
@@ -151,6 +142,20 @@ namespace Tabs
             }
         }
 
+        [DefaultValue( true )]
+        public override bool AllowDrop
+        {
+            get
+            {
+                return base.AllowDrop;
+            }
+
+            set
+            {
+                base.AllowDrop = value;
+            }
+        }
+
         [DefaultValue( typeof( Color ), "White" )]
         public override Color BackColor
         {
@@ -166,33 +171,33 @@ namespace Tabs
         }
 
         [DefaultValue( true )]
-        public override bool AllowDrop
+        protected override bool DoubleBuffered
         {
             get
             {
-                return base.AllowDrop;
+                return base.DoubleBuffered;
             }
 
             set
             {
-                base.AllowDrop = value;
+                base.DoubleBuffered = value;
             }
         }
 
         public TabControl()
         {
+            this.AllowDrop = true;
             this.BackColor = Color.White;
-            this.CloseTabOnMiddleClick = true;
+            this.DoubleBuffered = true;
 
-            _dragDropHelper = new TabHeaderDragDropHelper();
-            _dragDropHelper.AddControl( this );
+            this.CloseTabOnMiddleClick = true;
 
             _collection = new TabCollection( this );
 
-            this.DoubleBuffered = true;
+            _painter = new TabPainter( this );
 
-            CreateBaseTabDrawPath();
-            CreateNewTabButtonPath();
+            _dragDropHelper = new TabHeaderDragDropHelper();
+            _dragDropHelper.AddControl( this );
         }
 
         protected override Control.ControlCollection CreateControlsInstance()
@@ -200,52 +205,11 @@ namespace Tabs
             return new ControlCollection( this );
         }
 
-        private void CreateBaseTabDrawPath()
-        {
-            int tabInclineWidth = (int)( TAB_HEIGHT / Math.Tan( TAB_INCLINE_ANGLE ) );
-            _tabOverlapWidth = tabInclineWidth / 2;
-
-            int tabAreaWidth = this.Width - (int)_newTabGraphicsPath.GetBounds().Width - 2 * _tabOverlapWidth;
-            int tabWidth = this.MaximumTabWidth;
-            if( this.TabCount == 0 )
-            {
-                tabWidth = Math.Min( tabWidth, tabAreaWidth );
-            }
-            else
-            {
-                tabWidth = Math.Min( tabWidth, (int)( (float)tabAreaWidth / this.TabCount ) + _tabOverlapWidth );
-            }
-
-            int bY = TAB_HEIGHT;
-            int tY = 0;
-            int blX = _tabOverlapWidth;
-            int tlX = blX + tabInclineWidth;
-            int brX = blX + tabWidth;
-            int trX = brX - tabInclineWidth;
-
-            _tabGraphicsPath.Reset();
-            _tabGraphicsPath.AddLine( blX, bY, tlX, tY );
-            _tabGraphicsPath.AddLine( tlX, tY, trX, tY );
-            _tabGraphicsPath.AddLine( trX, tY, brX, bY );
-        }
-
-        private GraphicsPath CreateTabDrawPath( int index )
-        {
-            float tabWidth = _tabGraphicsPath.GetBounds().Width;
-
-            Matrix m = new Matrix();
-            m.Translate( ( tabWidth - 2 * _tabOverlapWidth ) * index, 0 );
-
-            GraphicsPath p = (GraphicsPath)_tabGraphicsPath.Clone();
-            p.Transform( m );
-            return p;
-        }
-
         private Tab GetTabFromPoint( Point p )
         {
             if( SelectedTab != null )
             {
-                GraphicsPath path = CreateTabDrawPath( SelectedIndex );
+                GraphicsPath path = _painter.GetTabGraphicsPath( SelectedIndex );
                 if( path.IsVisible( p ) )
                 {
                     return SelectedTab;
@@ -254,10 +218,13 @@ namespace Tabs
 
             for( int i = 0; i < this.TabCount; i++ )
             {
-                GraphicsPath path = CreateTabDrawPath( i );
-                if( path.IsVisible( p ) )
+                if( i != SelectedIndex )
                 {
-                    return this.Tabs[ i ];
+                    GraphicsPath path = _painter.GetTabGraphicsPath( i );
+                    if( path.IsVisible( p ) )
+                    {
+                        return this.Tabs[ i ];
+                    }
                 }
             }
 
@@ -266,144 +233,7 @@ namespace Tabs
 
         protected override void OnPaint( PaintEventArgs e )
         {
-            Graphics g = e.Graphics;
-            g.SmoothingMode = SmoothingMode.AntiAlias;
-
-            g.Clear( SystemColors.ControlLightLight );
-
-            CreateBaseTabDrawPath();
-            for( int i = TabCount - 1; i >= 0; i-- )
-            {
-                if( i != SelectedIndex )
-                {
-                    PaintTab( g, Tabs[ i ], i, false );
-                }
-            }
-
-            if( SelectedTab != null )
-            {
-                PaintTab( g, SelectedTab, SelectedIndex, true );
-            }
-
-            PaintBottomBorder( g );
-
-            PaintNewTab( g );
-        }
-
-        private void PaintTab( Graphics g, Tab t, int index, bool selected )
-        {
-            GraphicsPath path = CreateTabDrawPath( index );
-
-            RectangleF bounds = path.GetBounds();
-            if( selected )
-            {
-                using( Brush b = new SolidBrush( SelectedTabColor ) )
-                {
-                    g.FillPath( b, path );
-                }
-                using( Pen p = new Pen( TabBorderColor ) )
-                {
-                    g.DrawPath( p, path );
-                }
-            }
-            else
-            {
-                using( Brush b = new SolidBrush( TabColor ) )
-                {
-                    g.FillPath( b, path );
-                }
-                using( Pen p = new Pen( TabBorderColor ) )
-                {
-                    g.DrawPath( p, path );
-                }
-            }
-
-            SizeF size = g.MeasureString( t.Text, this.Font );
-            float sX = bounds.Left + ( bounds.Width - size.Width ) / 2;
-            float sY = bounds.Top + ( bounds.Height - size.Height ) / 2;
-            using( SolidBrush b = new SolidBrush( this.ForeColor ) )
-            {
-                Region oldClip = g.Clip;
-                g.Clip = new Region( path );
-                g.DrawString( t.Text, this.Font, b, sX, sY );
-                g.Clip = oldClip;
-            }
-        }
-
-        private void CreateNewTabButtonPath()
-        {
-            RectangleF lastTabRect = CreateTabDrawPath( this.TabCount - 1 ).GetBounds();
-
-            int h = (int)( TAB_HEIGHT * NEW_TAB_HEIGHT_PERCENTAGE );
-            int tY = ( TAB_HEIGHT - h ) / 2;
-            int bY = tY + h;
-
-            int tabInclineWidth = (int)( h / Math.Tan( TAB_INCLINE_ANGLE ) );
-
-            int tlX = (int)lastTabRect.Right - 3;
-            int trX = tlX + NEW_TAB_BUTTON_WIDTH;
-            int blX = tlX + tabInclineWidth;
-            int brX = blX + NEW_TAB_BUTTON_WIDTH;
-
-            _newTabGraphicsPath.Reset();
-            _newTabGraphicsPath.MoveTo( blX, bY );
-            _newTabGraphicsPath.LineTo( tlX, tY );
-            _newTabGraphicsPath.LineTo( trX, tY );
-            _newTabGraphicsPath.LineTo( brX, bY );
-            _newTabGraphicsPath.CloseFigure();
-        }
-
-        private void PaintNewTab( Graphics g )
-        {
-            CreateNewTabButtonPath();
-            RectangleF bounds = _newTabGraphicsPath.GetBounds();
-
-            using( Brush b = new SolidBrush( TabColor ) )
-            {
-                g.FillPath( b, _newTabGraphicsPath );
-            }
-            using( Pen p = new Pen( TabBorderColor ) )
-            {
-                g.DrawPath( SystemPens.ControlDark, _newTabGraphicsPath );
-            }
-
-            SizeF size = g.MeasureString( "+", this.Font );
-            float sX = bounds.Left + ( bounds.Width - size.Width ) / 2;
-            float sY = bounds.Top + ( bounds.Height - size.Height ) / 2;
-            using( SolidBrush b = new SolidBrush( this.ForeColor ) )
-            {
-                g.DrawString( "+", this.Font, b, sX, sY );
-            }
-        }
-
-        private void PaintBottomBorder( Graphics g )
-        {
-            int bY = TAB_HEIGHT;
-            PointF left = new PointF( 0.0f, bY );
-            PointF right = new PointF( this.Width, bY );
-
-            using( Brush b = new SolidBrush( SelectedTabColor ) )
-            {
-                g.FillRectangle( b, 0, bY, this.Width, this.Height - bY );
-            }
-
-            if( SelectedIndex != -1 )
-            {
-                GraphicsPath tabPath = CreateTabDrawPath( SelectedIndex );
-                RectangleF tabBounds = tabPath.GetBounds();
-                using( Pen p = new Pen( TabBorderColor ) )
-                {
-                    g.DrawLines( p, new[] { left, new PointF( tabBounds.Left, bY ) } );
-                    g.DrawLines( p, new[] { new PointF( tabBounds.Right, bY ), right } );
-                }
-            }
-            else
-            {
-                using( Pen p = new Pen( TabBorderColor ) )
-                {
-                    g.DrawLines( p, new[] { left, right } );
-                }
-            }
+            _painter.Paint( e.Graphics );
         }
 
         protected override void OnMouseDown( MouseEventArgs e )
@@ -425,7 +255,7 @@ namespace Tabs
         protected override void OnMouseClick( MouseEventArgs e )
         {
             if( e.Button == MouseButtons.Left
-             && _newTabGraphicsPath.IsVisible( e.Location ) )
+             && _painter.GetNewTabGraphicsPath().IsVisible( e.Location ) )
             {
                 OnNewTabClick( EventArgs.Empty );
                 return;
@@ -439,7 +269,9 @@ namespace Tabs
                     if( e.Button == MouseButtons.Middle
                      && this.CloseTabOnMiddleClick )
                     {
-                        this.Tabs.Remove( this.SelectedTab );
+                        SelectedIndex = Tabs.IndexOf( t );
+                        this.Tabs.Remove( t );
+                        return;
                     }
                     else
                     {
@@ -464,9 +296,7 @@ namespace Tabs
 
             if( this.SelectedTab != null )
             {
-                int y = TAB_HEIGHT + BOTTOM_BORDER_HEIGHT;
-                this.SelectedTab.Location = new Point( 0, y );
-                this.SelectedTab.Size = new Size( this.ClientSize.Width, this.ClientSize.Height - y );
+                this.SelectedTab.Bounds = _painter.GetTabPanelBounds();
                 this.SelectedTab.Visible = true;
                 this.SelectedTab.BringToFront();
             }
