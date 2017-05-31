@@ -13,32 +13,77 @@ namespace Tabs
         private static readonly int TAB_HEIGHT = 28;
         private static readonly double TAB_INCLINE_ANGLE = 65 * ( Math.PI ) / 180;
         private static readonly int BOTTOM_BORDER_HEIGHT = 4;
+        private static readonly int LEFT_PADDING = 6;
 
-        private static readonly int NEW_TAB_BUTTON_WIDTH = 28;
+        private static readonly int NEW_TAB_BUTTON_WIDTH = 36;
         private static readonly float NEW_TAB_HEIGHT_PERCENTAGE = 0.65f;
-
-        private int _tabOverlapWidth;
-        private readonly GraphicsPath _tabGraphicsPath = new GraphicsPath();
-        private readonly GraphicsPath _newTabGraphicsPath = new GraphicsPath();
 
         public TabControl Owner { get; private set; }
 
         public TabPainter( TabControl tabControl )
         {
             Owner = tabControl;
-
-            CreateBaseTabDrawPath();
-            CreateNewTabButtonPath();
         }
 
-        public GraphicsPath GetTabGraphicsPath( int index )
+        public PointPath GetTabPath( int index )
         {
-            return CreateTabDrawPath( index );
+            int tabInclineWidth = (int)( TAB_HEIGHT / Math.Tan( TAB_INCLINE_ANGLE ) );
+            int tabOverlapWidth = tabInclineWidth / 2;
+
+            int tabAreaWidth = this.Owner.Width - LEFT_PADDING - NEW_TAB_BUTTON_WIDTH;
+            int tabWidth = this.Owner.MaximumTabWidth;
+            if( this.Owner.TabCount == 0 )
+            {
+                tabWidth = Math.Min( tabWidth, tabAreaWidth );
+            }
+            else
+            {
+                tabWidth = Math.Min( tabWidth, (int)( (float)tabAreaWidth / this.Owner.TabCount ) + tabOverlapWidth );
+            }
+
+            int bY = TAB_HEIGHT;
+            int tY = 0;
+            int blX = LEFT_PADDING;
+            int tlX = blX + tabInclineWidth;
+            int brX = blX + tabWidth;
+            int trX = brX - tabInclineWidth;
+
+            int xShift = ( tabWidth - 2 * tabOverlapWidth ) * index;
+
+            return new PointPath( new[]{
+                new Point( blX + xShift, bY ),
+                new Point( tlX + xShift, tY ),
+                new Point( trX + xShift, tY ),
+                new Point( brX + xShift, bY )
+            } );
         }
 
-        public GraphicsPath GetNewTabGraphicsPath()
+        public PointPath GetNewTabPath()
         {
-            return _newTabGraphicsPath;
+            int left = LEFT_PADDING;
+            if( this.Owner.TabCount > 0 )
+            {
+                left = GetTabPath( this.Owner.TabCount - 1 ).Bounds.Right;
+            }
+
+            int h = (int)( TAB_HEIGHT * NEW_TAB_HEIGHT_PERCENTAGE );
+            int tY = ( TAB_HEIGHT - h ) / 2;
+            int bY = tY + h;
+
+            int tabInclineWidth = (int)( h / Math.Tan( TAB_INCLINE_ANGLE ) );
+
+            int tlX = left;
+            int blX = tlX + tabInclineWidth;
+            int brX = tlX + NEW_TAB_BUTTON_WIDTH;
+            int trX = brX - tabInclineWidth;
+
+            return new PointPath( new[]
+            {
+                new Point( blX, bY ),
+                new Point( tlX, tY ),
+                new Point( trX, tY ),
+                new Point( brX, bY )
+            } );
         }
 
         public Rectangle GetTabPanelBounds()
@@ -54,7 +99,6 @@ namespace Tabs
 
             g.Clear( SystemColors.ControlLightLight );
 
-            CreateBaseTabDrawPath();
             for( int i = this.Owner.TabCount - 1; i >= 0; i-- )
             {
                 if( i != this.Owner.SelectedIndex )
@@ -73,122 +117,57 @@ namespace Tabs
             PaintNewTab( g );
         }
 
-        private void CreateBaseTabDrawPath()
-        {
-            int tabInclineWidth = (int)( TAB_HEIGHT / Math.Tan( TAB_INCLINE_ANGLE ) );
-            _tabOverlapWidth = tabInclineWidth / 2;
-
-            int tabAreaWidth = this.Owner.Width - (int)_newTabGraphicsPath.GetBounds().Width - 2 * _tabOverlapWidth;
-            int tabWidth = this.Owner.MaximumTabWidth;
-            if( this.Owner.TabCount == 0 )
-            {
-                tabWidth = Math.Min( tabWidth, tabAreaWidth );
-            }
-            else
-            {
-                tabWidth = Math.Min( tabWidth, (int)( (float)tabAreaWidth / this.Owner.TabCount ) + _tabOverlapWidth );
-            }
-
-            int bY = TAB_HEIGHT;
-            int tY = 0;
-            int blX = _tabOverlapWidth;
-            int tlX = blX + tabInclineWidth;
-            int brX = blX + tabWidth;
-            int trX = brX - tabInclineWidth;
-
-            _tabGraphicsPath.Reset();
-            _tabGraphicsPath.AddLine( blX, bY, tlX, tY );
-            _tabGraphicsPath.AddLine( tlX, tY, trX, tY );
-            _tabGraphicsPath.AddLine( trX, tY, brX, bY );
-        }
-
-        private GraphicsPath CreateTabDrawPath( int index )
-        {
-            float tabWidth = _tabGraphicsPath.GetBounds().Width;
-
-            Matrix m = new Matrix();
-            m.Translate( ( tabWidth - 2 * _tabOverlapWidth ) * index, 0 );
-
-            GraphicsPath p = (GraphicsPath)_tabGraphicsPath.Clone();
-            p.Transform( m );
-            return p;
-        }
-
         private void PaintTab( Graphics g, Tab t, int index, bool selected )
         {
-            GraphicsPath path = CreateTabDrawPath( index );
+            PointPath path = GetTabPath( index );
 
-            RectangleF bounds = path.GetBounds();
             if( selected )
             {
                 using( Brush b = new SolidBrush( this.Owner.SelectedTabColor ) )
                 {
-                    g.FillPath( b, path );
+                    g.FillPointPath( b, path );
                 }
                 using( Pen p = new Pen( this.Owner.TabBorderColor ) )
                 {
-                    g.DrawPath( p, path );
+                    g.DrawPointPath( p, path );
                 }
             }
             else
             {
                 using( Brush b = new SolidBrush( this.Owner.TabColor ) )
                 {
-                    g.FillPath( b, path );
+                    g.FillPointPath( b, path );
                 }
                 using( Pen p = new Pen( this.Owner.TabBorderColor ) )
                 {
-                    g.DrawPath( p, path );
+                    g.DrawPointPath( p, path );
                 }
             }
 
             SizeF size = g.MeasureString( t.Text, this.Owner.Font );
-            float sX = bounds.Left + ( bounds.Width - size.Width ) / 2;
-            float sY = bounds.Top + ( bounds.Height - size.Height ) / 2;
+            float sX = path.Bounds.Left + ( path.Bounds.Width - size.Width ) / 2;
+            float sY = path.Bounds.Top + ( path.Bounds.Height - size.Height ) / 2;
             using( SolidBrush b = new SolidBrush( this.Owner.ForeColor ) )
             {
                 Region oldClip = g.Clip;
-                g.Clip = new Region( path );
+                g.Clip = new Region( path.GetGraphicsPath() );
                 g.DrawString( t.Text, this.Owner.Font, b, sX, sY );
                 g.Clip = oldClip;
             }
         }
 
-        private void CreateNewTabButtonPath()
-        {
-            RectangleF lastTabRect = CreateTabDrawPath( this.Owner.TabCount - 1 ).GetBounds();
-
-            int h = (int)( TAB_HEIGHT * NEW_TAB_HEIGHT_PERCENTAGE );
-            int tY = ( TAB_HEIGHT - h ) / 2;
-            int bY = tY + h;
-
-            int tabInclineWidth = (int)( h / Math.Tan( TAB_INCLINE_ANGLE ) );
-
-            int tlX = (int)lastTabRect.Right - 3;
-            int trX = tlX + NEW_TAB_BUTTON_WIDTH;
-            int blX = tlX + tabInclineWidth;
-            int brX = blX + NEW_TAB_BUTTON_WIDTH;
-
-            _newTabGraphicsPath.Reset();
-            _newTabGraphicsPath.MoveTo( blX, bY );
-            _newTabGraphicsPath.LineTo( tlX, tY );
-            _newTabGraphicsPath.LineTo( trX, tY );
-            _newTabGraphicsPath.LineTo( brX, bY );
-            _newTabGraphicsPath.CloseFigure();
-        }
-
         private void PaintNewTab( Graphics g )
         {
-            CreateNewTabButtonPath();
-            RectangleF bounds = _newTabGraphicsPath.GetBounds();
+            PointPath newTabPath = GetNewTabPath();
+            Rectangle bounds = newTabPath.Bounds;
 
             using( Brush b = new SolidBrush( this.Owner.TabColor ) )
             {
-                g.FillPath( b, _newTabGraphicsPath );
+                g.FillPointPath( b, newTabPath );
             }
             using( Pen p = new Pen( this.Owner.TabBorderColor ) )
             {
-                g.DrawPath( SystemPens.ControlDark, _newTabGraphicsPath );
+                g.DrawPointPath( p, newTabPath );
             }
 
             SizeF size = g.MeasureString( "+", this.Owner.Font );
@@ -203,8 +182,8 @@ namespace Tabs
         private void PaintBottomBorder( Graphics g )
         {
             int bY = TAB_HEIGHT;
-            PointF left = new PointF( 0.0f, bY );
-            PointF right = new PointF( this.Owner.Width, bY );
+            Point left = new Point( 0, bY );
+            Point right = new Point( this.Owner.Width, bY );
 
             using( Brush b = new SolidBrush( this.Owner.SelectedTabColor ) )
             {
@@ -213,12 +192,11 @@ namespace Tabs
 
             if( this.Owner.SelectedIndex != -1 )
             {
-                GraphicsPath tabPath = CreateTabDrawPath( this.Owner.SelectedIndex );
-                RectangleF tabBounds = tabPath.GetBounds();
+                Rectangle tabBounds = GetTabPath( this.Owner.SelectedIndex ).Bounds;
                 using( Pen p = new Pen( this.Owner.TabBorderColor ) )
                 {
-                    g.DrawLines( p, new[] { left, new PointF( tabBounds.Left, bY ) } );
-                    g.DrawLines( p, new[] { new PointF( tabBounds.Right, bY ), right } );
+                    g.DrawLines( p, new[] { left, new Point( tabBounds.Left, bY ) } );
+                    g.DrawLines( p, new[] { new Point( tabBounds.Right, bY ), right } );
                 }
             }
             else

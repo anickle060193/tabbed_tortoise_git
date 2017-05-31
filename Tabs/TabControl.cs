@@ -209,8 +209,7 @@ namespace Tabs
         {
             if( SelectedTab != null )
             {
-                GraphicsPath path = _painter.GetTabGraphicsPath( SelectedIndex );
-                if( path.IsVisible( p ) )
+                if( _painter.GetTabPath( SelectedIndex ).HitTest( p ) )
                 {
                     return SelectedTab;
                 }
@@ -220,8 +219,7 @@ namespace Tabs
             {
                 if( i != SelectedIndex )
                 {
-                    GraphicsPath path = _painter.GetTabGraphicsPath( i );
-                    if( path.IsVisible( p ) )
+                    if( _painter.GetTabPath( i ).HitTest( p ) )
                     {
                         return this.Tabs[ i ];
                     }
@@ -255,7 +253,7 @@ namespace Tabs
         protected override void OnMouseClick( MouseEventArgs e )
         {
             if( e.Button == MouseButtons.Left
-             && _painter.GetNewTabGraphicsPath().IsVisible( e.Location ) )
+             && _painter.GetNewTabPath().HitTest( e.Location ) )
             {
                 OnNewTabClick( EventArgs.Empty );
                 return;

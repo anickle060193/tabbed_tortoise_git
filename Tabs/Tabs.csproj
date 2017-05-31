@@ -44,6 +44,7 @@
   <ItemGroup>
     <Compile Include="DragDropHelper.cs" />
     <Compile Include="Extensions.cs" />
+    <Compile Include="PointPath.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Tab.cs">
       <SubType>Component</SubType>

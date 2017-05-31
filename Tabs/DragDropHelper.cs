@@ -10,6 +10,8 @@ namespace Tabs
 {
     abstract class DragDropHelper<TControl, T> where TControl : Control
     {
+        private static readonly int DRAG_THRESHOLD = 6;
+
         private bool _hasItem;
         private Point _dragStart;
 
@@ -90,8 +92,8 @@ namespace Tabs
 
                 Point p = parent.PointToScreen( e.Location );
 
-                if( ( p.X - _dragStart.X ) > SystemInformation.DragSize.Width
-                 && ( p.Y - _dragStart.Y ) > SystemInformation.DragSize.Height )
+                if( ( p.X - _dragStart.X ) > DRAG_THRESHOLD
+                 && ( p.Y - _dragStart.Y ) > DRAG_THRESHOLD )
                 {
                     parent.DoDragDrop( _dragItem, DragDropEffects.Move );
                     ClearDragDrop();
