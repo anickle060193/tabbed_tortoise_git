@@ -91,7 +91,7 @@ namespace Tabs
         {
             int y = TAB_HEIGHT + BOTTOM_BORDER_HEIGHT;
             Size clientSize = this.Owner.ClientSize;
-            return new Rectangle( 0, y, clientSize.Width, clientSize.Height );
+            return new Rectangle( 0, y, clientSize.Width, clientSize.Height - y );
         }
 
         public void Paint( Graphics g )
