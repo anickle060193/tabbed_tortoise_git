@@ -32,6 +32,12 @@ namespace Tabs
         private bool InsertingItem { get; set; }
         private bool RemovingItem { get; set; }
 
+        [DefaultValue( typeof( ContextMenuStrip ), "(none)" )]
+        public ContextMenuStrip TabContextMenu { get; set; }
+
+        [DefaultValue( typeof( ContextMenuStrip ), "(none)" )]
+        public ContextMenuStrip NewTabContextMenu { get; set; }
+
         [DefaultValue( true )]
         public bool CloseTabOnMiddleClick { get; set; }
 
@@ -252,11 +258,19 @@ namespace Tabs
 
         protected override void OnMouseClick( MouseEventArgs e )
         {
-            if( e.Button == MouseButtons.Left
-             && _painter.GetNewTabPath().HitTest( e.Location ) )
+            if( _painter.GetNewTabPath().HitTest( e.Location ) )
             {
-                OnNewTabClick( EventArgs.Empty );
-                return;
+                if( e.Button == MouseButtons.Left )
+                {
+                    OnNewTabClick( EventArgs.Empty );
+                    return;
+                }
+                else if( e.Button == MouseButtons.Right
+                      && NewTabContextMenu != null )
+                {
+                    NewTabContextMenu.Show( this, e.Location );
+                    return;
+                }
             }
 
             if( e.Button != MouseButtons.Left )
@@ -269,6 +283,13 @@ namespace Tabs
                     {
                         SelectedIndex = Tabs.IndexOf( t );
                         this.Tabs.Remove( t );
+                        return;
+                    }
+                    else if( e.Button == MouseButtons.Right
+                          && TabContextMenu != null )
+                    {
+                        SelectedIndex = Tabs.IndexOf( t );
+                        TabContextMenu.Show( this, e.Location );
                         return;
                     }
                     else
