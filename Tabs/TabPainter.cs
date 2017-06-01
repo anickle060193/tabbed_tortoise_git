@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Drawing;
 using System.Drawing.Drawing2D;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -10,12 +11,12 @@ namespace Tabs
 {
     internal class TabPainter
     {
-        private static readonly int TAB_HEIGHT = 28;
+        private static readonly int TAB_HEIGHT = 26;
         private static readonly double TAB_INCLINE_ANGLE = 65 * ( Math.PI ) / 180;
         private static readonly int BOTTOM_BORDER_HEIGHT = 4;
         private static readonly int LEFT_PADDING = 6;
 
-        private static readonly int NEW_TAB_BUTTON_WIDTH = 36;
+        private static readonly int NEW_TAB_BUTTON_WIDTH = 32;
         private static readonly float NEW_TAB_HEIGHT_PERCENTAGE = 0.65f;
 
         public TabControl Owner { get; private set; }
@@ -129,7 +130,7 @@ namespace Tabs
                 }
                 using( Pen p = new Pen( this.Owner.TabBorderColor ) )
                 {
-                    g.DrawPointPath( p, path );
+                    g.DrawPointPath( p, path, false );
                 }
             }
             else
@@ -140,19 +141,19 @@ namespace Tabs
                 }
                 using( Pen p = new Pen( this.Owner.TabBorderColor ) )
                 {
-                    g.DrawPointPath( p, path );
+                    g.DrawPointPath( p, path, false );
                 }
             }
 
-            SizeF size = g.MeasureString( t.Text, this.Owner.Font );
-            float sX = path.Bounds.Left + ( path.Bounds.Width - size.Width ) / 2;
-            float sY = path.Bounds.Top + ( path.Bounds.Height - size.Height ) / 2;
             using( SolidBrush b = new SolidBrush( this.Owner.ForeColor ) )
             {
-                Region oldClip = g.Clip;
-                g.Clip = new Region( path.GetGraphicsPath() );
-                g.DrawString( t.Text, this.Owner.Font, b, sX, sY );
-                g.Clip = oldClip;
+                StringFormat f = new StringFormat( StringFormatFlags.NoWrap )
+                {
+                    Alignment = StringAlignment.Center,
+                    LineAlignment = StringAlignment.Center,
+                    Trimming = t.Text.Contains( Path.DirectorySeparatorChar ) || t.Text.Contains( Path.AltDirectorySeparatorChar ) ? StringTrimming.EllipsisPath : StringTrimming.EllipsisWord
+                };
+                g.DrawString( t.Text, this.Owner.Font, b, path.MinimumBounds, f );
             }
         }
 
@@ -167,15 +168,17 @@ namespace Tabs
             }
             using( Pen p = new Pen( this.Owner.TabBorderColor ) )
             {
-                g.DrawPointPath( p, newTabPath );
+                g.DrawPointPath( p, newTabPath, true );
             }
-
-            SizeF size = g.MeasureString( "+", this.Owner.Font );
-            float sX = bounds.Left + ( bounds.Width - size.Width ) / 2;
-            float sY = bounds.Top + ( bounds.Height - size.Height ) / 2;
+            
             using( SolidBrush b = new SolidBrush( this.Owner.ForeColor ) )
             {
-                g.DrawString( "+", this.Owner.Font, b, sX, sY );
+                StringFormat f = new StringFormat()
+                {
+                    Alignment = StringAlignment.Center,
+                    LineAlignment = StringAlignment.Center
+                };
+                g.DrawString( "+", this.Owner.Font, b, newTabPath.MinimumBounds, f );
             }
         }
 

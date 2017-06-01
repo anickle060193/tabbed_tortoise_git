@@ -35,7 +35,7 @@ namespace Tabs
 
         private void TabControl1_NewTabClick( object sender, EventArgs e )
         {
-            Tab t = tabControl1.Tabs.Add( ( tabCount++ ).ToString() );
+            Tab t = tabControl1.Tabs.Add( String.Format( "Tab {0}", tabCount++ ) );
             t.Controls.Add( new Button()
             {
                 Text = String.Format( "Tab {0}", t.Text ),
