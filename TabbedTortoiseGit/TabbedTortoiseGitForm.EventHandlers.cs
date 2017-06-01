@@ -109,7 +109,7 @@ namespace TabbedTortoiseGit
             await FindRepo();
         }
 
-        private void LogTabs_TabClosed( object sender, Tabs.TabClosedEventArgs e )
+        private void LogTabs_TabClosed( object sender, TabClosedEventArgs e )
         {
             TabTag t = (TabTag)e.Tab.Tag;
 
