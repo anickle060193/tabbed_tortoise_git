@@ -139,6 +139,22 @@ namespace Tabs
         }
 
         [Browsable( false )]
+        [EditorBrowsable( EditorBrowsableState.Never )]
+        [DesignerSerializationVisibility( DesignerSerializationVisibility.Hidden )]
+        public new String Text
+        {
+            get
+            {
+                return base.Text;
+            }
+
+            set
+            {
+                base.Text = value;
+            }
+        }
+
+        [Browsable( false )]
         [DesignerSerializationVisibility( DesignerSerializationVisibility.Hidden )]
         protected override Padding DefaultMargin
         {

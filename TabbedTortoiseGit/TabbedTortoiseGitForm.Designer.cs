@@ -183,7 +183,6 @@
             this.LogTabs.Size = new System.Drawing.Size(644, 462);
             this.LogTabs.TabContextMenu = this.TabContextMenu;
             this.LogTabs.TabIndex = 3;
-            this.LogTabs.Text = "LogTabs";
             // 
             // TabbedTortoiseGitForm
             // 
