@@ -46,7 +46,7 @@
             this.OpenRepoLocationTabMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.FavoriteRepoTabMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.CloseRepoTabMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.LogTabs = new TabbedTortoiseGit.ExtendedTabControl();
+            this.LogTabs = new Tabs.TabControl();
             this.MenuStrip.SuspendLayout();
             this.NotifyIconContextMenu.SuspendLayout();
             this.TabContextMenu.SuspendLayout();
@@ -81,37 +81,37 @@
             // OpenRepoMenuItem
             // 
             this.OpenRepoMenuItem.Name = "OpenRepoMenuItem";
-            this.OpenRepoMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.OpenRepoMenuItem.Size = new System.Drawing.Size(145, 22);
             this.OpenRepoMenuItem.Text = "Open Repo";
             // 
             // RecentReposMenu
             // 
             this.RecentReposMenu.Enabled = false;
             this.RecentReposMenu.Name = "RecentReposMenu";
-            this.RecentReposMenu.Size = new System.Drawing.Size(152, 22);
+            this.RecentReposMenu.Size = new System.Drawing.Size(145, 22);
             this.RecentReposMenu.Text = "Recent Repos";
             // 
             // OptionsMenuSeparator1
             // 
             this.OptionsMenuSeparator1.Name = "OptionsMenuSeparator1";
-            this.OptionsMenuSeparator1.Size = new System.Drawing.Size(149, 6);
+            this.OptionsMenuSeparator1.Size = new System.Drawing.Size(142, 6);
             // 
             // SettingsMenuItem
             // 
             this.SettingsMenuItem.Name = "SettingsMenuItem";
-            this.SettingsMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.SettingsMenuItem.Size = new System.Drawing.Size(145, 22);
             this.SettingsMenuItem.Text = "Settings";
             // 
             // AboutMenuItem
             // 
             this.AboutMenuItem.Name = "AboutMenuItem";
-            this.AboutMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.AboutMenuItem.Size = new System.Drawing.Size(145, 22);
             this.AboutMenuItem.Text = "About";
             // 
             // ExitMenuItem
             // 
             this.ExitMenuItem.Name = "ExitMenuItem";
-            this.ExitMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.ExitMenuItem.Size = new System.Drawing.Size(145, 22);
             this.ExitMenuItem.Text = "Exit";
             // 
             // NewTabContextMenu
@@ -176,15 +176,14 @@
             // 
             // LogTabs
             // 
-            this.LogTabs.AllowDrop = true;
             this.LogTabs.Dock = System.Windows.Forms.DockStyle.Fill;
             this.LogTabs.Location = new System.Drawing.Point(0, 24);
             this.LogTabs.Name = "LogTabs";
             this.LogTabs.NewTabContextMenu = this.NewTabContextMenu;
-            this.LogTabs.SelectedIndex = 0;
             this.LogTabs.Size = new System.Drawing.Size(644, 462);
             this.LogTabs.TabContextMenu = this.TabContextMenu;
-            this.LogTabs.TabIndex = 0;
+            this.LogTabs.TabIndex = 3;
+            this.LogTabs.Text = "LogTabs";
             // 
             // TabbedTortoiseGitForm
             // 
@@ -207,8 +206,6 @@
         }
 
         #endregion
-
-        private ExtendedTabControl LogTabs;
         private System.Windows.Forms.MenuStrip MenuStrip;
         private System.Windows.Forms.ToolStripMenuItem OptionsMenu;
         private System.Windows.Forms.ToolStripMenuItem OpenRepoMenuItem;
@@ -226,6 +223,7 @@
         private System.Windows.Forms.ToolStripMenuItem OpenRepoLocationTabMenuItem;
         private System.Windows.Forms.ToolStripMenuItem FavoriteRepoTabMenuItem;
         private System.Windows.Forms.ToolStripMenuItem CloseRepoTabMenuItem;
+        private Tabs.TabControl LogTabs;
     }
 }
 

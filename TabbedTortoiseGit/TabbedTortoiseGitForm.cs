@@ -17,6 +17,7 @@ using LibGit2Sharp;
 using Newtonsoft.Json;
 using log4net;
 using log4net.Config;
+using Tabs;
 
 namespace TabbedTortoiseGit
 {
@@ -27,7 +28,7 @@ namespace TabbedTortoiseGit
         private readonly CommonOpenFileDialog _folderDialog;
         private readonly ManagementEventWatcher _watcher;
         private readonly List<Process> _processes = new List<Process>();
-        private readonly Dictionary<int, TabPage> _tabs = new Dictionary<int, TabPage>();
+        private readonly Dictionary<int, Tab> _tabs = new Dictionary<int, Tab>();
         private readonly bool _startup;
 
         class TabTag
@@ -288,9 +289,8 @@ namespace TabbedTortoiseGit
             }
             LOG.DebugFormat( "AddNewLog - End Wait for MainWindowHandle - Path: {0} - PID: {1}", path, p.Id );
 
-            TabPage t = new TabPage( path );
-            LogTabs.TabPages.Add( t );
-            LogTabs.SelectedTab = t;
+            Tab t = new Tab( path );
+            LogTabs.Tabs.Add( t );
             t.Tag = new TabTag( p, path );
             _tabs.Add( p.Id, t );
 
@@ -305,7 +305,7 @@ namespace TabbedTortoiseGit
             ShowMe();
         }
 
-        private void ResizeTab( Process p, TabPage t )
+        private void ResizeTab( Process p, Tab t )
         {
             Size sizeDiff = Native.ResizeToParent( p.MainWindowHandle, t );
 
@@ -328,12 +328,17 @@ namespace TabbedTortoiseGit
 
             lock( _processes )
             {
+                if( !_tabs.ContainsKey( p.Id ) )
+                {
+                    return;
+                }
+
                 p.EnableRaisingEvents = false;
                 p.Exited -= Process_Exited;
 
                 _processes.Remove( p );
 
-                TabPage t = _tabs.Pluck( p.Id );
+                Tab t = _tabs.Pluck( p.Id );
                 if( t.Parent != null )
                 {
                     t.Parent.Controls.Remove( t );

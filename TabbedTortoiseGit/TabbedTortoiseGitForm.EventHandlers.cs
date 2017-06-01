@@ -12,6 +12,7 @@ using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using TabbedTortoiseGit.Properties;
+using Tabs;
 
 namespace TabbedTortoiseGit
 {
@@ -26,9 +27,9 @@ namespace TabbedTortoiseGit
             this.FormClosing += TabbedTortoiseGitForm_FormClosing;
             this.FormClosed += TabbedTortoiseGitForm_FormClosed;
 
-            LogTabs.NewTabClicked += LogTabs_NewTabClicked;
+            LogTabs.NewTabClick += LogTabs_NewTabClick;
             LogTabs.TabClosed += LogTabs_TabClosed;
-            LogTabs.Selected += LogTabs_Selected;
+            LogTabs.SelectedIndexChanged += LogTabs_SelectedIndexChanged;
 
             OpenRepoMenuItem.Click += OpenRepoMenuItem_Click;
             SettingsMenuItem.Click += SettingsMenuItem_Click;
@@ -103,12 +104,12 @@ namespace TabbedTortoiseGit
             this.BeginInvoke( (Action<Process>)RemoveLog, p );
         }
 
-        private async void LogTabs_NewTabClicked( object sender, EventArgs e )
+        private async void LogTabs_NewTabClick( object sender, EventArgs e )
         {
             await FindRepo();
         }
 
-        private void LogTabs_TabClosed( object sender, TabClosedEventArgs e )
+        private void LogTabs_TabClosed( object sender, Tabs.TabClosedEventArgs e )
         {
             TabTag t = (TabTag)e.Tab.Tag;
 
@@ -117,11 +118,11 @@ namespace TabbedTortoiseGit
             RemoveLog( t.Process );
         }
 
-        private void LogTabs_Selected( object sender, TabControlEventArgs e )
+        private void LogTabs_SelectedIndexChanged( object sender, EventArgs e )
         {
-            if( e.TabPage != null )
+            if( LogTabs.SelectedTab != null )
             {
-                this.Text = e.TabPage.Text + " - Tabbed TortoiseGit";
+                this.Text = LogTabs.SelectedTab.Text + " - Tabbed TortoiseGit";
             }
             else
             {
@@ -133,7 +134,7 @@ namespace TabbedTortoiseGit
         {
             if( this.WindowState != FormWindowState.Minimized )
             {
-                TabPage t = (TabPage)sender;
+                Tab t = (Tab)sender;
                 TabTag tag = (TabTag)t.Tag;
                 ResizeTab( tag.Process, t );
             }
