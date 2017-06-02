@@ -266,6 +266,7 @@ namespace Tabs
                 if( t != null )
                 {
                     SelectedIndex = Tabs.IndexOf( t );
+                    Refresh();
                     OnTabClick( new TabClickEventArgs( t, e ) );
                     return;
                 }
