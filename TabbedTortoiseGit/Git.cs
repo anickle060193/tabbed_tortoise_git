@@ -11,7 +11,7 @@ namespace TabbedTortoiseGit
 {
     public static class Git
     {
-        private static readonly Regex GIT_STATUS_REGEX = new Regex( @"\d .. (?<isSubmodule>.)(?<submoduleStatus>...) [0-7]{6} [0-7]{6} [0-7]{6} [0-9a-f]{40} [0-9a-f]{40} (?<name>.+?)$", RegexOptions.Compiled );
+        private static readonly Regex GIT_STATUS_REGEX = new Regex( @"^[ MADRCU](?<submoduleStatus>[ MADRCU]) (?<name>.+?)$", RegexOptions.Compiled );
 
         public static bool IsRepo( String path )
         {
@@ -39,7 +39,7 @@ namespace TabbedTortoiseGit
             }
         }
 
-        public static async Task<List<String>> GetModifiedSubmodules( String path )
+        public static async Task<List<String>> GetModifiedSubmodules( String path, List<String> submodules )
         {
             List<String> modifiedSubmodules = new List<String>();
 
@@ -49,7 +49,7 @@ namespace TabbedTortoiseGit
                 return modifiedSubmodules;
             }
 
-            ProcessStartInfo info = new ProcessStartInfo( "git.exe", "status --porcelain=2" )
+            ProcessStartInfo info = new ProcessStartInfo( "git.exe", "status --porcelain --ignore-submodules=none" )
             {
                 WorkingDirectory = repo,
                 CreateNoWindow = true,
@@ -70,10 +70,9 @@ namespace TabbedTortoiseGit
                 Match m = GIT_STATUS_REGEX.Match( line );
                 if( m.Success )
                 {
-                    bool isSubmodule = m.Groups[ "isSubmodule" ].Value == "S";
-                    bool modified = m.Groups[ "submoduleStatus" ].Value != "...";
+                    bool modified = m.Groups[ "submoduleStatus" ].Value == "M";
                     String name = m.Groups[ "name" ].Value;
-                    if( isSubmodule && modified )
+                    if( submodules.Contains( name ) && modified )
                     {
                         modifiedSubmodules.Add( name );
                     }

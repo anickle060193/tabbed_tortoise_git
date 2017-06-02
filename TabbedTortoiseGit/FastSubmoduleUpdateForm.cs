@@ -110,7 +110,7 @@ namespace TabbedTortoiseGit
             LOG.Debug( "Load - Get Modified Submodules - Start" );
             try
             {
-                _modifiedSubmodules = await Git.GetModifiedSubmodules( Repo );
+                _modifiedSubmodules = await Git.GetModifiedSubmodules( Repo, _submodules );
             }
             catch( Exception ex )
             {
