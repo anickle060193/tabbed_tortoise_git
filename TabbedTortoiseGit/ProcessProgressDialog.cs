@@ -222,8 +222,8 @@ namespace TabbedTortoiseGit
             {
                 String o = NEWLINE_REGEX.Replace( output, Environment.NewLine ).TrimEnd( '\r', '\n' ) + Environment.NewLine;
                 Output.AppendText( o, color );
-                Output.SelectionStart = Output.TextLength;
-                Output.SelectionLength = 0;
+                Output.SelectionStart = Output.Text.Length;
+                Output.ScrollToCaret();
             }
         }
 
