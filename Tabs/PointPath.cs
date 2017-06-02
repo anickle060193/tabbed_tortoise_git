@@ -72,16 +72,16 @@ namespace Tabs
         {
             // From http://alienryderflex.com/polygon/
 
-            int j = _points.Length - 1;
             bool oddNodes = false;
 
-            for( int i = 0; i < _points.Length; i++ )
+            for( int i = 0, j = _points.Length - 1; i < _points.Length; i++ )
             {
                 if( ( _points[ i ].Y < p.Y && _points[ j ].Y >= p.Y
                    || _points[ j ].Y < p.Y && _points[ i ].Y >= p.Y )
-                 && ( _points[ i ].X <= p.X || _points[ j ].X <= p.X ) )
+                 && ( _points[ i ].X <= p.X
+                   || _points[ j ].X <= p.X ) )
                 {
-                    oddNodes ^= ( _points[ i ].X + ( p.Y - _points[ i ].Y ) / ( _points[ j ].Y - _points[ i ].Y ) * ( _points[ j ].X - _points[ i ].X ) < p.X );
+                    oddNodes ^= ( _points[ i ].X + (float)( p.Y - _points[ i ].Y ) / ( _points[ j ].Y - _points[ i ].Y ) * ( _points[ j ].X - _points[ i ].X ) < p.X );
                 }
                 j = i;
             }
