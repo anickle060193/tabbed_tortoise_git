@@ -50,6 +50,8 @@ namespace Tabs
             if( tab.Dragging )
             {
                 blX = tab.DraggingX - tab.DraggingOffset;
+                blX = Math.Max( LEFT_PADDING, blX );
+                blX = Math.Min( blX, this.Owner.Width - tabWidth - NEW_TAB_BUTTON_WIDTH - LEFT_PADDING );
             }
             else
             {
