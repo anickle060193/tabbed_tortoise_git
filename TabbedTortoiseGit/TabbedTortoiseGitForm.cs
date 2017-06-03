@@ -453,7 +453,15 @@ namespace TabbedTortoiseGit
 
         private bool ConfirmClose()
         {
-            if( Settings.Default.ConfirmOnClose )
+            if( !this.Visible )
+            {
+                return true;
+            }
+            else if( _processes.Count == 0 )
+            {
+                return true;
+            }
+            else if( Settings.Default.ConfirmOnClose )
             {
                 CloseConfirmationDialog d = new CloseConfirmationDialog( this.Visible );
                 DialogResult result = d.ShowDialog();
