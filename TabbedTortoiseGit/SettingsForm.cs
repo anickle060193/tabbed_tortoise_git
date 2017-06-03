@@ -28,6 +28,7 @@ namespace TabbedTortoiseGit
             f.RetainLogsOnClose = Settings.Default.RetainLogsOnClose;
             f.MaxRecentRepos = Settings.Default.MaxRecentRepos;
             f.ConfirmOnClose = Settings.Default.ConfirmOnClose;
+            f.CloseToSystemTray = Settings.Default.CloseToSystemTray;
             f.RunOnStartup = TTG.RunOnStartup;
 
             f.DeveloperSettingsEnabled = Settings.Default.DeveloperSettingsEnabled;
@@ -45,6 +46,7 @@ namespace TabbedTortoiseGit
                 Settings.Default.MaxRecentRepos = f.MaxRecentRepos;
                 Settings.Default.RecentRepos = Settings.Default.RecentRepos.Take( Settings.Default.MaxRecentRepos ).ToList();
                 Settings.Default.ConfirmOnClose = f.ConfirmOnClose;
+                Settings.Default.CloseToSystemTray = f.CloseToSystemTray;
                 TTG.RunOnStartup = f.RunOnStartup;
 
                 Settings.Default.DeveloperSettingsEnabled = f.DeveloperSettingsEnabled;
@@ -162,6 +164,19 @@ namespace TabbedTortoiseGit
             set
             {
                 ConfirmOnCloseCheck.Checked = value;
+            }
+        }
+
+        public bool CloseToSystemTray
+        {
+            get
+            {
+                return CloseToSystemTrayCheck.Checked;
+            }
+
+            set
+            {
+                CloseToSystemTrayCheck.Checked = value; 
             }
         }
 

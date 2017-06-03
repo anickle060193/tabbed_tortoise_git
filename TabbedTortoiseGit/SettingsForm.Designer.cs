@@ -51,6 +51,7 @@ namespace TabbedTortoiseGit
             this.FastSubmoduleUpdateSettingsGroup = new System.Windows.Forms.GroupBox();
             this.CheckModifiedSubmodulesByDefaultCheck = new System.Windows.Forms.CheckBox();
             this.OtherSettingsTab = new System.Windows.Forms.TabPage();
+            this.CloseToSystemTrayCheck = new System.Windows.Forms.CheckBox();
             this.DeveloperSettingsPage = new System.Windows.Forms.TabPage();
             this.ShowHitTestCheck = new System.Windows.Forms.CheckBox();
             ((System.ComponentModel.ISupportInitialize)(this.MaxRecentReposNumeric)).BeginInit();
@@ -144,7 +145,7 @@ namespace TabbedTortoiseGit
             // 
             this.RunOnStartupCheck.AutoSize = true;
             this.RunOnStartupCheck.CheckAlign = System.Drawing.ContentAlignment.MiddleRight;
-            this.RunOnStartupCheck.Location = new System.Drawing.Point(6, 78);
+            this.RunOnStartupCheck.Location = new System.Drawing.Point(6, 101);
             this.RunOnStartupCheck.Name = "RunOnStartupCheck";
             this.RunOnStartupCheck.Size = new System.Drawing.Size(99, 17);
             this.RunOnStartupCheck.TabIndex = 11;
@@ -277,6 +278,7 @@ namespace TabbedTortoiseGit
             // 
             // OtherSettingsTab
             // 
+            this.OtherSettingsTab.Controls.Add(this.CloseToSystemTrayCheck);
             this.OtherSettingsTab.Controls.Add(this.RunOnStartupCheck);
             this.OtherSettingsTab.Controls.Add(this.RetainLogsOnCloseCheck);
             this.OtherSettingsTab.Controls.Add(this.ConfirmOnCloseCheck);
@@ -289,6 +291,17 @@ namespace TabbedTortoiseGit
             this.OtherSettingsTab.TabIndex = 2;
             this.OtherSettingsTab.Text = "Other";
             this.OtherSettingsTab.UseVisualStyleBackColor = true;
+            // 
+            // CloseToSystemTrayCheck
+            // 
+            this.CloseToSystemTrayCheck.AutoSize = true;
+            this.CloseToSystemTrayCheck.CheckAlign = System.Drawing.ContentAlignment.MiddleRight;
+            this.CloseToSystemTrayCheck.Location = new System.Drawing.Point(6, 78);
+            this.CloseToSystemTrayCheck.Name = "CloseToSystemTrayCheck";
+            this.CloseToSystemTrayCheck.Size = new System.Drawing.Size(125, 17);
+            this.CloseToSystemTrayCheck.TabIndex = 12;
+            this.CloseToSystemTrayCheck.Text = "Close to System Tray";
+            this.CloseToSystemTrayCheck.UseVisualStyleBackColor = true;
             // 
             // DeveloperSettingsPage
             // 
@@ -370,5 +383,6 @@ namespace TabbedTortoiseGit
         private GroupBox FastSubmoduleUpdateSettingsGroup;
         private TabPage DeveloperSettingsPage;
         private CheckBox ShowHitTestCheck;
+        private CheckBox CloseToSystemTrayCheck;
     }
 }

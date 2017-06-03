@@ -64,23 +64,34 @@ namespace TabbedTortoiseGit
 
         private void TabbedTortoiseGitForm_FormClosing( object sender, FormClosingEventArgs e )
         {
+            LOG.DebugFormat( "FormClosing - Reason: {0}", e.CloseReason );
+
             if( e.CloseReason == CloseReason.UserClosing )
             {
                 if( !this.ConfirmClose() )
                 {
+                    LOG.Debug( "FormClosing - Cancelled on confirm close" );
                     e.Cancel = true;
                     return;
                 }
 
-                LOG.Debug( "Form Closing" );
-                if( !Settings.Default.RetainLogsOnClose )
+                if( !Settings.Default.CloseToSystemTray )
                 {
-                    this.RemoveAllLogs();
+                    LOG.Debug( "FormClosing - Exiting application" );
+                    Application.Exit();
                 }
+                else
+                {
+                    LOG.Debug( "FormClosing - Closing to system tray" );
 
-                LOG.Debug( "Form Closing - Cancelled User Closing" );
-                e.Cancel = true;
-                this.Hide();
+                    if( !Settings.Default.RetainLogsOnClose )
+                    {
+                        this.RemoveAllLogs();
+                    }
+                    
+                    e.Cancel = true;
+                    this.Hide();
+                }
             }
 
             SaveWindowState();
