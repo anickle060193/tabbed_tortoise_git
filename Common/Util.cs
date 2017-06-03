@@ -6,7 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace TabbedTortoiseGit
+namespace Common
 {
     public static class Util
     {
@@ -19,12 +19,12 @@ namespace TabbedTortoiseGit
         {
             if( Directory.Exists( path ) )
             {
-                Process.Start( "explorer.exe", String.Format( "\"{0}\"", path ) );
+                Process.Start( "explorer.exe", "\"{0}\"".XFormat( path ) );
                 return true;
             }
             else if( File.Exists( path ) )
             {
-                Process.Start( "explorer.exe", String.Format( "/select, \"{0}\"", path ) );
+                Process.Start( "explorer.exe", "/select, \"{0}\"".XFormat( path ) );
                 return true;
             }
             else

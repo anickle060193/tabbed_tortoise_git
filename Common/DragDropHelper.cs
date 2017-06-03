@@ -6,9 +6,9 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
-namespace Tabs
+namespace Common
 {
-    abstract class DragDropHelper<TControl, T> where TControl : Control
+    public abstract class DragDropHelper<TControl, T> where TControl : Control
     {
         private static readonly int DRAG_THRESHOLD = 4;
 
@@ -34,6 +34,8 @@ namespace Tabs
 
         public DragDropHelper()
         {
+            AllowReSwap = true;
+
             ClearDragDrop();
         }
 

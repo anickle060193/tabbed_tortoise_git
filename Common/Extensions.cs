@@ -6,9 +6,9 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
-namespace TabbedTortoiseGit
+namespace Common
 {
-    static class Extensions
+    public static class Extensions
     {
         public static TValue Pluck<TKey, TValue>( this Dictionary<TKey, TValue> self, TKey key )
         {

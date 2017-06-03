@@ -1,4 +1,5 @@
-﻿using log4net;
+﻿using Common;
+using log4net;
 using log4net.Appender;
 using log4net.Repository.Hierarchy;
 using System;
@@ -27,9 +28,9 @@ namespace TabbedTortoiseGit
         public AboutBox()
         {
             InitializeComponent();
-            this.Text = String.Format( "About {0}", AssemblyTitle );
+            this.Text = "About {0}".XFormat( AssemblyTitle );
             this.ProductNameLabel.Text = AssemblyProduct;
-            this.VersionLabel.Text = String.Format( "Version {0}", AssemblyVersion );
+            this.VersionLabel.Text = "Version {0}".XFormat( AssemblyVersion );
             this.DescriptionText.Text = AssemblyDescription;
 
             this.Load += AboutBox_Load;

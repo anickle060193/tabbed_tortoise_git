@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Common;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
@@ -106,7 +107,7 @@ namespace Tabs
 
         public override string ToString()
         {
-            return String.Format( "Tab( Text=\"{0}\" )", Text );
+            return "Tab( Text=\"{0}\" )".XFormat( Text );
         }
     }
 }

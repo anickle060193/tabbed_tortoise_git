@@ -94,8 +94,6 @@
     <Compile Include="CloseConfirmationDialog.Designer.cs">
       <DependentUpon>CloseConfirmationDialog.cs</DependentUpon>
     </Compile>
-    <Compile Include="DragDropHelper.cs" />
-    <Compile Include="Extensions.cs" />
     <Compile Include="FastFetchDialog.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -153,7 +151,6 @@
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="TortoiseGit.cs" />
-    <Compile Include="Util.cs" />
     <EmbeddedResource Include="AboutBox.resx">
       <DependentUpon>AboutBox.cs</DependentUpon>
     </EmbeddedResource>
@@ -230,6 +227,10 @@
     <None Include="Resources\more_vert.png" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Common\Common.csproj">
+      <Project>{00252d2a-5562-4c76-b4c4-c894a4dc5f9a}</Project>
+      <Name>Common</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Tabs\Tabs.csproj">
       <Project>{5c8a6d79-fd9c-4ddc-8cfe-522cd27e8eab}</Project>
       <Name>Tabs</Name>
