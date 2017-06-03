@@ -49,7 +49,7 @@ namespace TabbedTortoiseGit
 
         private async void TabbedTortoiseGitForm_Load( object sender, EventArgs e )
         {
-            UpdateFromSettings();
+            UpdateFromSettings( true );
 
             if( !_startup )
             {
@@ -156,8 +156,7 @@ namespace TabbedTortoiseGit
         {
             if( SettingsForm.ShowSettingsDialog() )
             {
-                UpdateRecentReposFromSettings();
-                UpdateTabMenuFromSettings();
+                UpdateFromSettings( false );
             }
         }
 

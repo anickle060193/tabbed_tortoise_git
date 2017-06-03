@@ -23,6 +23,7 @@ namespace Tabs
         private Color _selectedTabColor = Color.FromArgb( 242, 242, 242 );
         private Color _tabBorderColor = Color.FromArgb( 181, 181, 181 );
         private int _selectedIndex = -1;
+        private bool _showTabHitTest = false;
 
         public event EventHandler NewTabClick;
         public event EventHandler<TabClickEventArgs> TabClick;
@@ -135,6 +136,24 @@ namespace Tabs
             {
                 this._tabBorderColor = value;
                 this.Invalidate();
+            }
+        }
+
+        [Browsable( false )]
+        [DesignerSerializationVisibility( DesignerSerializationVisibility.Hidden )]
+        public bool ShowHitTest
+        {
+            get
+            {
+                return _showTabHitTest;
+            }
+
+            set
+            {
+                if( _showTabHitTest != value )
+                {
+                    _showTabHitTest = value;
+                }
             }
         }
 
@@ -270,6 +289,16 @@ namespace Tabs
                     OnTabClick( new TabClickEventArgs( t, e ) );
                     return;
                 }
+            }
+        }
+
+        protected override void OnMouseMove( MouseEventArgs e )
+        {
+            base.OnMouseMove( e );
+
+            if( this.ShowHitTest )
+            {
+                this.Invalidate();
             }
         }
 

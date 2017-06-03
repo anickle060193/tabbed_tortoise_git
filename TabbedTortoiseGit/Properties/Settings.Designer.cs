@@ -283,5 +283,29 @@ namespace TabbedTortoiseGit.Properties {
                 this["FastFetchShowProgress"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public bool DeveloperSettingsEnabled {
+            get {
+                return ((bool)(this["DeveloperSettingsEnabled"]));
+            }
+            set {
+                this["DeveloperSettingsEnabled"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public bool ShowHitTest {
+            get {
+                return ((bool)(this["ShowHitTest"]));
+            }
+            set {
+                this["ShowHitTest"] = value;
+            }
+        }
     }
 }

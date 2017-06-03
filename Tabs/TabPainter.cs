@@ -6,6 +6,7 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Forms;
 
 namespace Tabs
 {
@@ -123,7 +124,21 @@ namespace Tabs
         {
             PointPath path = GetTabPath( index );
 
-            using( Brush b = new SolidBrush( selected ? this.Owner.SelectedTabColor : this.Owner.TabColor ) )
+            Color tabColor;
+            if( this.Owner.ShowHitTest && path.HitTest( this.Owner.PointToClient( Control.MousePosition ) ) )
+            {
+                tabColor = Color.LightBlue;
+            }
+            else if( selected )
+            {
+                tabColor = this.Owner.SelectedTabColor;
+            }
+            else
+            {
+                tabColor = this.Owner.TabColor;
+            }
+
+            using( Brush b = new SolidBrush( tabColor ) )
             {
                 g.FillPointPath( b, path );
                 using( Pen bp = new Pen( b ) )
@@ -154,7 +169,17 @@ namespace Tabs
             PointPath newTabPath = GetNewTabPath();
             Rectangle bounds = newTabPath.Bounds;
 
-            using( Brush b = new SolidBrush( this.Owner.TabColor ) )
+            Color newTabButtonColor;
+            if( this.Owner.ShowHitTest && newTabPath.HitTest( this.Owner.PointToClient( Control.MousePosition ) ) )
+            {
+                newTabButtonColor = Color.LightBlue;
+            }
+            else
+            {
+                newTabButtonColor = this.Owner.TabColor;
+            }
+
+            using( Brush b = new SolidBrush( newTabButtonColor ) )
             {
                 g.FillPointPath( b, newTabPath );
             }

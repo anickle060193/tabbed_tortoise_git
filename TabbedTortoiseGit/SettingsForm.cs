@@ -30,6 +30,9 @@ namespace TabbedTortoiseGit
             f.ConfirmOnClose = Settings.Default.ConfirmOnClose;
             f.RunOnStartup = TTG.RunOnStartup;
 
+            f.DeveloperSettingsEnabled = Settings.Default.DeveloperSettingsEnabled;
+            f.ShowHitTest = Settings.Default.ShowHitTest;
+
             if( f.ShowDialog() == DialogResult.OK )
             {
                 Settings.Default.StartupRepos = f.StartupRepos.ToList();
@@ -43,6 +46,10 @@ namespace TabbedTortoiseGit
                 Settings.Default.RecentRepos = Settings.Default.RecentRepos.Take( Settings.Default.MaxRecentRepos ).ToList();
                 Settings.Default.ConfirmOnClose = f.ConfirmOnClose;
                 TTG.RunOnStartup = f.RunOnStartup;
+
+                Settings.Default.DeveloperSettingsEnabled = f.DeveloperSettingsEnabled;
+                Settings.Default.ShowHitTest = f.ShowHitTest;
+
                 Settings.Default.Save();
 
                 return true;
@@ -171,6 +178,45 @@ namespace TabbedTortoiseGit
             }
         }
 
+        public bool DeveloperSettingsEnabled
+        {
+            get
+            {
+                return DeveloperSettingsPage.Parent != null;
+            }
+
+            set
+            {
+                if( value )
+                {
+                    if( DeveloperSettingsPage.Parent == null )
+                    {
+                        DeveloperSettingsPage.Parent = SettingsTabs;
+                    }
+                }
+                else
+                {
+                    if( DeveloperSettingsPage.Parent != null )
+                    {
+                        DeveloperSettingsPage.Parent = null;
+                    }
+                }
+            }
+        }
+
+        public bool ShowHitTest
+        {
+            get
+            {
+                return ShowHitTestCheck.Checked;
+            }
+
+            set
+            {
+                ShowHitTestCheck.Checked = value;
+            }
+        }
+
         private readonly CommonOpenFileDialog _folderDialog;
         private readonly CheckListDragDrophelper _dragDropHelper;
 
@@ -181,6 +227,8 @@ namespace TabbedTortoiseGit
             _folderDialog = new CommonOpenFileDialog();
             _folderDialog.IsFolderPicker = true;
 
+            this.KeyPress += SettingsForm_KeyPress;
+
             this.AddDefaultRepo.Click += AddDefaultRepo_Click;
             this.RemoveDefaultRepo.Click += RemoveDefaultRepo_Click;
 
@@ -190,6 +238,22 @@ namespace TabbedTortoiseGit
 
             _dragDropHelper = new CheckListDragDrophelper();
             _dragDropHelper.AddControl( GitActionsCheckList );
+        }
+
+        private static readonly String CHEAT_CODE = "developer";
+        private Queue<char> _cheatCode = new Queue<char>();
+
+        private void SettingsForm_KeyPress( object sender, KeyPressEventArgs e )
+        {
+            _cheatCode.Enqueue( e.KeyChar );
+            while( _cheatCode.Count > CHEAT_CODE.Length )
+            {
+                _cheatCode.Dequeue();
+            }
+            if( String.Join( "", _cheatCode ) == CHEAT_CODE )
+            {
+                this.DeveloperSettingsEnabled = !this.DeveloperSettingsEnabled;
+            }
         }
 
         private void AddDefaultRepo_Click( object sender, EventArgs e )

@@ -83,21 +83,33 @@ namespace TabbedTortoiseGit
             }
         }
 
-        private void UpdateFromSettings()
+        private void UpdateFromSettings( bool updateWindowState )
         {
-            if( !Settings.Default.Size.IsEmpty )
+            if( updateWindowState )
             {
-                this.Size = Settings.Default.Size;
+                if( !Settings.Default.Size.IsEmpty )
+                {
+                    this.Size = Settings.Default.Size;
+                }
+
+                if( !Settings.Default.Location.IsEmpty )
+                {
+                    this.Location = Settings.Default.Location;
+                }
+
+                if( Settings.Default.Maximized )
+                {
+                    this.WindowState = FormWindowState.Maximized;
+                }
             }
 
-            if( !Settings.Default.Location.IsEmpty )
+            if( Settings.Default.DeveloperSettingsEnabled )
             {
-                this.Location = Settings.Default.Location;
+                LogTabs.ShowHitTest = Settings.Default.ShowHitTest;
             }
-
-            if( Settings.Default.Maximized )
+            else
             {
-                this.WindowState = FormWindowState.Maximized;
+                LogTabs.ShowHitTest = false;
             }
 
             UpdateRecentReposFromSettings();

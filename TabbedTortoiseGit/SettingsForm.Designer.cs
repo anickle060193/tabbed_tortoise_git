@@ -48,15 +48,18 @@ namespace TabbedTortoiseGit
             this.SettingsTabs = new System.Windows.Forms.TabControl();
             this.StartupReposTab = new System.Windows.Forms.TabPage();
             this.GitActionsTab = new System.Windows.Forms.TabPage();
-            this.OtherSettingsTab = new System.Windows.Forms.TabPage();
-            this.CheckModifiedSubmodulesByDefaultCheck = new System.Windows.Forms.CheckBox();
             this.FastSubmoduleUpdateSettingsGroup = new System.Windows.Forms.GroupBox();
+            this.CheckModifiedSubmodulesByDefaultCheck = new System.Windows.Forms.CheckBox();
+            this.OtherSettingsTab = new System.Windows.Forms.TabPage();
+            this.DeveloperSettingsPage = new System.Windows.Forms.TabPage();
+            this.ShowHitTestCheck = new System.Windows.Forms.CheckBox();
             ((System.ComponentModel.ISupportInitialize)(this.MaxRecentReposNumeric)).BeginInit();
             this.SettingsTabs.SuspendLayout();
             this.StartupReposTab.SuspendLayout();
             this.GitActionsTab.SuspendLayout();
-            this.OtherSettingsTab.SuspendLayout();
             this.FastSubmoduleUpdateSettingsGroup.SuspendLayout();
+            this.OtherSettingsTab.SuspendLayout();
+            this.DeveloperSettingsPage.SuspendLayout();
             this.SuspendLayout();
             // 
             // StartupReposList
@@ -216,6 +219,7 @@ namespace TabbedTortoiseGit
             this.SettingsTabs.Controls.Add(this.StartupReposTab);
             this.SettingsTabs.Controls.Add(this.GitActionsTab);
             this.SettingsTabs.Controls.Add(this.OtherSettingsTab);
+            this.SettingsTabs.Controls.Add(this.DeveloperSettingsPage);
             this.SettingsTabs.Location = new System.Drawing.Point(12, 12);
             this.SettingsTabs.Name = "SettingsTabs";
             this.SettingsTabs.SelectedIndex = 0;
@@ -249,6 +253,28 @@ namespace TabbedTortoiseGit
             this.GitActionsTab.Text = "Git Actions";
             this.GitActionsTab.UseVisualStyleBackColor = true;
             // 
+            // FastSubmoduleUpdateSettingsGroup
+            // 
+            this.FastSubmoduleUpdateSettingsGroup.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.FastSubmoduleUpdateSettingsGroup.Controls.Add(this.CheckModifiedSubmodulesByDefaultCheck);
+            this.FastSubmoduleUpdateSettingsGroup.Location = new System.Drawing.Point(6, 234);
+            this.FastSubmoduleUpdateSettingsGroup.Name = "FastSubmoduleUpdateSettingsGroup";
+            this.FastSubmoduleUpdateSettingsGroup.Size = new System.Drawing.Size(340, 42);
+            this.FastSubmoduleUpdateSettingsGroup.TabIndex = 3;
+            this.FastSubmoduleUpdateSettingsGroup.TabStop = false;
+            this.FastSubmoduleUpdateSettingsGroup.Text = "Fast Submodule Update";
+            // 
+            // CheckModifiedSubmodulesByDefaultCheck
+            // 
+            this.CheckModifiedSubmodulesByDefaultCheck.AutoSize = true;
+            this.CheckModifiedSubmodulesByDefaultCheck.Location = new System.Drawing.Point(6, 19);
+            this.CheckModifiedSubmodulesByDefaultCheck.Name = "CheckModifiedSubmodulesByDefaultCheck";
+            this.CheckModifiedSubmodulesByDefaultCheck.Size = new System.Drawing.Size(213, 17);
+            this.CheckModifiedSubmodulesByDefaultCheck.TabIndex = 2;
+            this.CheckModifiedSubmodulesByDefaultCheck.Text = "Check Modified Submodules By Default";
+            this.CheckModifiedSubmodulesByDefaultCheck.UseVisualStyleBackColor = true;
+            // 
             // OtherSettingsTab
             // 
             this.OtherSettingsTab.Controls.Add(this.RunOnStartupCheck);
@@ -264,27 +290,26 @@ namespace TabbedTortoiseGit
             this.OtherSettingsTab.Text = "Other";
             this.OtherSettingsTab.UseVisualStyleBackColor = true;
             // 
-            // CheckModifiedSubmodulesByDefaultCheck
+            // DeveloperSettingsPage
             // 
-            this.CheckModifiedSubmodulesByDefaultCheck.AutoSize = true;
-            this.CheckModifiedSubmodulesByDefaultCheck.Location = new System.Drawing.Point(6, 19);
-            this.CheckModifiedSubmodulesByDefaultCheck.Name = "CheckModifiedSubmodulesByDefaultCheck";
-            this.CheckModifiedSubmodulesByDefaultCheck.Size = new System.Drawing.Size(213, 17);
-            this.CheckModifiedSubmodulesByDefaultCheck.TabIndex = 2;
-            this.CheckModifiedSubmodulesByDefaultCheck.Text = "Check Modified Submodules By Default";
-            this.CheckModifiedSubmodulesByDefaultCheck.UseVisualStyleBackColor = true;
+            this.DeveloperSettingsPage.Controls.Add(this.ShowHitTestCheck);
+            this.DeveloperSettingsPage.Location = new System.Drawing.Point(4, 22);
+            this.DeveloperSettingsPage.Name = "DeveloperSettingsPage";
+            this.DeveloperSettingsPage.Padding = new System.Windows.Forms.Padding(3);
+            this.DeveloperSettingsPage.Size = new System.Drawing.Size(352, 282);
+            this.DeveloperSettingsPage.TabIndex = 3;
+            this.DeveloperSettingsPage.Text = "Developer Settings";
+            this.DeveloperSettingsPage.UseVisualStyleBackColor = true;
             // 
-            // FastSubmoduleUpdateSettingsGroup
+            // ShowHitTestCheck
             // 
-            this.FastSubmoduleUpdateSettingsGroup.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.FastSubmoduleUpdateSettingsGroup.Controls.Add(this.CheckModifiedSubmodulesByDefaultCheck);
-            this.FastSubmoduleUpdateSettingsGroup.Location = new System.Drawing.Point(6, 234);
-            this.FastSubmoduleUpdateSettingsGroup.Name = "FastSubmoduleUpdateSettingsGroup";
-            this.FastSubmoduleUpdateSettingsGroup.Size = new System.Drawing.Size(340, 42);
-            this.FastSubmoduleUpdateSettingsGroup.TabIndex = 3;
-            this.FastSubmoduleUpdateSettingsGroup.TabStop = false;
-            this.FastSubmoduleUpdateSettingsGroup.Text = "Fast Submodule Update";
+            this.ShowHitTestCheck.AutoSize = true;
+            this.ShowHitTestCheck.Location = new System.Drawing.Point(6, 6);
+            this.ShowHitTestCheck.Name = "ShowHitTestCheck";
+            this.ShowHitTestCheck.Size = new System.Drawing.Size(93, 17);
+            this.ShowHitTestCheck.TabIndex = 0;
+            this.ShowHitTestCheck.Text = "Show Hit Test";
+            this.ShowHitTestCheck.UseVisualStyleBackColor = true;
             // 
             // SettingsForm
             // 
@@ -297,6 +322,7 @@ namespace TabbedTortoiseGit
             this.Controls.Add(this.Cancel);
             this.Controls.Add(this.OK);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
+            this.KeyPreview = true;
             this.MaximizeBox = false;
             this.MinimizeBox = false;
             this.MinimumSize = new System.Drawing.Size(400, 225);
@@ -311,10 +337,12 @@ namespace TabbedTortoiseGit
             this.StartupReposTab.PerformLayout();
             this.GitActionsTab.ResumeLayout(false);
             this.GitActionsTab.PerformLayout();
-            this.OtherSettingsTab.ResumeLayout(false);
-            this.OtherSettingsTab.PerformLayout();
             this.FastSubmoduleUpdateSettingsGroup.ResumeLayout(false);
             this.FastSubmoduleUpdateSettingsGroup.PerformLayout();
+            this.OtherSettingsTab.ResumeLayout(false);
+            this.OtherSettingsTab.PerformLayout();
+            this.DeveloperSettingsPage.ResumeLayout(false);
+            this.DeveloperSettingsPage.PerformLayout();
             this.ResumeLayout(false);
 
         }
@@ -340,5 +368,7 @@ namespace TabbedTortoiseGit
         private TabPage OtherSettingsTab;
         private CheckBox CheckModifiedSubmodulesByDefaultCheck;
         private GroupBox FastSubmoduleUpdateSettingsGroup;
+        private TabPage DeveloperSettingsPage;
+        private CheckBox ShowHitTestCheck;
     }
 }
