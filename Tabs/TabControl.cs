@@ -250,7 +250,7 @@ namespace Tabs
         {
             if( SelectedTab != null )
             {
-                if( _painter.GetTabPath( SelectedIndex ).HitTest( p ) )
+                if( !SelectedTab.Dragging && _painter.GetTabPath( SelectedIndex ).HitTest( p ) )
                 {
                     return SelectedTab;
                 }
@@ -285,9 +285,7 @@ namespace Tabs
                 if( t != null )
                 {
                     SelectedIndex = Tabs.IndexOf( t );
-                    Refresh();
                     OnTabClick( new TabClickEventArgs( t, e ) );
-                    return;
                 }
             }
         }
@@ -580,6 +578,27 @@ namespace Tabs
                 {
                     return false;
                 }
+            }
+
+            protected override void OnDragStart( DragStartEventArgs<TabControl, Tab> e )
+            {
+                Point tabLocation = e.DragParent.PointToScreen( e.DragParent._painter.GetTabPath( e.DragItemIndex ).Bounds.Location );
+                int draggingOffset = e.DragStartPosition.X - tabLocation.X;
+                e.DragItem.Dragging = true;
+                e.DragItem.DraggingOffset = draggingOffset;
+                e.DragItem.DraggingX = 0;
+            }
+
+            protected override void OnDragMove( DragMoveEventArgs<TabControl, Tab> e )
+            {
+                e.DragItem.DraggingX = e.DragParent.PointToClient( e.DragCurrentPosition ).X;
+            }
+
+            protected override void OnDragEnd( DragEndEventArgs<TabControl, Tab> e )
+            {
+                e.DragItem.Dragging = false;
+                e.DragItem.DraggingOffset = 0;
+                e.DragItem.DraggingX = 0;
             }
         }
 

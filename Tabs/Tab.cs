@@ -11,6 +11,10 @@ namespace Tabs
     [ToolboxItem( false )]
     public class Tab : Panel
     {
+        private bool _dragging = false;
+        private int _draggingOffset = 0;
+        private int _draggingX = 0;
+
         [DefaultValue( "" )]
         [Browsable( true )]
         public override string Text
@@ -22,17 +26,77 @@ namespace Tabs
 
             set
             {
-                base.Text = value;
-                
-                if( this.Parent != null )
+                if( this.Text != value )
                 {
-                    this.Parent.Invalidate();
+                    base.Text = value;
+                    this.Parent?.Invalidate();
                 }
             }
         }
 
+        [Browsable( false )]
+        [DesignerSerializationVisibility( DesignerSerializationVisibility.Hidden )]
+        internal bool Dragging
+        {
+            get
+            {
+                return _dragging;
+            }
+
+            set
+            {
+                if( _dragging != value )
+                {
+                    _dragging = value;
+                    this.Parent?.Invalidate();
+                }
+            }
+        }
+
+        [Browsable( false )]
+        [DesignerSerializationVisibility( DesignerSerializationVisibility.Hidden )]
+        internal int DraggingOffset
+        {
+            get
+            {
+                return _draggingOffset;
+            }
+
+            set
+            {
+                if( _draggingOffset != value )
+                {
+                    _draggingOffset = value;
+                    this.Parent?.Invalidate();
+                }
+            }
+        }
+
+        [Browsable( false )]
+        [DesignerSerializationVisibility( DesignerSerializationVisibility.Hidden )]
+        internal int DraggingX
+        {
+            get
+            {
+                return _draggingX;
+            }
+
+            set
+            {
+                if( _draggingX != value )
+                {
+                    _draggingX = value;
+                    this.Parent?.Invalidate();
+                }
+            }
+        }
+
+
         public Tab() : this( "" )
         {
+            Dragging = false;
+            DraggingOffset = 0;
+            DraggingX = 0;
         }
 
         public Tab( String text )
@@ -42,7 +106,7 @@ namespace Tabs
 
         public override string ToString()
         {
-            return Text;
+            return String.Format( "Tab( Text=\"{0}\" )", Text );
         }
     }
 }

@@ -10,9 +10,16 @@ namespace Tabs
 {
     abstract class DragDropHelper<TControl, T> where TControl : Control
     {
-        private static readonly int DRAG_THRESHOLD = 6;
+        private static readonly int DRAG_THRESHOLD = 4;
 
-        private bool _hasItem;
+        private bool _mouseDown;
+        private Point _mouseDownLocation;
+
+        private T _mouseDownItem;
+        private int _mouseDownItemIndex;
+        private TControl _mouseDownParent;
+
+        private bool _dragging;
         private Point _dragStart;
 
         private T _dragItem;
@@ -50,9 +57,28 @@ namespace Tabs
             return Object.Equals( item1, item2 );
         }
 
+        protected virtual void OnDragStart( DragStartEventArgs<TControl, T> e )
+        {
+        }
+
+        protected virtual void OnDragMove( DragMoveEventArgs<TControl, T> e )
+        {
+        }
+
+        protected virtual void OnDragEnd( DragEndEventArgs<TControl, T> e )
+        {
+        }
+
         private void ClearDragDrop()
         {
-            _hasItem = false;
+            _mouseDown = false;
+            _mouseDownLocation = Point.Empty;
+
+            _mouseDownItem = default( T );
+            _mouseDownItemIndex = -1;
+            _mouseDownParent = null;
+
+            _dragging = false;
             _dragStart = Point.Empty;
 
             _dragItem = default( T );
@@ -75,37 +101,60 @@ namespace Tabs
                 if( GetItemFromPoint( parent, e.Location, out item, out itemIndex )
                  && AllowDrag( parent, item, itemIndex ) )
                 {
-                    _hasItem = true;
-                    _dragItem = item;
-                    _dragItemIndex = itemIndex;
-                    _dragItemParent = parent;
-                    _dragStart = parent.PointToClient( e.Location );
-                }
-            }
-        }
+                    _mouseDown = true;
+                    _mouseDownLocation = parent.PointToScreen( e.Location );
 
-        private void Control_MouseMove( object sender, MouseEventArgs e )
-        {
-            if( _hasItem )
-            {
-                TControl parent = (TControl)sender;
-
-                Point p = parent.PointToScreen( e.Location );
-
-                if( ( p.X - _dragStart.X ) > DRAG_THRESHOLD
-                 && ( p.Y - _dragStart.Y ) > DRAG_THRESHOLD )
-                {
-                    parent.DoDragDrop( _dragItem, DragDropEffects.Move );
-                    ClearDragDrop();
+                    _mouseDownItem = item;
+                    _mouseDownItemIndex = itemIndex;
+                    _mouseDownParent = parent;
                 }
             }
         }
 
         private void Control_MouseUp( object sender, MouseEventArgs e )
         {
-            if( _hasItem )
+            if( _mouseDown )
             {
                 ClearDragDrop();
+            }
+        }
+
+        private void Control_MouseMove( object sender, MouseEventArgs e )
+        {
+            if( _mouseDown )
+            {
+                TControl parent = (TControl)sender;
+                Point p = parent.PointToScreen( e.Location );
+
+                if( Math.Sqrt( Math.Pow( p.X - _mouseDownLocation.X, 2 ) + Math.Pow( p.Y - _mouseDownLocation.Y, 2 ) ) >= DRAG_THRESHOLD )
+                {
+                    T item;
+                    int itemIndex;
+                    if( GetItemFromPoint( parent, e.Location, out item, out itemIndex )
+                     && ItemsEqual( _mouseDownParent, _mouseDownItem, _mouseDownItemIndex, parent, item, itemIndex ) )
+                    {
+                        _mouseDown = false;
+
+                        _dragging = true;
+                        _dragStart = _mouseDownLocation;
+
+                        _dragItemParent = parent;
+                        _dragItem = item;
+                        _dragItemIndex = itemIndex;
+
+                        OnDragStart( new DragStartEventArgs<TControl, T>( _dragItemParent, _dragItem, _dragItemIndex, _dragStart ) );
+
+                        parent.DoDragDrop( _dragItem, DragDropEffects.Move );
+
+                        OnDragEnd( new DragEndEventArgs<TControl, T>( _dragItemParent, _dragItem, _dragItemIndex, _dragStart, Control.MousePosition ) );
+
+                        ClearDragDrop();
+                    }
+                    else
+                    {
+                        ClearDragDrop();
+                    }
+                }
             }
         }
 
@@ -114,10 +163,15 @@ namespace Tabs
             if( e.Data.GetDataPresent( typeof( T ) ) )
             {
                 TControl pointedParent = (TControl)sender;
+                Point p = new Point( e.X, e.Y );
+
+                OnDragMove( new DragMoveEventArgs<TControl, T>( _dragItemParent, _dragItem, _dragItemIndex, _dragStart, p ) );
+
+                e.Effect = DragDropEffects.Move;
 
                 T pointedItem;
                 int pointedItemIndex;
-                if( GetItemFromPoint( pointedParent, pointedParent.PointToClient( new Point( e.X, e.Y ) ), out pointedItem, out pointedItemIndex )
+                if( GetItemFromPoint( pointedParent, pointedParent.PointToClient( p ), out pointedItem, out pointedItemIndex )
                  && ( AllowReSwap
                    || !ItemsEqual( _lastSwappedParent, _lastSwappedItem, _lastSwappedIndex, pointedParent, pointedItem, pointedItemIndex ) )
                  && ( ( pointedParent != _dragItemParent )
@@ -126,8 +180,6 @@ namespace Tabs
                 {
                     if( SwapItems( _dragItemParent, _dragItem, _dragItemIndex, pointedParent, pointedItem, pointedItemIndex ) )
                     {
-                        e.Effect = DragDropEffects.Move;
-
                         _dragItemIndex = pointedItemIndex;
 
                         _lastSwappedItem = pointedItem;
@@ -136,6 +188,53 @@ namespace Tabs
                     }
                 }
             }
+        }
+    }
+
+    public class DragEventArgs<TControl, T> : EventArgs where TControl : Control
+    {
+        public TControl DragParent { get; private set; }
+        public T DragItem { get; private set; }
+        public int DragItemIndex { get; private set; }
+
+        protected DragEventArgs( TControl dragParent, T dragItem, int dragItemIndex )
+        {
+            DragParent = dragParent;
+            DragItem = dragItem;
+            DragItemIndex = dragItemIndex;
+        } 
+    }
+
+    public class DragStartEventArgs<TControl, T> : DragEventArgs<TControl, T> where TControl : Control
+    {
+        public Point DragStartPosition { get; private set; }
+
+        public DragStartEventArgs( TControl dragParent, T dragItem, int dragItemIndex, Point dragStartPosition )
+            : base( dragParent, dragItem, dragItemIndex )
+        {
+            DragStartPosition = dragStartPosition;
+        }
+    }
+
+    public class DragMoveEventArgs<TControl, T> : DragStartEventArgs<TControl, T> where TControl : Control
+    {
+        public Point DragCurrentPosition { get; private set; }
+
+        public DragMoveEventArgs( TControl dragParent, T dragItem, int dragItemIndex, Point dragStartPosition, Point dragCurrentPosition )
+            : base( dragParent, dragItem, dragItemIndex, dragStartPosition )
+        {
+            DragCurrentPosition = dragCurrentPosition;
+        }
+    }
+
+    public class DragEndEventArgs<TControl, T> : DragStartEventArgs<TControl, T> where TControl : Control
+    {
+        public Point DragEndPosition { get; private set; }
+
+        public DragEndEventArgs( TControl dragParent, T dragItem, int dragItemIndex, Point dragStartPosition, Point dragEndPosition )
+            : base( dragParent, dragItem, dragItemIndex, dragStartPosition )
+        {
+            DragEndPosition = dragEndPosition;
         }
     }
 }
