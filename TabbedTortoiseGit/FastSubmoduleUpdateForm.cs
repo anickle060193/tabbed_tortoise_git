@@ -21,7 +21,9 @@ namespace TabbedTortoiseGit
 
         private readonly List<String> _submodules;
         private readonly Dictionary<String, bool> _checkedSubmodules;
+
         private List<String> _modifiedSubmodules;
+        private bool _userModified;
 
         public String Repo { get; private set; }
 
@@ -63,6 +65,7 @@ namespace TabbedTortoiseGit
             Cancel.Click += Cancel_Click;
             UpdateSubmodulesButton.Click += UpdateSubmodulesButton_Click;
 
+            SubmoduleCheckList.Click += SubmoduleCheckList_Click;
             SubmoduleCheckList.ItemCheck += SubmoduleCheckList_ItemCheck;
 
             SelectModifiedSubmodules.Click += SelectModifiedSubmodules_Click;
@@ -124,15 +127,23 @@ namespace TabbedTortoiseGit
 
             UpdateSubmoduleList();
 
-            if( Settings.Default.FastSubmoduleUpdateCheckModifiedSubmodulesByDefault )
+            if( !_userModified )
             {
-                SetModifiedSubmodulesChecked();
+                if( Settings.Default.FastSubmoduleUpdateCheckModifiedSubmodulesByDefault )
+                {
+                    SetModifiedSubmodulesChecked();
+                }
             }
         }
 
         private void Cancel_Click( object sender, EventArgs e )
         {
             this.Close();
+        }
+
+        private void SubmoduleCheckList_Click( object sender, EventArgs e )
+        {
+            _userModified = true;
         }
 
         private void SubmoduleCheckList_ItemCheck( object sender, ItemCheckEventArgs e )
@@ -145,11 +156,15 @@ namespace TabbedTortoiseGit
 
         private void SelectNoneSubmodules_Click( object sender, EventArgs e )
         {
+            _userModified = true;
+
             SetChecked( false );
         }
 
         private void SelectAllSubmodules_Click( object sender, EventArgs e )
         {
+            _userModified = true;
+
             SetChecked( true );
         }
 
