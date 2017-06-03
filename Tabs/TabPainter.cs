@@ -14,6 +14,7 @@ namespace Tabs
         private static readonly int TAB_HEIGHT = 26;
         private static readonly double TAB_INCLINE_ANGLE = 65 * ( Math.PI ) / 180;
         private static readonly int BOTTOM_BORDER_HEIGHT = 4;
+        private static readonly int TOP_PADDING = 1;
         private static readonly int LEFT_PADDING = 6;
 
         private static readonly int NEW_TAB_BUTTON_WIDTH = 32;
@@ -42,8 +43,8 @@ namespace Tabs
                 tabWidth = Math.Min( tabWidth, (int)( (float)tabAreaWidth / this.Owner.TabCount ) + tabOverlapWidth );
             }
 
-            int bY = TAB_HEIGHT;
-            int tY = 0;
+            int tY = TOP_PADDING;
+            int bY = tY + TAB_HEIGHT;
             int blX = LEFT_PADDING;
             int tlX = blX + tabInclineWidth;
             int brX = blX + tabWidth;
@@ -68,7 +69,7 @@ namespace Tabs
             }
 
             int h = (int)( TAB_HEIGHT * NEW_TAB_HEIGHT_PERCENTAGE );
-            int tY = ( TAB_HEIGHT - h ) / 2;
+            int tY = TOP_PADDING + ( TAB_HEIGHT - h ) / 2;
             int bY = tY + h;
 
             int tabInclineWidth = (int)( h / Math.Tan( TAB_INCLINE_ANGLE ) );
@@ -89,7 +90,7 @@ namespace Tabs
 
         public Rectangle GetTabPanelBounds()
         {
-            int y = TAB_HEIGHT + BOTTOM_BORDER_HEIGHT;
+            int y = TOP_PADDING + TAB_HEIGHT + BOTTOM_BORDER_HEIGHT;
             Size clientSize = this.Owner.ClientSize;
             return new Rectangle( 0, y, clientSize.Width, clientSize.Height - y );
         }
@@ -122,27 +123,18 @@ namespace Tabs
         {
             PointPath path = GetTabPath( index );
 
-            if( selected )
+            using( Brush b = new SolidBrush( selected ? this.Owner.SelectedTabColor : this.Owner.TabColor ) )
             {
-                using( Brush b = new SolidBrush( this.Owner.SelectedTabColor ) )
+                g.FillPointPath( b, path );
+                using( Pen bp = new Pen( b ) )
                 {
-                    g.FillPointPath( b, path );
-                }
-                using( Pen p = new Pen( this.Owner.TabBorderColor ) )
-                {
-                    g.DrawPointPath( p, path, false );
+                    g.DrawPointPath( bp, path, true );
                 }
             }
-            else
+
+            using( Pen p = new Pen( this.Owner.TabBorderColor ) )
             {
-                using( Brush b = new SolidBrush( this.Owner.TabColor ) )
-                {
-                    g.FillPointPath( b, path );
-                }
-                using( Pen p = new Pen( this.Owner.TabBorderColor ) )
-                {
-                    g.DrawPointPath( p, path, false );
-                }
+                g.DrawPointPath( p, path, false );
             }
 
             using( SolidBrush b = new SolidBrush( this.Owner.ForeColor ) )
@@ -184,7 +176,7 @@ namespace Tabs
 
         private void PaintBottomBorder( Graphics g )
         {
-            int bY = TAB_HEIGHT;
+            int bY = TOP_PADDING + TAB_HEIGHT;
             Point left = new Point( 0, bY );
             Point right = new Point( this.Owner.Width, bY );
 
