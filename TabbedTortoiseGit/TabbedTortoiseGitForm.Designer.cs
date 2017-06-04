@@ -47,6 +47,7 @@
             this.FavoriteRepoTabMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.CloseRepoTabMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.LogTabs = new Tabs.TabControl();
+            this.CheckForModifiedTabsTimer = new System.Windows.Forms.Timer(this.components);
             this.MenuStrip.SuspendLayout();
             this.NotifyIconContextMenu.SuspendLayout();
             this.TabContextMenu.SuspendLayout();
@@ -185,6 +186,10 @@
             this.LogTabs.TabContextMenu = this.TabContextMenu;
             this.LogTabs.TabIndex = 3;
             // 
+            // CheckForModifiedTabsTimer
+            // 
+            this.CheckForModifiedTabsTimer.Interval = 10000;
+            // 
             // TabbedTortoiseGitForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -224,6 +229,7 @@
         private System.Windows.Forms.ToolStripMenuItem FavoriteRepoTabMenuItem;
         private System.Windows.Forms.ToolStripMenuItem CloseRepoTabMenuItem;
         private Tabs.TabControl LogTabs;
+        private System.Windows.Forms.Timer CheckForModifiedTabsTimer;
     }
 }
 

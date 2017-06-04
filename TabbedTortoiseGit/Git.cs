@@ -40,6 +40,16 @@ namespace TabbedTortoiseGit
             }
         }
 
+        private static ProcessStartInfo CreateGitProcessStartInfo( String repo, String args )
+        {
+            return new ProcessStartInfo( "git.exe", args )
+            {
+                WorkingDirectory = repo,
+                CreateNoWindow = true,
+                UseShellExecute = false
+            };
+        }
+
         public static async Task<List<String>> GetModifiedSubmodules( String path, List<String> submodules )
         {
             List<String> modifiedSubmodules = new List<String>();
@@ -50,13 +60,10 @@ namespace TabbedTortoiseGit
                 return modifiedSubmodules;
             }
 
-            ProcessStartInfo info = new ProcessStartInfo( "git.exe", "status --porcelain --ignore-submodules=none" )
-            {
-                WorkingDirectory = repo,
-                CreateNoWindow = true,
-                UseShellExecute = false,
-                RedirectStandardOutput = true
-            };
+            ProcessStartInfo info = CreateGitProcessStartInfo( repo, "status --porcelain --ignore-submodules=none" );
+            info.CreateNoWindow = true;
+            info.UseShellExecute = false;
+            info.RedirectStandardOutput = true;
             Process p = Process.Start( info );
             await Task.Run( () => p.WaitForExit() );
 
@@ -81,6 +88,21 @@ namespace TabbedTortoiseGit
             }
 
             return modifiedSubmodules;
+        }
+
+        public static async Task<bool> IsModified( String path )
+        {
+            String repo = GetBaseRepoDirectory( path );
+            if( repo == null )
+            {
+                return false;
+            }
+
+            ProcessStartInfo info = CreateGitProcessStartInfo( repo, "diff-index --quiet HEAD --" );
+            Process p = Process.Start( info );
+            await Task.Run( () => p.WaitForExit() );
+
+            return p.ExitCode == 1;
         }
     }
 }

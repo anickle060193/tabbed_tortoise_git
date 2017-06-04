@@ -5,6 +5,7 @@ using log4net.Repository.Hierarchy;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Drawing;
 using System.IO;
 using System.Linq;
 using System.Management;
@@ -46,6 +47,8 @@ namespace TabbedTortoiseGit
             NotifyIcon.DoubleClick += NotifyIcon_DoubleClick;
             OpenNotifyIconMenuItem.Click += OpenNotifyIconMenuItem_Click;
             ExitNotifyIconMenuItem.Click += ExitMenuItem_Click;
+
+            CheckForModifiedTabsTimer.Tick += CheckForModifiedTabsTimer_Tick;
         }
 
         private async void TabbedTortoiseGitForm_Load( object sender, EventArgs e )
@@ -281,6 +284,29 @@ namespace TabbedTortoiseGit
 
             TabTag tag = (TabTag)LogTabs.SelectedTab.Tag;
             func.Invoke( tag.Repo );
+        }
+
+        private async void CheckForModifiedTabsTimer_Tick( object sender, EventArgs e )
+        {
+            if( _checkForModifiedTabsSemaphore.WaitOne( 0 ) )
+            {
+                try
+                {
+                    for( int i = 0; i < LogTabs.TabCount; i++ )
+                    {
+                        Tab tab = LogTabs.Tabs[ i ];
+                        TabTag tag = (TabTag)tab.Tag;
+
+                        tag.Modified = await Git.IsModified( tag.Repo );
+
+                        UpdateTabDisplay( tab );
+                    }
+                }
+                finally
+                {
+                    _checkForModifiedTabsSemaphore.Release();
+                }
+            }
         }
     }
 }

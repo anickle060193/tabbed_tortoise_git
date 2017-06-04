@@ -30,17 +30,20 @@ namespace TabbedTortoiseGit
         private readonly ManagementEventWatcher _watcher;
         private readonly List<Process> _processes = new List<Process>();
         private readonly Dictionary<int, Tab> _tabs = new Dictionary<int, Tab>();
+        private readonly Semaphore _checkForModifiedTabsSemaphore = new Semaphore( 1, 1 );
         private readonly bool _startup;
 
         class TabTag
         {
             public Process Process { get; private set; }
             public String Repo { get; private set; }
+            public bool Modified { get; set; }
 
             public TabTag( Process process, String repo )
             {
                 Process = process;
                 Repo = repo;
+                Modified = false;
             }
         }
 
@@ -111,6 +114,17 @@ namespace TabbedTortoiseGit
             else
             {
                 LogTabs.ShowHitTest = false;
+            }
+
+            CheckForModifiedTabsTimer.Enabled = Settings.Default.IndicateModifiedTabs;
+            CheckForModifiedTabsTimer.Interval = Settings.Default.CheckForModifiedTabsInterval;
+
+            lock( _processes )
+            {
+                foreach( Tab t in LogTabs.Tabs )
+                {
+                    UpdateTabDisplay( t );
+                }
             }
 
             UpdateRecentReposFromSettings();
@@ -483,6 +497,21 @@ namespace TabbedTortoiseGit
             else
             {
                 return true;
+            }
+        }
+
+        private void UpdateTabDisplay( Tab tab )
+        {
+            TabTag tag = (TabTag)tab.Tag;
+            if( Settings.Default.IndicateModifiedTabs && tag.Modified )
+            {
+                tab.ForeColor = Settings.Default.ModifiedTabFontColor;
+                tab.Font = Settings.Default.ModifiedTabFont;
+            }
+            else
+            {
+                tab.ForeColor = SystemColors.ControlText;
+                tab.Font = SystemFonts.DefaultFont;
             }
         }
     }

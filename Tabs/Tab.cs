@@ -18,7 +18,7 @@ namespace Tabs
 
         [DefaultValue( "" )]
         [Browsable( true )]
-        public override string Text
+        public override String Text
         {
             get
             {

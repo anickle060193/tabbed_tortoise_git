@@ -50,15 +50,27 @@ namespace TabbedTortoiseGit
             this.GitActionsTab = new System.Windows.Forms.TabPage();
             this.FastSubmoduleUpdateSettingsGroup = new System.Windows.Forms.GroupBox();
             this.CheckModifiedSubmodulesByDefaultCheck = new System.Windows.Forms.CheckBox();
+            this.DisplaySettingsTab = new System.Windows.Forms.TabPage();
+            this.CheckForModifiedTabsIntervalLabel = new System.Windows.Forms.Label();
+            this.CheckForModifiedTabsIntervalNumeric = new System.Windows.Forms.NumericUpDown();
+            this.IndicateModifiedTabsCheck = new System.Windows.Forms.CheckBox();
+            this.ResetModifiedTabFontButton = new System.Windows.Forms.Button();
+            this.ChangeModifiedTabFontButton = new System.Windows.Forms.Button();
+            this.ModifiedTabFontGroup = new System.Windows.Forms.GroupBox();
+            this.ModifiedTabFontSample = new System.Windows.Forms.Label();
             this.OtherSettingsTab = new System.Windows.Forms.TabPage();
             this.CloseToSystemTrayCheck = new System.Windows.Forms.CheckBox();
             this.DeveloperSettingsPage = new System.Windows.Forms.TabPage();
             this.ShowHitTestCheck = new System.Windows.Forms.CheckBox();
+            this.ModifiedTabFontDialog = new System.Windows.Forms.FontDialog();
             ((System.ComponentModel.ISupportInitialize)(this.MaxRecentReposNumeric)).BeginInit();
             this.SettingsTabs.SuspendLayout();
             this.StartupReposTab.SuspendLayout();
             this.GitActionsTab.SuspendLayout();
             this.FastSubmoduleUpdateSettingsGroup.SuspendLayout();
+            this.DisplaySettingsTab.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.CheckForModifiedTabsIntervalNumeric)).BeginInit();
+            this.ModifiedTabFontGroup.SuspendLayout();
             this.OtherSettingsTab.SuspendLayout();
             this.DeveloperSettingsPage.SuspendLayout();
             this.SuspendLayout();
@@ -219,6 +231,7 @@ namespace TabbedTortoiseGit
             | System.Windows.Forms.AnchorStyles.Right)));
             this.SettingsTabs.Controls.Add(this.StartupReposTab);
             this.SettingsTabs.Controls.Add(this.GitActionsTab);
+            this.SettingsTabs.Controls.Add(this.DisplaySettingsTab);
             this.SettingsTabs.Controls.Add(this.OtherSettingsTab);
             this.SettingsTabs.Controls.Add(this.DeveloperSettingsPage);
             this.SettingsTabs.Location = new System.Drawing.Point(12, 12);
@@ -276,6 +289,112 @@ namespace TabbedTortoiseGit
             this.CheckModifiedSubmodulesByDefaultCheck.Text = "Check Modified Submodules By Default";
             this.CheckModifiedSubmodulesByDefaultCheck.UseVisualStyleBackColor = true;
             // 
+            // DisplaySettingsTab
+            // 
+            this.DisplaySettingsTab.Controls.Add(this.CheckForModifiedTabsIntervalLabel);
+            this.DisplaySettingsTab.Controls.Add(this.CheckForModifiedTabsIntervalNumeric);
+            this.DisplaySettingsTab.Controls.Add(this.IndicateModifiedTabsCheck);
+            this.DisplaySettingsTab.Controls.Add(this.ResetModifiedTabFontButton);
+            this.DisplaySettingsTab.Controls.Add(this.ChangeModifiedTabFontButton);
+            this.DisplaySettingsTab.Controls.Add(this.ModifiedTabFontGroup);
+            this.DisplaySettingsTab.Location = new System.Drawing.Point(4, 22);
+            this.DisplaySettingsTab.Name = "DisplaySettingsTab";
+            this.DisplaySettingsTab.Padding = new System.Windows.Forms.Padding(3);
+            this.DisplaySettingsTab.Size = new System.Drawing.Size(352, 282);
+            this.DisplaySettingsTab.TabIndex = 4;
+            this.DisplaySettingsTab.Text = "Display";
+            this.DisplaySettingsTab.UseVisualStyleBackColor = true;
+            // 
+            // CheckForModifiedTabsIntervalLabel
+            // 
+            this.CheckForModifiedTabsIntervalLabel.AutoSize = true;
+            this.CheckForModifiedTabsIntervalLabel.Location = new System.Drawing.Point(10, 31);
+            this.CheckForModifiedTabsIntervalLabel.Name = "CheckForModifiedTabsIntervalLabel";
+            this.CheckForModifiedTabsIntervalLabel.Size = new System.Drawing.Size(229, 13);
+            this.CheckForModifiedTabsIntervalLabel.TabIndex = 5;
+            this.CheckForModifiedTabsIntervalLabel.Text = "Check for Modified Tabs Interval (milliseconds):";
+            // 
+            // CheckForModifiedTabsIntervalNumeric
+            // 
+            this.CheckForModifiedTabsIntervalNumeric.Increment = new decimal(new int[] {
+            500,
+            0,
+            0,
+            0});
+            this.CheckForModifiedTabsIntervalNumeric.Location = new System.Drawing.Point(245, 29);
+            this.CheckForModifiedTabsIntervalNumeric.Maximum = new decimal(new int[] {
+            100000,
+            0,
+            0,
+            0});
+            this.CheckForModifiedTabsIntervalNumeric.Minimum = new decimal(new int[] {
+            1000,
+            0,
+            0,
+            0});
+            this.CheckForModifiedTabsIntervalNumeric.Name = "CheckForModifiedTabsIntervalNumeric";
+            this.CheckForModifiedTabsIntervalNumeric.Size = new System.Drawing.Size(73, 20);
+            this.CheckForModifiedTabsIntervalNumeric.TabIndex = 4;
+            this.CheckForModifiedTabsIntervalNumeric.Value = new decimal(new int[] {
+            1000,
+            0,
+            0,
+            0});
+            // 
+            // IndicateModifiedTabsCheck
+            // 
+            this.IndicateModifiedTabsCheck.AutoSize = true;
+            this.IndicateModifiedTabsCheck.CheckAlign = System.Drawing.ContentAlignment.MiddleRight;
+            this.IndicateModifiedTabsCheck.Location = new System.Drawing.Point(6, 6);
+            this.IndicateModifiedTabsCheck.Name = "IndicateModifiedTabsCheck";
+            this.IndicateModifiedTabsCheck.Size = new System.Drawing.Size(134, 17);
+            this.IndicateModifiedTabsCheck.TabIndex = 3;
+            this.IndicateModifiedTabsCheck.Text = "Indicate Modified Tabs";
+            this.IndicateModifiedTabsCheck.UseVisualStyleBackColor = true;
+            // 
+            // ResetModifiedTabFontButton
+            // 
+            this.ResetModifiedTabFontButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.ResetModifiedTabFontButton.Location = new System.Drawing.Point(190, 120);
+            this.ResetModifiedTabFontButton.Name = "ResetModifiedTabFontButton";
+            this.ResetModifiedTabFontButton.Size = new System.Drawing.Size(75, 23);
+            this.ResetModifiedTabFontButton.TabIndex = 2;
+            this.ResetModifiedTabFontButton.Text = "Reset";
+            this.ResetModifiedTabFontButton.UseVisualStyleBackColor = true;
+            // 
+            // ChangeModifiedTabFontButton
+            // 
+            this.ChangeModifiedTabFontButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.ChangeModifiedTabFontButton.Location = new System.Drawing.Point(271, 120);
+            this.ChangeModifiedTabFontButton.Name = "ChangeModifiedTabFontButton";
+            this.ChangeModifiedTabFontButton.Size = new System.Drawing.Size(75, 23);
+            this.ChangeModifiedTabFontButton.TabIndex = 1;
+            this.ChangeModifiedTabFontButton.Text = "Change";
+            this.ChangeModifiedTabFontButton.UseVisualStyleBackColor = true;
+            // 
+            // ModifiedTabFontGroup
+            // 
+            this.ModifiedTabFontGroup.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.ModifiedTabFontGroup.Controls.Add(this.ModifiedTabFontSample);
+            this.ModifiedTabFontGroup.Location = new System.Drawing.Point(6, 55);
+            this.ModifiedTabFontGroup.Name = "ModifiedTabFontGroup";
+            this.ModifiedTabFontGroup.Size = new System.Drawing.Size(340, 59);
+            this.ModifiedTabFontGroup.TabIndex = 0;
+            this.ModifiedTabFontGroup.TabStop = false;
+            this.ModifiedTabFontGroup.Text = "Modified Tab Font";
+            // 
+            // ModifiedTabFontSample
+            // 
+            this.ModifiedTabFontSample.AutoEllipsis = true;
+            this.ModifiedTabFontSample.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.ModifiedTabFontSample.Location = new System.Drawing.Point(3, 16);
+            this.ModifiedTabFontSample.Name = "ModifiedTabFontSample";
+            this.ModifiedTabFontSample.Size = new System.Drawing.Size(334, 40);
+            this.ModifiedTabFontSample.TabIndex = 0;
+            this.ModifiedTabFontSample.Text = "C:\\sample\\font.git";
+            this.ModifiedTabFontSample.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
             // OtherSettingsTab
             // 
             this.OtherSettingsTab.Controls.Add(this.CloseToSystemTrayCheck);
@@ -324,6 +443,12 @@ namespace TabbedTortoiseGit
             this.ShowHitTestCheck.Text = "Show Hit Test";
             this.ShowHitTestCheck.UseVisualStyleBackColor = true;
             // 
+            // ModifiedTabFontDialog
+            // 
+            this.ModifiedTabFontDialog.AllowScriptChange = false;
+            this.ModifiedTabFontDialog.FontMustExist = true;
+            this.ModifiedTabFontDialog.ShowColor = true;
+            // 
             // SettingsForm
             // 
             this.AcceptButton = this.OK;
@@ -352,6 +477,10 @@ namespace TabbedTortoiseGit
             this.GitActionsTab.PerformLayout();
             this.FastSubmoduleUpdateSettingsGroup.ResumeLayout(false);
             this.FastSubmoduleUpdateSettingsGroup.PerformLayout();
+            this.DisplaySettingsTab.ResumeLayout(false);
+            this.DisplaySettingsTab.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.CheckForModifiedTabsIntervalNumeric)).EndInit();
+            this.ModifiedTabFontGroup.ResumeLayout(false);
             this.OtherSettingsTab.ResumeLayout(false);
             this.OtherSettingsTab.PerformLayout();
             this.DeveloperSettingsPage.ResumeLayout(false);
@@ -384,5 +513,14 @@ namespace TabbedTortoiseGit
         private TabPage DeveloperSettingsPage;
         private CheckBox ShowHitTestCheck;
         private CheckBox CloseToSystemTrayCheck;
+        private TabPage DisplaySettingsTab;
+        private FontDialog ModifiedTabFontDialog;
+        private GroupBox ModifiedTabFontGroup;
+        private Button ChangeModifiedTabFontButton;
+        private Label ModifiedTabFontSample;
+        private Button ResetModifiedTabFontButton;
+        private CheckBox IndicateModifiedTabsCheck;
+        private Label CheckForModifiedTabsIntervalLabel;
+        private NumericUpDown CheckForModifiedTabsIntervalNumeric;
     }
 }

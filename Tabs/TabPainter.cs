@@ -162,15 +162,16 @@ namespace Tabs
                 g.DrawPointPath( p, path, false );
             }
 
-            using( SolidBrush b = new SolidBrush( this.Owner.ForeColor ) )
+            using( SolidBrush b = new SolidBrush( t.ForeColor ) )
             {
+                bool isPath = t.Text.Contains( Path.DirectorySeparatorChar ) || t.Text.Contains( Path.AltDirectorySeparatorChar );
                 StringFormat f = new StringFormat( StringFormatFlags.NoWrap )
                 {
                     Alignment = StringAlignment.Center,
                     LineAlignment = StringAlignment.Center,
-                    Trimming = t.Text.Contains( Path.DirectorySeparatorChar ) || t.Text.Contains( Path.AltDirectorySeparatorChar ) ? StringTrimming.EllipsisPath : StringTrimming.EllipsisWord
+                    Trimming = isPath ? StringTrimming.EllipsisPath : StringTrimming.EllipsisWord
                 };
-                g.DrawString( t.Text, this.Owner.Font, b, path.MinimumBounds, f );
+                g.DrawString( t.Text, t.Font, b, path.MinimumBounds, f );
             }
         }
 

@@ -26,6 +26,11 @@ namespace TabbedTortoiseGit
             f.TabContextMenuGitActions = Settings.Default.TabContextMenuGitActions;
             f.CheckModifiedSubmodulesByDefault = Settings.Default.FastSubmoduleUpdateCheckModifiedSubmodulesByDefault;
 
+            f.IndicateModifiedTabs = Settings.Default.IndicateModifiedTabs;
+            f.CheckForModifiedTabsInterval = Settings.Default.CheckForModifiedTabsInterval;
+            f.ModifiedTabFont = Settings.Default.ModifiedTabFont;
+            f.ModifiedTabFontColor = Settings.Default.ModifiedTabFontColor;
+
             f.RetainLogsOnClose = Settings.Default.RetainLogsOnClose;
             f.MaxRecentRepos = Settings.Default.MaxRecentRepos;
             f.ConfirmOnClose = Settings.Default.ConfirmOnClose;
@@ -42,6 +47,11 @@ namespace TabbedTortoiseGit
 
                 Settings.Default.TabContextMenuGitActions = f.TabContextMenuGitActions;
                 Settings.Default.FastSubmoduleUpdateCheckModifiedSubmodulesByDefault = f.CheckModifiedSubmodulesByDefault;
+
+                Settings.Default.CheckForModifiedTabsInterval = f.CheckForModifiedTabsInterval;
+                Settings.Default.IndicateModifiedTabs = f.IndicateModifiedTabs;
+                Settings.Default.ModifiedTabFont = f.ModifiedTabFont;
+                Settings.Default.ModifiedTabFontColor = f.ModifiedTabFontColor;
 
                 Settings.Default.RetainLogsOnClose = f.RetainLogsOnClose;
                 Settings.Default.MaxRecentRepos = f.MaxRecentRepos;
@@ -126,6 +136,58 @@ namespace TabbedTortoiseGit
             set
             {
                 CheckModifiedSubmodulesByDefaultCheck.Checked = value;
+            }
+        }
+
+        public int CheckForModifiedTabsInterval
+        {
+            get
+            {
+                return (int)CheckForModifiedTabsIntervalNumeric.Value;
+            }
+
+            set
+            {
+                CheckForModifiedTabsIntervalNumeric.Value = value;
+            }
+        }
+
+        public bool IndicateModifiedTabs
+        {
+            get
+            {
+                return IndicateModifiedTabsCheck.Checked;
+            }
+
+            set
+            {
+                IndicateModifiedTabsCheck.Checked = value;
+            }
+        }
+
+        public Font ModifiedTabFont
+        {
+            get
+            {
+                return ModifiedTabFontSample.Font;
+            }
+
+            set
+            {
+                ModifiedTabFontSample.Font = value;
+            }
+        }
+
+        public Color ModifiedTabFontColor
+        {
+            get
+            {
+                return ModifiedTabFontSample.ForeColor;
+            }
+
+            set
+            {
+                ModifiedTabFontSample.ForeColor = value;
             }
         }
 
@@ -252,6 +314,9 @@ namespace TabbedTortoiseGit
 
             this.GitActionsCheckList.Items.AddRange( TortoiseGit.ACTIONS.Keys.ToArray() );
 
+            this.ResetModifiedTabFontButton.Click += ResetModifiedTabFontButton_Click;
+            this.ChangeModifiedTabFontButton.Click += ChangeModifiedTabFontButton_Click;
+
             _dragDropHelper = new CheckListDragDrophelper();
             _dragDropHelper.AddControl( GitActionsCheckList );
         }
@@ -299,6 +364,23 @@ namespace TabbedTortoiseGit
         private void DefaultReposList_SelectedValueChanged( object sender, EventArgs e )
         {
             UpdateDefaultReposActions();
+        }
+
+        private void ResetModifiedTabFontButton_Click( object sender, EventArgs e )
+        {
+            this.ModifiedTabFont = Settings.Default.DefaultModifiedTabFont;
+            this.ModifiedTabFontColor = Settings.Default.DefaultModifiedTabFontColor;
+        }
+
+        private void ChangeModifiedTabFontButton_Click( object sender, EventArgs e )
+        {
+            ModifiedTabFontDialog.Font = this.ModifiedTabFont;
+            ModifiedTabFontDialog.Color = this.ModifiedTabFontColor;
+            if( ModifiedTabFontDialog.ShowDialog() == DialogResult.OK )
+            {
+                this.ModifiedTabFont = ModifiedTabFontDialog.Font;
+                this.ModifiedTabFontColor = ModifiedTabFontDialog.Color;
+            }
         }
 
         private void UpdateDefaultReposActions()

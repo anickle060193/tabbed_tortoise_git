@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Configuration;
 using System.Diagnostics;
+using System.Drawing;
 
 namespace TabbedTortoiseGit.Properties
 {
@@ -65,6 +66,22 @@ namespace TabbedTortoiseGit.Properties
             }
         }
 
+        public Font DefaultModifiedTabFont
+        {
+            get
+            {
+                return new Font( SystemFonts.DefaultFont, FontStyle.Bold );
+            }
+        }
+
+        public Color DefaultModifiedTabFontColor
+        {
+            get
+            {
+                return Color.DarkBlue;
+            }
+        }
+
         public Settings()
         {
             this.SettingsLoaded += Settings_SettingsLoaded;
@@ -97,6 +114,15 @@ namespace TabbedTortoiseGit.Properties
                 if( maxProcesses <= 0 )
                 {
                     LOG.DebugFormat( "Settings Changing - Invalid Max Fast Fetch Processes: {0}", maxProcesses );
+                    e.Cancel = true;
+                }
+            }
+            else if( e.SettingName == nameof( Settings.Default.CheckForModifiedTabsInterval ) )
+            {
+                int interval = (int)e.NewValue;
+                if( interval < 1000 )
+                {
+                    LOG.DebugFormat( "Settings Changing - Invalid Check for Modified Tabs Interval: {0}", interval );
                     e.Cancel = true;
                 }
             }
@@ -175,6 +201,22 @@ namespace TabbedTortoiseGit.Properties
             {
                 LOG.DebugFormat( "Settings Load - Invalid Max Fast Fetch Processes: {0}", Settings.Default.FastFetchMaxProcesses );
                 Settings.Default.FastFetchMaxProcesses = 6;
+            }
+
+            if( Settings.Default.CheckForModifiedTabsInterval < 1000 )
+            {
+                LOG.DebugFormat( "Settings Load - Invalid Check for Modified Tabs Interval: {0}", Settings.Default.CheckForModifiedTabsInterval );
+                Settings.Default.CheckForModifiedTabsInterval = 1000;
+            }
+
+            if( Settings.Default.ModifiedTabFont == null )
+            {
+                Settings.Default.ModifiedTabFont = Settings.Default.DefaultModifiedTabFont;
+            }
+
+            if( Settings.Default.ModifiedTabFontColor.IsEmpty )
+            {
+                Settings.Default.ModifiedTabFontColor = Settings.Default.DefaultModifiedTabFontColor;
             }
 
             Settings.Default.Save();

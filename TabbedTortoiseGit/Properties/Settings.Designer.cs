@@ -319,5 +319,51 @@ namespace TabbedTortoiseGit.Properties {
                 this["CloseToSystemTray"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        public global::System.Drawing.Font ModifiedTabFont {
+            get {
+                return ((global::System.Drawing.Font)(this["ModifiedTabFont"]));
+            }
+            set {
+                this["ModifiedTabFont"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        public global::System.Drawing.Color ModifiedTabFontColor {
+            get {
+                return ((global::System.Drawing.Color)(this["ModifiedTabFontColor"]));
+            }
+            set {
+                this["ModifiedTabFontColor"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("True")]
+        public bool IndicateModifiedTabs {
+            get {
+                return ((bool)(this["IndicateModifiedTabs"]));
+            }
+            set {
+                this["IndicateModifiedTabs"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("10000")]
+        public int CheckForModifiedTabsInterval {
+            get {
+                return ((int)(this["CheckForModifiedTabsInterval"]));
+            }
+            set {
+                this["CheckForModifiedTabsInterval"] = value;
+            }
+        }
     }
 }
