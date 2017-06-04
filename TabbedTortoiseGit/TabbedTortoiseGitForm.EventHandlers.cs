@@ -33,6 +33,9 @@ namespace TabbedTortoiseGit
             LogTabs.TabClosed += LogTabs_TabClosed;
             LogTabs.SelectedIndexChanged += LogTabs_SelectedIndexChanged;
 
+            FavoritesMenuStrip.MouseClick += FavoritesMenuStrip_MouseClick;
+            UnfavoriteFavoriteRepoContextMenuItem.Click += UnfavoriteFavoriteRepoContextMenuItem_Click;
+
             OpenRepoMenuItem.Click += OpenRepoMenuItem_Click;
             SettingsMenuItem.Click += SettingsMenuItem_Click;
             AboutMenuItem.Click += AboutMenuItem_Click;
@@ -160,6 +163,26 @@ namespace TabbedTortoiseGit
             ToolStripItem item = (ToolStripItem)sender;
             String repo = (String)item.Tag;
             await OpenLog( repo );
+        }
+
+        private void FavoritesMenuStrip_MouseClick( object sender, MouseEventArgs e )
+        {
+            if( e.Button == MouseButtons.Right )
+            {
+                ToolStripItem favoriteItem = FavoritesMenuStrip.GetItemAt( e.Location );
+                if( favoriteItem != null && favoriteItem.Tag is FavoriteRepoTag )
+                {
+                    FavoriteRepoTag tag = (FavoriteRepoTag)favoriteItem.Tag;
+                    FavoriteRepoContextMenu.Tag = tag;
+                    FavoriteRepoContextMenu.Show( FavoritesMenuStrip, e.Location );
+                }
+            }
+        }
+
+        private void UnfavoriteFavoriteRepoContextMenuItem_Click( object sender, EventArgs e )
+        {
+            FavoriteRepoTag tag = (FavoriteRepoTag)FavoriteRepoContextMenu.Tag;
+            RemoveFavoriteRepo( tag.Repo );
         }
 
         private async void OpenRepoMenuItem_Click( object sender, EventArgs e )

@@ -29,7 +29,7 @@
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
-            this.MenuStrip = new System.Windows.Forms.MenuStrip();
+            this.FavoritesMenuStrip = new System.Windows.Forms.MenuStrip();
             this.OptionsMenu = new System.Windows.Forms.ToolStripMenuItem();
             this.OpenRepoMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.RecentReposMenu = new System.Windows.Forms.ToolStripMenuItem();
@@ -48,20 +48,24 @@
             this.CloseRepoTabMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.LogTabs = new Tabs.TabControl();
             this.CheckForModifiedTabsTimer = new System.Windows.Forms.Timer(this.components);
-            this.MenuStrip.SuspendLayout();
+            this.FavoriteRepoContextMenu = new System.Windows.Forms.ContextMenuStrip(this.components);
+            this.UnfavoriteFavoriteRepoContextMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.FavoritesMenuStrip.SuspendLayout();
             this.NotifyIconContextMenu.SuspendLayout();
             this.TabContextMenu.SuspendLayout();
+            this.FavoriteRepoContextMenu.SuspendLayout();
             this.SuspendLayout();
             // 
-            // MenuStrip
+            // FavoritesMenuStrip
             // 
-            this.MenuStrip.BackColor = System.Drawing.Color.White;
-            this.MenuStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.FavoritesMenuStrip.BackColor = System.Drawing.Color.White;
+            this.FavoritesMenuStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.OptionsMenu});
-            this.MenuStrip.Location = new System.Drawing.Point(0, 0);
-            this.MenuStrip.Name = "MenuStrip";
-            this.MenuStrip.Size = new System.Drawing.Size(644, 24);
-            this.MenuStrip.TabIndex = 1;
+            this.FavoritesMenuStrip.Location = new System.Drawing.Point(0, 0);
+            this.FavoritesMenuStrip.Name = "FavoritesMenuStrip";
+            this.FavoritesMenuStrip.ShowItemToolTips = true;
+            this.FavoritesMenuStrip.Size = new System.Drawing.Size(644, 24);
+            this.FavoritesMenuStrip.TabIndex = 1;
             // 
             // OptionsMenu
             // 
@@ -190,28 +194,42 @@
             // 
             this.CheckForModifiedTabsTimer.Interval = 10000;
             // 
+            // FavoriteRepoContextMenu
+            // 
+            this.FavoriteRepoContextMenu.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.UnfavoriteFavoriteRepoContextMenuItem});
+            this.FavoriteRepoContextMenu.Name = "FavoriteRepoContextMenu";
+            this.FavoriteRepoContextMenu.Size = new System.Drawing.Size(130, 26);
+            // 
+            // UnfavoriteFavoriteRepoContextMenuItem
+            // 
+            this.UnfavoriteFavoriteRepoContextMenuItem.Name = "UnfavoriteFavoriteRepoContextMenuItem";
+            this.UnfavoriteFavoriteRepoContextMenuItem.Size = new System.Drawing.Size(129, 22);
+            this.UnfavoriteFavoriteRepoContextMenuItem.Text = "Unfavorite";
+            // 
             // TabbedTortoiseGitForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(644, 486);
             this.Controls.Add(this.LogTabs);
-            this.Controls.Add(this.MenuStrip);
-            this.MainMenuStrip = this.MenuStrip;
+            this.Controls.Add(this.FavoritesMenuStrip);
+            this.MainMenuStrip = this.FavoritesMenuStrip;
             this.MinimumSize = new System.Drawing.Size(660, 525);
             this.Name = "TabbedTortoiseGitForm";
             this.Text = "Tabbed TortoiseGit";
-            this.MenuStrip.ResumeLayout(false);
-            this.MenuStrip.PerformLayout();
+            this.FavoritesMenuStrip.ResumeLayout(false);
+            this.FavoritesMenuStrip.PerformLayout();
             this.NotifyIconContextMenu.ResumeLayout(false);
             this.TabContextMenu.ResumeLayout(false);
+            this.FavoriteRepoContextMenu.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();
 
         }
 
         #endregion
-        private System.Windows.Forms.MenuStrip MenuStrip;
+        private System.Windows.Forms.MenuStrip FavoritesMenuStrip;
         private System.Windows.Forms.ToolStripMenuItem OptionsMenu;
         private System.Windows.Forms.ToolStripMenuItem OpenRepoMenuItem;
         private System.Windows.Forms.ToolStripMenuItem RecentReposMenu;
@@ -230,6 +248,8 @@
         private System.Windows.Forms.ToolStripMenuItem CloseRepoTabMenuItem;
         private Tabs.TabControl LogTabs;
         private System.Windows.Forms.Timer CheckForModifiedTabsTimer;
+        private System.Windows.Forms.ContextMenuStrip FavoriteRepoContextMenu;
+        private System.Windows.Forms.ToolStripMenuItem UnfavoriteFavoriteRepoContextMenuItem;
     }
 }
 

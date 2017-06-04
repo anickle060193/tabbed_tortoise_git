@@ -47,6 +47,18 @@ namespace TabbedTortoiseGit
             }
         }
 
+        class FavoriteRepoTag
+        {
+            public String Name { get; private set; }
+            public String Repo { get; private set; }
+
+            public FavoriteRepoTag( String name, String repo )
+            {
+                Name = name;
+                Repo = repo;
+            }
+        }
+
         public TabbedTortoiseGitForm() : this( false )
         {
         }
@@ -181,23 +193,24 @@ namespace TabbedTortoiseGit
 
         private void UpdateFavoriteReposFromSettings()
         {
-            MenuStrip.SuspendLayout();
+            FavoritesMenuStrip.SuspendLayout();
 
-            MenuStrip.Items.Clear();
-            MenuStrip.Items.Add( OptionsMenu );
+            FavoritesMenuStrip.Items.Clear();
+            FavoritesMenuStrip.Items.Add( OptionsMenu );
 
             foreach( KeyValuePair<String, String> kv in Settings.Default.FavoriteRepos )
             {
-                if( Git.IsRepo( kv.Value ) )
+                FavoriteRepoTag tag = new FavoriteRepoTag( kv.Key, kv.Value );
+                if( Git.IsRepo( tag.Repo ) )
                 {
-                    ToolStripItem item = MenuStrip.Items.Add( kv.Key );
-                    item.ToolTipText = kv.Value;
-                    item.Tag = kv.Value;
+                    ToolStripItem item = FavoritesMenuStrip.Items.Add( tag.Name );
+                    item.ToolTipText = tag.Repo;
+                    item.Tag = tag;
                     item.Click += FavoritedRepoMenuItem_Click;
                 }
             }
 
-            MenuStrip.ResumeLayout();
+            FavoritesMenuStrip.ResumeLayout();
         }
 
         private void AddToRecentRepos( String path )
