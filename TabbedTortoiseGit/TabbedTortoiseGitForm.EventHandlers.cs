@@ -113,7 +113,7 @@ namespace TabbedTortoiseGit
 
             LOG.DebugFormat( "Process Exited - ID: {0}", p.Id );
 
-            this.BeginInvoke( (Action<Process>)RemoveLog, p );
+            this.UiBeginInvoke( (Action<Process>)RemoveLog, p );
         }
 
         private async void LogTabs_NewTabClick( object sender, EventArgs e )
@@ -200,7 +200,7 @@ namespace TabbedTortoiseGit
             int pid = (int)(UInt32)o[ "ProcessId" ];
             LOG.DebugFormat( "Watcher_EventArrived - CommandLine: {0} - Repo: {1} - PID: {2}", commandLine, repo, pid );
             Process p = Process.GetProcessById( pid );
-            this.BeginInvoke( (Func<Process, String, Task>)AddNewLog, p, repo );
+            this.UiBeginInvoke( (Func<Process, String, Task>)AddNewLog, p, repo );
         }
 
         private async void NotifyIcon_DoubleClick( object sender, EventArgs e )

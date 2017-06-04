@@ -197,7 +197,7 @@ namespace TabbedTortoiseGit
                 if( _processes.TryDequeue( out p ) )
                 {
                     LOG.DebugFormat( "RunProcesses - Filename: {0} - Arguments: {1} - Working Directory: {2}", p.StartInfo.FileName, p.StartInfo.Arguments, p.StartInfo.WorkingDirectory );
-                    Output.Invoke( (Action<String, Color>)LogOutput, "{0} {1}".XFormat( p.StartInfo.FileName, p.StartInfo.Arguments ), CommandTextColor );
+                    Output.UiBeginInvoke( (Action<String, Color>)LogOutput, "{0} {1}".XFormat( p.StartInfo.FileName, p.StartInfo.Arguments ), CommandTextColor );
                     p.Start();
                     _runningProcesses[ p.Id ] = p;
                     p.BeginOutputReadLine();
@@ -235,12 +235,12 @@ namespace TabbedTortoiseGit
 
         private void Process_OutputDataReceived( object sender, DataReceivedEventArgs e )
         {
-            Output.Invoke( (Action<String>)LogOutput, e.Data );
+            Output.UiBeginInvoke( (Action<String>)LogOutput, e.Data );
         }
 
         private void Process_ErrorDataReceived( object sender, DataReceivedEventArgs e )
         {
-            Output.Invoke( (Action<String, Color>)LogOutput, e.Data, ErrorTextColor );
+            Output.UiBeginInvoke( (Action<String, Color>)LogOutput, e.Data, ErrorTextColor );
         }
 
         private void Process_Exited( object sender, EventArgs e )

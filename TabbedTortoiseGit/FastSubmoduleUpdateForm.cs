@@ -152,7 +152,7 @@ namespace TabbedTortoiseGit
             String submodule = (String)SubmoduleCheckList.Items[ e.Index ];
             _checkedSubmodules[ submodule ] = e.NewValue == CheckState.Checked;
 
-            SubmoduleCheckList.BeginInvoke( (Action)UpdateSubmoduleUpdateButton );
+            SubmoduleCheckList.UiBeginInvoke( (Action)UpdateSubmoduleUpdateButton );
         }
 
         private void SelectNoneSubmodules_Click( object sender, EventArgs e )
