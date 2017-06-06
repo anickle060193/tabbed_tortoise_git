@@ -551,19 +551,48 @@ namespace Tabs
 
             protected override bool GetItemFromPoint( TabControl parent, Point p, out Tab item, out int itemIndex )
             {
-                Tab t = parent.GetTabFromPoint( p );
-                if( t != null )
+                if( parent.SelectedTab != null )
                 {
-                    item = t;
-                    itemIndex = parent.Tabs.IndexOf( t );
-                    return true;
+                    if( !parent.SelectedTab.Dragging && parent._painter.GetTabPath( parent.SelectedIndex ).Bounds.Contains( p ) )
+                    {
+                        item = parent.SelectedTab;
+                        itemIndex = parent.SelectedIndex;
+                        return true;
+                    }
                 }
-                else
+
+                for( int i = 0; i < parent.TabCount; i++ )
                 {
-                    item = null;
-                    itemIndex = -1;
-                    return false;
+                    if( i != parent.SelectedIndex )
+                    {
+                        if( parent._painter.GetTabPath( i ).Bounds.Contains( p ) )
+                        {
+                            item = parent.Tabs[ i ];
+                            itemIndex = i;
+                            return true;
+                        }
+                    }
                 }
+
+                if( parent.TabCount >= 2 )
+                {
+                    if( p.X < parent._painter.GetTabPath( 0 ).Bounds.Left )
+                    {
+                        item = parent.Tabs[ 0 ];
+                        itemIndex = 0;
+                        return true;
+                    }
+                    else if( p.X > parent._painter.GetTabPath( parent.TabCount - 1 ).Bounds.Right )
+                    {
+                        item = parent.Tabs[ parent.TabCount - 1 ];
+                        itemIndex = parent.TabCount - 1;
+                        return true;
+                    }
+                }
+
+                item = null;
+                itemIndex = -1;
+                return false;
             }
 
             protected override bool SwapItems( TabControl dragParent, Tab dragItem, int dragItemIndex, TabControl pointedParent, Tab pointedItem, int pointedItemIndex )
