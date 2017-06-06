@@ -161,8 +161,8 @@ namespace TabbedTortoiseGit
         private async void FavoritedRepoMenuItem_Click( object sender, EventArgs e )
         {
             ToolStripItem item = (ToolStripItem)sender;
-            String repo = (String)item.Tag;
-            await OpenLog( repo );
+            FavoriteRepoTag tag = (FavoriteRepoTag)item.Tag;
+            await OpenLog( tag.Repo );
         }
 
         private void FavoritesMenuStrip_MouseClick( object sender, MouseEventArgs e )
