@@ -28,6 +28,11 @@ namespace TabbedTortoiseGit
             Application.ThreadException += Application_ThreadException;
             AppDomain.CurrentDomain.UnhandledException += CurrentDomain_UnhandledException;
 
+            if( !TTG.VerifyAssemblyVersions() )
+            {
+                return;
+            }
+
             Arguments a = new Arguments();
             if( CommandLine.Parser.Default.ParseArguments( args, a ) )
             {

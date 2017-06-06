@@ -10,6 +10,7 @@ using System.Net;
 using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Forms;
 
 namespace TabbedTortoiseGit
 {
@@ -105,6 +106,35 @@ namespace TabbedTortoiseGit
             }
 
             return null;
+        }
+
+        public static bool VerifyAssemblyVersions()
+        {
+            Version ttgVersion = Assembly.GetAssembly( typeof( TabbedTortoiseGit.TTG ) ).GetName().Version;
+            Version tabsVersion = Assembly.GetAssembly( typeof( Tabs.TabControl ) ).GetName().Version;
+            Version commonVersion = Assembly.GetAssembly( typeof( Common.Util ) ).GetName().Version;
+
+            bool match = ttgVersion == commonVersion && commonVersion == tabsVersion;
+
+            if( !match )
+            {
+                var versions = new
+                {
+                    ttg = ttgVersion.ToString( 3 ),
+                    tabs = tabsVersion.ToString( 3 ),
+                    common = commonVersion.ToString( 3 )
+                };
+                LOG.FatalInject( "Assembly version mismatch - TTG: {ttg} - Tabs: {tabs} - Common: {common}", versions );
+
+                String versionMismatchMessage = ( "The current assembly versions do not match:\n" +
+                                                  "    Tabbed TortoiseGit: {ttg}\n" +
+                                                  "    Tabs: {tabs}\n" +
+                                                  "    Common: {common}\n\n" +
+                                                  "Update Tagged TortoiseGit to resolve issue.\n" +
+                                                  "If issue persists, uninstall and re-install Tabbed TortoiseGit." ).Inject( versions );
+                MessageBox.Show( versionMismatchMessage, "Assembly Version Mismatch", MessageBoxButtons.OK, MessageBoxIcon.Error );
+            }
+            return match;
         }
     }
 

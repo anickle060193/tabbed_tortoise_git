@@ -53,6 +53,11 @@ namespace Common
         {
             log.Debug( formatString.Inject( injectionObject ) );
         }
+
+        public static void FatalInject( this ILog log, String formatString, Object injectionObject )
+        {
+            log.Fatal( formatString.Inject( injectionObject ) );
+        }
     }
 
     // From http://mo.notono.us/2008/07/c-stringinject-format-strings-by-key.html
