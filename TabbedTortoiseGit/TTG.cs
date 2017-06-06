@@ -17,29 +17,50 @@ namespace TabbedTortoiseGit
     {
         private static readonly ILog LOG = LogManager.GetLogger( typeof( TTG ) );
 
+        private static readonly String RUN_ON_STARTUP_KEY_PATH = @"Software\Microsoft\Windows\CurrentVersion\Run";
+        private static readonly String RUN_ON_STARTUP_KEY_NAME = "Tabbed TortoiseGit";
+
         public static bool RunOnStartup
         {
             get
             {
-                using( RegistryKey run = Registry.CurrentUser.OpenSubKey( @"Software\Microsoft\Windows\CurrentVersion\Run", false ) )
+                try
                 {
-                    return run.GetValue( "Tabbed TortoiseGit" ) != null;
+                    using( RegistryKey run = Registry.CurrentUser.OpenSubKey( RUN_ON_STARTUP_KEY_PATH, false ) )
+                    {
+                        return run.GetValue( RUN_ON_STARTUP_KEY_NAME ) != null;
+                    }
                 }
+                catch( Exception e )
+                {
+                    LOG.Error( "An error occurred getting the current state of the 'Run on Startup' registry item.", e );
+                }
+                return false;
             }
 
             set
             {
-                using( RegistryKey run = Registry.CurrentUser.OpenSubKey( @"Software\Microsoft\Windows\CurrentVersion\Run", true ) )
+                try
                 {
-                    if( value )
+                    using( RegistryKey run = Registry.CurrentUser.OpenSubKey( RUN_ON_STARTUP_KEY_PATH, true ) )
                     {
-                        String exe = new Uri( Assembly.GetExecutingAssembly().CodeBase ).LocalPath;
-                        run.SetValue( "Tabbed TortoiseGit", "\"{0}\" --startup".XFormat( exe ) );
+                        if( value )
+                        {
+                            String exe = new Uri( Assembly.GetExecutingAssembly().CodeBase ).LocalPath;
+                            run.SetValue( RUN_ON_STARTUP_KEY_NAME, "\"{0}\" --startup".XFormat( exe ) );
+                        }
+                        else
+                        {
+                            if( run.GetValue( RUN_ON_STARTUP_KEY_NAME ) != null )
+                            {
+                                run.DeleteValue( RUN_ON_STARTUP_KEY_NAME );
+                            }
+                        }
                     }
-                    else
-                    {
-                        run.DeleteValue( "Tabbed TortoiseGit" );
-                    }
+                }
+                catch( Exception e )
+                {
+                    LOG.Error( "An error occurred setting the current state of the 'Run on Startup' registry item.", e );
                 }
             }
         }
