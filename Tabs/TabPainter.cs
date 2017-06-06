@@ -134,18 +134,19 @@ namespace Tabs
         {
             PointPath path = GetTabPath( index );
 
-            Color tabColor;
-            if( this.Owner.ShowHitTest && path.HitTest( this.Owner.PointToClient( Control.MousePosition ) ) )
+            Color tabColor = selected ? this.Owner.SelectedTabColor : this.Owner.TabColor;
+
+            if( ( !selected || this.Owner.ShowHitTest )
+             && path.HitTest( this.Owner.PointToClient( Control.MousePosition ) ) )
             {
-                tabColor = Color.LightBlue;
-            }
-            else if( selected )
-            {
-                tabColor = this.Owner.SelectedTabColor;
-            }
-            else
-            {
-                tabColor = this.Owner.TabColor;
+                if( this.Owner.ShowHitTest )
+                {
+                    tabColor = Color.LightBlue;
+                }
+                else
+                {
+                    tabColor = ControlPaint.Light( tabColor, 0.60f );
+                }
             }
 
             using( Brush b = new SolidBrush( tabColor ) )
@@ -180,14 +181,18 @@ namespace Tabs
             PointPath newTabPath = GetNewTabPath();
             Rectangle bounds = newTabPath.Bounds;
 
-            Color newTabButtonColor;
-            if( this.Owner.ShowHitTest && newTabPath.HitTest( this.Owner.PointToClient( Control.MousePosition ) ) )
+            Color newTabButtonColor = this.Owner.TabColor;
+
+            if( newTabPath.HitTest( this.Owner.PointToClient( Control.MousePosition ) ) )
             {
-                newTabButtonColor = Color.LightBlue;
-            }
-            else
-            {
-                newTabButtonColor = this.Owner.TabColor;
+                if( this.Owner.ShowHitTest )
+                {
+                    newTabButtonColor = Color.LightBlue;
+                }
+                else
+                {
+                    newTabButtonColor = ControlPaint.Light( newTabButtonColor, 0.5f );
+                }
             }
 
             using( Brush b = new SolidBrush( newTabButtonColor ) )

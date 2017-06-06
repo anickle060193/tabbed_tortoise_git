@@ -295,10 +295,7 @@ namespace Tabs
         {
             base.OnMouseMove( e );
 
-            if( this.ShowHitTest )
-            {
-                this.Invalidate();
-            }
+            this.Invalidate();
         }
 
         protected override void OnMouseClick( MouseEventArgs e )
