@@ -196,7 +196,6 @@ namespace TabbedTortoiseGit
             FavoritesMenuStrip.SuspendLayout();
 
             FavoritesMenuStrip.Items.Clear();
-            FavoritesMenuStrip.Items.Add( OptionsMenu );
 
             foreach( KeyValuePair<String, String> kv in Settings.Default.FavoriteRepos )
             {

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Common;
+using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Drawing.Drawing2D;
@@ -17,9 +18,23 @@ namespace Tabs
         private static readonly int BOTTOM_BORDER_HEIGHT = 4;
         private static readonly int TOP_PADDING = 1;
         private static readonly int LEFT_PADDING = 6;
+        private static readonly int RIGHT_PADDING = 6;
 
         private static readonly int NEW_TAB_BUTTON_WIDTH = 32;
         private static readonly float NEW_TAB_HEIGHT_PERCENTAGE = 0.65f;
+
+        private static readonly int OPTIONS_MENU_BUTTON_WIDTH = 24;
+        private static readonly float OPTIONS_MENU_BUTTON_HEIGHT_PERCENTAGE = 0.90f;
+
+        public Point OptionsMenuLocation
+        {
+            get
+            {
+                int x = this.Owner.Width - this.Owner.OptionsMenu.Width;
+                int y = TOP_PADDING + TAB_HEIGHT;
+                return new Point( x, y );
+            }
+        }
 
         public TabControl Owner { get; private set; }
 
@@ -35,7 +50,12 @@ namespace Tabs
             int tabInclineWidth = (int)( TAB_HEIGHT / Math.Tan( TAB_INCLINE_ANGLE ) );
             int tabOverlapWidth = tabInclineWidth / 2;
 
-            int tabAreaWidth = this.Owner.Width - LEFT_PADDING - NEW_TAB_BUTTON_WIDTH;
+            int tabAreaWidth = this.Owner.Width - LEFT_PADDING - NEW_TAB_BUTTON_WIDTH - RIGHT_PADDING;
+            if( this.Owner.OptionsMenu != null )
+            {
+                tabAreaWidth -= OPTIONS_MENU_BUTTON_WIDTH + RIGHT_PADDING;
+            }
+
             int tabWidth = this.Owner.MaximumTabWidth;
             if( this.Owner.TabCount == 0 )
             {
@@ -51,7 +71,7 @@ namespace Tabs
             {
                 blX = tab.DraggingX - tab.DraggingOffset;
                 blX = Math.Max( LEFT_PADDING, blX );
-                blX = Math.Min( blX, this.Owner.Width - tabWidth - NEW_TAB_BUTTON_WIDTH - LEFT_PADDING );
+                blX = Math.Min( blX, LEFT_PADDING + tabAreaWidth - tabWidth - RIGHT_PADDING );
             }
             else
             {
@@ -99,6 +119,23 @@ namespace Tabs
             } );
         }
 
+        public PointPath GetOptionsPath()
+        {
+            int height = (int)( TAB_HEIGHT * OPTIONS_MENU_BUTTON_HEIGHT_PERCENTAGE );
+            int right = this.Owner.Width - RIGHT_PADDING;
+            int left = right - OPTIONS_MENU_BUTTON_WIDTH;
+            int top = TOP_PADDING + ( TAB_HEIGHT - height ) / 2;
+            int bottom = top + height;
+
+            return new PointPath( new[]
+            {
+                new Point( left, top ),
+                new Point( right, top ),
+                new Point( right, bottom ),
+                new Point( left, bottom )
+            } );
+        }
+
         public Rectangle GetTabPanelBounds()
         {
             int y = TOP_PADDING + TAB_HEIGHT + BOTTOM_BORDER_HEIGHT;
@@ -128,6 +165,11 @@ namespace Tabs
             PaintBottomBorder( g );
 
             PaintNewTab( g );
+
+            if( this.Owner.OptionsMenu != null )
+            {
+                PaintOptionsMenuButton( g );
+            }
         }
 
         private void PaintTab( Graphics g, Tab t, int index, bool selected )
@@ -137,6 +179,7 @@ namespace Tabs
             Color tabColor = selected ? this.Owner.SelectedTabColor : this.Owner.TabColor;
 
             if( ( !selected || this.Owner.ShowHitTest )
+             && this.Owner.Focused
              && path.HitTest( this.Owner.PointToClient( Control.MousePosition ) ) )
             {
                 if( this.Owner.ShowHitTest )
@@ -183,7 +226,8 @@ namespace Tabs
 
             Color newTabButtonColor = this.Owner.TabColor;
 
-            if( newTabPath.HitTest( this.Owner.PointToClient( Control.MousePosition ) ) )
+            if( this.Owner.Focused
+             && newTabPath.HitTest( this.Owner.PointToClient( Control.MousePosition ) ) )
             {
                 if( this.Owner.ShowHitTest )
                 {
@@ -212,6 +256,44 @@ namespace Tabs
                     LineAlignment = StringAlignment.Center
                 };
                 g.DrawString( "+", this.Owner.Font, b, newTabPath.MinimumBounds, f );
+            }
+        }
+
+        private void PaintOptionsMenuButton( Graphics g )
+        {
+            PointPath path = GetOptionsPath();
+
+            Color background = Color.Transparent;
+
+            if( this.Owner.Focused
+             && path.HitTest( this.Owner.PointToClient( Control.MousePosition ) ) )
+            {
+                if( this.Owner.ShowHitTest )
+                {
+                    background = Color.LightBlue;
+                }
+                else
+                {
+                    background = Color.FromArgb( 222, 222, 222 );
+                }
+            }
+
+            using( SolidBrush b = new SolidBrush( background ) )
+            {
+                g.FillPointPath( b, path );
+            }
+
+            using( SolidBrush b = new SolidBrush( Color.FromArgb( 60, 60, 60 ) ) )
+            {
+                float radius = 1.5f;
+                float x = path.Bounds.Left + path.Bounds.Width / 2.0f;
+                float midY = path.Bounds.Top + path.Bounds.Height / 2.0f;
+                float topY = midY - 2 * radius - 2;
+                float botY = midY + 2 * radius + 2;
+
+                g.FillCircle( b, x, topY, radius );
+                g.FillCircle( b, x, midY, radius );
+                g.FillCircle( b, x, botY, radius );
             }
         }
 

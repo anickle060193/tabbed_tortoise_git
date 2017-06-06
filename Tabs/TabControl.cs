@@ -25,6 +25,7 @@ namespace Tabs
         private Color _tabBorderColor = Color.FromArgb( 181, 181, 181 );
         private int _selectedIndex = -1;
         private bool _showTabHitTest = false;
+        private ContextMenuStrip _optionsMenu;
 
         public event EventHandler NewTabClick;
         public event EventHandler<TabClickEventArgs> TabClick;
@@ -154,6 +155,34 @@ namespace Tabs
                 if( _showTabHitTest != value )
                 {
                     _showTabHitTest = value;
+                }
+            }
+        }
+
+        [DefaultValue( typeof( ContextMenuStrip ), "(none)" )]
+        public ContextMenuStrip OptionsMenu
+        {
+            get
+            {
+                return _optionsMenu;
+            }
+
+            set
+            {
+                if( _optionsMenu != value )
+                {
+                    if( _optionsMenu != null )
+                    {
+                        _optionsMenu.Closed -= OptionsMenu_Closed;
+                        _optionsMenu.Close();
+                    }
+
+                    _optionsMenu = value;
+
+                    if( _optionsMenu != null )
+                    {
+                        _optionsMenu.Closed += OptionsMenu_Closed;
+                    }
                 }
             }
         }
@@ -315,6 +344,14 @@ namespace Tabs
                 }
             }
 
+            PointPath optionsPath = _painter.GetOptionsPath();
+            if( this.OptionsMenu != null
+             && e.Button == MouseButtons.Left
+             && optionsPath.HitTest( e.Location ) )
+            {
+                OptionsMenu.Show( this, _painter.OptionsMenuLocation );
+            }
+
             if( e.Button != MouseButtons.Left )
             {
                 Tab t = GetTabFromPoint( e.Location );
@@ -383,6 +420,11 @@ namespace Tabs
         protected void OnTabClosed( TabClosedEventArgs e )
         {
             TabClosed?.Invoke( this, e );
+        }
+
+        private void OptionsMenu_Closed( object sender, ToolStripDropDownClosedEventArgs e )
+        {
+            this.Invalidate();
         }
 
         public class TabCollection : IList<Tab>

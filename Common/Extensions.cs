@@ -58,6 +58,11 @@ namespace Common
         {
             log.Fatal( formatString.Inject( injectionObject ) );
         }
+
+        public static void FillCircle( this Graphics graphics, Brush brush, float x, float y, float radius )
+        {
+            graphics.FillEllipse( brush, x - radius, y - radius, radius * 2, radius * 2 );
+        }
     }
 
     // From http://mo.notono.us/2008/07/c-stringinject-format-strings-by-key.html
