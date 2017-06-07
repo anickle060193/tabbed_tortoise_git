@@ -25,6 +25,7 @@ namespace Tabs
 
         private static readonly int NEW_TAB_BUTTON_WIDTH = 32;
         private static readonly float NEW_TAB_HEIGHT_PERCENTAGE = 0.65f;
+        private static readonly int NEW_TAB_PLUS_SIZE = 8;
 
         private static readonly int OPTIONS_MENU_BUTTON_WIDTH = 24;
         private static readonly float OPTIONS_MENU_BUTTON_HEIGHT_PERCENTAGE = 0.90f;
@@ -306,15 +307,17 @@ namespace Tabs
             {
                 g.DrawPointPath( p, newTabPath, true );
             }
-            
-            using( SolidBrush b = new SolidBrush( this.Owner.ForeColor ) )
+
+            using( Pen p = new Pen( Color.FromArgb( 90, 90, 90 ), 1.6f ) )
             {
-                StringFormat f = new StringFormat()
-                {
-                    Alignment = StringAlignment.Center,
-                    LineAlignment = StringAlignment.Center
-                };
-                g.DrawString( "+", this.Owner.Font, b, newTabPath.MinimumBounds, f );
+                float top = bounds.Top + ( bounds.Height - NEW_TAB_PLUS_SIZE ) / 2.0f;
+                float bottom = top + NEW_TAB_PLUS_SIZE;
+                float midY = top + ( NEW_TAB_PLUS_SIZE / 2.0f );
+                float left = bounds.Left + ( (float)bounds.Width - NEW_TAB_PLUS_SIZE ) / 2.0f;
+                float right = left + NEW_TAB_PLUS_SIZE;
+                float midX = left + ( NEW_TAB_PLUS_SIZE / 2.0f );
+                g.DrawLine( p, left, midY, right, midY );
+                g.DrawLine( p, midX, top, midX, bottom );
             }
         }
 
