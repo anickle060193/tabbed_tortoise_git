@@ -134,6 +134,13 @@ namespace TabbedTortoiseGit
             LOG.DebugFormat( "Tab Closed - Repo: {0} - ID: {1}", t.Repo, t.Process.Id );
 
             RemoveLog( t.Process );
+
+            if( LogTabs.TabCount == 0
+             && Settings.Default.CloseWindowOnLastTabClosed )
+            {
+                LOG.Debug( "Tab Closed - Closing window after last tab closed" );
+                this.Close();
+            }
         }
 
         private void LogTabs_SelectedIndexChanged( object sender, EventArgs e )

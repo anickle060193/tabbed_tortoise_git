@@ -365,5 +365,17 @@ namespace TabbedTortoiseGit.Properties {
                 this["CheckForModifiedTabsInterval"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public bool CloseWindowOnLastTabClosed {
+            get {
+                return ((bool)(this["CloseWindowOnLastTabClosed"]));
+            }
+            set {
+                this["CloseWindowOnLastTabClosed"] = value;
+            }
+        }
     }
 }

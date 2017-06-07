@@ -63,6 +63,7 @@ namespace TabbedTortoiseGit
             this.DeveloperSettingsPage = new System.Windows.Forms.TabPage();
             this.ShowHitTestCheck = new System.Windows.Forms.CheckBox();
             this.ModifiedTabFontDialog = new System.Windows.Forms.FontDialog();
+            this.CloseWindowOnLastTabClosedCheck = new System.Windows.Forms.CheckBox();
             ((System.ComponentModel.ISupportInitialize)(this.MaxRecentReposNumeric)).BeginInit();
             this.SettingsTabs.SuspendLayout();
             this.StartupReposTab.SuspendLayout();
@@ -157,7 +158,7 @@ namespace TabbedTortoiseGit
             // 
             this.RunOnStartupCheck.AutoSize = true;
             this.RunOnStartupCheck.CheckAlign = System.Drawing.ContentAlignment.MiddleRight;
-            this.RunOnStartupCheck.Location = new System.Drawing.Point(6, 101);
+            this.RunOnStartupCheck.Location = new System.Drawing.Point(6, 124);
             this.RunOnStartupCheck.Name = "RunOnStartupCheck";
             this.RunOnStartupCheck.Size = new System.Drawing.Size(99, 17);
             this.RunOnStartupCheck.TabIndex = 11;
@@ -397,6 +398,7 @@ namespace TabbedTortoiseGit
             // 
             // OtherSettingsTab
             // 
+            this.OtherSettingsTab.Controls.Add(this.CloseWindowOnLastTabClosedCheck);
             this.OtherSettingsTab.Controls.Add(this.CloseToSystemTrayCheck);
             this.OtherSettingsTab.Controls.Add(this.RunOnStartupCheck);
             this.OtherSettingsTab.Controls.Add(this.RetainLogsOnCloseCheck);
@@ -415,7 +417,7 @@ namespace TabbedTortoiseGit
             // 
             this.CloseToSystemTrayCheck.AutoSize = true;
             this.CloseToSystemTrayCheck.CheckAlign = System.Drawing.ContentAlignment.MiddleRight;
-            this.CloseToSystemTrayCheck.Location = new System.Drawing.Point(6, 78);
+            this.CloseToSystemTrayCheck.Location = new System.Drawing.Point(6, 101);
             this.CloseToSystemTrayCheck.Name = "CloseToSystemTrayCheck";
             this.CloseToSystemTrayCheck.Size = new System.Drawing.Size(125, 17);
             this.CloseToSystemTrayCheck.TabIndex = 12;
@@ -448,6 +450,17 @@ namespace TabbedTortoiseGit
             this.ModifiedTabFontDialog.AllowScriptChange = false;
             this.ModifiedTabFontDialog.FontMustExist = true;
             this.ModifiedTabFontDialog.ShowColor = true;
+            // 
+            // CloseWindowOnLastTabClosedCheck
+            // 
+            this.CloseWindowOnLastTabClosedCheck.AutoSize = true;
+            this.CloseWindowOnLastTabClosedCheck.CheckAlign = System.Drawing.ContentAlignment.MiddleRight;
+            this.CloseWindowOnLastTabClosedCheck.Location = new System.Drawing.Point(6, 78);
+            this.CloseWindowOnLastTabClosedCheck.Name = "CloseWindowOnLastTabClosedCheck";
+            this.CloseWindowOnLastTabClosedCheck.Size = new System.Drawing.Size(189, 17);
+            this.CloseWindowOnLastTabClosedCheck.TabIndex = 13;
+            this.CloseWindowOnLastTabClosedCheck.Text = "Close Window on Last Tab Closed";
+            this.CloseWindowOnLastTabClosedCheck.UseVisualStyleBackColor = true;
             // 
             // SettingsForm
             // 
@@ -522,5 +535,6 @@ namespace TabbedTortoiseGit
         private CheckBox IndicateModifiedTabsCheck;
         private Label CheckForModifiedTabsIntervalLabel;
         private NumericUpDown CheckForModifiedTabsIntervalNumeric;
+        private CheckBox CloseWindowOnLastTabClosedCheck;
     }
 }

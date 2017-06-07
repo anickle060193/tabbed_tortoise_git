@@ -34,6 +34,7 @@ namespace TabbedTortoiseGit
             f.RetainLogsOnClose = Settings.Default.RetainLogsOnClose;
             f.MaxRecentRepos = Settings.Default.MaxRecentRepos;
             f.ConfirmOnClose = Settings.Default.ConfirmOnClose;
+            f.CloseWindowOnLastTabClosed = Settings.Default.CloseWindowOnLastTabClosed;
             f.CloseToSystemTray = Settings.Default.CloseToSystemTray;
             f.RunOnStartup = TTG.RunOnStartup;
 
@@ -57,6 +58,7 @@ namespace TabbedTortoiseGit
                 Settings.Default.MaxRecentRepos = f.MaxRecentRepos;
                 Settings.Default.RecentRepos = Settings.Default.RecentRepos.Take( Settings.Default.MaxRecentRepos ).ToList();
                 Settings.Default.ConfirmOnClose = f.ConfirmOnClose;
+                Settings.Default.CloseWindowOnLastTabClosed = f.CloseWindowOnLastTabClosed;
                 Settings.Default.CloseToSystemTray = f.CloseToSystemTray;
                 TTG.RunOnStartup = f.RunOnStartup;
 
@@ -227,6 +229,19 @@ namespace TabbedTortoiseGit
             set
             {
                 ConfirmOnCloseCheck.Checked = value;
+            }
+        }
+
+        public bool CloseWindowOnLastTabClosed
+        {
+            get
+            {
+                return CloseWindowOnLastTabClosedCheck.Checked;
+            }
+
+            set
+            {
+                CloseWindowOnLastTabClosedCheck.Checked = value;
             }
         }
 
