@@ -13,18 +13,23 @@ namespace Tabs
 {
     internal class TabPainter
     {
-        private static readonly int TAB_HEIGHT = 26;
-        private static readonly double TAB_INCLINE_ANGLE = 65 * ( Math.PI ) / 180;
-        private static readonly int BOTTOM_BORDER_HEIGHT = 4;
         private static readonly int TOP_PADDING = 1;
         private static readonly int LEFT_PADDING = 6;
         private static readonly int RIGHT_PADDING = 6;
+
+        private static readonly int TAB_HEIGHT = 26;
+        private static readonly double TAB_INCLINE_ANGLE = 65 * ( Math.PI ) / 180;
+
+        private static readonly int TAB_CLOSE_BUTTON_RADIUS = 7;
+        private static readonly float TAB_CLOSE_X_INSET = 3.5f;
 
         private static readonly int NEW_TAB_BUTTON_WIDTH = 32;
         private static readonly float NEW_TAB_HEIGHT_PERCENTAGE = 0.65f;
 
         private static readonly int OPTIONS_MENU_BUTTON_WIDTH = 24;
         private static readonly float OPTIONS_MENU_BUTTON_HEIGHT_PERCENTAGE = 0.90f;
+
+        private static readonly int BOTTOM_BORDER_HEIGHT = 4;
 
         public Point OptionsMenuLocation
         {
@@ -88,6 +93,23 @@ namespace Tabs
                 new Point( tlX, tY ),
                 new Point( trX, tY ),
                 new Point( brX, bY )
+            } );
+        }
+
+        public PointPath GetTabClosePath( int index )
+        {
+            PointPath tabPath = GetTabPath( index );
+
+            int right = tabPath.MinimumBounds.Right;
+            int left = right - 2 * TAB_CLOSE_BUTTON_RADIUS;
+            int top = tabPath.Bounds.Top + ( tabPath.Bounds.Height / 2 - TAB_CLOSE_BUTTON_RADIUS );
+            int bottom = top + 2 * TAB_CLOSE_BUTTON_RADIUS;
+            return new PointPath( new[]
+            {
+                new Point( left, top ),
+                new Point( right, top ),
+                new Point( right, bottom ),
+                new Point( left, bottom )
             } );
         }
 
@@ -209,13 +231,50 @@ namespace Tabs
             using( SolidBrush b = new SolidBrush( t.ForeColor ) )
             {
                 bool isPath = t.Text.Contains( Path.DirectorySeparatorChar ) || t.Text.Contains( Path.AltDirectorySeparatorChar );
-                StringFormat f = new StringFormat( StringFormatFlags.NoWrap )
+                StringFormat f = new StringFormat()
                 {
+                    FormatFlags = StringFormatFlags.NoWrap,
                     Alignment = StringAlignment.Center,
                     LineAlignment = StringAlignment.Center,
                     Trimming = isPath ? StringTrimming.EllipsisPath : StringTrimming.EllipsisWord
                 };
-                g.DrawString( t.Text, t.Font, b, path.MinimumBounds, f );
+                int width = path.MinimumBounds.Width - 2 * TAB_CLOSE_BUTTON_RADIUS;
+                int height = path.MinimumBounds.Height;
+                Rectangle bounds = new Rectangle( path.MinimumBounds.Location, new Size( width, height ) );
+                g.DrawString( t.Text, t.Font, b, bounds, f );
+            }
+
+            PaintTabClose( g, index );
+        }
+
+        private void PaintTabClose( Graphics g, int index )
+        {
+            PointPath path = GetTabClosePath( index );
+
+            if( this.GetTabPath( index ).MinimumBounds.Width < 2 * TAB_CLOSE_BUTTON_RADIUS )
+            {
+                return;
+            }
+
+            Color xColor = Color.FromArgb( 90, 90, 90 );
+            if( path.HitTest( this.Owner.PointToClient( Control.MousePosition ) ) )
+            {
+                xColor = Color.White;
+
+                using( SolidBrush b = new SolidBrush( Color.FromArgb( 219, 68, 55 ) ) )
+                {
+                    g.FillCircle( b, path.Bounds.X + TAB_CLOSE_BUTTON_RADIUS, path.Bounds.Y + TAB_CLOSE_BUTTON_RADIUS, TAB_CLOSE_BUTTON_RADIUS );
+                }
+            }
+
+            using( Pen p = new Pen( xColor, 1.75f ) )
+            {
+                float left = path.Bounds.Left + TAB_CLOSE_X_INSET;
+                float right = path.Bounds.Right - TAB_CLOSE_X_INSET;
+                float top = path.Bounds.Top + TAB_CLOSE_X_INSET;
+                float bottom = path.Bounds.Bottom - TAB_CLOSE_X_INSET;
+                g.DrawLine( p, left, top, right, bottom );
+                g.DrawLine( p, right, top, left, bottom );
             }
         }
 

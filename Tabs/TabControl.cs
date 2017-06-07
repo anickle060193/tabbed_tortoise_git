@@ -300,6 +300,18 @@ namespace Tabs
             return null;
         }
 
+        private Tab GetTabCloseFromPoint( Point p )
+        {
+            for( int i = 0; i < this.TabCount; i++ )
+            {
+                if( _painter.GetTabClosePath( i ).HitTest( p ) )
+                {
+                    return this.Tabs[ i ];
+                }
+            }
+            return null;
+        }
+
         protected override void OnPaint( PaintEventArgs e )
         {
             _painter.Paint( e.Graphics );
@@ -344,12 +356,25 @@ namespace Tabs
                 }
             }
 
-            PointPath optionsPath = _painter.GetOptionsPath();
             if( this.OptionsMenu != null
-             && e.Button == MouseButtons.Left
-             && optionsPath.HitTest( e.Location ) )
+             && e.Button == MouseButtons.Left )
             {
-                OptionsMenu.Show( this, _painter.OptionsMenuLocation );
+                PointPath optionsPath = _painter.GetOptionsPath();
+                if( optionsPath.HitTest( e.Location ) )
+                {
+                    OptionsMenu.Show( this, _painter.OptionsMenuLocation );
+                    return;
+                }
+            }
+
+            if( e.Button == MouseButtons.Left )
+            {
+                Tab closeTab = this.GetTabCloseFromPoint( e.Location );
+                if( closeTab != null )
+                {
+                    this.Tabs.Remove( closeTab );
+                    return;
+                }
             }
 
             if( e.Button != MouseButtons.Left )
