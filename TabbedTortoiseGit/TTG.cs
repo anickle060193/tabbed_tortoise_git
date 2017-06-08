@@ -4,6 +4,7 @@ using Microsoft.Win32;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Net;
@@ -71,7 +72,7 @@ namespace TabbedTortoiseGit
             public String Ref { get; set; }
         }
 
-        public static async Task<UpdateCheck> IsUpToDate()
+        public static async Task<Version> IsUpToDate()
         {
             try
             {
@@ -91,8 +92,7 @@ namespace TabbedTortoiseGit
                     
                     if( newestVersion > currentVersion )
                     {
-                        String updateUrl = "https://github.com/anickle060193/tabbed_tortoise_git/raw/{0}/Setup/Output/Setup.msi".XFormat( newestVersion );
-                        return new UpdateCheck( newestVersion, updateUrl );
+                        return newestVersion;
                     }
                     else
                     {
@@ -106,6 +106,31 @@ namespace TabbedTortoiseGit
             }
 
             return null;
+        }
+
+        public static async Task<bool> UpdateApplication( Version newestVersion )
+        {
+            try
+            {
+                String updateUrl = "https://github.com/anickle060193/tabbed_tortoise_git/raw/{0}/Setup/Output/Setup.msi".XFormat( newestVersion.ToString( 3 ) );
+                String path = Path.GetTempPath();
+                String downloadLocation = Path.Combine( path, "tabbed_tortoisegit_setup-{0}.msi".XFormat( newestVersion.ToString( 3 ) ) );
+
+                using( WebClient client = new WebClient() )
+                {
+                    await client.DownloadFileTaskAsync( updateUrl, downloadLocation );
+
+                    Process.Start( downloadLocation );
+
+                    return true;
+                }
+            }
+            catch( Exception e )
+            {
+                LOG.Error( "An error has occurred while updating the application.", e );
+            }
+
+            return false;
         }
 
         public static bool VerifyAssemblyVersions()
@@ -135,18 +160,6 @@ namespace TabbedTortoiseGit
                 MessageBox.Show( versionMismatchMessage, "Assembly Version Mismatch", MessageBoxButtons.OK, MessageBoxIcon.Error );
             }
             return match;
-        }
-    }
-
-    public class UpdateCheck
-    {
-        public Version NewerVersion { get; private set; }
-        public String UpdateUrl { get; private set; }
-
-        public UpdateCheck( Version newerVersion, String updateUrl )
-        {
-            NewerVersion = newerVersion;
-            UpdateUrl = updateUrl;
         }
     }
 }

@@ -389,5 +389,17 @@ namespace TabbedTortoiseGit.Properties {
                 this["FavoritesMenuStripInTabControl"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("2000-01-01")]
+        public global::System.DateTime LastUpdatePromptTime {
+            get {
+                return ((global::System.DateTime)(this["LastUpdatePromptTime"]));
+            }
+            set {
+                this["LastUpdatePromptTime"] = value;
+            }
+        }
     }
 }

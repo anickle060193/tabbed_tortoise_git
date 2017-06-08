@@ -25,6 +25,7 @@ namespace TabbedTortoiseGit
         private void InitializeEventHandlers()
         {
             this.Load += TabbedTortoiseGitForm_Load;
+            this.VisibleChanged += TabbedTortoiseGitForm_VisibleChanged;
             this.DragOver += TabbedTortoiseGitForm_DragOver;
             this.DragDrop += TabbedTortoiseGitForm_DragDrop;
             this.ResizeEnd += TabbedTortoiseGitForm_ResizeEnd;
@@ -65,6 +66,57 @@ namespace TabbedTortoiseGit
             if( !_startup )
             {
                 await OpenStartupRepos();
+            }
+        }
+
+        private async void TabbedTortoiseGitForm_VisibleChanged( object sender, EventArgs e )
+        {
+            LOG.DebugFormat( "Visible Changed - Visible: {0}", this.Visible );
+            if( this.Visible )
+            {
+                DateTime lastUpdatePromptTime = Settings.Default.LastUpdatePromptTime;
+                DateTime now = DateTime.Now;
+                TimeSpan difference = now - lastUpdatePromptTime;
+                var inject = new {
+                    lastUpdatePromptTime = lastUpdatePromptTime,
+                    now = now,
+                    difference = difference
+                };
+                LOG.DebugInject( "Visible Changed - Last Update Prompt Time: {lastUpdatePromptTime} - Now: {now} - Difference: {difference}", inject );
+                if( difference >= TimeSpan.FromDays( 1 ) )
+                {
+                    Version newestVersion = await TTG.IsUpToDate();
+                    if( newestVersion != null )
+                    {
+                        LOG.DebugFormat( "Newest Version: {0}", newestVersion );
+
+                        if( DialogResult.Yes == MessageBox.Show( "A new version of Tabbed TortoiseGit is available. Update now?\n\nNote: This will exit Tabbed TortoiseGit.", "New Update", MessageBoxButtons.YesNo ) )
+                        {
+                            LOG.Debug( "Update Prompt: Yes" );
+                            Settings.Default.LastUpdatePromptTime = DateTime.MinValue;
+                            Settings.Default.Save();
+
+                            if( await TTG.UpdateApplication( newestVersion ) )
+                            {
+                                LOG.Debug( "Update - Exiting Application" );
+                                Application.Exit();
+                            }
+                            else
+                            {
+                                LOG.Debug( "Update - Error occurred" );
+                                MessageBox.Show( "There was an error updating Tabbed TortoiseGit. Try again later." );
+                            }
+                        }
+                        else
+                        {
+                            LOG.Debug( "Update Prompt: No" );
+                            Settings.Default.LastUpdatePromptTime = now;
+                            Settings.Default.Save();
+
+                            MessageBox.Show( "To update Tabbed TortoiseGit at a later date, go to Options->About and click Update.", "New Update", MessageBoxButtons.OK );
+                        }
+                    }
+                }
             }
         }
 

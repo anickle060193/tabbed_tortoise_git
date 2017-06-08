@@ -23,9 +23,9 @@ namespace TabbedTortoiseGit
             new AboutBox().ShowDialog();
         }
 
-        private String _updateUrl;
+        private Version _newestVersion;
 
-        public AboutBox()
+        private AboutBox()
         {
             InitializeComponent();
             this.Text = "About {0}".XFormat( AssemblyTitle );
@@ -42,14 +42,12 @@ namespace TabbedTortoiseGit
 
         private async void AboutBox_Load( object sender, EventArgs e )
         {
-            UpdateCheck versionCheck = await TTG.IsUpToDate();
-            if( versionCheck != null )
+            _newestVersion = await TTG.IsUpToDate();
+            if( _newestVersion != null )
             {
-                _updateUrl = versionCheck.UpdateUrl;
+                LOG.DebugFormat( "Newer Version Available - New: {0} - Current: {1}", _newestVersion, AssemblyVersion );
 
-                LOG.DebugFormat( "Newer Version Available - New: {0} - Current: {1}", versionCheck.NewerVersion, AssemblyVersion );
-
-                UpdateCheckLabel.Text = "Version {0} is available.".XFormat( versionCheck.NewerVersion );
+                UpdateCheckLabel.Text = "Version {0} is available.".XFormat( _newestVersion.ToString( 3 ) );
                 UpdateButton.Enabled = true;
             }
             else
@@ -59,10 +57,23 @@ namespace TabbedTortoiseGit
             }
         }
 
-        private void UpdateButton_Click( object sender, EventArgs e )
+        private async void UpdateButton_Click( object sender, EventArgs e )
         {
-            LOG.DebugFormat( "Updating - Url: {0}", _updateUrl );
-            Process.Start( _updateUrl );
+            LOG.DebugFormat( "Update Click - Newest Version: {0}", _newestVersion.ToString( 3 ) );
+            if( DialogResult.Yes == MessageBox.Show( "This will exit Tabbed TortoiseGit. Continue?", "New Update", MessageBoxButtons.YesNo ) )
+            {
+                LOG.Debug( "Update Prompt - OK" );
+                if( await TTG.UpdateApplication( _newestVersion ) )
+                {
+                    LOG.Debug( "Update - Exiting Application" );
+                    Application.Exit();
+                }
+                else
+                {
+                    LOG.Debug( "Update - Error occurred" );
+                    MessageBox.Show( "There was an error updating Tabbed TortoiseGit. Try again later." );
+                }
+            }
         }
 
         private void ViewGithub_Click( object sender, EventArgs e )
