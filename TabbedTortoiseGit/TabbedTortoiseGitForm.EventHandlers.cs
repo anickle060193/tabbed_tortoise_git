@@ -25,6 +25,8 @@ namespace TabbedTortoiseGit
         private void InitializeEventHandlers()
         {
             this.Load += TabbedTortoiseGitForm_Load;
+            this.DragOver += TabbedTortoiseGitForm_DragOver;
+            this.DragDrop += TabbedTortoiseGitForm_DragDrop;
             this.ResizeEnd += TabbedTortoiseGitForm_ResizeEnd;
             this.FormClosing += TabbedTortoiseGitForm_FormClosing;
             this.FormClosed += TabbedTortoiseGitForm_FormClosed;
@@ -32,6 +34,8 @@ namespace TabbedTortoiseGit
             LogTabs.NewTabClick += LogTabs_NewTabClick;
             LogTabs.TabClosed += LogTabs_TabClosed;
             LogTabs.SelectedIndexChanged += LogTabs_SelectedIndexChanged;
+            LogTabs.DragOver += TabbedTortoiseGitForm_DragOver;
+            LogTabs.DragDrop += TabbedTortoiseGitForm_DragDrop;
 
             FavoritesMenuStrip.MouseClick += FavoritesMenuStrip_MouseClick;
             UnfavoriteFavoriteRepoContextMenuItem.Click += UnfavoriteFavoriteRepoContextMenuItem_Click;
@@ -61,6 +65,43 @@ namespace TabbedTortoiseGit
             if( !_startup )
             {
                 await OpenStartupRepos();
+            }
+        }
+
+        private void TabbedTortoiseGitForm_DragOver( object sender, DragEventArgs e )
+        {
+            if( e.Data.GetDataPresent( DataFormats.FileDrop ) )
+            {
+                String[] files = e.Data.GetData( DataFormats.FileDrop ) as String[];
+                if( files != null )
+                {
+                    foreach( String file in files )
+                    {
+                        if( Directory.Exists( file ) && Git.IsRepo( file ) )
+                        {
+                            e.Effect = DragDropEffects.Copy;
+                        }
+                    }
+                }
+            }
+        }
+
+        private async void TabbedTortoiseGitForm_DragDrop( object sender, DragEventArgs e )
+        {
+            if( e.Data.GetDataPresent( DataFormats.FileDrop ) )
+            {
+                String[] files = e.Data.GetData( DataFormats.FileDrop ) as String[];
+                if( files != null )
+                {
+                    foreach( String file in files )
+                    {
+                        if( Directory.Exists( file ) && Git.IsRepo( file ) )
+                        {
+                            await OpenLog( file );
+                            e.Effect = DragDropEffects.Copy;
+                        }
+                    }
+                }
             }
         }
 
