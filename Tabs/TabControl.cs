@@ -14,10 +14,12 @@ namespace Tabs
 {
     public class TabControl : Control
     {
-        private readonly List<Tab> _tabs = new List<Tab>();
         private readonly TabCollection _collection;
         private readonly TabPainter _painter;
         private readonly TabHeaderDragDropHelper _dragDropHelper;
+
+        private Tab[] _tabs;
+        private int _tabCount;
 
         private int _maximumTabWidth = 200;
         private Color _tabColor = Color.FromArgb( 218, 218, 218 );
@@ -25,6 +27,7 @@ namespace Tabs
         private Color _tabBorderColor = Color.FromArgb( 181, 181, 181 );
         private int _selectedIndex = -1;
         private bool _showTabHitTest = false;
+        private bool _insertingItem;
         private ContextMenuStrip _optionsMenu;
 
         public event EventHandler NewTabClick;
@@ -32,7 +35,6 @@ namespace Tabs
         public event EventHandler SelectedIndexChanged;
         public event EventHandler<TabClosedEventArgs> TabClosed;
 
-        private bool InsertingItem { get; set; }
         private bool RemovingItem { get; set; }
 
         [DefaultValue( typeof( ContextMenuStrip ), "(none)" )]
@@ -65,7 +67,11 @@ namespace Tabs
             get { return _selectedIndex; }
             set
             {
-                if( _selectedIndex != value )
+                if( value < -1 )
+                {
+                    throw new ArgumentOutOfRangeException( "SelectedIndex" );
+                }
+                if( SelectedIndex != value )
                 {
                     _selectedIndex = value;
                     OnSelectedIndexChanged( EventArgs.Empty );
@@ -187,6 +193,19 @@ namespace Tabs
             }
         }
 
+        private bool InsertingItem
+        {
+            get
+            {
+                return _insertingItem;
+            }
+
+            set
+            {
+                _insertingItem = value;
+            }
+        }
+
         [Browsable( false )]
         [EditorBrowsable( EditorBrowsableState.Never )]
         [DesignerSerializationVisibility( DesignerSerializationVisibility.Hidden )]
@@ -210,6 +229,14 @@ namespace Tabs
             get
             {
                 return Padding.Empty;
+            }
+        }
+
+        protected override Size DefaultSize
+        {
+            get
+            {
+                return new Size( 200, 200 );
             }
         }
 
@@ -255,7 +282,15 @@ namespace Tabs
             }
         }
 
-        public TabControl()
+        public override Rectangle DisplayRectangle
+        {
+            get
+            {
+                return _painter.GetTabPanelBounds();
+            }
+        }
+
+        public TabControl() : base()
         {
             this.AllowDrop = true;
             this.BackColor = Color.White;
@@ -439,6 +474,7 @@ namespace Tabs
 
         protected void OnSelectedIndexChanged( EventArgs e )
         {
+            UpdateTabSelection();
             SelectedIndexChanged?.Invoke( this, e );
         }
 
@@ -452,46 +488,107 @@ namespace Tabs
             this.Invalidate();
         }
 
+        private void UpdateTabSelection()
+        {
+            int index = SelectedIndex;
+
+            Tab[] tabs = GetTabs();
+            if( index != -1 )
+            {
+                tabs[ index ].Bounds = DisplayRectangle;
+                tabs[ index ].Invalidate();
+                tabs[ index ].Visible = true;
+            }
+
+            for( int i = 0; i < tabs.Length; i++ )
+            {
+                if( i != SelectedIndex )
+                {
+                    tabs[ i ].Visible = false;
+                }
+            }
+        }
+
+        internal void UpdateTab( Tab tag )
+        {
+            int index = FindTab( Tab );
+            SetTab( index, tab );
+            UpdateTabSelection();
+        }
+
         public class TabCollection : IList<Tab>
         {
-            private readonly TabControl _owner;
+            private TabControl _owner;
 
             public TabCollection( TabControl owner )
             {
                 _owner = owner;
             }
 
-            public Tab this[ int index ]
+            public virtual Tab this[ int index ]
             {
                 get
                 {
-                    return _owner._tabs[ index ];
+                    return _owner.GetTabPage( index );
                 }
 
                 set
                 {
-                    if( this[ index ] != value )
+                    _owner.SetTabPage( index, value );
+                }
+            }
+
+            Tab IList<Tab>.this[ int index ]
+            {
+                get
+                {
+                    return this[ index ];
+                }
+
+                set
+                {
+                    this[ index ] = value;
+                }
+            }
+
+            public virtual Tab this[ String key ]
+            {
+                get
+                {
+                    if( String.IsNullOrEmpty( key ) )
                     {
-                        _owner.RemovingItem = true;
-                        _owner.Controls.Remove( this[ index ] );
-                        _owner.RemovingItem = false;
-                        _owner.InsertingItem = true;
-                        _owner.Controls.Add( value );
-                        _owner.InsertingItem = false;
-                        _owner._tabs[ index ] = value;
+                        return null;
+                    }
+                    int index = IndexOfKey( key );
+                    if( IsValidIndex( key ) )
+                    {
+                        return this[ index ];
+                    }
+                    else
+                    {
+                        return null;
                     }
                 }
             }
 
+            [Browsable( false )]
             public int Count
             {
                 get
                 {
-                    return _owner._tabs.Count;
+                    return _owner._tabCount;
                 }
             }
 
-            public bool IsReadOnly
+            int ICollection<Tab>.Count
+            {
+                get
+                {
+                    return this.Count;
+                }
+            }
+
+            bool ICollection<Tab>.IsReadOnly
             {
                 get
                 {
@@ -499,105 +596,216 @@ namespace Tabs
                 }
             }
 
-            public void Add( Tab item )
+            public void Add( Tab value )
             {
-                this.Insert( this.Count, item );
-                _owner.Invalidate();
+                if( value == null )
+                {
+                    throw new ArgumentNullException( "value" );
+                }
+                _owner.Controls.Add( value );
             }
 
-            public Tab Add( String text )
+            void ICollection<Tab>.Add( Tab item )
             {
-                Tab t = new Tab( text );
-                this.Add( t );
-                return t;
+                this.Add( item );
             }
 
-            public void Clear()
+            public void Add( String text )
             {
-                _owner._tabs.Clear();
-                _owner.Invalidate();
+                Tab tab = new Tab();
+                tab.Text = text;
+                Add( tab );
             }
 
-            public bool Contains( Tab item )
+            public void Add( String key, String text )
             {
-                return _owner._tabs.Contains( item );
+                Tab tab = new Tab();
+                tab.Name = key;
+                tab.Text = text;
+                Add( tab );
             }
 
-            public void CopyTo( Tab[] array, int arrayIndex )
+            public void AddRange( Tab[] tabs )
             {
-                _owner._tabs.CopyTo( array, arrayIndex );
+                if( tabs == null )
+                {
+                    throw new ArgumentNullException( "tabs" );
+                }
+                foreach( Tab tab in tabs )
+                {
+                    Add( tab );
+                }
             }
 
-            public IEnumerator<Tab> GetEnumerator()
+            public bool Contains( Tab tab )
             {
-                return ( (IEnumerable<Tab>)_owner._tabs ).GetEnumerator();
+                if( tab == null )
+                {
+                    throw new ArgumentNullException( "tab" );
+                }
+                return IsValidIndex( IndexOf( tab ) );
             }
 
-            public int IndexOf( Tab item )
+            bool ICollection<Tab>.Contains( Tab item )
             {
-                return _owner._tabs.IndexOf( item );
+                return this.Contains( item );
             }
 
-            public void Insert( int index, Tab item )
+            public virtual bool ContainsKey( String key )
             {
+                return IsValidIndex( IndexOfKey( key ) );
+            }
+
+            public int IndexOf( Tab tab )
+            {
+                if( tab == null )
+                {
+                    throw new ArgumentNullException( "tab" );
+                }
+
+                for( int i = 0; i < this.Count; i++ )
+                {
+                    if( this[ i ] == tab )
+                    {
+                        return i;
+                    }
+                }
+
+                return -1;
+            }
+
+            int IList<Tab>.IndexOf( Tab item )
+            {
+                return this.IndexOf( item );
+            }
+
+            public virtual int IndexOfKey( String key )
+            {
+                if( String.IsNullOrEmpty( key ) )
+                {
+                    return -1;
+                }
+                
+                for( int i = 0; i < this.Count; i++ )
+                {
+                    if( this[ i ].Name == key )
+                    {
+                        return i;
+                    }
+                }
+
+                return -1;
+            }
+
+            public void Insert( int index, Tab tab )
+            {
+                _owner.InsertItem( index, tab );
                 try
                 {
                     _owner.InsertingItem = true;
-                    _owner._tabs.Insert( index, item );
-                    _owner.Controls.Add( item );
-                    _owner.SelectedIndex = index;
-                    _owner.Invalidate();
+                    _owner.Controls.Add( tab );
                 }
                 finally
                 {
                     _owner.InsertingItem = false;
                 }
+                _owner.Controls.SetChildIndex( tab, index );
             }
 
-            public bool Remove( Tab item )
+            void IList<Tab>.Insert( int index, Tab item )
             {
-                int index = this.IndexOf( item );
-                if( index != -1 )
+                this.Insert( index, item );
+            }
+
+            public void Insert( int index, String text )
+            {
+                Tab tab = new Tab();
+                tab.Text = text;
+                Insert( index, tab );
+            }
+
+            public void Insert( int index, String key, String text )
+            {
+                Tab tab = new Tab();
+                tab.Name = key;
+                tab.Text = text;
+                Insert( index, tab );
+            }
+
+            private bool IsValidIndex( int index )
+            {
+                return ( ( index >= 0 ) && ( index < this.Count ) );
+            }
+
+            public virtual void Clear()
+            {
+                _owner.RemoveAll();
+            }
+
+            void ICollection<Tab>.Clear()
+            {
+                this.Clear();
+            }
+
+            void ICollection<Tab>.CopyTo( Tab[] array, int arrayIndex )
+            {
+                if( this.Count > 0 )
                 {
-                    this.RemoveAt( index );
-                    _owner.Invalidate();
-                    return true;
+                    Array.Copy( _owner.GetTabs(), 0, array, arrayIndex, this.Count );
+                }
+            }
+
+            IEnumerator<Tab> IEnumerable<Tab>.GetEnumerator()
+            {
+                Tab[] tabs = _owner.GetTabs();
+                if( tabs != null )
+                {
+                    return tabs.AsEnumerable().GetEnumerator();
                 }
                 else
                 {
-                    return false;
+                    return new Tab[ 0 ].AsEnumerable().GetEnumerator();
                 }
-            }
-
-            public void RemoveAt( int index )
-            {
-                Tab tab = _owner._tabs[ index ];
-                _owner._tabs.RemoveAt( index );
-                _owner.RemovingItem = true;
-                _owner.Controls.Remove( tab );
-                _owner.RemovingItem = false;
-                if( index == _owner.SelectedIndex )
-                {
-                    if( _owner.TabCount > 0 )
-                    {
-                        if( _owner.SelectedIndex > 0 )
-                        {
-                            _owner.SelectedIndex--;
-                        }
-                    }
-                    else
-                    {
-                        _owner.SelectedIndex = -1;
-                    }
-                }
-                _owner.Invalidate();
-
-                _owner.OnTabClosed( new TabClosedEventArgs( tab ) );
             }
 
             IEnumerator IEnumerable.GetEnumerator()
             {
-                return ( (IEnumerable)_owner._tabs ).GetEnumerator();
+                return ( (IEnumerable<Tab>)this ).GetEnumerator();
+            }
+
+            public void Remove( Tab tab )
+            {
+                if( tab == null )
+                {
+                    throw new ArgumentNullException( "tab" );
+                }
+                _owner.Controls.Remove( tab );
+            }
+
+            bool ICollection<Tab>.Remove( Tab item )
+            {
+                int count = this.Count;
+                this.Remove( item );
+                return count != this.Count;
+            }
+
+            public void RemoveAt( int index )
+            {
+                _owner.Controls.RemoveAt( index );
+            }
+
+            void IList<Tab>.RemoveAt( int index )
+            {
+                this.RemoveAt( index );
+            }
+
+            public virtual void RemoveByKey( String key )
+            {
+                int index = IndexOfKey( key );
+                if( IsValidIndex( index ) )
+                {
+                    RemoveAt( index );
+                }
             }
         }
 
