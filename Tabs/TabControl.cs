@@ -518,7 +518,7 @@ namespace Tabs
 
         public class TabCollection : IList<Tab>
         {
-            private TabControl _owner;
+            private readonly TabControl _owner;
 
             public TabCollection( TabControl owner )
             {
@@ -811,47 +811,72 @@ namespace Tabs
 
         public new class ControlCollection : Control.ControlCollection
         {
-            public new TabControl Owner
-            {
-                get
-                {
-                    return (TabControl)base.Owner;
-                }
-            }
+            private readonly TabControl _owner;
 
             public ControlCollection( TabControl owner ) : base( owner )
             {
+                _owner = owner;
             }
 
             public override void Add( Control value )
             {
-                if( value is Tab )
+                if( !( value is Tab ) )
                 {
-                    if( !this.Owner.InsertingItem )
-                    {
-                        this.Owner.Tabs.Add( (Tab)value );
-                    }
+                    throw new ArgumentException( "Only Tabs are allowed to be added to TabControl", value.GetType().Name );
+                }
 
-                    value.Visible = false;
-                    base.Add( value );
-                }
-                else
+                Tab tab = (Tab)value;
+                if( !_owner.InsertingItem )
                 {
-                    throw new ArgumentException( "Only Tabs can be added to a TabControl." );
+                    _owner.Insert( _owner.TabCount, tab );
                 }
+
+                base.Add( tab );
+                tab.Visible = false;
+
+                if( _owner.IsHandleCreated )
+                {
+                    tab.Bounds = _owner.DisplayRectangle;
+                }
+
+                ISite site = _owner.Site;
+                if( site != null )
+                {
+                    ISite siteTab = tab.Site;
+                    if( siteTab == null )
+                    {
+                        IContainer container = site.Container;
+                        if( container != null )
+                        {
+                            container.Add( tab );
+                        }
+                    }
+                }
+
+                _owner.UpdateTabSelection();
             }
 
             public override void Remove( Control value )
             {
                 base.Remove( value );
 
-                if( value is Tab )
+                if( !( value is Tab ) )
                 {
-                    if( !Owner.RemovingItem )
+                    return;
+                }
+
+                int index = _owner.FindTab( (Tab)value );
+                int curSelectedIndex = _owner.SelectedIndex;
+
+                if( index != -1 )
+                {
+                    _owner.RemoveTab( index );
+                    if( index == curSelectedIndex )
                     {
-                        Owner.Tabs.Remove( (Tab)value );
+                        _owner.SelectedIndex = 0;
                     }
                 }
+                _owner.UpdateTabSelection();
             }
         }
 
