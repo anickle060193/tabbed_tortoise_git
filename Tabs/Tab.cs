@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -108,6 +109,21 @@ namespace Tabs
         public override string ToString()
         {
             return "Tab( Text=\"{0}\" )".XFormat( Text );
+        }
+
+        protected override void SetBoundsCore( int x, int y, int width, int height, BoundsSpecified specified )
+        {
+            Control parent = this.Parent;
+            if( parent is TabControl && parent.IsHandleCreated )
+            {
+                Rectangle r = parent.DisplayRectangle;
+
+                base.SetBoundsCore( r.X, r.Y, r.Width, r.Height, specified == BoundsSpecified.None ? BoundsSpecified.None : BoundsSpecified.All );
+            }
+            else
+            {
+                base.SetBoundsCore( x, y, width, height, specified );
+            }
         }
     }
 }

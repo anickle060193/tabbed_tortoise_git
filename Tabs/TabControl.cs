@@ -472,12 +472,17 @@ namespace Tabs
             _tabs[ index ] = tab;
             _tabCount++;
 
+            if( index < _selectedIndex )
+            {
+                _selectedIndex++;
+            }
+
             Invalidate();
         }
 
         private void InsertItem( int index, Tab tab )
         {
-            if( index < 0 || index >= _tabCount )
+            if( index < 0 || index > _tabCount )
             {
                 throw new ArgumentOutOfRangeException( "index" );
             }
@@ -507,7 +512,26 @@ namespace Tabs
             {
                 Array.Copy( _tabs, index + 1, _tabs, index, _tabCount - index );
             }
+            
+            if( index == _selectedIndex )
+            {
+                if( _tabCount > 0 )
+                {
+                    _selectedIndex = 0;
+                }
+                else
+                {
+                    _selectedIndex = -1;
+                }
+            }
+            else if( index < _selectedIndex )
+            {
+                _selectedIndex--;
+            }
+
             _tabs[ _tabCount ] = null;
+
+            this.UpdateTabSelection();
         }
 
         private void ResizeTabs()
@@ -1038,20 +1062,6 @@ namespace Tabs
                     tab.Bounds = _owner.DisplayRectangle;
                 }
 
-                ISite site = _owner.Site;
-                if( site != null )
-                {
-                    ISite siteTab = tab.Site;
-                    if( siteTab == null )
-                    {
-                        IContainer container = site.Container;
-                        if( container != null )
-                        {
-                            container.Add( tab );
-                        }
-                    }
-                }
-
                 _owner.UpdateTabSelection();
             }
 
@@ -1065,16 +1075,12 @@ namespace Tabs
                 }
 
                 int index = _owner.FindTab( (Tab)value );
-                int curSelectedIndex = _owner.SelectedIndex;
 
                 if( index != -1 )
                 {
                     _owner.RemoveTab( index );
-                    if( index == curSelectedIndex )
-                    {
-                        _owner.SelectedIndex = 0;
-                    }
                 }
+
                 _owner.UpdateTabSelection();
             }
         }

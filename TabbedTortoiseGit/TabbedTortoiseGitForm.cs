@@ -330,6 +330,7 @@ namespace TabbedTortoiseGit
 
             Tab t = new Tab( path );
             LogTabs.Tabs.Add( t );
+            LogTabs.SelectedTab = t;
             t.Tag = new TabTag( p, path );
             _tabs.Add( p.Id, t );
 
