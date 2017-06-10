@@ -29,7 +29,6 @@
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
-            this.FavoritesMenuStrip = new System.Windows.Forms.MenuStrip();
             this.NewTabContextMenu = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.NotifyIcon = new System.Windows.Forms.NotifyIcon(this.components);
             this.NotifyIconContextMenu = new System.Windows.Forms.ContextMenuStrip(this.components);
@@ -50,20 +49,13 @@
             this.AboutMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.ExitMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.LogTabs = new Tabs.TabControl();
+            this.FavoritesMenuStrip = new System.Windows.Forms.MenuStrip();
             this.NotifyIconContextMenu.SuspendLayout();
             this.TabContextMenu.SuspendLayout();
             this.FavoriteRepoContextMenu.SuspendLayout();
             this.OptionsContextMenu.SuspendLayout();
+            this.LogTabs.SuspendLayout();
             this.SuspendLayout();
-            // 
-            // FavoritesMenuStrip
-            // 
-            this.FavoritesMenuStrip.BackColor = System.Drawing.Color.White;
-            this.FavoritesMenuStrip.Location = new System.Drawing.Point(0, 0);
-            this.FavoritesMenuStrip.Name = "FavoritesMenuStrip";
-            this.FavoritesMenuStrip.ShowItemToolTips = true;
-            this.FavoritesMenuStrip.Size = new System.Drawing.Size(644, 24);
-            this.FavoritesMenuStrip.TabIndex = 1;
             // 
             // NewTabContextMenu
             // 
@@ -192,14 +184,25 @@
             // 
             // LogTabs
             // 
+            this.LogTabs.Controls.Add(this.FavoritesMenuStrip);
             this.LogTabs.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.LogTabs.Location = new System.Drawing.Point(0, 24);
+            this.LogTabs.Location = new System.Drawing.Point(0, 0);
+            this.LogTabs.MainMenuStrip = this.FavoritesMenuStrip;
             this.LogTabs.Name = "LogTabs";
             this.LogTabs.NewTabContextMenu = this.NewTabContextMenu;
             this.LogTabs.OptionsMenu = this.OptionsContextMenu;
-            this.LogTabs.Size = new System.Drawing.Size(644, 462);
+            this.LogTabs.Size = new System.Drawing.Size(644, 486);
             this.LogTabs.TabContextMenu = this.TabContextMenu;
             this.LogTabs.TabIndex = 3;
+            // 
+            // FavoritesMenuStrip
+            // 
+            this.FavoritesMenuStrip.BackColor = System.Drawing.SystemColors.Control;
+            this.FavoritesMenuStrip.Location = new System.Drawing.Point(0, 31);
+            this.FavoritesMenuStrip.Name = "FavoritesMenuStrip";
+            this.FavoritesMenuStrip.ShowItemToolTips = true;
+            this.FavoritesMenuStrip.Size = new System.Drawing.Size(644, 24);
+            this.FavoritesMenuStrip.TabIndex = 1;
             // 
             // TabbedTortoiseGitForm
             // 
@@ -208,7 +211,6 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(644, 486);
             this.Controls.Add(this.LogTabs);
-            this.Controls.Add(this.FavoritesMenuStrip);
             this.MainMenuStrip = this.FavoritesMenuStrip;
             this.MinimumSize = new System.Drawing.Size(660, 525);
             this.Name = "TabbedTortoiseGitForm";
@@ -217,8 +219,9 @@
             this.TabContextMenu.ResumeLayout(false);
             this.FavoriteRepoContextMenu.ResumeLayout(false);
             this.OptionsContextMenu.ResumeLayout(false);
+            this.LogTabs.ResumeLayout(false);
+            this.LogTabs.PerformLayout();
             this.ResumeLayout(false);
-            this.PerformLayout();
 
         }
 

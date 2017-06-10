@@ -210,6 +210,8 @@ namespace TabbedTortoiseGit
             }
 
             FavoritesMenuStrip.ResumeLayout();
+
+            FavoritesMenuStrip.Visible = FavoritesMenuStrip.Items.Count > 0;
         }
 
         private void AddToRecentRepos( String path )

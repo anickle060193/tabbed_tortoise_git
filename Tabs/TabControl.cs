@@ -30,6 +30,7 @@ namespace Tabs
         private bool _insertingItem = false;
         private bool _currentlyScaling = false;
         private ContextMenuStrip _optionsMenu;
+        private MenuStrip _mainMenuStrip;
 
         public event EventHandler NewTabClick;
         public event EventHandler<TabClickEventArgs> TabClick;
@@ -256,6 +257,35 @@ namespace Tabs
             }
         }
 
+        [DefaultValue( typeof( MenuStrip ), "(none)" )]
+        public MenuStrip MainMenuStrip
+        {
+            get
+            {
+                return _mainMenuStrip;
+            }
+
+            set
+            {
+                if( _mainMenuStrip != value )
+                {
+                    if( _mainMenuStrip != null )
+                    {
+                        _mainMenuStrip.Parent = null;
+                        _mainMenuStrip.VisibleChanged -= MainMenuStrip_VisibleChanged;
+                    }
+
+                    _mainMenuStrip = value;
+
+                    if( _mainMenuStrip != null )
+                    {
+                        _mainMenuStrip.Parent = this;
+                        _mainMenuStrip.VisibleChanged += MainMenuStrip_VisibleChanged;
+                    }
+                }
+            }
+        }
+
         private bool InsertingItem
         {
             get
@@ -350,7 +380,15 @@ namespace Tabs
         {
             get
             {
-                return _painter.GetTabPanelBounds();
+                return _painter.GetDisplayRectangle();
+            }
+        }
+
+        public Rectangle TabDisplayRectangle
+        {
+            get
+            {
+                return _painter.GetTabDisplayRectangle();
             }
         }
 
@@ -536,7 +574,7 @@ namespace Tabs
 
         private void ResizeTabs()
         {
-            Rectangle rect = DisplayRectangle;
+            Rectangle rect = this.TabDisplayRectangle;
             Tab[] tabs = GetTabs();
             for( int i = 0; i < tabs.Length; i++ )
             {
@@ -565,7 +603,7 @@ namespace Tabs
                     _tabs[ index ].SuspendLayout();
                 }
 
-                tabs[ index ].Bounds = DisplayRectangle;
+                tabs[ index ].Bounds = this.TabDisplayRectangle;
                 tabs[ index ].Invalidate();
 
                 if( _currentlyScaling )
@@ -640,7 +678,7 @@ namespace Tabs
         {
             base.OnMouseMove( e );
 
-            //this.Invalidate();
+            this.Invalidate();
         }
 
         protected override void OnMouseClick( MouseEventArgs e )
@@ -737,6 +775,11 @@ namespace Tabs
         private void OptionsMenu_Closed( object sender, ToolStripDropDownClosedEventArgs e )
         {
             this.Invalidate();
+        }
+
+        private void MainMenuStrip_VisibleChanged( object sender, EventArgs e )
+        {
+            UpdateTabSelection();
         }
 
         public class TabCollection : IList<Tab>
@@ -1043,26 +1086,43 @@ namespace Tabs
 
             public override void Add( Control value )
             {
-                if( !( value is Tab ) )
+                if( value is MenuStrip )
                 {
-                    throw new ArgumentException( "Only Tabs are allowed to be added to TabControl", value.GetType().Name );
-                }
+                    MenuStrip menu = (MenuStrip)value;
+                    if( _owner.MainMenuStrip != null && _owner.MainMenuStrip != menu )
+                    {
+                        throw new ArgumentException( "Only one MenuStrip can be added to TabControl." );
+                    }
 
-                Tab tab = (Tab)value;
-                if( !_owner.InsertingItem )
+                    if( _owner.MainMenuStrip != menu )
+                    {
+                        _owner.MainMenuStrip = menu;
+                    }
+
+                    base.Add( menu );
+                }
+                else if( value is Tab )
                 {
-                    _owner.Insert( _owner.TabCount, tab );
+                    Tab tab = (Tab)value;
+                    if( !_owner.InsertingItem )
+                    {
+                        _owner.Insert( _owner.TabCount, tab );
+                    }
+
+                    base.Add( tab );
+                    tab.Visible = false;
+
+                    if( _owner.IsHandleCreated )
+                    {
+                        tab.Bounds = _owner.TabDisplayRectangle;
+                    }
+
+                    _owner.UpdateTabSelection();
                 }
-
-                base.Add( tab );
-                tab.Visible = false;
-
-                if( _owner.IsHandleCreated )
+                else
                 {
-                    tab.Bounds = _owner.DisplayRectangle;
+                    throw new ArgumentException( "Only Tabs are allowed to be added to TabControl." );
                 }
-
-                _owner.UpdateTabSelection();
             }
 
             public override void Remove( Control value )
