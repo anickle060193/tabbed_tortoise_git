@@ -16,7 +16,7 @@ namespace Tabs
     {
         private readonly TabCollection _collection;
         private readonly TabPainter _painter;
-        private readonly TabHeaderDragDropHelper _dragDropHelper;
+        private readonly TabControlDragDropHelper _dragDropHelper;
 
         private Tab[] _tabs;
         private int _tabCount;
@@ -302,7 +302,7 @@ namespace Tabs
 
             _painter = new TabPainter( this );
 
-            _dragDropHelper = new TabHeaderDragDropHelper();
+            _dragDropHelper = new TabControlDragDropHelper();
             _dragDropHelper.AddControl( this );
         }
 
@@ -809,9 +809,55 @@ namespace Tabs
             }
         }
 
-        class TabHeaderDragDropHelper : DragDropHelper<TabControl, Tab>
+        public new class ControlCollection : Control.ControlCollection
         {
-            public TabHeaderDragDropHelper()
+            public new TabControl Owner
+            {
+                get
+                {
+                    return (TabControl)base.Owner;
+                }
+            }
+
+            public ControlCollection( TabControl owner ) : base( owner )
+            {
+            }
+
+            public override void Add( Control value )
+            {
+                if( value is Tab )
+                {
+                    if( !this.Owner.InsertingItem )
+                    {
+                        this.Owner.Tabs.Add( (Tab)value );
+                    }
+
+                    value.Visible = false;
+                    base.Add( value );
+                }
+                else
+                {
+                    throw new ArgumentException( "Only Tabs can be added to a TabControl." );
+                }
+            }
+
+            public override void Remove( Control value )
+            {
+                base.Remove( value );
+
+                if( value is Tab )
+                {
+                    if( !Owner.RemovingItem )
+                    {
+                        Owner.Tabs.Remove( (Tab)value );
+                    }
+                }
+            }
+        }
+
+        class TabControlDragDropHelper : DragDropHelper<TabControl, Tab>
+        {
+            public TabControlDragDropHelper()
             {
                 AllowReSwap = true;
             }
@@ -901,52 +947,6 @@ namespace Tabs
                 e.DragItem.Dragging = false;
                 e.DragItem.DraggingOffset = 0;
                 e.DragItem.DraggingX = 0;
-            }
-        }
-
-        public new class ControlCollection : Control.ControlCollection
-        {
-            public new TabControl Owner
-            {
-                get
-                {
-                    return (TabControl)base.Owner;
-                }
-            }
-
-            public ControlCollection( TabControl owner ) : base( owner )
-            {
-            }
-
-            public override void Add( Control value )
-            {
-                if( value is Tab )
-                {
-                    if( !this.Owner.InsertingItem )
-                    {
-                        this.Owner.Tabs.Add( (Tab)value );
-                    }
-
-                    value.Visible = false;
-                    base.Add( value );
-                }
-                else
-                {
-                    throw new ArgumentException( "Only Tabs can be added to a TabControl." );
-                }
-            }
-
-            public override void Remove( Control value )
-            {
-                base.Remove( value );
-
-                if( value is Tab )
-                {
-                    if( !Owner.RemovingItem )
-                    {
-                        Owner.Tabs.Remove( (Tab)value );
-                    }
-                }
             }
         }
     }
