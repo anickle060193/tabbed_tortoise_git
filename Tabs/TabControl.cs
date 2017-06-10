@@ -1147,8 +1147,8 @@ namespace Tabs
             {
                 if( dragParent == pointedParent )
                 {
-                    dragParent._tabs[ dragItemIndex ] = pointedItem;
-                    dragParent._tabs[ pointedItemIndex ] = dragItem;
+                    dragParent.Tabs.RemoveAt( dragItemIndex );
+                    dragParent.Tabs.Insert( pointedItemIndex, dragItem );
                     dragParent.SelectedIndex = pointedItemIndex;
                     return true;
                 }
