@@ -19,7 +19,7 @@ namespace Tabs
         private readonly TabControlDragDropHelper _dragDropHelper;
 
         private Tab[] _tabs;
-        private int _tabCount;
+        private int _tabCount = 0;
 
         private int _maximumTabWidth = 200;
         private Color _tabColor = Color.FromArgb( 218, 218, 218 );
@@ -27,7 +27,8 @@ namespace Tabs
         private Color _tabBorderColor = Color.FromArgb( 181, 181, 181 );
         private int _selectedIndex = -1;
         private bool _showTabHitTest = false;
-        private bool _insertingItem;
+        private bool _insertingItem = false;
+        private bool _currentlyScaling = false;
         private ContextMenuStrip _optionsMenu;
 
         public event EventHandler NewTabClick;
@@ -165,8 +166,11 @@ namespace Tabs
 
             set
             {
-                this._tabColor = value;
-                this.Invalidate();
+                if( _tabColor != value )
+                {
+                    _tabColor = value;
+                    this.Invalidate();
+                }
             }
         }
 
@@ -180,8 +184,11 @@ namespace Tabs
 
             set
             {
-                this._selectedTabColor = value;
-                this.Invalidate();
+                if( _selectedTabColor != value )
+                {
+                    _selectedTabColor = value;
+                    this.Invalidate();
+                }
             }
         }
 
@@ -195,8 +202,11 @@ namespace Tabs
 
             set
             {
-                this._tabBorderColor = value;
-                this.Invalidate();
+                if( _tabBorderColor != value )
+                {
+                    _tabBorderColor = value;
+                    this.Invalidate();
+                }
             }
         }
 
@@ -360,11 +370,6 @@ namespace Tabs
             _dragDropHelper.AddControl( this );
         }
 
-        protected override Control.ControlCollection CreateControlsInstance()
-        {
-            return new ControlCollection( this );
-        }
-
         internal int FindTab( Tab tab )
         {
             if( _tabs != null )
@@ -411,21 +416,22 @@ namespace Tabs
 
         private Tab GetTabFromPoint( Point p )
         {
-            if( SelectedTab != null )
+            Tab selected = SelectedTab;
+            if( selected != null )
             {
-                if( !SelectedTab.Dragging && _painter.GetTabPath( SelectedIndex ).HitTest( p ) )
+                if( !selected.Dragging && _painter.GetTabPath( SelectedIndex ).HitTest( p ) )
                 {
-                    return SelectedTab;
+                    return selected;
                 }
             }
 
-            for( int i = 0; i < this.TabCount; i++ )
+            for( int i = 0; i < _tabCount; i++ )
             {
                 if( i != SelectedIndex )
                 {
                     if( _painter.GetTabPath( i ).HitTest( p ) )
                     {
-                        return this.Tabs[ i ];
+                        return _tabs[ i ];
                     }
                 }
             }
@@ -435,11 +441,11 @@ namespace Tabs
 
         private Tab GetTabCloseFromPoint( Point p )
         {
-            for( int i = 0; i < this.TabCount; i++ )
+            for( int i = 0; i < _tabCount; i++ )
             {
                 if( _painter.GetTabClosePath( i ).HitTest( p ) )
                 {
-                    return this.Tabs[ i ];
+                    return _tabs[ i ];
                 }
             }
             return null;
@@ -465,6 +471,8 @@ namespace Tabs
 
             _tabs[ index ] = tab;
             _tabCount++;
+
+            Invalidate();
         }
 
         private void InsertItem( int index, Tab tab )
@@ -528,8 +536,19 @@ namespace Tabs
             Tab[] tabs = GetTabs();
             if( index != -1 )
             {
+                if( _currentlyScaling )
+                {
+                    _tabs[ index ].SuspendLayout();
+                }
+
                 tabs[ index ].Bounds = DisplayRectangle;
                 tabs[ index ].Invalidate();
+
+                if( _currentlyScaling )
+                {
+                    _tabs[ index ].ResumeLayout( false );
+                }
+
                 tabs[ index ].Visible = true;
             }
 
@@ -540,12 +559,34 @@ namespace Tabs
                     tabs[ i ].Visible = false;
                 }
             }
+
+            Invalidate();
         }
 
         internal void UpdateTab( Tab tab )
         {
             int index = FindTab( tab );
             SetTab( index, tab );
+            UpdateTabSelection();
+        }
+
+        protected override Control.ControlCollection CreateControlsInstance()
+        {
+            return new ControlCollection( this );
+        }
+
+        [EditorBrowsable( EditorBrowsableState.Never )]
+        protected override void ScaleCore( float dx, float dy )
+        {
+            _currentlyScaling = true;
+            base.ScaleCore( dx, dy );
+            _currentlyScaling = false;
+        }
+
+        protected override void OnResize( EventArgs e )
+        {
+            base.OnResize( e );
+
             UpdateTabSelection();
         }
 
@@ -575,7 +616,7 @@ namespace Tabs
         {
             base.OnMouseMove( e );
 
-            this.Invalidate();
+            //this.Invalidate();
         }
 
         protected override void OnMouseClick( MouseEventArgs e )
@@ -647,25 +688,6 @@ namespace Tabs
             base.OnMouseClick( e );
         }
 
-        protected override void OnLayout( LayoutEventArgs e )
-        {
-            base.OnLayout( e );
-
-            foreach( Tab t in Tabs )
-            {
-                t.Visible = false;
-            }
-
-            if( this.SelectedTab != null )
-            {
-                this.SelectedTab.Bounds = _painter.GetTabPanelBounds();
-                this.SelectedTab.Visible = true;
-                this.SelectedTab.BringToFront();
-            }
-
-            this.Invalidate();
-        }
-
         protected void OnNewTabClick( EventArgs e )
         {
             NewTabClick?.Invoke( this, e );
@@ -679,6 +701,7 @@ namespace Tabs
         protected void OnSelectedIndexChanged( EventArgs e )
         {
             UpdateTabSelection();
+
             SelectedIndexChanged?.Invoke( this, e );
         }
 
