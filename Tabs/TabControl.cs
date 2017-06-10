@@ -14,7 +14,7 @@ namespace Tabs
 {
     public class TabControl : Control
     {
-        private readonly TabCollection _collection;
+        private readonly TabCollection _tabCollection;
         private readonly TabPainter _painter;
         private readonly TabControlDragDropHelper _dragDropHelper;
 
@@ -34,6 +34,21 @@ namespace Tabs
         public event EventHandler<TabClickEventArgs> TabClick;
         public event EventHandler SelectedIndexChanged;
         public event EventHandler<TabClosedEventArgs> TabClosed;
+
+        [Browsable( false )]
+        [EditorBrowsable( EditorBrowsableState.Never )]
+        new public event EventHandler TextChanged
+        {
+            add
+            {
+                base.TextChanged += value;
+            }
+
+            remove
+            {
+                base.TextChanged -= value;
+            }
+        }
 
         private bool RemovingItem { get; set; }
 
@@ -58,9 +73,6 @@ namespace Tabs
         }
 
         [Browsable( false )]
-        public TabCollection Tabs { get { return _collection; } }
-
-        [Browsable( false )]
         [DesignerSerializationVisibility( DesignerSerializationVisibility.Hidden )]
         public int SelectedIndex
         {
@@ -73,11 +85,15 @@ namespace Tabs
                 }
                 if( SelectedIndex != value )
                 {
-                    _selectedIndex = value;
-                    OnSelectedIndexChanged( EventArgs.Empty );
-
-                    PerformLayout();
-                    Invalidate();
+                    if( !IsHandleCreated )
+                    {
+                        _selectedIndex = value;
+                    }
+                    else
+                    {
+                        _selectedIndex = value;
+                        OnSelectedIndexChanged( EventArgs.Empty );
+                    }
                 }
             }
         }
@@ -88,19 +104,56 @@ namespace Tabs
         {
             get
             {
-                if( 0 <= SelectedIndex && SelectedIndex < this.TabCount )
-                {
-                    return Tabs[ SelectedIndex ];
-                }
-                else
+                return SelectedTabInternal;
+            }
+
+            set
+            {
+                SelectedTabInternal = value;
+            }
+        }
+
+        internal Tab SelectedTabInternal
+        {
+            get
+            {
+                int index = SelectedIndex;
+                if( index == -1 )
                 {
                     return null;
                 }
+                else
+                {
+                    return _tabs[ index ];
+                }
+            }
+
+            set
+            {
+                int index = FindTab( value );
+                SelectedIndex = index;
             }
         }
 
         [Browsable( false )]
-        public int TabCount { get { return _collection.Count; } }
+        [DesignerSerializationVisibility( DesignerSerializationVisibility.Hidden )]
+        public int TabCount
+        {
+            get
+            {
+                return _tabCount;
+            }
+        }
+
+        [Browsable( false )]
+        [DesignerSerializationVisibility( DesignerSerializationVisibility.Hidden )]
+        public TabCollection Tabs
+        {
+            get
+            {
+                return _tabCollection;
+            }
+        }
 
         [DefaultValue( typeof( Color ), "218, 218, 218" )]
         public Color TabColor
@@ -209,6 +262,7 @@ namespace Tabs
         [Browsable( false )]
         [EditorBrowsable( EditorBrowsableState.Never )]
         [DesignerSerializationVisibility( DesignerSerializationVisibility.Hidden )]
+        [Bindable( false )]
         public new String Text
         {
             get
@@ -298,7 +352,7 @@ namespace Tabs
 
             this.CloseTabOnMiddleClick = true;
 
-            _collection = new TabCollection( this );
+            _tabCollection = new TabCollection( this );
 
             _painter = new TabPainter( this );
 
@@ -309,6 +363,50 @@ namespace Tabs
         protected override Control.ControlCollection CreateControlsInstance()
         {
             return new ControlCollection( this );
+        }
+
+        internal int FindTab( Tab tab )
+        {
+            if( _tabs != null )
+            {
+                for( int i = 0; i < _tabCount; i++ )
+                {
+                    if( _tabs[ i ] == tab )
+                    {
+                        return i;
+                    }
+                }
+            }
+            return -1;
+        }
+
+        public Control GetControl( int index )
+        {
+            return (Control)GetTab( index );
+        }
+
+        internal Tab GetTab( int index )
+        {
+            if( index < 0 || index >= _tabCount )
+            {
+                throw new ArgumentOutOfRangeException( "index" );
+            }
+            return _tabs[ index ];
+        }
+
+        protected virtual object[] GetItems()
+        {
+            Tab[] result = new Tab[ _tabCount ];
+            if( _tabCount > 0 )
+            {
+                Array.Copy( _tabs, result, _tabCount );
+            }
+            return result;
+        }
+
+        internal Tab[] GetTabs()
+        {
+            return (Tab[])GetItems();
         }
 
         private Tab GetTabFromPoint( Point p )
@@ -347,9 +445,115 @@ namespace Tabs
             return null;
         }
 
+        internal void Insert( int index, Tab tab )
+        {
+            if( _tabs == null )
+            {
+                _tabs = new Tab[ 4 ];
+            }
+            else if( _tabs.Length == _tabCount )
+            {
+                Tab[] newTabs = new Tab[ _tabCount * 2 ];
+                Array.Copy( _tabs, newTabs, _tabCount );
+                _tabs = newTabs;
+            }
+
+            if( index < _tabCount )
+            {
+                Array.Copy( _tabs, index, _tabs, index + 1, _tabCount - index );
+            }
+
+            _tabs[ index ] = tab;
+            _tabCount++;
+        }
+
+        private void InsertItem( int index, Tab tab )
+        {
+            if( index < 0 || index >= _tabCount )
+            {
+                throw new ArgumentOutOfRangeException( "index" );
+            }
+            if( tab == null )
+            {
+                throw new ArgumentNullException( "tab" );
+            }
+
+            Insert( index, tab );
+        }
+
+        protected void RemoveAll()
+        {
+            this.Controls.Clear();
+            _tabs = null;
+            _tabCount = 0;
+        }
+
+        internal void RemoveTab( int index )
+        {
+            if( index < 0 || index >= _tabCount )
+            {
+                throw new ArgumentOutOfRangeException( "index" );
+            }
+            _tabCount--;
+            if( index < _tabCount )
+            {
+                Array.Copy( _tabs, index + 1, _tabs, index, _tabCount - index );
+            }
+            _tabs[ _tabCount ] = null;
+        }
+
+        private void ResizeTabs()
+        {
+            Rectangle rect = DisplayRectangle;
+            Tab[] tabs = GetTabs();
+            for( int i = 0; i < tabs.Length; i++ )
+            {
+                tabs[ i ].Bounds = rect;
+            }
+        }
+
+        internal void SetTab( int index, Tab tab )
+        {
+            if( index < 0 || index >= _tabCount )
+            {
+                throw new ArgumentOutOfRangeException( "index" );
+            }
+            _tabs[ index ] = tab;
+        }
+
+        private void UpdateTabSelection()
+        {
+            int index = SelectedIndex;
+
+            Tab[] tabs = GetTabs();
+            if( index != -1 )
+            {
+                tabs[ index ].Bounds = DisplayRectangle;
+                tabs[ index ].Invalidate();
+                tabs[ index ].Visible = true;
+            }
+
+            for( int i = 0; i < tabs.Length; i++ )
+            {
+                if( i != SelectedIndex )
+                {
+                    tabs[ i ].Visible = false;
+                }
+            }
+        }
+
+        internal void UpdateTab( Tab tab )
+        {
+            int index = FindTab( tab );
+            SetTab( index, tab );
+            UpdateTabSelection();
+        }
+
         protected override void OnPaint( PaintEventArgs e )
         {
             _painter.Paint( e.Graphics );
+
+            base.OnPaint( e );
         }
 
         protected override void OnMouseDown( MouseEventArgs e )
@@ -488,34 +692,6 @@ namespace Tabs
             this.Invalidate();
         }
 
-        private void UpdateTabSelection()
-        {
-            int index = SelectedIndex;
-
-            Tab[] tabs = GetTabs();
-            if( index != -1 )
-            {
-                tabs[ index ].Bounds = DisplayRectangle;
-                tabs[ index ].Invalidate();
-                tabs[ index ].Visible = true;
-            }
-
-            for( int i = 0; i < tabs.Length; i++ )
-            {
-                if( i != SelectedIndex )
-                {
-                    tabs[ i ].Visible = false;
-                }
-            }
-        }
-
-        internal void UpdateTab( Tab tag )
-        {
-            int index = FindTab( Tab );
-            SetTab( index, tab );
-            UpdateTabSelection();
-        }
-
         public class TabCollection : IList<Tab>
         {
             private readonly TabControl _owner;
@@ -529,12 +705,12 @@ namespace Tabs
             {
                 get
                 {
-                    return _owner.GetTabPage( index );
+                    return _owner.GetTab( index );
                 }
 
                 set
                 {
-                    _owner.SetTabPage( index, value );
+                    _owner.SetTab( index, value );
                 }
             }
 
@@ -560,7 +736,7 @@ namespace Tabs
                         return null;
                     }
                     int index = IndexOfKey( key );
-                    if( IsValidIndex( key ) )
+                    if( IsValidIndex( index ) )
                     {
                         return this[ index ];
                     }
