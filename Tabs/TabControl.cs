@@ -271,7 +271,10 @@ namespace Tabs
                 {
                     if( _mainMenuStrip != null )
                     {
-                        _mainMenuStrip.Parent = null;
+                        if( _mainMenuStrip.Parent == this )
+                        {
+                            _mainMenuStrip.Parent = null;
+                        }
                         _mainMenuStrip.VisibleChanged -= MainMenuStrip_VisibleChanged;
                     }
 
@@ -1129,19 +1132,24 @@ namespace Tabs
             {
                 base.Remove( value );
 
-                if( !( value is Tab ) )
+                if( value is MenuStrip )
                 {
-                    return;
+                    if( value == _owner.MainMenuStrip )
+                    {
+                        _owner.MainMenuStrip = null;
+                    }
                 }
-
-                int index = _owner.FindTab( (Tab)value );
-
-                if( index != -1 )
+                else if( value is Tab )
                 {
-                    _owner.RemoveTab( index );
-                }
+                    int index = _owner.FindTab( (Tab)value );
 
-                _owner.UpdateTabSelection();
+                    if( index != -1 )
+                    {
+                        _owner.RemoveTab( index );
+                    }
+
+                    _owner.UpdateTabSelection();
+                }
             }
         }
 

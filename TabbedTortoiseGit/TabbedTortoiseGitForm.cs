@@ -193,6 +193,19 @@ namespace TabbedTortoiseGit
 
         private void UpdateFavoriteReposFromSettings()
         {
+            if( Settings.Default.FavoritesMenuStripInTabControl )
+            {
+                this.MainMenuStrip = null;
+                FavoritesMenuStrip.BackColor = SystemColors.Control;
+                LogTabs.MainMenuStrip = FavoritesMenuStrip;
+            }
+            else
+            {
+                FavoritesMenuStrip.Parent = this;
+                FavoritesMenuStrip.BackColor = Color.White;
+                this.MainMenuStrip = FavoritesMenuStrip;
+            }
+
             FavoritesMenuStrip.SuspendLayout();
 
             FavoritesMenuStrip.Items.Clear();

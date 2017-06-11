@@ -59,11 +59,12 @@ namespace TabbedTortoiseGit
             this.ModifiedTabFontGroup = new System.Windows.Forms.GroupBox();
             this.ModifiedTabFontSample = new System.Windows.Forms.Label();
             this.OtherSettingsTab = new System.Windows.Forms.TabPage();
+            this.CloseWindowOnLastTabClosedCheck = new System.Windows.Forms.CheckBox();
             this.CloseToSystemTrayCheck = new System.Windows.Forms.CheckBox();
             this.DeveloperSettingsPage = new System.Windows.Forms.TabPage();
             this.ShowHitTestCheck = new System.Windows.Forms.CheckBox();
             this.ModifiedTabFontDialog = new System.Windows.Forms.FontDialog();
-            this.CloseWindowOnLastTabClosedCheck = new System.Windows.Forms.CheckBox();
+            this.FavoritesMenuStripInTabControlCheck = new System.Windows.Forms.CheckBox();
             ((System.ComponentModel.ISupportInitialize)(this.MaxRecentReposNumeric)).BeginInit();
             this.SettingsTabs.SuspendLayout();
             this.StartupReposTab.SuspendLayout();
@@ -413,6 +414,17 @@ namespace TabbedTortoiseGit
             this.OtherSettingsTab.Text = "Other";
             this.OtherSettingsTab.UseVisualStyleBackColor = true;
             // 
+            // CloseWindowOnLastTabClosedCheck
+            // 
+            this.CloseWindowOnLastTabClosedCheck.AutoSize = true;
+            this.CloseWindowOnLastTabClosedCheck.CheckAlign = System.Drawing.ContentAlignment.MiddleRight;
+            this.CloseWindowOnLastTabClosedCheck.Location = new System.Drawing.Point(6, 78);
+            this.CloseWindowOnLastTabClosedCheck.Name = "CloseWindowOnLastTabClosedCheck";
+            this.CloseWindowOnLastTabClosedCheck.Size = new System.Drawing.Size(189, 17);
+            this.CloseWindowOnLastTabClosedCheck.TabIndex = 13;
+            this.CloseWindowOnLastTabClosedCheck.Text = "Close Window on Last Tab Closed";
+            this.CloseWindowOnLastTabClosedCheck.UseVisualStyleBackColor = true;
+            // 
             // CloseToSystemTrayCheck
             // 
             this.CloseToSystemTrayCheck.AutoSize = true;
@@ -426,6 +438,7 @@ namespace TabbedTortoiseGit
             // 
             // DeveloperSettingsPage
             // 
+            this.DeveloperSettingsPage.Controls.Add(this.FavoritesMenuStripInTabControlCheck);
             this.DeveloperSettingsPage.Controls.Add(this.ShowHitTestCheck);
             this.DeveloperSettingsPage.Location = new System.Drawing.Point(4, 22);
             this.DeveloperSettingsPage.Name = "DeveloperSettingsPage";
@@ -451,16 +464,15 @@ namespace TabbedTortoiseGit
             this.ModifiedTabFontDialog.FontMustExist = true;
             this.ModifiedTabFontDialog.ShowColor = true;
             // 
-            // CloseWindowOnLastTabClosedCheck
+            // FavoritesMenuStripInTabControlCheck
             // 
-            this.CloseWindowOnLastTabClosedCheck.AutoSize = true;
-            this.CloseWindowOnLastTabClosedCheck.CheckAlign = System.Drawing.ContentAlignment.MiddleRight;
-            this.CloseWindowOnLastTabClosedCheck.Location = new System.Drawing.Point(6, 78);
-            this.CloseWindowOnLastTabClosedCheck.Name = "CloseWindowOnLastTabClosedCheck";
-            this.CloseWindowOnLastTabClosedCheck.Size = new System.Drawing.Size(189, 17);
-            this.CloseWindowOnLastTabClosedCheck.TabIndex = 13;
-            this.CloseWindowOnLastTabClosedCheck.Text = "Close Window on Last Tab Closed";
-            this.CloseWindowOnLastTabClosedCheck.UseVisualStyleBackColor = true;
+            this.FavoritesMenuStripInTabControlCheck.AutoSize = true;
+            this.FavoritesMenuStripInTabControlCheck.Location = new System.Drawing.Point(6, 29);
+            this.FavoritesMenuStripInTabControlCheck.Name = "FavoritesMenuStripInTabControlCheck";
+            this.FavoritesMenuStripInTabControlCheck.Size = new System.Drawing.Size(198, 17);
+            this.FavoritesMenuStripInTabControlCheck.TabIndex = 1;
+            this.FavoritesMenuStripInTabControlCheck.Text = "Show Favorites Menu in Tab Control";
+            this.FavoritesMenuStripInTabControlCheck.UseVisualStyleBackColor = true;
             // 
             // SettingsForm
             // 
@@ -536,5 +548,6 @@ namespace TabbedTortoiseGit
         private Label CheckForModifiedTabsIntervalLabel;
         private NumericUpDown CheckForModifiedTabsIntervalNumeric;
         private CheckBox CloseWindowOnLastTabClosedCheck;
+        private CheckBox FavoritesMenuStripInTabControlCheck;
     }
 }

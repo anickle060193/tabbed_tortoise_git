@@ -377,5 +377,17 @@ namespace TabbedTortoiseGit.Properties {
                 this["CloseWindowOnLastTabClosed"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public bool FavoritesMenuStripInTabControl {
+            get {
+                return ((bool)(this["FavoritesMenuStripInTabControl"]));
+            }
+            set {
+                this["FavoritesMenuStripInTabControl"] = value;
+            }
+        }
     }
 }
