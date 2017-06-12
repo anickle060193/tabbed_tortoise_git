@@ -116,7 +116,7 @@ namespace Tabs
             Control parent = this.Parent;
             if( parent is TabControl && parent.IsHandleCreated )
             {
-                Rectangle r = ( (TabControl)parent ).TabDisplayRectangle;
+                Rectangle r = parent.DisplayRectangle;
 
                 base.SetBoundsCore( r.X, r.Y, r.Width, r.Height, specified == BoundsSpecified.None ? BoundsSpecified.None : BoundsSpecified.All );
             }

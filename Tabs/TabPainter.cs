@@ -159,25 +159,11 @@ namespace Tabs
             } );
         }
 
-        public Rectangle GetDisplayRectangle()
+        public Rectangle GetTabPanelBounds()
         {
             int y = TOP_PADDING + TAB_HEIGHT + BOTTOM_BORDER_HEIGHT;
             Size clientSize = this.Owner.ClientSize;
             return new Rectangle( 0, y, clientSize.Width, clientSize.Height - y );
-        }
-
-        public Rectangle GetTabDisplayRectangle()
-        {
-            Rectangle r = GetDisplayRectangle();
-            if( this.Owner.MainMenuStrip != null && this.Owner.MainMenuStrip.Visible )
-            {
-                int h = this.Owner.MainMenuStrip.Height;
-                return new Rectangle( r.X, r.Y + h, r.Width, r.Height - h );
-            }
-            else
-            {
-                return r;
-            }
         }
 
         public void Paint( Graphics g )

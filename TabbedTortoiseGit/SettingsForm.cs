@@ -40,7 +40,6 @@ namespace TabbedTortoiseGit
 
             f.DeveloperSettingsEnabled = Settings.Default.DeveloperSettingsEnabled;
             f.ShowHitTest = Settings.Default.ShowHitTest;
-            f.FavoritesMenuStripInTabControl = Settings.Default.FavoritesMenuStripInTabControl;
 
             if( f.ShowDialog() == DialogResult.OK )
             {
@@ -65,7 +64,6 @@ namespace TabbedTortoiseGit
 
                 Settings.Default.DeveloperSettingsEnabled = f.DeveloperSettingsEnabled;
                 Settings.Default.ShowHitTest = f.ShowHitTest;
-                Settings.Default.FavoritesMenuStripInTabControl = f.FavoritesMenuStripInTabControl;
 
                 Settings.Default.Save();
 
@@ -309,19 +307,6 @@ namespace TabbedTortoiseGit
             set
             {
                 ShowHitTestCheck.Checked = value;
-            }
-        }
-
-        public bool FavoritesMenuStripInTabControl
-        {
-            get
-            {
-                return FavoritesMenuStripInTabControlCheck.Checked;
-            }
-
-            set
-            {
-                FavoritesMenuStripInTabControlCheck.Checked = value;
             }
         }
 

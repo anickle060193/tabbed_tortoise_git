@@ -193,19 +193,6 @@ namespace TabbedTortoiseGit
 
         private void UpdateFavoriteReposFromSettings()
         {
-            if( Settings.Default.FavoritesMenuStripInTabControl )
-            {
-                this.MainMenuStrip = null;
-                FavoritesMenuStrip.BackColor = SystemColors.Control;
-                LogTabs.MainMenuStrip = FavoritesMenuStrip;
-            }
-            else
-            {
-                FavoritesMenuStrip.Parent = this;
-                FavoritesMenuStrip.BackColor = Color.White;
-                this.MainMenuStrip = FavoritesMenuStrip;
-            }
-
             FavoritesMenuStrip.SuspendLayout();
 
             FavoritesMenuStrip.Items.Clear();
@@ -223,8 +210,6 @@ namespace TabbedTortoiseGit
             }
 
             FavoritesMenuStrip.ResumeLayout();
-
-            FavoritesMenuStrip.Visible = FavoritesMenuStrip.Items.Count > 0;
         }
 
         private void AddToRecentRepos( String path )

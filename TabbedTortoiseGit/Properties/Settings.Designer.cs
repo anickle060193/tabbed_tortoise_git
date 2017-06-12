@@ -380,18 +380,6 @@ namespace TabbedTortoiseGit.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("False")]
-        public bool FavoritesMenuStripInTabControl {
-            get {
-                return ((bool)(this["FavoritesMenuStripInTabControl"]));
-            }
-            set {
-                this["FavoritesMenuStripInTabControl"] = value;
-            }
-        }
-        
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("2000-01-01")]
         public global::System.DateTime LastUpdatePromptTime {
             get {
