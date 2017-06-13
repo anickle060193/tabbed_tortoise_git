@@ -16,6 +16,7 @@ namespace TabbedTortoiseGit.Properties
         [UserScopedSetting]
         [DebuggerNonUserCode]
         [DefaultSettingValue( "" )]
+        [EditorBrowsable( EditorBrowsableState.Never )]
         [Obsolete( "User FavoriteRepos instead.", true )]
         [NoSettingsVersionUpgrade]
         public String FavoritedRepos
@@ -27,6 +28,7 @@ namespace TabbedTortoiseGit.Properties
         [UserScopedSetting]
         [DebuggerNonUserCode]
         [DefaultSettingValue( "" )]
+        [EditorBrowsable( EditorBrowsableState.Never )]
         [Obsolete( "User StartupRepos instead.", true )]
         [NoSettingsVersionUpgrade]
         public List<String> DefaultRepos

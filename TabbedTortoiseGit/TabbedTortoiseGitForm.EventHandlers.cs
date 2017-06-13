@@ -41,6 +41,8 @@ namespace TabbedTortoiseGit
             FavoritesMenuStrip.MouseClick += FavoritesMenuStrip_MouseClick;
             UnfavoriteFavoriteRepoContextMenuItem.Click += UnfavoriteFavoriteRepoContextMenuItem_Click;
 
+            ShowFavoritesManagerMenuItem.Click += ShowFavoritesManagerMenuItem_Click;
+
             OpenRepoMenuItem.Click += OpenRepoMenuItem_Click;
             SettingsMenuItem.Click += SettingsMenuItem_Click;
             AboutMenuItem.Click += AboutMenuItem_Click;
@@ -270,11 +272,18 @@ namespace TabbedTortoiseGit
             if( e.Button == MouseButtons.Right )
             {
                 ToolStripItem favoriteItem = FavoritesMenuStrip.GetItemAt( e.Location );
-                if( favoriteItem != null && favoriteItem.Tag is FavoriteRepoTag )
+                if( favoriteItem != null )
                 {
-                    FavoriteRepoTag tag = (FavoriteRepoTag)favoriteItem.Tag;
-                    FavoriteRepoContextMenu.Tag = tag;
-                    FavoriteRepoContextMenu.Show( FavoritesMenuStrip, e.Location );
+                    if( favoriteItem.Tag is FavoriteRepoTag )
+                    {
+                        FavoriteRepoTag tag = (FavoriteRepoTag)favoriteItem.Tag;
+                        FavoriteRepoContextMenu.Tag = tag;
+                        FavoriteRepoContextMenu.Show( FavoritesMenuStrip, e.Location );
+                    }
+                }
+                else
+                {
+                    FavoritesMenuContextMenu.Show( FavoritesMenuStrip, e.Location );
                 }
             }
         }
@@ -283,6 +292,11 @@ namespace TabbedTortoiseGit
         {
             FavoriteRepoTag tag = (FavoriteRepoTag)FavoriteRepoContextMenu.Tag;
             RemoveFavoriteRepo( tag.Repo );
+        }
+
+        private void ShowFavoritesManagerMenuItem_Click( object sender, EventArgs e )
+        {
+            FavoritesManagerDialog.ShowFavoritesManager();
         }
 
         private async void OpenRepoMenuItem_Click( object sender, EventArgs e )

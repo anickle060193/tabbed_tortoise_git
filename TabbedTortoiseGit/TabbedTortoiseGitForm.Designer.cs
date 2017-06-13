@@ -50,10 +50,13 @@
             this.AboutMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.ExitMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.LogTabs = new Tabs.TabControl();
+            this.FavoritesMenuContextMenu = new System.Windows.Forms.ContextMenuStrip(this.components);
+            this.ShowFavoritesManagerMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.NotifyIconContextMenu.SuspendLayout();
             this.TabContextMenu.SuspendLayout();
             this.FavoriteRepoContextMenu.SuspendLayout();
             this.OptionsContextMenu.SuspendLayout();
+            this.FavoritesMenuContextMenu.SuspendLayout();
             this.SuspendLayout();
             // 
             // FavoritesMenuStrip
@@ -201,6 +204,19 @@
             this.LogTabs.TabContextMenu = this.TabContextMenu;
             this.LogTabs.TabIndex = 3;
             // 
+            // FavoritesMenuContextMenu
+            // 
+            this.FavoritesMenuContextMenu.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.ShowFavoritesManagerMenuItem});
+            this.FavoritesMenuContextMenu.Name = "FavoritesMenuContextMenu";
+            this.FavoritesMenuContextMenu.Size = new System.Drawing.Size(204, 26);
+            // 
+            // ShowFavoritesManagerMenuItem
+            // 
+            this.ShowFavoritesManagerMenuItem.Name = "ShowFavoritesManagerMenuItem";
+            this.ShowFavoritesManagerMenuItem.Size = new System.Drawing.Size(203, 22);
+            this.ShowFavoritesManagerMenuItem.Text = "Show Favorites Manager";
+            // 
             // TabbedTortoiseGitForm
             // 
             this.AllowDrop = true;
@@ -217,6 +233,7 @@
             this.TabContextMenu.ResumeLayout(false);
             this.FavoriteRepoContextMenu.ResumeLayout(false);
             this.OptionsContextMenu.ResumeLayout(false);
+            this.FavoritesMenuContextMenu.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -244,6 +261,8 @@
         private System.Windows.Forms.ToolStripMenuItem SettingsMenuItem;
         private System.Windows.Forms.ToolStripMenuItem AboutMenuItem;
         private System.Windows.Forms.ToolStripMenuItem ExitMenuItem;
+        private System.Windows.Forms.ContextMenuStrip FavoritesMenuContextMenu;
+        private System.Windows.Forms.ToolStripMenuItem ShowFavoritesManagerMenuItem;
     }
 }
 
