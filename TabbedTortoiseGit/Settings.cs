@@ -179,7 +179,7 @@ namespace TabbedTortoiseGit.Properties
                         {
                             foreach( KeyValuePair<String, String> favorite in favoritedRepos )
                             {
-                                root.Add( new FavoriteRepo( favorite.Key, favorite.Value, false, false ) );
+                                root.Add( new FavoriteRepo( favorite.Key, favorite.Value, true, false ) );
                             }
                         }
 
@@ -212,7 +212,7 @@ namespace TabbedTortoiseGit.Properties
                             {
                                 foreach( KeyValuePair<String, String> favorite in favoritedRepos )
                                 {
-                                    root.Add( new FavoriteRepo( favorite.Key, favorite.Value, false, false ) );
+                                    root.Add( new FavoriteRepo( favorite.Key, favorite.Value, true, false ) );
                                 }
                             }
 
