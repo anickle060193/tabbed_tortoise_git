@@ -53,6 +53,8 @@ namespace TabbedTortoiseGit
         {
             InitializeComponent();
 
+            this.Icon = Resources.TortoiseIcon;
+
             FavoritesTree.AfterSelect += FavoritesTree_AfterSelect;
             FavoritesTree.MouseUp += FavoritesTree_MouseUp;
 

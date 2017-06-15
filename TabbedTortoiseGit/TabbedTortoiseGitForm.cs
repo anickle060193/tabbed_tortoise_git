@@ -265,7 +265,7 @@ namespace TabbedTortoiseGit
             UpdateFavoriteReposFromSettings();
         }
 
-        private void RemoveFavoriteRepo( TreeNode<FavoriteRepo> favorite )
+        private void RemoveFavorite( TreeNode<FavoriteRepo> favorite )
         {
             favorite.Parent.Remove( favorite );
             Settings.Default.FavoriteRepos = _favoriteRepos;

@@ -41,11 +41,12 @@
             this.CloseRepoTabMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.CheckForModifiedTabsTimer = new System.Windows.Forms.Timer(this.components);
             this.FavoriteRepoContextMenu = new System.Windows.Forms.ContextMenuStrip(this.components);
-            this.UnfavoriteFavoriteRepoContextMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.RemoveFavoriteContextMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.OptionsContextMenu = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.OpenRepoMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.RecentReposMenu = new System.Windows.Forms.ToolStripMenuItem();
             this.OptionsMenuSeparator = new System.Windows.Forms.ToolStripSeparator();
+            this.FavoritesManagerMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.SettingsMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.AboutMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.ExitMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -107,7 +108,7 @@
             this.CloseRepoTabMenuItem});
             this.TabContextMenu.Name = "TabContextMenu";
             this.TabContextMenu.RenderMode = System.Windows.Forms.ToolStripRenderMode.Professional;
-            this.TabContextMenu.Size = new System.Drawing.Size(183, 92);
+            this.TabContextMenu.Size = new System.Drawing.Size(183, 70);
             // 
             // OpenRepoLocationTabMenuItem
             // 
@@ -135,15 +136,15 @@
             // FavoriteRepoContextMenu
             // 
             this.FavoriteRepoContextMenu.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.UnfavoriteFavoriteRepoContextMenuItem});
+            this.RemoveFavoriteContextMenuItem});
             this.FavoriteRepoContextMenu.Name = "FavoriteRepoContextMenu";
-            this.FavoriteRepoContextMenu.Size = new System.Drawing.Size(130, 26);
+            this.FavoriteRepoContextMenu.Size = new System.Drawing.Size(163, 26);
             // 
-            // UnfavoriteFavoriteRepoContextMenuItem
+            // RemoveFavoriteContextMenuItem
             // 
-            this.UnfavoriteFavoriteRepoContextMenuItem.Name = "UnfavoriteFavoriteRepoContextMenuItem";
-            this.UnfavoriteFavoriteRepoContextMenuItem.Size = new System.Drawing.Size(129, 22);
-            this.UnfavoriteFavoriteRepoContextMenuItem.Text = "Unfavorite";
+            this.RemoveFavoriteContextMenuItem.Name = "RemoveFavoriteContextMenuItem";
+            this.RemoveFavoriteContextMenuItem.Size = new System.Drawing.Size(162, 22);
+            this.RemoveFavoriteContextMenuItem.Text = "Remove Favorite";
             // 
             // OptionsContextMenu
             // 
@@ -151,46 +152,53 @@
             this.OpenRepoMenuItem,
             this.RecentReposMenu,
             this.OptionsMenuSeparator,
+            this.FavoritesManagerMenuItem,
             this.SettingsMenuItem,
             this.AboutMenuItem,
             this.ExitMenuItem});
             this.OptionsContextMenu.Name = "OptionsContextMenu";
-            this.OptionsContextMenu.Size = new System.Drawing.Size(146, 120);
+            this.OptionsContextMenu.Size = new System.Drawing.Size(172, 142);
             // 
             // OpenRepoMenuItem
             // 
             this.OpenRepoMenuItem.Name = "OpenRepoMenuItem";
-            this.OpenRepoMenuItem.Size = new System.Drawing.Size(145, 22);
+            this.OpenRepoMenuItem.Size = new System.Drawing.Size(171, 22);
             this.OpenRepoMenuItem.Text = "Open Repo";
             // 
             // RecentReposMenu
             // 
             this.RecentReposMenu.Enabled = false;
             this.RecentReposMenu.Name = "RecentReposMenu";
-            this.RecentReposMenu.Size = new System.Drawing.Size(145, 22);
+            this.RecentReposMenu.Size = new System.Drawing.Size(171, 22);
             this.RecentReposMenu.Text = "Recent Repos";
             // 
             // OptionsMenuSeparator
             // 
             this.OptionsMenuSeparator.Name = "OptionsMenuSeparator";
-            this.OptionsMenuSeparator.Size = new System.Drawing.Size(142, 6);
+            this.OptionsMenuSeparator.Size = new System.Drawing.Size(168, 6);
+            // 
+            // FavoritesManagerMenuItem
+            // 
+            this.FavoritesManagerMenuItem.Name = "FavoritesManagerMenuItem";
+            this.FavoritesManagerMenuItem.Size = new System.Drawing.Size(171, 22);
+            this.FavoritesManagerMenuItem.Text = "Favorites Manager";
             // 
             // SettingsMenuItem
             // 
             this.SettingsMenuItem.Name = "SettingsMenuItem";
-            this.SettingsMenuItem.Size = new System.Drawing.Size(145, 22);
+            this.SettingsMenuItem.Size = new System.Drawing.Size(171, 22);
             this.SettingsMenuItem.Text = "Settings";
             // 
             // AboutMenuItem
             // 
             this.AboutMenuItem.Name = "AboutMenuItem";
-            this.AboutMenuItem.Size = new System.Drawing.Size(145, 22);
+            this.AboutMenuItem.Size = new System.Drawing.Size(171, 22);
             this.AboutMenuItem.Text = "About";
             // 
             // ExitMenuItem
             // 
             this.ExitMenuItem.Name = "ExitMenuItem";
-            this.ExitMenuItem.Size = new System.Drawing.Size(145, 22);
+            this.ExitMenuItem.Size = new System.Drawing.Size(171, 22);
             this.ExitMenuItem.Text = "Exit";
             // 
             // LogTabs
@@ -253,7 +261,7 @@
         private Tabs.TabControl LogTabs;
         private System.Windows.Forms.Timer CheckForModifiedTabsTimer;
         private System.Windows.Forms.ContextMenuStrip FavoriteRepoContextMenu;
-        private System.Windows.Forms.ToolStripMenuItem UnfavoriteFavoriteRepoContextMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem RemoveFavoriteContextMenuItem;
         private System.Windows.Forms.ContextMenuStrip OptionsContextMenu;
         private System.Windows.Forms.ToolStripMenuItem OpenRepoMenuItem;
         private System.Windows.Forms.ToolStripMenuItem RecentReposMenu;
@@ -263,6 +271,7 @@
         private System.Windows.Forms.ToolStripMenuItem ExitMenuItem;
         private System.Windows.Forms.ContextMenuStrip FavoritesMenuContextMenu;
         private System.Windows.Forms.ToolStripMenuItem ShowFavoritesManagerMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem FavoritesManagerMenuItem;
     }
 }
 

@@ -39,11 +39,12 @@ namespace TabbedTortoiseGit
             LogTabs.DragDrop += TabbedTortoiseGitForm_DragDrop;
 
             FavoritesMenuStrip.MouseClick += FavoritesMenuStrip_MouseClick;
-            UnfavoriteFavoriteRepoContextMenuItem.Click += UnfavoriteFavoriteRepoContextMenuItem_Click;
+            RemoveFavoriteContextMenuItem.Click += RemoveFavoriteContextMenuItem_Click;
 
             ShowFavoritesManagerMenuItem.Click += ShowFavoritesManagerMenuItem_Click;
 
             OpenRepoMenuItem.Click += OpenRepoMenuItem_Click;
+            FavoritesManagerMenuItem.Click += ShowFavoritesManagerMenuItem_Click;
             SettingsMenuItem.Click += SettingsMenuItem_Click;
             AboutMenuItem.Click += AboutMenuItem_Click;
             ExitMenuItem.Click += ExitMenuItem_Click;
@@ -286,10 +287,10 @@ namespace TabbedTortoiseGit
             }
         }
 
-        private void UnfavoriteFavoriteRepoContextMenuItem_Click( object sender, EventArgs e )
+        private void RemoveFavoriteContextMenuItem_Click( object sender, EventArgs e )
         {
             TreeNode<FavoriteRepo> favorite = (TreeNode<FavoriteRepo>)FavoriteRepoContextMenu.Tag;
-            RemoveFavoriteRepo( favorite );
+            RemoveFavorite( favorite );
         }
 
         private void ShowFavoritesManagerMenuItem_Click( object sender, EventArgs e )
