@@ -106,7 +106,7 @@
     <Compile Include="FastSubmoduleUpdateForm.Designer.cs">
       <DependentUpon>FastSubmoduleUpdateForm.cs</DependentUpon>
     </Compile>
-    <Compile Include="FavoriteRepos.cs" />
+    <Compile Include="FavoriteRepo.cs" />
     <Compile Include="FavoritesManagerDialog.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -144,6 +144,7 @@
     <Compile Include="SettingsForm.Designer.cs">
       <DependentUpon>SettingsForm.cs</DependentUpon>
     </Compile>
+    <Compile Include="TreeNode.cs" />
     <Compile Include="TTG.cs" />
     <Compile Include="TabbedTortoiseGitForm.cs">
       <SubType>Form</SubType>

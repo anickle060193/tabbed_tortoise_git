@@ -29,6 +29,18 @@ namespace TabbedTortoiseGit.Properties
         [DebuggerNonUserCode]
         [DefaultSettingValue( "" )]
         [EditorBrowsable( EditorBrowsableState.Never )]
+        [Obsolete( "User FavoriteReposJsonString instead.", true )]
+        [NoSettingsVersionUpgrade]
+        public String FavoriteReposString
+        {
+            get { throw new NotSupportedException( "FavoriteReposString is obsolete. Use FavoriteReposJsonString." ); }
+            set { throw new NotSupportedException( "FavoriteReposString is obsolete. Use FavoriteReposJsonString." ); }
+        }
+
+        [UserScopedSetting]
+        [DebuggerNonUserCode]
+        [DefaultSettingValue( "" )]
+        [EditorBrowsable( EditorBrowsableState.Never )]
         [Obsolete( "User StartupRepos instead.", true )]
         [NoSettingsVersionUpgrade]
         public List<String> DefaultRepos
@@ -37,24 +49,24 @@ namespace TabbedTortoiseGit.Properties
             set { throw new NotSupportedException( "DefaultRepos is obsolete. Use StartupRepos." ); }
         }
 
-        public Dictionary<String,String> FavoriteRepos
+        public TreeNode<FavoriteRepo> FavoriteRepos
         {
             get
             {
-                Dictionary<String, String> favoriteRepos = null;
+                TreeNode<FavoriteRepo> favoriteRepos = null;
                 try
                 {
-                    favoriteRepos = JsonConvert.DeserializeObject<Dictionary<String, String>>( Settings.Default.FavoriteReposString );
+                    favoriteRepos = JsonConvert.DeserializeObject<TreeNode<FavoriteRepo>>( Settings.Default.FavoriteReposJsonString );
                 }
-                catch( JsonReaderException e )
+                catch( JsonException e )
                 {
-                    LOG.ErrorFormat( "Failed to parse Favorite Repos setting - Favorited Repos: {0}", Settings.Default.FavoriteReposString );
+                    LOG.ErrorFormat( "Failed to deserialize Favorite Repos setting - Favorited Repos:\n{0}", Settings.Default.FavoriteReposJsonString );
                     LOG.Error( e );
                 }
 
-                if( favoriteRepos == null )
+                if( favoriteRepos == null || favoriteRepos.Value != Settings.Default.DefaultFavoriteRepos.Value )
                 {
-                    return new Dictionary<String, String>();
+                    return Settings.Default.DefaultFavoriteRepos;
                 }
                 else
                 {
@@ -64,7 +76,22 @@ namespace TabbedTortoiseGit.Properties
 
             set
             {
-                Settings.Default.FavoriteReposString = JsonConvert.SerializeObject( value );
+                try
+                {
+                    Settings.Default.FavoriteReposJsonString = JsonConvert.SerializeObject( value );
+                }
+                catch( JsonException e )
+                {
+                    LOG.Error( "Failed to serialize FavoriteRepos", e );
+                }
+            }
+        }
+
+        public TreeNode<FavoriteRepo> DefaultFavoriteRepos
+        {
+            get
+            {
+                return new TreeNode<FavoriteRepo>( new FavoriteRepo( "Favorites", "", false, true ) );
             }
         }
 
@@ -138,18 +165,66 @@ namespace TabbedTortoiseGit.Properties
                 Settings.Default.Upgrade();
                 Settings.Default.UpgradeRequired = false;
 
+                bool upgradedRepoString = false;
                 try
                 {
-                    Object oldValue = Settings.Default.GetPreviousVersion( "FavoritedRepos" );
-                    if( oldValue != null && oldValue is String )
+                    String reposString = Settings.Default.GetPreviousVersion( "FavoriteReposString" ) as String;
+                    if( reposString != null )
                     {
-                        Settings.Default.FavoriteReposString = (String)oldValue;
-                        LOG.Debug( "Upgraded FavoritedRepos to FavoriteReposString" );
+                        Dictionary<String, String> favoritedRepos = JsonConvert.DeserializeObject<Dictionary<String, String>>( reposString );
+
+                        TreeNode<FavoriteRepo> root = Settings.Default.DefaultFavoriteRepos;
+
+                        if( favoritedRepos != null )
+                        {
+                            foreach( KeyValuePair<String, String> favorite in favoritedRepos )
+                            {
+                                root.Add( new FavoriteRepo( favorite.Key, favorite.Value, false, false ) );
+                            }
+                        }
+
+                        Settings.Default.FavoriteRepos = root;
+
+                        upgradedRepoString = true;
                     }
                 }
                 catch( SettingsPropertyNotFoundException ex )
                 {
-                    LOG.Error( "Failed to upgrade FavoritedRepos setting", ex );
+                    LOG.Error( "Failed to upgrade FavoriteReposString setting", ex );
+                }
+                catch( JsonException ex )
+                {
+                    LOG.Error( "Failed to upgrade FavoriteReposString setting", ex );
+                }
+
+                if( !upgradedRepoString )
+                {
+                    try
+                    {
+                        String reposString = Settings.Default.GetPreviousVersion( "FavoritedRepos" ) as String;
+                        if( reposString != null )
+                        {
+                            Dictionary<String, String> favoritedRepos = JsonConvert.DeserializeObject<Dictionary<String, String>>( reposString );
+
+                            TreeNode<FavoriteRepo> root = Settings.Default.DefaultFavoriteRepos;
+
+                            if( favoritedRepos != null )
+                            {
+                                foreach( KeyValuePair<String, String> favorite in favoritedRepos )
+                                {
+                                    root.Add( new FavoriteRepo( favorite.Key, favorite.Value, false, false ) );
+                                }
+                            }
+
+                            Settings.Default.FavoriteRepos = root;
+
+                            upgradedRepoString = true;
+                        }
+                    }
+                    catch( SettingsPropertyNotFoundException ex )
+                    {
+                        LOG.Error( "Failed to upgrade FavoritedRepos setting", ex );
+                    }
                 }
 
                 try
@@ -172,9 +247,9 @@ namespace TabbedTortoiseGit.Properties
                 Settings.Default.StartupRepos = new List<String>();
             }
 
-            if( Settings.Default.FavoriteReposString == null )
+            if( Settings.Default.FavoriteReposJsonString == null )
             {
-                Settings.Default.FavoriteReposString = "";
+                Settings.Default.FavoriteReposJsonString = "";
             }
 
             if( Settings.Default.RecentRepos == null )

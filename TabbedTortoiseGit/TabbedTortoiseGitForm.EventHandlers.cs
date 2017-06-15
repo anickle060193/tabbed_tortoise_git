@@ -48,10 +48,8 @@ namespace TabbedTortoiseGit
             AboutMenuItem.Click += AboutMenuItem_Click;
             ExitMenuItem.Click += ExitMenuItem_Click;
 
-            TabContextMenu.Opening += TabContextMenu_Opening;
-
             OpenRepoLocationTabMenuItem.Click += OpenRepoLocationTabMenuItem_Click;
-            FavoriteRepoTabMenuItem.Click += FavoriteRepoTabMenuItem_Click;
+            AddToFavoritesRepoTabMenuItem.Click += AddToFavoritesRepoTabMenuItem_Click;
             CloseRepoTabMenuItem.Click += CloseRepoTabMenuItem_Click;
 
             NotifyIcon.DoubleClick += NotifyIcon_DoubleClick;
@@ -263,8 +261,8 @@ namespace TabbedTortoiseGit
         private async void FavoritedRepoMenuItem_Click( object sender, EventArgs e )
         {
             ToolStripItem item = (ToolStripItem)sender;
-            FavoriteRepoTag tag = (FavoriteRepoTag)item.Tag;
-            await OpenLog( tag.Repo );
+            TreeNode<FavoriteRepo> favorite = (TreeNode<FavoriteRepo>)item.Tag;
+            await OpenLog( favorite.Value.Repo );
         }
 
         private void FavoritesMenuStrip_MouseClick( object sender, MouseEventArgs e )
@@ -274,10 +272,10 @@ namespace TabbedTortoiseGit
                 ToolStripItem favoriteItem = FavoritesMenuStrip.GetItemAt( e.Location );
                 if( favoriteItem != null )
                 {
-                    if( favoriteItem.Tag is FavoriteRepoTag )
+                    if( favoriteItem.Tag is TreeNode<FavoriteRepo> )
                     {
-                        FavoriteRepoTag tag = (FavoriteRepoTag)favoriteItem.Tag;
-                        FavoriteRepoContextMenu.Tag = tag;
+                        TreeNode<FavoriteRepo> favorite = (TreeNode<FavoriteRepo>)favoriteItem.Tag;
+                        FavoriteRepoContextMenu.Tag = favorite;
                         FavoriteRepoContextMenu.Show( FavoritesMenuStrip, e.Location );
                     }
                 }
@@ -290,13 +288,16 @@ namespace TabbedTortoiseGit
 
         private void UnfavoriteFavoriteRepoContextMenuItem_Click( object sender, EventArgs e )
         {
-            FavoriteRepoTag tag = (FavoriteRepoTag)FavoriteRepoContextMenu.Tag;
-            RemoveFavoriteRepo( tag.Repo );
+            TreeNode<FavoriteRepo> favorite = (TreeNode<FavoriteRepo>)FavoriteRepoContextMenu.Tag;
+            RemoveFavoriteRepo( favorite );
         }
 
         private void ShowFavoritesManagerMenuItem_Click( object sender, EventArgs e )
         {
-            FavoritesManagerDialog.ShowFavoritesManager();
+            if( FavoritesManagerDialog.ShowFavoritesManager() )
+            {
+                UpdateFavoriteReposFromSettings();
+            }
         }
 
         private async void OpenRepoMenuItem_Click( object sender, EventArgs e )
@@ -365,45 +366,29 @@ namespace TabbedTortoiseGit
             }
         }
 
-        private void TabContextMenu_Opening( object sender, System.ComponentModel.CancelEventArgs e )
-        {
-            TabTag t = (TabTag)LogTabs.SelectedTab.Tag;
-            FavoriteRepoTabMenuItem.Checked = IsFavoriteRepo( t.Repo );
-        }
-
         private void OpenRepoLocationTabMenuItem_Click( object sender, EventArgs e )
         {
             TabTag t = (TabTag)LogTabs.SelectedTab.Tag;
             Util.OpenInExplorer( t.Repo );
         }
 
-        private void FavoriteRepoTabMenuItem_Click( object sender, EventArgs e )
+        private void AddToFavoritesRepoTabMenuItem_Click( object sender, EventArgs e )
         {
             TabTag t = (TabTag)LogTabs.SelectedTab.Tag;
 
-            if( FavoriteRepoTabMenuItem.Checked )
+            bool added = false;
+            String name = null;
+            while( !added )
             {
-                RemoveFavoriteRepo( t.Repo );
-            }
-            else
-            {
-                bool added = false;
-                String name = null;
-                while( !added )
+                name = InputDialog.ShowInput( "Favorite Repo Name", "Name for \"{0}\"".XFormat( t.Repo ), name );
+                if( name == null )
                 {
-                    name = InputDialog.ShowInput( "Favorite Repo Name", "Name for \"{0}\"".XFormat( t.Repo ), name );
-                    if( name == null )
-                    {
-                        break;
-                    }
-                    else if( !String.IsNullOrWhiteSpace( name ) )
-                    {
-                        if( AddFavoriteRepo( name, t.Repo ) )
-                        {
-                            FavoriteRepoTabMenuItem.Checked = true;
-                            added = true;
-                        }
-                    }
+                    break;
+                }
+                else if( !String.IsNullOrWhiteSpace( name ) )
+                {
+                    AddFavoriteRepo( name, t.Repo );
+                    added = true;
                 }
             }
         }

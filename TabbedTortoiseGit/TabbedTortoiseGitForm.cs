@@ -19,6 +19,7 @@ using Newtonsoft.Json;
 using log4net;
 using log4net.Config;
 using Tabs;
+using System.IO;
 
 namespace TabbedTortoiseGit
 {
@@ -33,6 +34,8 @@ namespace TabbedTortoiseGit
         private readonly Semaphore _checkForModifiedTabsSemaphore = new Semaphore( 1, 1 );
         private readonly bool _startup;
 
+        private TreeNode<FavoriteRepo> _favoriteRepos;
+
         class TabTag
         {
             public Process Process { get; private set; }
@@ -44,18 +47,6 @@ namespace TabbedTortoiseGit
                 Process = process;
                 Repo = repo;
                 Modified = false;
-            }
-        }
-
-        class FavoriteRepoTag
-        {
-            public String Name { get; private set; }
-            public String Repo { get; private set; }
-
-            public FavoriteRepoTag( String name, String repo )
-            {
-                Name = name;
-                Repo = repo;
             }
         }
 
@@ -169,7 +160,7 @@ namespace TabbedTortoiseGit
 
             TabContextMenu.Items.Clear();
             TabContextMenu.Items.Add( OpenRepoLocationTabMenuItem );
-            TabContextMenu.Items.Add( FavoriteRepoTabMenuItem );
+            TabContextMenu.Items.Add( AddToFavoritesRepoTabMenuItem );
 
             List<TortoiseGitCommand> actions = Settings.Default.TabContextMenuGitActions
                                                     .Where( action => TortoiseGit.ACTIONS.ContainsKey( action ) )
@@ -197,19 +188,39 @@ namespace TabbedTortoiseGit
 
             FavoritesMenuStrip.Items.Clear();
 
-            foreach( KeyValuePair<String, String> kv in Settings.Default.FavoriteRepos )
-            {
-                FavoriteRepoTag tag = new FavoriteRepoTag( kv.Key, kv.Value );
-                if( Git.IsRepo( tag.Repo ) )
-                {
-                    ToolStripItem item = FavoritesMenuStrip.Items.Add( tag.Name );
-                    item.ToolTipText = tag.Repo;
-                    item.Tag = tag;
-                    item.Click += FavoritedRepoMenuItem_Click;
-                }
-            }
+            _favoriteRepos = Settings.Default.FavoriteRepos;
+
+            CreateFavoritesMenu( _favoriteRepos, FavoritesMenuStrip.Items );
 
             FavoritesMenuStrip.ResumeLayout();
+        }
+
+        private void CreateFavoritesMenu( TreeNode<FavoriteRepo> favorites, ToolStripItemCollection menuItems )
+        {
+            foreach( TreeNode<FavoriteRepo> favorite in favorites.Children )
+            {
+                ToolStripMenuItem item = new ToolStripMenuItem( favorite.Value.Name );
+                item.ToolTipText = favorite.Value.Repo;
+                if( favorite.Value.IsFavoriteFolder )
+                {
+                    item.Image = Resources.FolderFolder;
+                }
+                else if( favorite.Value.IsDirectory )
+                {
+                    item.Image = Resources.Folder;
+                    item.Click += FavoritedRepoMenuItem_Click;
+                }
+                else
+                {
+                    item.Image = Resources.File;
+                    item.Click += FavoritedRepoMenuItem_Click;
+                }
+                item.Tag = favorite;
+
+                menuItems.Add( item );
+
+                CreateFavoritesMenu( favorite, item.DropDownItems );
+            }
         }
 
         private void AddToRecentRepos( String path )
@@ -237,67 +248,30 @@ namespace TabbedTortoiseGit
             UpdateRecentReposFromSettings();
         }
 
-        private bool AddFavoriteRepo( String name, String path )
+        private void AddFavoriteRepo( String name, String path )
         {
             String repo = Git.GetBaseRepoDirectory( path );
             if( repo == null )
             {
                 LOG.ErrorFormat( "Failed to add favorite repo: {0}", path );
-                return false;
             }
 
-            Dictionary<String, String> favoriteRepos = Settings.Default.FavoriteRepos;
+            bool isDirectroy = Directory.Exists( repo );
+            _favoriteRepos.Add( new FavoriteRepo( name, path, isDirectroy, false ) );
 
-            if( favoriteRepos.ContainsKey( name ) )
-            {
-                MessageBox.Show( "A favorited repo already exists with name: \"{0}\".".XFormat( name ) );
-                return false;
-            }
-
-            if( favoriteRepos.ContainsValue( repo ) )
-            {
-                MessageBox.Show( "A favorited repo already exists for that repo." );
-                return false;
-            }
-
-            favoriteRepos[ name ] = repo;
-            Settings.Default.FavoriteRepos = favoriteRepos;
-            Settings.Default.Save();
-
-            UpdateFavoriteReposFromSettings();
-            return true;
-        }
-
-        private void RemoveFavoriteRepo( String path )
-        {
-            String repo = Git.GetBaseRepoDirectory( path );
-            if( repo == null )
-            {
-                LOG.ErrorFormat( "Failed to remove favorite repo - Path: {0}", path );
-                return;
-            }
-
-            Dictionary<String, String> favoriteRepos = Settings.Default.FavoriteRepos;
-
-            foreach( String key in favoriteRepos.Where( kv => kv.Value == repo ).Select( kv => kv.Key ).ToList() )
-            {
-                favoriteRepos.Remove( key );
-            }
-            Settings.Default.FavoriteRepos = favoriteRepos;
+            Settings.Default.FavoriteRepos = _favoriteRepos;
             Settings.Default.Save();
 
             UpdateFavoriteReposFromSettings();
         }
 
-        private bool IsFavoriteRepo( String path )
+        private void RemoveFavoriteRepo( TreeNode<FavoriteRepo> favorite )
         {
-            String repo = Git.GetBaseRepoDirectory( path );
-            if( repo == null )
-            {
-                return false;
-            }
+            favorite.Parent.Remove( favorite );
+            Settings.Default.FavoriteRepos = _favoriteRepos;
+            Settings.Default.Save();
 
-            return Settings.Default.FavoriteRepos.ContainsValue( repo );
+            UpdateFavoriteReposFromSettings();
         }
 
         private async Task OpenLog( String path )

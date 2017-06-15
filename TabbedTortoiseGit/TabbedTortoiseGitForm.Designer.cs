@@ -37,7 +37,7 @@
             this.ExitNotifyIconMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.TabContextMenu = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.OpenRepoLocationTabMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.FavoriteRepoTabMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.AddToFavoritesRepoTabMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.CloseRepoTabMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.CheckForModifiedTabsTimer = new System.Windows.Forms.Timer(this.components);
             this.FavoriteRepoContextMenu = new System.Windows.Forms.ContextMenuStrip(this.components);
@@ -103,11 +103,11 @@
             // 
             this.TabContextMenu.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.OpenRepoLocationTabMenuItem,
-            this.FavoriteRepoTabMenuItem,
+            this.AddToFavoritesRepoTabMenuItem,
             this.CloseRepoTabMenuItem});
             this.TabContextMenu.Name = "TabContextMenu";
             this.TabContextMenu.RenderMode = System.Windows.Forms.ToolStripRenderMode.Professional;
-            this.TabContextMenu.Size = new System.Drawing.Size(183, 70);
+            this.TabContextMenu.Size = new System.Drawing.Size(183, 92);
             // 
             // OpenRepoLocationTabMenuItem
             // 
@@ -116,11 +116,11 @@
             this.OpenRepoLocationTabMenuItem.Size = new System.Drawing.Size(182, 22);
             this.OpenRepoLocationTabMenuItem.Text = "Open Repo Location";
             // 
-            // FavoriteRepoTabMenuItem
+            // AddToFavoritesRepoTabMenuItem
             // 
-            this.FavoriteRepoTabMenuItem.Name = "FavoriteRepoTabMenuItem";
-            this.FavoriteRepoTabMenuItem.Size = new System.Drawing.Size(182, 22);
-            this.FavoriteRepoTabMenuItem.Text = "Favorite Repo";
+            this.AddToFavoritesRepoTabMenuItem.Name = "AddToFavoritesRepoTabMenuItem";
+            this.AddToFavoritesRepoTabMenuItem.Size = new System.Drawing.Size(182, 22);
+            this.AddToFavoritesRepoTabMenuItem.Text = "Add to Favorites";
             // 
             // CloseRepoTabMenuItem
             // 
@@ -248,7 +248,7 @@
         private System.Windows.Forms.ToolStripMenuItem OpenNotifyIconMenuItem;
         private System.Windows.Forms.ContextMenuStrip TabContextMenu;
         private System.Windows.Forms.ToolStripMenuItem OpenRepoLocationTabMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem FavoriteRepoTabMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem AddToFavoritesRepoTabMenuItem;
         private System.Windows.Forms.ToolStripMenuItem CloseRepoTabMenuItem;
         private Tabs.TabControl LogTabs;
         private System.Windows.Forms.Timer CheckForModifiedTabsTimer;

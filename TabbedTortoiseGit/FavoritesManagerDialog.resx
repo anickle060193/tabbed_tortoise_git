@@ -118,18 +118,18 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <metadata name="ImageList.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
-    <value>433, 17</value>
+    <value>200, 15</value>
   </metadata>
   <data name="ImageList.ImageStream" mimetype="application/x-microsoft.net.object.binary.base64">
     <value>
         AAEAAAD/////AQAAAAAAAAAMAgAAAFdTeXN0ZW0uV2luZG93cy5Gb3JtcywgVmVyc2lvbj00LjAuMC4w
         LCBDdWx0dXJlPW5ldXRyYWwsIFB1YmxpY0tleVRva2VuPWI3N2E1YzU2MTkzNGUwODkFAQAAACZTeXN0
         ZW0uV2luZG93cy5Gb3Jtcy5JbWFnZUxpc3RTdHJlYW1lcgEAAAAERGF0YQcCAgAAAAkDAAAADwMAAADO
-        BgAAAk1TRnQBSQFMAgEBAwEAAQgBAAEIAQABEAEAARABAAT/ASEBAAj/AUIBTQE2BwABNgMAASgDAAFA
-        AwABEAMAAQEBAAEgBgABEP8AGwADJgHDAwAB/wMAAf8DAAH/AwAB/wMAAf8DAAH/AwAB/wMAAf8DAAH/
-        AwAB/wMlAcLTAAH/KwAB/wwAAyYBwwMAAf8DAAH/AwAB/wMAAf8DAAH/AwAB/wMAAf8DAAH/AwAB/wMA
-        Af8DAAH/AwAB/wMlAcIIAAMmAcMDAAH/AwAB/wcAAf8DAAH/AwAB/wMAAf8DAAH/AwAB/wMAAf8DAAH/
-        AwAB/wMlAcJPAAH/KwAB/w8AAf8DAAH/AwAB/wMAAf8DAAH/AwAB/wMAAf8DAAH/AwAB/wMAAf8DAAH/
+        BgAAAk1TRnQBSQFMAgEBAwEAASgBAAEoAQABEAEAARABAAT/ASEBAAj/AUIBTQE2BwABNgMAASgDAAFA
+        AwABEAMAAQEBAAEgBgABEP8AGwADUwHDAwAB/wMAAf8DAAH/AwAB/wMAAf8DAAH/AwAB/wMAAf8DAAH/
+        AwAB/wNSAcLTAAH/KwAB/wwAA1MBwwMAAf8DAAH/AwAB/wMAAf8DAAH/AwAB/wMAAf8DAAH/AwAB/wMA
+        Af8DAAH/AwAB/wNSAcIIAANTAcMDAAH/AwAB/wcAAf8DAAH/AwAB/wMAAf8DAAH/AwAB/wMAAf8DAAH/
+        AwAB/wNSAcJPAAH/KwAB/w8AAf8DAAH/AwAB/wMAAf8DAAH/AwAB/wMAAf8DAAH/AwAB/wMAAf8DAAH/
         AwAB/wMAAf8DAAH/CwAB/wMAAf8DAAH/BwAB/wMAAf8DAAH/AwAB/wMAAf8DAAH/AwAB/wMAAf8DAAH/
         AwAB/08AAf8HAAH/AwAB/wMAAf8DAAH/AwAB/wMAAf8DAAH/CwAB/w8AAf8DAAH/AwAB/wMAAf8DAAH/
         AwAB/wMAAf8DAAH/AwAB/wMAAf8DAAH/AwAB/wMAAf8DAAH/CwAB/wMAAf8DAAH/BwAB/wMAAf8DAAH/
@@ -142,31 +142,22 @@
         AwAB/wcAAf8TAAH/AwAB/wMAAf8DAAH/AwAB/08AAf8HAAH/AwAB/wMAAf8DAAH/AwAB/wMAAf8DAAH/
         CwAB/w8AAf8DAAH/AwAB/wMAAf8DAAH/AwAB/wMAAf8DAAH/AwAB/wMAAf8DAAH/AwAB/wMAAf8DAAH/
         CwAB/wMAAf8DAAH/BwAB/wMAAf8DAAH/AwAB/wMAAf8DAAH/XwAB/ysAAf8PAAH/AwAB/wMAAf8DAAH/
-        AwAB/wMAAf8DAAH/AwAB/wMAAf8DAAH/AwAB/wMAAf8DAAH/AwAB/wsAAf8DAAH/AwAB/wMlAToYAAMl
+        AwAB/wMAAf8DAAH/AwAB/wMAAf8DAAH/AwAB/wMAAf8DAAH/AwAB/wsAAf8DAAH/AwAB/wMnAToYAAMo
         ATwDAAH/AwAB/wMAAf9PAAH/KwAB/w8AAf8DAAH/AwAB/wMAAf8DAAH/AwAB/wMAAf8DAAH/AwAB/wMA
         Af8DAAH/AwAB/wMAAf8DAAH/CwAB/wMAAf8DAAH/AwAB/wMAAf8DAAH/AwAB/wMAAf8DAAH/AwAB/wMA
-        Af8DAAH/AwAB/wMAAf9PAAH/BwAB/wMAAf8DAAH/AwAB/xAAAzQBgAMWAd8PAAH/AwAB/wMAAf8DAAH/
-        AwAB/wMAAf8DAAH/AwAB/wMAAf8DAAH/AwAB/wMAAf8DAAH/AyYBwwsAAf8DAAH/AwAB/wMAAf8DAAH/
-        AwAB/wMAAf8DAAH/AwAB/wMAAf8DAAH/AwAB/wMAAf8DJgHDTwAB/yAAAzQBdwMVAeEDGAEiDwAB/xcA
-        Af8nAAH/FwAB/2sAAf8cAAM0AXcDFQHhAxgBIhAAAyQBxQMAAf8DAAH/AwAB/wMAAf8DAAH/Ax8B0CQA
-        AyQBxQMAAf8DAAH/AwAB/wMAAf8DAAH/Ax8B0GgAAyQBxQMAAf8DAAH/AwAB/wMAAf8DAAH/AwAB/wMA
-        Af8DFgHfAxcBIP8A0QABQgFNAT4HAAE+AwABKAMAAUADAAEQAwABAQEAAQEFAAGAFwAD/wEABv8CAAHA
+        Af8DAAH/AwAB/wMAAf9PAAH/BwAB/wMAAf8DAAH/AwAB/xAAA0YBgANDAd8PAAH/AwAB/wMAAf8DAAH/
+        AwAB/wMAAf8DAAH/AwAB/wMAAf8DAAH/AwAB/wMAAf8DAAH/A1MBwwsAAf8DAAH/AwAB/wMAAf8DAAH/
+        AwAB/wMAAf8DAAH/AwAB/wMAAf8DAAH/AwAB/wMAAf8DUwHDTwAB/yAAA0MBdwNEAeEDGAEiDwAB/xcA
+        Af8nAAH/FwAB/2sAAf8cAANDAXcDRAHhAxgBIhAAA1MBxQMAAf8DAAH/AwAB/wMAAf8DAAH/A1AB0CQA
+        A1MBxQMAAf8DAAH/AwAB/wMAAf8DAAH/A1AB0GgAA1MBxQMAAf8DAAH/AwAB/wMAAf8DAAH/AwAB/wMA
+        Af8DQwHfAxcBIP8A0QABQgFNAT4HAAE+AwABKAMAAUADAAEQAwABAQEAAQEFAAGAFwAD/wEABv8CAAHA
         AQME/wIAAd8B+wGAAQEBiAEBAgAB3wH7AYABAQGIAQECAAHQARsBgAEBAYgBAQIAAd8B+wGAAQEBiAEB
         AgAB0AEbAYABAQGIAQECAAHfAfsBgAEBAYsBwQIAAdABGwGAAQEBiAEfAgAB3wH7AYABAQGHAeECAAHf
         AfsBgAEBAYABAQIAAdAB8wGAAQEBgAEBAgAB3wHjAb4B/wG+Af8CAAHfAccBgAH/AYAB/wIAAcABDwT/
         AgAG/wIACw==
 </value>
   </data>
-  <metadata name="FavoritesTreeViewContextMenu.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
+  <metadata name="FavoritesContextMenu.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
     <value>17, 17</value>
-  </metadata>
-  <metadata name="FavoritesListContextMenu.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
-    <value>241, 17</value>
-  </metadata>
-  <metadata name="FavoritesTreeViewItemContextMenu.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
-    <value>537, 17</value>
-  </metadata>
-  <metadata name="FavoritesListItemContextMenu.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
-    <value>785, 17</value>
   </metadata>
 </root>

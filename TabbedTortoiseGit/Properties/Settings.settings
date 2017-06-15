@@ -26,9 +26,6 @@
     <Setting Name="TabContextMenuGitActions" Type="System.Collections.Generic.List&lt;System.String&gt;" Scope="User">
       <Value Profile="(Default)" />
     </Setting>
-    <Setting Name="FavoriteReposString" Type="System.String" Scope="User">
-      <Value Profile="(Default)" />
-    </Setting>
     <Setting Name="UpgradeRequired" Type="System.Boolean" Scope="User">
       <Value Profile="(Default)">True</Value>
     </Setting>
@@ -94,6 +91,9 @@
     </Setting>
     <Setting Name="LastUpdatePromptTime" Type="System.DateTime" Scope="User">
       <Value Profile="(Default)">2000-01-01</Value>
+    </Setting>
+    <Setting Name="FavoriteReposJsonString" Type="System.String" Scope="User">
+      <Value Profile="(Default)" />
     </Setting>
   </Settings>
 </SettingsFile>

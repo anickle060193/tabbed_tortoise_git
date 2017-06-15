@@ -118,18 +118,6 @@ namespace TabbedTortoiseGit.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("")]
-        public string FavoriteReposString {
-            get {
-                return ((string)(this["FavoriteReposString"]));
-            }
-            set {
-                this["FavoriteReposString"] = value;
-            }
-        }
-        
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("True")]
         public bool UpgradeRequired {
             get {
@@ -387,6 +375,18 @@ namespace TabbedTortoiseGit.Properties {
             }
             set {
                 this["LastUpdatePromptTime"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        public string FavoriteReposJsonString {
+            get {
+                return ((string)(this["FavoriteReposJsonString"]));
+            }
+            set {
+                this["FavoriteReposJsonString"] = value;
             }
         }
     }
