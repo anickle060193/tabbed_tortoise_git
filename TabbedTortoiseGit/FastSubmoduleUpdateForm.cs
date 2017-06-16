@@ -20,8 +20,8 @@ namespace TabbedTortoiseGit
     {
         private static readonly ILog LOG = LogManager.GetLogger( typeof( FastSubmoduleUpdateForm ) );
 
-        private readonly List<String> _submodules;
-        private readonly Dictionary<String, bool> _checkedSubmodules;
+        private readonly List<String> _submodules = new List<String>();
+        private readonly Dictionary<String, bool> _checkedSubmodules = new Dictionary<String, bool>();
 
         private List<String> _modifiedSubmodules;
         private bool _userModified;
@@ -45,23 +45,7 @@ namespace TabbedTortoiseGit
 
             this.Text = "{0} - {1}".XFormat( Repo, this.Text );
 
-            using( Repository r = new Repository( Repo ) )
-            {
-                _submodules = new List<String>();
-                _checkedSubmodules = new Dictionary<String, bool>();
-
-                foreach( Submodule s in r.Submodules )
-                {
-                    LOG.DebugFormat( "Submodule - {0}", s.Path );
-                    _submodules.Add( s.Path );
-                    _checkedSubmodules[ s.Path ] = true;
-                    SubmoduleCheckList.Items.Add( s.Path );
-                }
-            }
-
-            UpdateChecked();
-
-            this.Load += FastSubmoduleUpdateForm_Load;
+            this.Shown += FastSubmoduleUpdateForm_Shown;
 
             Cancel.Click += Cancel_Click;
             UpdateSubmodulesButton.Click += UpdateSubmodulesButton_Click;
@@ -108,11 +92,23 @@ namespace TabbedTortoiseGit
             }
         }
 
-        private async void FastSubmoduleUpdateForm_Load( object sender, EventArgs e )
+        private async void FastSubmoduleUpdateForm_Shown( object sender, EventArgs e )
         {
-            LOG.Debug( "Load" );
+            LOG.Debug( "Shown" );
 
-            LOG.Debug( "Load - Get Modified Submodules - Start" );
+            LOG.Debug( "Shown - Get Submodules - Start" );
+            foreach( String submodule in await Git.GetSubmodules( Repo ) )
+            {
+                LOG.DebugFormat( "Submodule - {0}", submodule );
+                _submodules.Add( submodule );
+                _checkedSubmodules[ submodule ] = true;
+                SubmoduleCheckList.Items.Add( submodule );
+            }
+            LOG.Debug( "Shown - Get Submodules - End" );
+
+            UpdateChecked();
+
+            LOG.Debug( "Shown - Get Modified Submodules - Start" );
             try
             {
                 _modifiedSubmodules = await Git.GetModifiedSubmodules( Repo, _submodules );
@@ -121,7 +117,7 @@ namespace TabbedTortoiseGit
             {
                 LOG.Error( "An error occured while retrieving modified submodules.", ex );
             }
-            LOG.Debug( "Load - Get Modified Submodules - End" );
+            LOG.Debug( "Shown - Get Modified Submodules - End" );
 
             SelectModifiedSubmodules.Text = "Select Modified Submodules";
             SelectModifiedSubmodules.Enabled = true;

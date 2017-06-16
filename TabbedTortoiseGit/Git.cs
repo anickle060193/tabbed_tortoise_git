@@ -50,6 +50,23 @@ namespace TabbedTortoiseGit
             };
         }
 
+        public static async Task<List<String>> GetSubmodules( String path )
+        {
+            List<String> submodules = new List<String>();
+
+            String repo = GetBaseRepoDirectory( path );
+            if( repo == null )
+            {
+                return submodules;
+            }
+
+            using( Repository r = await Task.Run( () => new Repository( repo ) ) )
+            {
+                submodules.AddRange( r.Submodules.Select( s => s.Path ) );
+            }
+            return submodules;
+        }
+
         public static async Task<List<String>> GetModifiedSubmodules( String path, List<String> submodules )
         {
             List<String> modifiedSubmodules = new List<String>();

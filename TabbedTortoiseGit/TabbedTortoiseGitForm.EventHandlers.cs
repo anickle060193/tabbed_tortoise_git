@@ -24,7 +24,7 @@ namespace TabbedTortoiseGit
 
         private void InitializeEventHandlers()
         {
-            this.Load += TabbedTortoiseGitForm_Load;
+            this.Shown += TabbedTortoiseGitForm_Shown;
             this.VisibleChanged += TabbedTortoiseGitForm_VisibleChanged;
             this.DragOver += TabbedTortoiseGitForm_DragOver;
             this.DragDrop += TabbedTortoiseGitForm_DragDrop;
@@ -60,10 +60,8 @@ namespace TabbedTortoiseGit
             CheckForModifiedTabsTimer.Tick += CheckForModifiedTabsTimer_Tick;
         }
 
-        private async void TabbedTortoiseGitForm_Load( object sender, EventArgs e )
+        private async void TabbedTortoiseGitForm_Shown( object sender, EventArgs e )
         {
-            UpdateFromSettings( true );
-
             if( !_startup )
             {
                 await OpenStartupRepos();

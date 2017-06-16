@@ -61,6 +61,8 @@ namespace TabbedTortoiseGit
             InitializeComponent();
             InitializeEventHandlers();
 
+            UpdateFromSettings( true );
+
             _startup = startup;
 
             _folderDialog = new CommonOpenFileDialog();
@@ -101,6 +103,7 @@ namespace TabbedTortoiseGit
 
                 if( !Settings.Default.Location.IsEmpty )
                 {
+                    this.StartPosition = FormStartPosition.Manual;
                     this.Location = Settings.Default.Location;
                 }
 
