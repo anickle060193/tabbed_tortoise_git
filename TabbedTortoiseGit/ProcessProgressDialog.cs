@@ -26,6 +26,7 @@ namespace TabbedTortoiseGit
         private readonly ConcurrentQueue<Process> _processes = new ConcurrentQueue<Process>();
         private readonly ConcurrentDictionary<int, Process> _runningProcesses = new ConcurrentDictionary<int, Process>();
 
+        private DateTime _start;
         private bool _cancel;
         private bool _completed;
 
@@ -98,10 +99,12 @@ namespace TabbedTortoiseGit
 
             _cancel = false;
 
-            this.Shown += ( sender, e ) => Worker.RunWorkerAsync();
+            this.Shown += ProcessProgressDialog_Shown;
             this.FormClosing += ProcessProgressForm_FormClosing;
 
             Cancel.Click += Cancel_Click;
+
+            ElapsedUpdateTimer.Tick += ElapsedUpdateTimer_Tick;
 
             Worker.DoWork += Worker_DoWork;
             Worker.RunWorkerCompleted += Worker_RunWorkerCompleted;
@@ -120,6 +123,8 @@ namespace TabbedTortoiseGit
             p.OutputDataReceived += Process_OutputDataReceived;
             p.ErrorDataReceived += Process_ErrorDataReceived;
             p.Exited += Process_Exited;
+
+            ProgressBar.Maximum++;
         }
 
         private void Cancel_Click( object sender, EventArgs e )
@@ -146,6 +151,20 @@ namespace TabbedTortoiseGit
             }
         }
 
+        private void ProcessProgressDialog_Shown( object sender, EventArgs e )
+        {
+            LOG.Debug( "Shown" );
+
+            _start = DateTime.Now;
+            ElapsedUpdateTimer.Start();
+            Worker.RunWorkerAsync();
+        }
+
+        private void ElapsedUpdateTimer_Tick( object sender, EventArgs e )
+        {
+            ElapsedTime.Text = ( DateTime.Now - _start ).TotalSeconds.ToString( "0.00 seconds" );
+        }
+
         private void Worker_DoWork( object sender, DoWorkEventArgs e )
         {
             LOG.Debug( "Worker - Do Work" );
@@ -154,8 +173,12 @@ namespace TabbedTortoiseGit
 
         private void Worker_RunWorkerCompleted( object sender, RunWorkerCompletedEventArgs e )
         {
-            LOG.Debug( "Worker - Work Completed" );
+            LOG.DebugFormat( "Worker - Work Completed - Elapsed Time: {0}", DateTime.Now - _start );
+
             _completed = true;
+
+            ElapsedUpdateTimer.Stop();
+
             if( !_cancel )
             {
                 LogOutput( Environment.NewLine + this.CompletedText, CompletedTextColor );
@@ -251,6 +274,7 @@ namespace TabbedTortoiseGit
             {
                 LOG.ErrorFormat( "Process_Exited - Failed to remove running process - Process ID: {0}", p.Id );
             }
+            ProgressBar.UiBeginInvoke( (Action)ProgressBar.PerformStep );
         }
     }
 
