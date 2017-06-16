@@ -677,6 +677,7 @@ namespace Tabs
                 if( closeTab != null )
                 {
                     this.Tabs.Remove( closeTab );
+                    OnTabClosed( new TabClosedEventArgs( closeTab ) );
                     return;
                 }
             }
@@ -691,6 +692,7 @@ namespace Tabs
                     {
                         SelectedIndex = Tabs.IndexOf( t );
                         this.Tabs.Remove( t );
+                        OnTabClosed( new TabClosedEventArgs( t ) );
                         return;
                     }
                     else if( e.Button == MouseButtons.Right

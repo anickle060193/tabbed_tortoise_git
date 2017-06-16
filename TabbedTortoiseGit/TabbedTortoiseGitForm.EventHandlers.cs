@@ -398,6 +398,13 @@ namespace TabbedTortoiseGit
         {
             TabTag t = (TabTag)LogTabs.SelectedTab.Tag;
             this.RemoveLog( t.Process );
+
+            if( LogTabs.TabCount == 0
+             && Settings.Default.CloseWindowOnLastTabClosed )
+            {
+                LOG.Debug( "Close Repo Tab Menu - Closing window after last tab closed" );
+                this.Close();
+            }
         }
 
         private void GitCommandMenuItem_Click( object sender, EventArgs e )
