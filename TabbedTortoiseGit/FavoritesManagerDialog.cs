@@ -150,17 +150,24 @@ namespace TabbedTortoiseGit
 
         private void AddFavoriteMenuItem_Click( object sender, EventArgs e )
         {
-            if( _folderDialog.ShowDialog() != CommonFileDialogResult.Ok )
+            String repo = null;
+            while( repo == null )
             {
-                return;
-            }
+                if( _folderDialog.ShowDialog() != CommonFileDialogResult.Ok )
+                {
+                    return;
+                }
 
-            String repo = _folderDialog.FileName;
+                String path = _folderDialog.FileName;
 
-            if( !Git.IsRepo( repo ) )
-            {
-                MessageBox.Show( "Directory is not a Git repo." );
-                return;
+                if( !Git.IsRepo( path ) )
+                {
+                    MessageBox.Show( "Directory is not a Git repo.", "Invalid Directory", MessageBoxButtons.OK );
+                }
+                else
+                {
+                    repo = path;
+                }
             }
 
             String favoriteName = InputDialog.ShowInput( "Favorite Name", "Name for \"{0}\"".XFormat( repo ), "" );
