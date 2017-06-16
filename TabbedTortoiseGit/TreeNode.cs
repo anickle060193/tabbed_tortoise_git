@@ -32,6 +32,41 @@ namespace TabbedTortoiseGit
             }
         }
 
+        [JsonIgnore]
+        public int NestedCount
+        {
+            get
+            {
+                return this.Children.Count + this.Children.Sum( child => child.NestedCount );
+            }
+        }
+
+        [JsonIgnore]
+        public int NestedIndex
+        {
+            get
+            {
+                if( this.Parent == null )
+                {
+                    return 0;
+                }
+                else
+                {
+                    int index = this.Parent.NestedIndex + 1;
+                    foreach( TreeNode<T> child in this.Parent.Children )
+                    {
+                        if( child == this )
+                        {
+                            break;
+                        }
+                        index += child.NestedCount + 1;
+                    }
+
+                    return index;
+                }
+            }
+        }
+
         public TreeNodeCollection<T> Children { get; private set; }
 
         public TreeNode( T value )
@@ -60,6 +95,25 @@ namespace TabbedTortoiseGit
         public bool Remove( TreeNode<T> node )
         {
             return this.Children.Remove( node );
+        }
+
+        public bool NestedContains( TreeNode<T> node )
+        {
+            if( this.Children.Contains( node ) )
+            {
+                return true;
+            }
+            else
+            {
+                foreach( TreeNode<T> child in this.Children )
+                {
+                    if( child.NestedContains( node ) )
+                    {
+                        return true;
+                    }
+                }
+                return false;
+            }
         }
 
         public TreeNode<T> FindValue( T value )

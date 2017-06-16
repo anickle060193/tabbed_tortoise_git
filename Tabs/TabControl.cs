@@ -1145,7 +1145,7 @@ namespace Tabs
                 return false;
             }
 
-            protected override bool SwapItems( TabControl dragParent, Tab dragItem, int dragItemIndex, TabControl pointedParent, Tab pointedItem, int pointedItemIndex )
+            protected override bool MoveItem( TabControl dragParent, Tab dragItem, int dragItemIndex, TabControl pointedParent, Tab pointedItem, int pointedItemIndex )
             {
                 if( dragParent == pointedParent )
                 {

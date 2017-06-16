@@ -424,7 +424,7 @@ namespace TabbedTortoiseGit
                 }
             }
 
-            protected override bool SwapItems( CheckedListBox dragParent, string dragItem, int dragItemIndex, CheckedListBox pointedParent, string pointedItem, int pointedItemIndex )
+            protected override bool MoveItem( CheckedListBox dragParent, string dragItem, int dragItemIndex, CheckedListBox pointedParent, string pointedItem, int pointedItemIndex )
             {
                 bool dragItemChecked = dragParent.GetItemChecked( dragItemIndex );
                 bool pointedItemChecked = pointedParent.GetItemChecked( pointedItemIndex );

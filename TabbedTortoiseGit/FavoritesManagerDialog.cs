@@ -40,10 +40,14 @@ namespace TabbedTortoiseGit
             }
         }
 
+        private bool Dragging { get; set; }
+
         private readonly CommonOpenFileDialog _folderDialog = new CommonOpenFileDialog()
         {
             IsFolderPicker = true
         };
+
+        private readonly FavoritesDragDropHelper _favoritesDragDropHelper;
 
         private TreeNode<FavoriteRepo> _root;
         private TreeNode<FavoriteRepo> _lastSelectedFavoriteFolder;
@@ -54,6 +58,8 @@ namespace TabbedTortoiseGit
             InitializeComponent();
 
             this.Icon = Resources.TortoiseIcon;
+
+            this.Dragging = false;
 
             FavoritesTree.AfterSelect += FavoritesTree_AfterSelect;
             FavoritesTree.MouseUp += FavoritesTree_MouseUp;
@@ -68,14 +74,21 @@ namespace TabbedTortoiseGit
             AddFavoriteMenuItem.Click += AddFavoriteMenuItem_Click;
             RemoveFavoriteMenuItem.Click += RemoveFavoriteMenuItem_Click;
 
+            _favoritesDragDropHelper = new FavoritesDragDropHelper( this );
+            _favoritesDragDropHelper.AddControl( FavoritesTree );
+            _favoritesDragDropHelper.AddControl( FavoritesList );
+
             _root = favorites;
             UpdateFavoritesTree( _root );
         }
 
         private void FavoritesTree_AfterSelect( object sender, TreeViewEventArgs e )
         {
-            TreeNode<FavoriteRepo> node = (TreeNode<FavoriteRepo>)e.Node.Tag;
-            UpdateFavoritesList( node );
+            if( !this.Dragging )
+            {
+                TreeNode<FavoriteRepo> node = (TreeNode<FavoriteRepo>)e.Node.Tag;
+                UpdateFavoritesList( node );
+            }
         }
 
         private void FavoritesTree_MouseUp( object sender, MouseEventArgs e )
@@ -294,6 +307,178 @@ namespace TabbedTortoiseGit
                 {
                     Add( t.Nodes, child );
                 }
+            }
+        }
+
+        class FavoritesDragDropHelper : DragDropHelper<Control, TreeNode<FavoriteRepo>>
+        {
+            private readonly FavoritesManagerDialog _owner;
+
+            public FavoritesDragDropHelper( FavoritesManagerDialog owner )
+            {
+                _owner = owner;
+
+                MoveOnDragDrop = true;
+            }
+
+            protected override bool AllowDrag( Control parent, TreeNode<FavoriteRepo> item, int index )
+            {
+                if( parent is TreeView )
+                {
+                    return item != _owner._root;
+                }
+                else if( parent is ListView )
+                {
+                    return item != null;
+                }
+                else
+                {
+                    throw new ArgumentException( "Parent must be either TreeView or ListView." );
+                }
+            }
+
+            protected override bool GetItemFromPoint( Control parent, Point p, out TreeNode<FavoriteRepo> item, out int itemIndex )
+            {
+                if( parent is TreeView )
+                {
+                    TreeView favoritesTree = (TreeView)parent;
+                    TreeNode treeNode = favoritesTree.GetNodeAt( p );
+                    item = (TreeNode<FavoriteRepo>)treeNode?.Tag;
+                    itemIndex = item?.NestedIndex ?? 0;
+                    return item != null;
+                }
+                else if( parent is ListView )
+                {
+                    ListView favoritesList = (ListView)parent;
+                    ListViewItem listViewItem = favoritesList.GetItemAt( p.X, p.Y );
+                    if( listViewItem == null )
+                    {
+                        item = null;
+                        itemIndex = -2;
+                        return true;
+                    }
+                    else
+                    {
+                        item = (TreeNode<FavoriteRepo>)listViewItem.Tag;
+                        itemIndex = item.Index;
+                        return true;
+                    }
+                }
+                else
+                {
+                    throw new ArgumentException( "Parent must be either TreeView or ListView." );
+                }
+            }
+
+            protected override void OnDragStart( DragStartEventArgs<Control, TreeNode<FavoriteRepo>> e )
+            {
+                base.OnDragStart( e );
+
+                _owner.Dragging = true;
+            }
+
+            protected override void OnDragMove( DragMoveEventArgs<Control, TreeNode<FavoriteRepo>> e )
+            {
+                if( e.DragParent is TreeView )
+                {
+                    TreeView favoritesTree = (TreeView)e.DragParent;
+                    TreeNode node = favoritesTree.GetNodeAt( e.DragParent.PointToClient( e.DragCurrentPosition ) );
+                    if( node != null )
+                    {
+                        favoritesTree.SelectedNode = node;
+                    }
+                }
+                else if( e.DragParent is ListView )
+                {
+                    ListView favoritesList = (ListView)e.DragParent;
+                    favoritesList.SelectedItems.Clear();
+                    Point p = favoritesList.PointToClient( e.DragCurrentPosition );
+                    ListViewItem listViewItem = favoritesList.GetItemAt( p.X, p.Y );
+                    if( listViewItem != null )
+                    {
+                        listViewItem.Selected = true;
+                    }
+                }
+                else
+                {
+                    throw new ArgumentException( "Parent must be either TreeView or ListView." );
+                }
+            }
+
+            protected override void OnDragEnd( DragEndEventArgs<Control, TreeNode<FavoriteRepo>> e )
+            {
+                base.OnDragEnd( e );
+
+                _owner.Dragging = false;
+            }
+
+            protected override bool MoveItem( Control dragParent, TreeNode<FavoriteRepo> dragItem, int dragItemIndex, Control pointedParent, TreeNode<FavoriteRepo> pointedItem, int pointedItemIndex )
+            {
+                if( dragParent == pointedParent )
+                {
+                    if( dragParent is TreeView )
+                    {
+                        if( dragItem.NestedContains( pointedItem )
+                         || pointedItem == dragItem.Parent
+                         || pointedItem == dragItem
+                         || !pointedItem.Value.IsFavoriteFolder )
+                        {
+                            return false;
+                        }
+
+                        dragItem.Parent.Remove( dragItem );
+                        pointedItem.Add( dragItem );
+
+                        _owner.Dragging = false;
+                        _owner.UpdateFavoritesTree( pointedItem );
+
+                        return true;
+                    }
+                    else if( dragParent is ListView )
+                    {
+                        if( pointedItemIndex == -2 )
+                        {
+                            TreeNode<FavoriteRepo> parent = dragItem.Parent;
+                            parent.Remove( dragItem );
+                            parent.Add( dragItem );
+                        }
+                        else
+                        {
+                            int newIndex = dragItemIndex < pointedItemIndex ? pointedItemIndex - 1 : pointedItemIndex;
+                            dragItem.Parent.Remove( dragItem );
+                            pointedItem.Parent.Children.Insert( newIndex, dragItem );
+                        }
+
+                        _owner.Dragging = false;
+                        _owner.UpdateFavoritesTree( dragItem.Parent );
+
+                        return true;
+                    }
+                    else
+                    {
+                        throw new ArgumentException( "Parents must be either TreeView or ListView." );
+                    }
+                }
+                else if( dragParent is ListView )
+                {
+                    if( dragItem.NestedContains( pointedItem )
+                     || pointedItem == dragItem.Parent
+                     || pointedItem == dragItem
+                     || !pointedItem.Value.IsFavoriteFolder )
+                    {
+                        return false;
+                    }
+
+                    dragItem.Parent.Remove( dragItem );
+                    pointedItem.Add( dragItem );
+
+                    _owner.Dragging = false;
+                    _owner.UpdateFavoritesTree( pointedItem );
+
+                    return true;
+                }
+
+                return false;
             }
         }
     }

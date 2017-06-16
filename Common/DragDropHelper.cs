@@ -31,10 +31,12 @@ namespace Common
         private TControl _lastSwappedParent;
 
         public bool AllowReSwap { get; set; }
+        public bool MoveOnDragDrop { get; set; }
 
         public DragDropHelper()
         {
             AllowReSwap = true;
+            MoveOnDragDrop = false;
 
             ClearDragDrop();
         }
@@ -46,13 +48,14 @@ namespace Common
             c.MouseMove += Control_MouseMove;
             c.MouseUp += Control_MouseUp;
             c.DragOver += Control_DragOver;
+            c.DragDrop += Control_DragDrop;
         }
 
         protected abstract bool GetItemFromPoint( TControl parent, Point p, out T item, out int itemIndex );
 
         protected abstract bool AllowDrag( TControl parent, T item, int index );
 
-        protected abstract bool SwapItems( TControl dragParent, T dragItem, int dragItemIndex, TControl pointedParent, T pointedItem, int pointedItemIndex );
+        protected abstract bool MoveItem( TControl dragParent, T dragItem, int dragItemIndex, TControl pointedParent, T pointedItem, int pointedItemIndex );
 
         protected virtual bool ItemsEqual( TControl parent1, T item1, int itemIndex1, TControl parent2, T item2, int itemIndex2 )
         {
@@ -90,6 +93,31 @@ namespace Common
             _lastSwappedItem = default( T );
             _lastSwappedIndex = -1;
             _lastSwappedParent = null;
+        }
+
+        private bool TryMoveItem( TControl pointedParent, DragEventArgs e )
+        {
+            T pointedItem;
+            int pointedItemIndex;
+            if( GetItemFromPoint( pointedParent, pointedParent.PointToClient( new Point( e.X, e.Y ) ), out pointedItem, out pointedItemIndex )
+             && ( AllowReSwap
+               || !ItemsEqual( _lastSwappedParent, _lastSwappedItem, _lastSwappedIndex, pointedParent, pointedItem, pointedItemIndex ) )
+             && ( ( pointedParent != _dragItemParent )
+               || ( pointedItemIndex != _dragItemIndex ) )
+             && e.AllowedEffect == DragDropEffects.Move )
+            {
+                if( MoveItem( _dragItemParent, _dragItem, _dragItemIndex, pointedParent, pointedItem, pointedItemIndex ) )
+                {
+                    _dragItemIndex = pointedItemIndex;
+
+                    _lastSwappedItem = pointedItem;
+                    _lastSwappedIndex = _dragItemIndex;
+                    _lastSwappedParent = _dragItemParent;
+
+                    return true;
+                }
+            }
+            return false;
         }
 
         private void Control_MouseDown( object sender, MouseEventArgs e )
@@ -171,24 +199,23 @@ namespace Common
 
                 e.Effect = DragDropEffects.Move;
 
-                T pointedItem;
-                int pointedItemIndex;
-                if( GetItemFromPoint( pointedParent, pointedParent.PointToClient( p ), out pointedItem, out pointedItemIndex )
-                 && ( AllowReSwap
-                   || !ItemsEqual( _lastSwappedParent, _lastSwappedItem, _lastSwappedIndex, pointedParent, pointedItem, pointedItemIndex ) )
-                 && ( ( pointedParent != _dragItemParent )
-                   || ( pointedItemIndex != _dragItemIndex ) )
-                 && e.AllowedEffect == DragDropEffects.Move )
+                if( !MoveOnDragDrop )
                 {
-                    if( SwapItems( _dragItemParent, _dragItem, _dragItemIndex, pointedParent, pointedItem, pointedItemIndex ) )
-                    {
-                        _dragItemIndex = pointedItemIndex;
-
-                        _lastSwappedItem = pointedItem;
-                        _lastSwappedIndex = _dragItemIndex;
-                        _lastSwappedParent = _dragItemParent;
-                    }
+                    TryMoveItem( pointedParent, e );
                 }
+            }
+        }
+
+        private void Control_DragDrop( object sender, DragEventArgs e )
+        {
+            if( MoveOnDragDrop
+             && e.Data.GetDataPresent( typeof( T ) ) )
+            {
+                TControl pointedParent = (TControl)sender;
+
+                e.Effect = DragDropEffects.Move;
+
+                TryMoveItem( pointedParent, e );
             }
         }
     }
