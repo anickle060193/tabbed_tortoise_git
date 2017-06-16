@@ -74,6 +74,7 @@ namespace TabbedTortoiseGit
             SelectNoneSubmodules.Click += SelectNoneSubmodules_Click;
 
             ShowModifiedSubmodulesOnlyCheck.CheckedChanged += ShowModifiedSubmodulesOnlyCheck_CheckedChanged;
+            CheckModifiedSubmodulesByDefaultCheck.CheckedChanged += CheckModifiedSubmodulesByDefaultCheck_CheckedChanged;
 
             InitCheck.CheckedChanged += InitCheck_CheckedChanged;
             RecursiveCheck.CheckedChanged += RecursiveCheck_CheckedChanged;
@@ -177,6 +178,12 @@ namespace TabbedTortoiseGit
             UpdateSubmoduleList();
         }
 
+        private void CheckModifiedSubmodulesByDefaultCheck_CheckedChanged( object sender, EventArgs e )
+        {
+            Settings.Default.FastSubmoduleUpdateCheckModifiedSubmodulesByDefault = CheckModifiedSubmodulesByDefaultCheck.Checked;
+            Settings.Default.Save();
+        }
+
         private void InitCheck_CheckedChanged( object sender, EventArgs e )
         {
             Settings.Default.FastSubmoduleUpdateInitChecked = InitCheck.Checked;
@@ -217,8 +224,11 @@ namespace TabbedTortoiseGit
             InitCheck.Checked = Settings.Default.FastSubmoduleUpdateInitChecked;
             RecursiveCheck.Checked = Settings.Default.FastSubmoduleUpdateRecursiveChecked;
             ForceCheck.Checked = Settings.Default.FastSubmoduleUpdateForceChecked;
+
             MaxProcessCountNumeric.Value = Settings.Default.FastSubmoduleUpdateMaxProcesses;
+
             ShowModifiedSubmodulesOnlyCheck.Checked = Settings.Default.FastSubmoduleUpdateShowOnlyModifiedSubmodulesChecked;
+            CheckModifiedSubmodulesByDefaultCheck.Checked = Settings.Default.FastSubmoduleUpdateCheckModifiedSubmodulesByDefault;
         }
 
         private void SetChecked( bool value )

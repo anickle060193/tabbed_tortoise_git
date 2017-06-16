@@ -48,8 +48,6 @@ namespace TabbedTortoiseGit
             this.SettingsTabs = new System.Windows.Forms.TabControl();
             this.StartupReposTab = new System.Windows.Forms.TabPage();
             this.GitActionsTab = new System.Windows.Forms.TabPage();
-            this.FastSubmoduleUpdateSettingsGroup = new System.Windows.Forms.GroupBox();
-            this.CheckModifiedSubmodulesByDefaultCheck = new System.Windows.Forms.CheckBox();
             this.DisplaySettingsTab = new System.Windows.Forms.TabPage();
             this.CheckForModifiedTabsIntervalLabel = new System.Windows.Forms.Label();
             this.CheckForModifiedTabsIntervalNumeric = new System.Windows.Forms.NumericUpDown();
@@ -59,16 +57,15 @@ namespace TabbedTortoiseGit
             this.ModifiedTabFontGroup = new System.Windows.Forms.GroupBox();
             this.ModifiedTabFontSample = new System.Windows.Forms.Label();
             this.OtherSettingsTab = new System.Windows.Forms.TabPage();
+            this.CloseWindowOnLastTabClosedCheck = new System.Windows.Forms.CheckBox();
             this.CloseToSystemTrayCheck = new System.Windows.Forms.CheckBox();
             this.DeveloperSettingsPage = new System.Windows.Forms.TabPage();
             this.ShowHitTestCheck = new System.Windows.Forms.CheckBox();
             this.ModifiedTabFontDialog = new System.Windows.Forms.FontDialog();
-            this.CloseWindowOnLastTabClosedCheck = new System.Windows.Forms.CheckBox();
             ((System.ComponentModel.ISupportInitialize)(this.MaxRecentReposNumeric)).BeginInit();
             this.SettingsTabs.SuspendLayout();
             this.StartupReposTab.SuspendLayout();
             this.GitActionsTab.SuspendLayout();
-            this.FastSubmoduleUpdateSettingsGroup.SuspendLayout();
             this.DisplaySettingsTab.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.CheckForModifiedTabsIntervalNumeric)).BeginInit();
             this.ModifiedTabFontGroup.SuspendLayout();
@@ -206,7 +203,7 @@ namespace TabbedTortoiseGit
             // 
             this.GitActionsLabel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.GitActionsLabel.AutoSize = true;
-            this.GitActionsLabel.Location = new System.Drawing.Point(6, 206);
+            this.GitActionsLabel.Location = new System.Drawing.Point(6, 262);
             this.GitActionsLabel.Name = "GitActionsLabel";
             this.GitActionsLabel.Size = new System.Drawing.Size(279, 13);
             this.GitActionsLabel.TabIndex = 1;
@@ -221,7 +218,7 @@ namespace TabbedTortoiseGit
             this.GitActionsCheckList.IntegralHeight = false;
             this.GitActionsCheckList.Location = new System.Drawing.Point(6, 6);
             this.GitActionsCheckList.Name = "GitActionsCheckList";
-            this.GitActionsCheckList.Size = new System.Drawing.Size(340, 197);
+            this.GitActionsCheckList.Size = new System.Drawing.Size(340, 253);
             this.GitActionsCheckList.TabIndex = 0;
             this.SettingsToolTip.SetToolTip(this.GitActionsCheckList, "Only valid when \"Retain Logs on Close\" is disabled.\r\n");
             // 
@@ -257,7 +254,6 @@ namespace TabbedTortoiseGit
             // 
             // GitActionsTab
             // 
-            this.GitActionsTab.Controls.Add(this.FastSubmoduleUpdateSettingsGroup);
             this.GitActionsTab.Controls.Add(this.GitActionsLabel);
             this.GitActionsTab.Controls.Add(this.GitActionsCheckList);
             this.GitActionsTab.Location = new System.Drawing.Point(4, 22);
@@ -267,28 +263,6 @@ namespace TabbedTortoiseGit
             this.GitActionsTab.TabIndex = 1;
             this.GitActionsTab.Text = "Git Actions";
             this.GitActionsTab.UseVisualStyleBackColor = true;
-            // 
-            // FastSubmoduleUpdateSettingsGroup
-            // 
-            this.FastSubmoduleUpdateSettingsGroup.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.FastSubmoduleUpdateSettingsGroup.Controls.Add(this.CheckModifiedSubmodulesByDefaultCheck);
-            this.FastSubmoduleUpdateSettingsGroup.Location = new System.Drawing.Point(6, 234);
-            this.FastSubmoduleUpdateSettingsGroup.Name = "FastSubmoduleUpdateSettingsGroup";
-            this.FastSubmoduleUpdateSettingsGroup.Size = new System.Drawing.Size(340, 42);
-            this.FastSubmoduleUpdateSettingsGroup.TabIndex = 3;
-            this.FastSubmoduleUpdateSettingsGroup.TabStop = false;
-            this.FastSubmoduleUpdateSettingsGroup.Text = "Fast Submodule Update";
-            // 
-            // CheckModifiedSubmodulesByDefaultCheck
-            // 
-            this.CheckModifiedSubmodulesByDefaultCheck.AutoSize = true;
-            this.CheckModifiedSubmodulesByDefaultCheck.Location = new System.Drawing.Point(6, 19);
-            this.CheckModifiedSubmodulesByDefaultCheck.Name = "CheckModifiedSubmodulesByDefaultCheck";
-            this.CheckModifiedSubmodulesByDefaultCheck.Size = new System.Drawing.Size(213, 17);
-            this.CheckModifiedSubmodulesByDefaultCheck.TabIndex = 2;
-            this.CheckModifiedSubmodulesByDefaultCheck.Text = "Check Modified Submodules By Default";
-            this.CheckModifiedSubmodulesByDefaultCheck.UseVisualStyleBackColor = true;
             // 
             // DisplaySettingsTab
             // 
@@ -413,6 +387,17 @@ namespace TabbedTortoiseGit
             this.OtherSettingsTab.Text = "Other";
             this.OtherSettingsTab.UseVisualStyleBackColor = true;
             // 
+            // CloseWindowOnLastTabClosedCheck
+            // 
+            this.CloseWindowOnLastTabClosedCheck.AutoSize = true;
+            this.CloseWindowOnLastTabClosedCheck.CheckAlign = System.Drawing.ContentAlignment.MiddleRight;
+            this.CloseWindowOnLastTabClosedCheck.Location = new System.Drawing.Point(6, 78);
+            this.CloseWindowOnLastTabClosedCheck.Name = "CloseWindowOnLastTabClosedCheck";
+            this.CloseWindowOnLastTabClosedCheck.Size = new System.Drawing.Size(189, 17);
+            this.CloseWindowOnLastTabClosedCheck.TabIndex = 13;
+            this.CloseWindowOnLastTabClosedCheck.Text = "Close Window on Last Tab Closed";
+            this.CloseWindowOnLastTabClosedCheck.UseVisualStyleBackColor = true;
+            // 
             // CloseToSystemTrayCheck
             // 
             this.CloseToSystemTrayCheck.AutoSize = true;
@@ -451,17 +436,6 @@ namespace TabbedTortoiseGit
             this.ModifiedTabFontDialog.FontMustExist = true;
             this.ModifiedTabFontDialog.ShowColor = true;
             // 
-            // CloseWindowOnLastTabClosedCheck
-            // 
-            this.CloseWindowOnLastTabClosedCheck.AutoSize = true;
-            this.CloseWindowOnLastTabClosedCheck.CheckAlign = System.Drawing.ContentAlignment.MiddleRight;
-            this.CloseWindowOnLastTabClosedCheck.Location = new System.Drawing.Point(6, 78);
-            this.CloseWindowOnLastTabClosedCheck.Name = "CloseWindowOnLastTabClosedCheck";
-            this.CloseWindowOnLastTabClosedCheck.Size = new System.Drawing.Size(189, 17);
-            this.CloseWindowOnLastTabClosedCheck.TabIndex = 13;
-            this.CloseWindowOnLastTabClosedCheck.Text = "Close Window on Last Tab Closed";
-            this.CloseWindowOnLastTabClosedCheck.UseVisualStyleBackColor = true;
-            // 
             // SettingsForm
             // 
             this.AcceptButton = this.OK;
@@ -488,8 +462,6 @@ namespace TabbedTortoiseGit
             this.StartupReposTab.PerformLayout();
             this.GitActionsTab.ResumeLayout(false);
             this.GitActionsTab.PerformLayout();
-            this.FastSubmoduleUpdateSettingsGroup.ResumeLayout(false);
-            this.FastSubmoduleUpdateSettingsGroup.PerformLayout();
             this.DisplaySettingsTab.ResumeLayout(false);
             this.DisplaySettingsTab.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.CheckForModifiedTabsIntervalNumeric)).EndInit();
@@ -521,8 +493,6 @@ namespace TabbedTortoiseGit
         private TabPage StartupReposTab;
         private TabPage GitActionsTab;
         private TabPage OtherSettingsTab;
-        private CheckBox CheckModifiedSubmodulesByDefaultCheck;
-        private GroupBox FastSubmoduleUpdateSettingsGroup;
         private TabPage DeveloperSettingsPage;
         private CheckBox ShowHitTestCheck;
         private CheckBox CloseToSystemTrayCheck;

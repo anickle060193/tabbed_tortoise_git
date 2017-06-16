@@ -41,6 +41,7 @@
             this.MaxProcessCountLabel = new System.Windows.Forms.Label();
             this.ShowModifiedSubmodulesOnlyCheck = new System.Windows.Forms.CheckBox();
             this.SubmoduleUpdateOptionsGroup = new System.Windows.Forms.GroupBox();
+            this.CheckModifiedSubmodulesByDefaultCheck = new System.Windows.Forms.CheckBox();
             ((System.ComponentModel.ISupportInitialize)(this.MaxProcessCountNumeric)).BeginInit();
             this.SubmoduleUpdateOptionsGroup.SuspendLayout();
             this.SuspendLayout();
@@ -208,12 +209,24 @@
             this.SubmoduleUpdateOptionsGroup.TabStop = false;
             this.SubmoduleUpdateOptionsGroup.Text = "Submodule Update Options";
             // 
+            // CheckModifiedSubmodulesByDefaultCheck
+            // 
+            this.CheckModifiedSubmodulesByDefaultCheck.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.CheckModifiedSubmodulesByDefaultCheck.AutoSize = true;
+            this.CheckModifiedSubmodulesByDefaultCheck.Location = new System.Drawing.Point(12, 406);
+            this.CheckModifiedSubmodulesByDefaultCheck.Name = "CheckModifiedSubmodulesByDefaultCheck";
+            this.CheckModifiedSubmodulesByDefaultCheck.Size = new System.Drawing.Size(213, 17);
+            this.CheckModifiedSubmodulesByDefaultCheck.TabIndex = 15;
+            this.CheckModifiedSubmodulesByDefaultCheck.Text = "Check Modified Submodules By Default";
+            this.CheckModifiedSubmodulesByDefaultCheck.UseVisualStyleBackColor = true;
+            // 
             // FastSubmoduleUpdateForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.CancelButton = this.Cancel;
             this.ClientSize = new System.Drawing.Size(464, 441);
+            this.Controls.Add(this.CheckModifiedSubmodulesByDefaultCheck);
             this.Controls.Add(this.SubmoduleUpdateOptionsGroup);
             this.Controls.Add(this.ShowModifiedSubmodulesOnlyCheck);
             this.Controls.Add(this.SelectModifiedSubmodules);
@@ -252,5 +265,6 @@
         private System.Windows.Forms.Label MaxProcessCountLabel;
         private System.Windows.Forms.CheckBox ShowModifiedSubmodulesOnlyCheck;
         private System.Windows.Forms.GroupBox SubmoduleUpdateOptionsGroup;
+        private System.Windows.Forms.CheckBox CheckModifiedSubmodulesByDefaultCheck;
     }
 }

@@ -24,7 +24,6 @@ namespace TabbedTortoiseGit
             f.OpenStartupReposOnReOpen = Settings.Default.OpenStartupReposOnReOpen;
 
             f.TabContextMenuGitActions = Settings.Default.TabContextMenuGitActions;
-            f.CheckModifiedSubmodulesByDefault = Settings.Default.FastSubmoduleUpdateCheckModifiedSubmodulesByDefault;
 
             f.IndicateModifiedTabs = Settings.Default.IndicateModifiedTabs;
             f.CheckForModifiedTabsInterval = Settings.Default.CheckForModifiedTabsInterval;
@@ -47,7 +46,6 @@ namespace TabbedTortoiseGit
                 Settings.Default.OpenStartupReposOnReOpen = f.OpenStartupReposOnReOpen;
 
                 Settings.Default.TabContextMenuGitActions = f.TabContextMenuGitActions;
-                Settings.Default.FastSubmoduleUpdateCheckModifiedSubmodulesByDefault = f.CheckModifiedSubmodulesByDefault;
 
                 Settings.Default.CheckForModifiedTabsInterval = f.CheckForModifiedTabsInterval;
                 Settings.Default.IndicateModifiedTabs = f.IndicateModifiedTabs;
@@ -125,19 +123,6 @@ namespace TabbedTortoiseGit
                         GitActionsCheckList.SetItemChecked( index, true );
                     }
                 }
-            }
-        }
-
-        public bool CheckModifiedSubmodulesByDefault
-        {
-            get
-            {
-                return CheckModifiedSubmodulesByDefaultCheck.Checked;
-            }
-
-            set
-            {
-                CheckModifiedSubmodulesByDefaultCheck.Checked = value;
             }
         }
 
