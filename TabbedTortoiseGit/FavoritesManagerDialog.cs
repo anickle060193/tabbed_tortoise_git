@@ -46,7 +46,7 @@ namespace TabbedTortoiseGit
         };
 
         private TreeNode<FavoriteRepo> _root;
-
+        private TreeNode<FavoriteRepo> _lastSelectedFavoriteFolder;
         private TreeNode<FavoriteRepo> _selectedFavoriteItem;
 
         private FavoritesManagerDialog( TreeNode<FavoriteRepo> favorites )
@@ -97,7 +97,7 @@ namespace TabbedTortoiseGit
             if( e.Button == MouseButtons.Right )
             {
                 ListViewItem item = FavoritesList.GetItemAt( e.X, e.Y );
-                _selectedFavoriteItem = (TreeNode<FavoriteRepo>)( item?.Tag ?? FavoritesTree.SelectedNode?.Tag );
+                _selectedFavoriteItem = (TreeNode<FavoriteRepo>)( item?.Tag ?? _lastSelectedFavoriteFolder );
                 if( _selectedFavoriteItem != null )
                 {
                     FavoritesContextMenu.Show( FavoritesList, e.Location );
@@ -137,7 +137,7 @@ namespace TabbedTortoiseGit
                 {
                     _selectedFavoriteItem.Parent.Children.Insert( _selectedFavoriteItem.Index, newNode );
                 }
-                UpdateFavoritesTree( newNode );
+                UpdateFavoritesTree( _lastSelectedFavoriteFolder );
             }
         }
 
@@ -218,12 +218,13 @@ namespace TabbedTortoiseGit
         {
             if( selectNode.Value.IsFavoriteFolder )
             {
-                FavoritesTree.SelectedNode = FindNodeByNode( selectNode );
+                _lastSelectedFavoriteFolder = selectNode;
             }
             else
             {
-                FavoritesTree.SelectedNode = FindNodeByNode( selectNode.Parent );
+                _lastSelectedFavoriteFolder = selectNode.Parent;
             }
+            FavoritesTree.SelectedNode = FindNodeByNode( _lastSelectedFavoriteFolder );
         }
 
         private TreeNode FindNodeByNode( TreeNode<FavoriteRepo> findNode )
