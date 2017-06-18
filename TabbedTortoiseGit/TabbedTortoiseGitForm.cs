@@ -36,6 +36,9 @@ namespace TabbedTortoiseGit
 
         private TreeNode<FavoriteRepo> _favoriteRepos;
 
+        private ToolStripDropDownMenu _currentFavoriteDropDown;
+        private bool _favoriteRepoContextMenuOpen;
+
         class TabTag
         {
             public Process Process { get; private set; }
@@ -134,7 +137,7 @@ namespace TabbedTortoiseGit
             }
 
             UpdateRecentReposFromSettings();
-            UpdateTabMenuFromSettings();
+            UpdateRepoContextMenusFromSettings();
             UpdateFavoriteReposFromSettings();
         }
 
@@ -157,13 +160,17 @@ namespace TabbedTortoiseGit
             NewTabContextMenu.ResumeLayout();
         }
 
-        private void UpdateTabMenuFromSettings()
+        private void UpdateRepoContextMenusFromSettings()
         {
             TabContextMenu.SuspendLayout();
+            FavoriteRepoContextMenu.SuspendLayout();
 
             TabContextMenu.Items.Clear();
             TabContextMenu.Items.Add( OpenRepoLocationTabMenuItem );
             TabContextMenu.Items.Add( AddToFavoritesRepoTabMenuItem );
+
+            FavoriteRepoContextMenu.Items.Clear();
+            FavoriteRepoContextMenu.Items.Add( OpenFavoriteRepoLocationContextMenuItem );
 
             List<TortoiseGitCommand> actions = Settings.Default.TabContextMenuGitActions
                                                     .Where( action => TortoiseGit.ACTIONS.ContainsKey( action ) )
@@ -172,17 +179,28 @@ namespace TabbedTortoiseGit
             {
                 TabContextMenu.Items.Add( "-" );
 
+                FavoriteRepoContextMenu.Items.Add( "-" );
+
                 foreach( TortoiseGitCommand action in actions )
                 {
-                    var menuItem = TabContextMenu.Items.Add( action.Name, action.Icon, GitCommandMenuItem_Click );
-                    menuItem.Tag = action.Func;
+                    ToolStripItem tabMenuItem = TabContextMenu.Items.Add( action.Name, action.Icon );
+                    tabMenuItem.Click += GitCommandTabMenuItem_Click;
+                    tabMenuItem.Tag = action.Func;
+
+                    ToolStripItem favoriteMenuItem = FavoriteRepoContextMenu.Items.Add( action.Name, action.Icon );
+                    favoriteMenuItem.Click += GitCommandFavoriteContextMenuItem_Click;
+                    favoriteMenuItem.Tag = action.Func;
                 }
             }
 
             TabContextMenu.Items.Add( "-" );
             TabContextMenu.Items.Add( CloseRepoTabMenuItem );
 
+            FavoriteRepoContextMenu.Items.Add( "-" );
+            FavoriteRepoContextMenu.Items.Add( RemoveFavoriteContextMenuItem );
+
             TabContextMenu.ResumeLayout();
+            FavoriteRepoContextMenu.ResumeLayout();
         }
 
         private void UpdateFavoriteReposFromSettings()
@@ -219,6 +237,8 @@ namespace TabbedTortoiseGit
                     item.Click += FavoritedRepoMenuItem_Click;
                 }
                 item.Tag = favorite;
+                item.MouseUp += FavoriteMenuItem_MouseUp;
+                item.DropDown.Closing += FavoriteMenuItemDropDown_Closing;
 
                 menuItems.Add( item );
 

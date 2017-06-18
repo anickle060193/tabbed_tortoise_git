@@ -39,7 +39,10 @@ namespace TabbedTortoiseGit
             LogTabs.DragDrop += TabbedTortoiseGitForm_DragDrop;
 
             FavoritesMenuStrip.MouseClick += FavoritesMenuStrip_MouseClick;
-            RemoveFavoriteContextMenuItem.Click += RemoveFavoriteContextMenuItem_Click;
+            FavoriteRepoContextMenu.Closing += FavoriteRepoContextMenu_Closing;
+            OpenFavoriteRepoLocationContextMenuItem.Click += OpenFavoriteRepoLocationContextMenuItem_Click;
+            RemoveFavoriteContextMenuItem.Click += RemoveFavoriteItemContextMenuItem_Click;
+            RemoveFavoriteFolderContextMenuItem.Click += RemoveFavoriteItemContextMenuItem_Click;
 
             ShowFavoritesManagerMenuItem.Click += ShowFavoritesManagerMenuItem_Click;
 
@@ -269,25 +272,89 @@ namespace TabbedTortoiseGit
             if( e.Button == MouseButtons.Right )
             {
                 ToolStripItem favoriteItem = FavoritesMenuStrip.GetItemAt( e.Location );
-                if( favoriteItem != null )
-                {
-                    if( favoriteItem.Tag is TreeNode<FavoriteRepo> )
-                    {
-                        TreeNode<FavoriteRepo> favorite = (TreeNode<FavoriteRepo>)favoriteItem.Tag;
-                        FavoriteRepoContextMenu.Tag = favorite;
-                        FavoriteRepoContextMenu.Show( FavoritesMenuStrip, e.Location );
-                    }
-                }
-                else
+                if( favoriteItem == null )
                 {
                     FavoritesMenuContextMenu.Show( FavoritesMenuStrip, e.Location );
                 }
             }
         }
 
-        private void RemoveFavoriteContextMenuItem_Click( object sender, EventArgs e )
+        private void FavoriteMenuItem_MouseUp( object sender, MouseEventArgs e )
         {
-            TreeNode<FavoriteRepo> favorite = (TreeNode<FavoriteRepo>)FavoriteRepoContextMenu.Tag;
+            if( e.Button == MouseButtons.Right )
+            {
+                ToolStripMenuItem favoriteMenuItem = (ToolStripMenuItem)sender;
+                TreeNode<FavoriteRepo> favorite = (TreeNode<FavoriteRepo>)favoriteMenuItem.Tag;
+
+                Point p;
+                if( favoriteMenuItem.Owner == FavoritesMenuStrip )
+                {
+                    p = new Point( e.X + favoriteMenuItem.Bounds.X, e.Y + favoriteMenuItem.Bounds.Y );
+                }
+                else
+                {
+                    p = e.Location;
+                }
+
+                ContextMenuStrip favoriteContextMenu;
+                if( favorite.Value.IsFavoriteFolder )
+                {
+                    favoriteContextMenu = FavoritesFolderContextMenu;
+                }
+                else
+                {
+                    favoriteContextMenu = FavoriteRepoContextMenu;
+                }
+
+                _favoriteRepoContextMenuOpen = true;
+                favoriteContextMenu.Tag = favorite;
+                favoriteContextMenu.Show( favoriteMenuItem.Owner, p );
+            }
+        }
+
+        private void FavoriteMenuItemDropDown_Closing( object sender, ToolStripDropDownClosingEventArgs e )
+        {
+            if( _favoriteRepoContextMenuOpen )
+            {
+                _currentFavoriteDropDown = (ToolStripDropDownMenu)sender;
+                e.Cancel = true;
+            }
+        }
+
+        private void FavoriteRepoContextMenu_Closing( object sender, ToolStripDropDownClosingEventArgs e )
+        {
+            _favoriteRepoContextMenuOpen = false;
+
+            _currentFavoriteDropDown?.Close();
+            _currentFavoriteDropDown = null;
+        }
+
+        private void OpenFavoriteRepoLocationContextMenuItem_Click( object sender, EventArgs e )
+        {
+            ToolStripMenuItem contextMenuItem = (ToolStripMenuItem)sender;
+            ToolStrip contextMenu = contextMenuItem.Owner;
+
+            TreeNode<FavoriteRepo> favorite = (TreeNode<FavoriteRepo>)contextMenu.Tag;
+            Util.OpenInExplorer( favorite.Value.Repo );
+        }
+
+        private void GitCommandFavoriteContextMenuItem_Click( object sender, EventArgs e )
+        {
+            ToolStripMenuItem contextMenuItem = (ToolStripMenuItem)sender;
+            ToolStrip contextMenu = contextMenuItem.Owner;
+
+            TreeNode<FavoriteRepo> favorite = (TreeNode<FavoriteRepo>)contextMenu.Tag;
+            TortoiseGitCommandFunc func = (TortoiseGitCommandFunc)contextMenuItem.Tag;
+
+            func.Invoke( favorite.Value.Repo );
+        }
+
+        private void RemoveFavoriteItemContextMenuItem_Click( object sender, EventArgs e )
+        {
+            ToolStripMenuItem contextMenuItem = (ToolStripMenuItem)sender;
+            ToolStrip contextMenu = contextMenuItem.Owner;
+
+            TreeNode<FavoriteRepo> favorite = (TreeNode<FavoriteRepo>)contextMenu.Tag;
             RemoveFavorite( favorite );
         }
 
@@ -405,7 +472,7 @@ namespace TabbedTortoiseGit
             }
         }
 
-        private void GitCommandMenuItem_Click( object sender, EventArgs e )
+        private void GitCommandTabMenuItem_Click( object sender, EventArgs e )
         {
             ToolStripItem c = (ToolStripItem)sender;
             TortoiseGitCommandFunc func = (TortoiseGitCommandFunc)c.Tag;

@@ -41,6 +41,7 @@
             this.CloseRepoTabMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.CheckForModifiedTabsTimer = new System.Windows.Forms.Timer(this.components);
             this.FavoriteRepoContextMenu = new System.Windows.Forms.ContextMenuStrip(this.components);
+            this.OpenFavoriteRepoLocationContextMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.RemoveFavoriteContextMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.OptionsContextMenu = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.OpenRepoMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -53,11 +54,14 @@
             this.LogTabs = new Tabs.TabControl();
             this.FavoritesMenuContextMenu = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.ShowFavoritesManagerMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.FavoritesFolderContextMenu = new System.Windows.Forms.ContextMenuStrip(this.components);
+            this.RemoveFavoriteFolderContextMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.NotifyIconContextMenu.SuspendLayout();
             this.TabContextMenu.SuspendLayout();
             this.FavoriteRepoContextMenu.SuspendLayout();
             this.OptionsContextMenu.SuspendLayout();
             this.FavoritesMenuContextMenu.SuspendLayout();
+            this.FavoritesFolderContextMenu.SuspendLayout();
             this.SuspendLayout();
             // 
             // FavoritesMenuStrip
@@ -136,14 +140,22 @@
             // FavoriteRepoContextMenu
             // 
             this.FavoriteRepoContextMenu.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.OpenFavoriteRepoLocationContextMenuItem,
             this.RemoveFavoriteContextMenuItem});
             this.FavoriteRepoContextMenu.Name = "FavoriteRepoContextMenu";
-            this.FavoriteRepoContextMenu.Size = new System.Drawing.Size(163, 26);
+            this.FavoriteRepoContextMenu.Size = new System.Drawing.Size(183, 70);
+            // 
+            // OpenFavoriteRepoLocationContextMenuItem
+            // 
+            this.OpenFavoriteRepoLocationContextMenuItem.Image = global::TabbedTortoiseGit.Properties.Resources.OpenLocation;
+            this.OpenFavoriteRepoLocationContextMenuItem.Name = "OpenFavoriteRepoLocationContextMenuItem";
+            this.OpenFavoriteRepoLocationContextMenuItem.Size = new System.Drawing.Size(182, 22);
+            this.OpenFavoriteRepoLocationContextMenuItem.Text = "Open Repo Location";
             // 
             // RemoveFavoriteContextMenuItem
             // 
             this.RemoveFavoriteContextMenuItem.Name = "RemoveFavoriteContextMenuItem";
-            this.RemoveFavoriteContextMenuItem.Size = new System.Drawing.Size(162, 22);
+            this.RemoveFavoriteContextMenuItem.Size = new System.Drawing.Size(182, 22);
             this.RemoveFavoriteContextMenuItem.Text = "Remove Favorite";
             // 
             // OptionsContextMenu
@@ -225,6 +237,19 @@
             this.ShowFavoritesManagerMenuItem.Size = new System.Drawing.Size(203, 22);
             this.ShowFavoritesManagerMenuItem.Text = "Show Favorites Manager";
             // 
+            // FavoritesFolderContextMenu
+            // 
+            this.FavoritesFolderContextMenu.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.RemoveFavoriteFolderContextMenuItem});
+            this.FavoritesFolderContextMenu.Name = "FavoritesFolderContextMenu";
+            this.FavoritesFolderContextMenu.Size = new System.Drawing.Size(199, 26);
+            // 
+            // RemoveFavoriteFolderContextMenuItem
+            // 
+            this.RemoveFavoriteFolderContextMenuItem.Name = "RemoveFavoriteFolderContextMenuItem";
+            this.RemoveFavoriteFolderContextMenuItem.Size = new System.Drawing.Size(198, 22);
+            this.RemoveFavoriteFolderContextMenuItem.Text = "Remove Favorite Folder";
+            // 
             // TabbedTortoiseGitForm
             // 
             this.AllowDrop = true;
@@ -242,6 +267,7 @@
             this.FavoriteRepoContextMenu.ResumeLayout(false);
             this.OptionsContextMenu.ResumeLayout(false);
             this.FavoritesMenuContextMenu.ResumeLayout(false);
+            this.FavoritesFolderContextMenu.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -272,6 +298,9 @@
         private System.Windows.Forms.ContextMenuStrip FavoritesMenuContextMenu;
         private System.Windows.Forms.ToolStripMenuItem ShowFavoritesManagerMenuItem;
         private System.Windows.Forms.ToolStripMenuItem FavoritesManagerMenuItem;
+        private System.Windows.Forms.ContextMenuStrip FavoritesFolderContextMenu;
+        private System.Windows.Forms.ToolStripMenuItem RemoveFavoriteFolderContextMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem OpenFavoriteRepoLocationContextMenuItem;
     }
 }
 
