@@ -279,13 +279,13 @@ namespace TabbedTortoiseGit
             }
         }
 
-        private void FavoriteMenuItem_MouseUp( object sender, MouseEventArgs e )
+        private async void FavoriteMenuItem_MouseUp( object sender, MouseEventArgs e )
         {
+            ToolStripMenuItem favoriteMenuItem = (ToolStripMenuItem)sender;
+            TreeNode<FavoriteRepo> favorite = (TreeNode<FavoriteRepo>)favoriteMenuItem.Tag;
+
             if( e.Button == MouseButtons.Right )
             {
-                ToolStripMenuItem favoriteMenuItem = (ToolStripMenuItem)sender;
-                TreeNode<FavoriteRepo> favorite = (TreeNode<FavoriteRepo>)favoriteMenuItem.Tag;
-
                 Point p;
                 if( favoriteMenuItem.Owner == FavoritesMenuStrip )
                 {
@@ -309,6 +309,13 @@ namespace TabbedTortoiseGit
                 _favoriteRepoContextMenuOpen = true;
                 favoriteContextMenu.Tag = favorite;
                 favoriteContextMenu.Show( favoriteMenuItem.Owner, p );
+            }
+            else if( e.Button == MouseButtons.Middle )
+            {
+                if( favorite.Value.IsFavoriteFolder )
+                {
+                    await OpenFavoriteRepos( favorite );
+                }
             }
         }
 

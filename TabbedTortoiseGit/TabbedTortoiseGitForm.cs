@@ -452,6 +452,21 @@ namespace TabbedTortoiseGit
             }
         }
 
+        private async Task OpenFavoriteRepos( TreeNode<FavoriteRepo> favorite )
+        {
+            foreach( TreeNode<FavoriteRepo> child in favorite.Children )
+            {
+                if( !child.Value.IsFavoriteFolder )
+                {
+                    await OpenLog( child.Value.Repo );
+                }
+                else
+                {
+                    await OpenFavoriteRepos( child );
+                }
+            }
+        }
+
         private void SaveWindowState()
         {
             if( this.WindowState == FormWindowState.Maximized )
