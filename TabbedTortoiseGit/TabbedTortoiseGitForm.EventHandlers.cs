@@ -345,15 +345,15 @@ namespace TabbedTortoiseGit
             Util.OpenInExplorer( favorite.Value.Repo );
         }
 
-        private void GitCommandFavoriteContextMenuItem_Click( object sender, EventArgs e )
+        private async void GitCommandFavoriteContextMenuItem_Click( object sender, EventArgs e )
         {
             ToolStripMenuItem contextMenuItem = (ToolStripMenuItem)sender;
             ToolStrip contextMenu = contextMenuItem.Owner;
 
             TreeNode<FavoriteRepo> favorite = (TreeNode<FavoriteRepo>)contextMenu.Tag;
-            TortoiseGitCommandFunc func = (TortoiseGitCommandFunc)contextMenuItem.Tag;
+            TortoiseGitCommandFunc gitCommandFunc = (TortoiseGitCommandFunc)contextMenuItem.Tag;
 
-            func.Invoke( favorite.Value.Repo );
+            await gitCommandFunc.Invoke( favorite.Value.Repo );
         }
 
         private void RemoveFavoriteItemContextMenuItem_Click( object sender, EventArgs e )
@@ -479,13 +479,14 @@ namespace TabbedTortoiseGit
             }
         }
 
-        private void GitCommandTabMenuItem_Click( object sender, EventArgs e )
+        private async void GitCommandTabMenuItem_Click( object sender, EventArgs e )
         {
             ToolStripItem c = (ToolStripItem)sender;
-            TortoiseGitCommandFunc func = (TortoiseGitCommandFunc)c.Tag;
+            TortoiseGitCommandFunc gitCommandFunc = (TortoiseGitCommandFunc)c.Tag;
 
             TabTag tag = (TabTag)LogTabs.SelectedTab.Tag;
-            func.Invoke( tag.Repo );
+            await gitCommandFunc.Invoke( tag.Repo );
+            Native.SendKeyDown( tag.Process.MainWindowHandle, Keys.F5 );
         }
 
         private async void CheckForModifiedTabsTimer_Tick( object sender, EventArgs e )

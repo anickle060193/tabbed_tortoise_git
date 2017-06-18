@@ -14,6 +14,7 @@ namespace TabbedTortoiseGit
         public static class WindowMessage
         {
             public const int NCHITTEST = 0x0084;
+            public const int WM_KEYDOWN = 0x100;
         }
 
         public static class HitTestValues
@@ -243,5 +244,10 @@ namespace TabbedTortoiseGit
 
         [DllImport( "user32.dll", SetLastError = true )]
         static extern bool GetWindowRect( IntPtr hWnd, ref RECT Rect );
+
+        public static void SendKeyDown( IntPtr windowHandle, Keys key )
+        {
+            PostMessage( windowHandle, WindowMessage.WM_KEYDOWN, (IntPtr)key, IntPtr.Zero );
+        }
     }
 }

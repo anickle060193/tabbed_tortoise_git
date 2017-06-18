@@ -11,7 +11,7 @@ using TabbedTortoiseGit.Properties;
 
 namespace TabbedTortoiseGit
 {
-    public delegate void TortoiseGitCommandFunc( String path );
+    public delegate Task TortoiseGitCommandFunc( String path );
 
     public class TortoiseGitCommand
     {
@@ -61,9 +61,23 @@ namespace TabbedTortoiseGit
             return Process.Start( info );
         }
 
+        private static async Task<Process> WaitForTortoiseGitCommandAsync( String command, String workingDirectory )
+        {
+            Process p = TortoiseGitCommand( command, workingDirectory );
+            await Task.Run( () => p.WaitForExit() );
+            return p;
+        }
+
         private static Process PathCommand( String command, String path )
         {
             return TortoiseGitCommand( "/command:{0} /path:\"{1}\"".XFormat( command, path ), path );
+        }
+
+        private static async Task<Process> WaitForPathCommandAsync( String command, String path )
+        {
+            Process p = PathCommand( command, path );
+            await Task.Run( () => p.WaitForExit() );
+            return p;
         }
 
         public static Process Log( String path )
@@ -71,54 +85,56 @@ namespace TabbedTortoiseGit
             return PathCommand( "log", path );
         }
 
-        public static void Fetch( String path )
+        public static async Task Fetch( String path )
         {
-            PathCommand( "fetch", path );
+            await WaitForPathCommandAsync( "fetch", path );
         }
 
-        public static void FastFetch( String path )
+        public static Task FastFetch( String path )
         {
             FastFetchDialog.FastFetch( path );
+            return Task.FromResult( true );
         }
 
-        public static void Commit( String path )
+        public static async Task Commit( String path )
         {
-            PathCommand( "commit", path );
+            await WaitForPathCommandAsync( "commit", path );
         }
 
-        public static void Switch( String path )
+        public static async Task Switch( String path )
         {
-            PathCommand( "switch", path );
+            await WaitForPathCommandAsync( "switch", path );
         }
 
-        public static void Pull( String path )
+        public static async Task Pull( String path )
         {
-            PathCommand( "pull", path );
+            await WaitForPathCommandAsync( "pull", path );
         }
 
-        public static void Push( String path )
+        public static async Task Push( String path )
         {
-            PathCommand( "push", path );
+            await WaitForPathCommandAsync( "push", path );
         }
 
-        public static void Rebase( String path )
+        public static async Task Rebase( String path )
         {
-            PathCommand( "rebase", path );
+            await WaitForPathCommandAsync( "rebase", path );
         }
 
-        public static void Sync( String path )
+        public static async Task Sync( String path )
         {
-            PathCommand( "sync", path );
+            await WaitForPathCommandAsync( "sync", path );
         }
 
-        public static void SubmoduleUpdate( String path )
+        public static async Task SubmoduleUpdate( String path )
         {
-            TortoiseGitCommand( "/command:subupdate /path:\"{0}\" /bkpath:\"{0}\"".XFormat( path ), path );
+            await WaitForTortoiseGitCommandAsync( "/command:subupdate /path:\"{0}\" /bkpath:\"{0}\"".XFormat( path ), path );
         }
 
-        public static void FastSubmoduleUpdate( String path )
+        public static Task FastSubmoduleUpdate( String path )
         {
             FastSubmoduleUpdateForm.UpdateSubmodules( path );
+            return Task.FromResult( true );
         }
     }
 }
