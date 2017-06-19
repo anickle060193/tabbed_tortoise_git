@@ -370,6 +370,36 @@ namespace Tabs
             _dragDropHelper.AddControl( this );
         }
 
+        public void NextTab()
+        {
+            if( this.TabCount > 1 )
+            {
+                if( this.SelectedIndex == this.TabCount - 1 )
+                {
+                    this.SelectedIndex = 0;
+                }
+                else
+                {
+                    this.SelectedIndex++;
+                }
+            }
+        }
+
+        public void PreviousTab()
+        {
+            if( this.TabCount > 1 )
+            {
+                if( this.SelectedIndex == 0 )
+                {
+                    this.SelectedIndex = this.TabCount - 1;
+                }
+                else
+                {
+                    this.SelectedIndex--;
+                }
+            }
+        }
+
         internal int FindTab( Tab tab )
         {
             if( _tabs != null )

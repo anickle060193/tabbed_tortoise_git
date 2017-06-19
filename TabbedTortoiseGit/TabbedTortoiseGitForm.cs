@@ -39,7 +39,10 @@ namespace TabbedTortoiseGit
         private ToolStripDropDownMenu _currentFavoriteDropDown;
         private bool _favoriteRepoContextMenuOpen;
 		
-        private HotKey _newTabHotKey;
+        private readonly HotKey _newTabHotKey;
+        private readonly HotKey _nextTabHotKey;
+        private readonly HotKey _previousTabHotKey;
+        private readonly HotKey _closeTabHotKey;
 
         class TabTag
         {
@@ -83,6 +86,18 @@ namespace TabbedTortoiseGit
             _newTabHotKey.AddHandle( this.Handle );
             _newTabHotKey.HotKeyPressed += NewTabHotKey_HotKeyPressed;
 
+            _nextTabHotKey = new HotKey( this.Handle );
+            _nextTabHotKey.AddHandle( this.Handle );
+            _nextTabHotKey.HotKeyPressed += NextTabHotKey_HotKeyPressed;
+
+            _previousTabHotKey = new HotKey( this.Handle );
+            _previousTabHotKey.AddHandle( this.Handle );
+            _previousTabHotKey.HotKeyPressed += PreviousTabHotKey_HotKeyPressed;
+
+            _closeTabHotKey = new HotKey( this.Handle );
+            _closeTabHotKey.AddHandle( this.Handle );
+            _closeTabHotKey.HotKeyPressed += CloseTabHotKey_HotKeyPressed;
+
             this.Icon = Resources.TortoiseIcon;
             NotifyIcon.Icon = this.Icon;
 
@@ -99,11 +114,6 @@ namespace TabbedTortoiseGit
             {
                 base.WndProc( ref m );
             }
-        }
-
-        protected override void OnHandleCreated( EventArgs e )
-        {
-            base.OnHandleCreated( e );
         }
 
         private void UpdateFromSettings( bool updateWindowState )
@@ -156,6 +166,9 @@ namespace TabbedTortoiseGit
         private void UpdateShortcutsFromSettings()
         {
             _newTabHotKey.SetShortcut( Settings.Default.NewTabShortcut );
+            _nextTabHotKey.SetShortcut( Settings.Default.NextTabShortcut );
+            _previousTabHotKey.SetShortcut( Settings.Default.PreviousTabShortcut );
+            _closeTabHotKey.SetShortcut( Settings.Default.CloseTabShortcut );
         }
 
         private void UpdateRecentReposFromSettings()
@@ -352,7 +365,10 @@ namespace TabbedTortoiseGit
             Native.SetWindowParent( p.MainWindowHandle, t );
             ResizeTab( p, t );
 
-            _newTabHotKey?.AddHandle( p.MainWindowHandle );
+            _newTabHotKey.AddHandle( p.MainWindowHandle );
+            _nextTabHotKey.AddHandle( p.MainWindowHandle );
+            _previousTabHotKey.AddHandle( p.MainWindowHandle );
+            _closeTabHotKey.AddHandle( p.MainWindowHandle );
 
             t.Resize += Tab_Resize;
             p.EnableRaisingEvents = true;
@@ -426,6 +442,22 @@ namespace TabbedTortoiseGit
                 {
                     RemoveLog( _processes.First() );
                 }
+            }
+        }
+
+        private void CloseTab( Tab tab )
+        {
+            TabTag t = (TabTag)tab.Tag;
+
+            LOG.DebugFormat( "Close Tab - Repo: {0} - ID: {1}", t.Repo, t.Process.Id );
+
+            RemoveLog( t.Process );
+
+            if( LogTabs.TabCount == 0
+             && Settings.Default.CloseWindowOnLastTabClosed )
+            {
+                LOG.Debug( "Close Tab - Closing window after last tab closed" );
+                this.Close();
             }
         }
 

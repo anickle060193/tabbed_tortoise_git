@@ -87,7 +87,7 @@ namespace TabbedTortoiseGit
                 return MODIFIER_MAPPING
                     .Where( modifier => Shortcut?.Modifiers.HasFlag( modifier.Key ) ?? false )
                     .Select( modifier => modifier.Value )
-                    .Aggregate( ( m1, m2 ) => m1 | m2 );
+                    .Aggregate( KeyModifier.None, ( m1, m2 ) => m1 | m2 );
             }
         }
 

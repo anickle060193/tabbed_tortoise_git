@@ -96,6 +96,16 @@
       <Value Profile="(Default)" />
     </Setting>
     <Setting Name="NewTabShortcut" Type="TabbedTortoiseGit.Shortcut" Scope="User">
+      <Value Profile="(Default)" />
+    </Setting>
+    <Setting Name="NextTabShortcut" Type="TabbedTortoiseGit.Shortcut" Scope="User">
+      <Value Profile="(Default)" />
+    </Setting>
+    <Setting Name="PreviousTabShortcut" Type="TabbedTortoiseGit.Shortcut" Scope="User">
+      <Value Profile="(Default)" />
+    </Setting>
+    <Setting Name="CloseTabShortcut" Type="TabbedTortoiseGit.Shortcut" Scope="User">
+      <Value Profile="(Default)" />
     </Setting>
   </Settings>
 </SettingsFile>

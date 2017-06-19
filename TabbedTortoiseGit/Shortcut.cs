@@ -69,16 +69,20 @@ namespace TabbedTortoiseGit
             Keys modifiers = MODIFIER_MAPPING
                 .Where( modifier => e.KeyData.HasFlag( modifier.Key ) )
                 .Select( modifier => modifier.Key )
-                .Aggregate( ( m1, m2 ) => m1 | m2 );
+                .Aggregate( Keys.None, ( m1, m2 ) => m1 | m2 );
 
-            if( ( 'a' <= e.KeyValue && e.KeyValue <= 'z' )
-             || ( 'A' <= e.KeyValue && e.KeyValue <= 'Z' )
-             || ( '0' <= e.KeyValue && e.KeyValue <= '9' ) )
+            if( ( 33 <= e.KeyValue && e.KeyValue <= 126 )
+             || e.KeyValue == (int)Keys.Tab )
             {
                 key = e.KeyCode;
             }
 
             return new Shortcut( modifiers, key );
+        }
+
+        public static Shortcut FromKeyEventArgs( PreviewKeyDownEventArgs e )
+        {
+            return FromKeyEventArgs( new KeyEventArgs( e.KeyData ) );
         }
 
         public override string ToString()

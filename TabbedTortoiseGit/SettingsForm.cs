@@ -21,6 +21,9 @@ namespace TabbedTortoiseGit
             SettingsForm f = new SettingsForm();
 
             f.NewTabShortcut = Settings.Default.NewTabShortcut;
+            f.NextTabShortcut = Settings.Default.NextTabShortcut;
+            f.PreviousTabShortcut = Settings.Default.PreviousTabShortcut;
+            f.CloseTabShortcut = Settings.Default.CloseTabShortcut;
 
             f.StartupRepos = Settings.Default.StartupRepos.ToArray();
             f.OpenStartupReposOnReOpen = Settings.Default.OpenStartupReposOnReOpen;
@@ -45,6 +48,9 @@ namespace TabbedTortoiseGit
             if( f.ShowDialog() == DialogResult.OK )
             {
                 Settings.Default.NewTabShortcut = f.NewTabShortcut;
+                Settings.Default.NextTabShortcut = f.NextTabShortcut;
+                Settings.Default.PreviousTabShortcut = f.PreviousTabShortcut;
+                Settings.Default.CloseTabShortcut = f.CloseTabShortcut;
 
                 Settings.Default.StartupRepos = f.StartupRepos.ToList();
                 Settings.Default.OpenStartupReposOnReOpen = f.OpenStartupReposOnReOpen;
@@ -88,6 +94,48 @@ namespace TabbedTortoiseGit
             {
                 NewTabShortcutText.Tag = value;
                 NewTabShortcutText.Text = value?.Text ?? "";
+            }
+        }
+
+        public Shortcut NextTabShortcut
+        {
+            get
+            {
+                return (Shortcut)NextTabShortcutText.Tag;
+            }
+
+            set
+            {
+                NextTabShortcutText.Tag = value;
+                NextTabShortcutText.Text = value?.Text ?? "";
+            }
+        }
+
+        public Shortcut PreviousTabShortcut
+        {
+            get
+            {
+                return (Shortcut)PreviousTabShortcutText.Tag;
+            }
+
+            set
+            {
+                PreviousTabShortcutText.Tag = value;
+                PreviousTabShortcutText.Text = value?.Text ?? "";
+            }
+        }
+
+        public Shortcut CloseTabShortcut
+        {
+            get
+            {
+                return (Shortcut)CloseTabShortcutText.Tag;
+            }
+
+            set
+            {
+                CloseTabShortcutText.Tag = value;
+                CloseTabShortcutText.Text = value?.Text ?? "";
             }
         }
 
@@ -313,6 +361,17 @@ namespace TabbedTortoiseGit
             }
         }
 
+        private IEnumerable<TextBox> ShortcutTextBoxes
+        {
+            get
+            {
+                yield return NewTabShortcutText;
+                yield return NextTabShortcutText;
+                yield return PreviousTabShortcutText;
+                yield return CloseTabShortcutText;
+            }
+        }
+
         private readonly CommonOpenFileDialog _folderDialog;
         private readonly CheckListDragDrophelper _dragDropHelper;
 
@@ -338,11 +397,27 @@ namespace TabbedTortoiseGit
             _dragDropHelper = new CheckListDragDrophelper();
             _dragDropHelper.AddControl( GitActionsCheckList );
 
-            NewTabShortcutText.Enter += NewTabShortcutText_Enter;
-            NewTabShortcutText.KeyDown += NewTabShortcut_KeyDown;
+            foreach( TextBox shortcutTextBox in ShortcutTextBoxes )
+            {
+                shortcutTextBox.Enter += ShortcutText_Enter;
+                shortcutTextBox.PreviewKeyDown += ShortcutTextBox_PreviewKeyDown;
+                shortcutTextBox.KeyDown += ShortcutText_KeyDown;
+            }
         }
 
-        private void NewTabShortcutText_Enter( object sender, EventArgs e )
+        protected override bool ProcessTabKey( bool forward )
+        {
+            if( ShortcutTextBoxes.Contains( this.ActiveControl ) )
+            {
+                return true;
+            }
+            else
+            {
+                return base.ProcessTabKey( forward );
+            }
+        }
+
+        private void ShortcutText_Enter( object sender, EventArgs e )
         {
             TextBox shortcutText = (TextBox)sender;
 
@@ -350,15 +425,20 @@ namespace TabbedTortoiseGit
             shortcutText.Text = "";
         }
 
-        private void NewTabShortcut_KeyDown( object sender, KeyEventArgs e )
+        private void ShortcutTextBox_PreviewKeyDown( object sender, PreviewKeyDownEventArgs e )
         {
             TextBox shortcutText = (TextBox)sender;
 
             Shortcut shortcut = Shortcut.FromKeyEventArgs( e );
             shortcutText.Tag = shortcut;
             shortcutText.Text = shortcut.Text;
+            shortcutText.SelectionStart = shortcutText.TextLength;
+        }
 
+        private void ShortcutText_KeyDown( object sender, KeyEventArgs e )
+        {
             e.SuppressKeyPress = true;
+            e.Handled = true;
         }
 
         private static readonly String CHEAT_CODE = "developer";

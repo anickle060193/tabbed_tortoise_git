@@ -224,18 +224,8 @@ namespace TabbedTortoiseGit
 
         private void LogTabs_TabClosed( object sender, TabClosedEventArgs e )
         {
-            TabTag t = (TabTag)e.Tab.Tag;
-
-            LOG.DebugFormat( "Tab Closed - Repo: {0} - ID: {1}", t.Repo, t.Process.Id );
-
-            RemoveLog( t.Process );
-
-            if( LogTabs.TabCount == 0
-             && Settings.Default.CloseWindowOnLastTabClosed )
-            {
-                LOG.Debug( "Tab Closed - Closing window after last tab closed" );
-                this.Close();
-            }
+            LOG.Debug( "Tab Closed" );
+            CloseTab( e.Tab );
         }
 
         private void LogTabs_SelectedIndexChanged( object sender, EventArgs e )
@@ -468,15 +458,8 @@ namespace TabbedTortoiseGit
 
         private void CloseRepoTabMenuItem_Click( object sender, EventArgs e )
         {
-            TabTag t = (TabTag)LogTabs.SelectedTab.Tag;
-            this.RemoveLog( t.Process );
-
-            if( LogTabs.TabCount == 0
-             && Settings.Default.CloseWindowOnLastTabClosed )
-            {
-                LOG.Debug( "Close Repo Tab Menu - Closing window after last tab closed" );
-                this.Close();
-            }
+            LOG.Debug( "Tab Menu Item - Close Repo Click" );
+            CloseTab( LogTabs.SelectedTab );
         }
 
         private async void GitCommandTabMenuItem_Click( object sender, EventArgs e )
@@ -514,7 +497,26 @@ namespace TabbedTortoiseGit
 
         private async void NewTabHotKey_HotKeyPressed( object sender, EventArgs e )
         {
+            LOG.Debug( "HotKey - New Tab" );
             await FindRepo();
+        }
+
+        private void NextTabHotKey_HotKeyPressed( object sender, EventArgs e )
+        {
+            LOG.Debug( "HotKey - Next Tab" );
+            LogTabs.NextTab();
+        }
+
+        private void PreviousTabHotKey_HotKeyPressed( object sender, EventArgs e )
+        {
+            LOG.Debug( "HotKey - Previous Tab" );
+            LogTabs.PreviousTab();
+        }
+
+        private void CloseTabHotKey_HotKeyPressed( object sender, EventArgs e )
+        {
+            LOG.Debug( "HotKey - Close Tab" );
+            CloseTab( LogTabs.SelectedTab );
         }
     }
 }

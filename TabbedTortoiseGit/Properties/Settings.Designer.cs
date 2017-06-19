@@ -400,5 +400,38 @@ namespace TabbedTortoiseGit.Properties {
                 this["NewTabShortcut"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        public global::TabbedTortoiseGit.Shortcut NextTabShortcut {
+            get {
+                return ((global::TabbedTortoiseGit.Shortcut)(this["NextTabShortcut"]));
+            }
+            set {
+                this["NextTabShortcut"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        public global::TabbedTortoiseGit.Shortcut PreviousTabShortcut {
+            get {
+                return ((global::TabbedTortoiseGit.Shortcut)(this["PreviousTabShortcut"]));
+            }
+            set {
+                this["PreviousTabShortcut"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        public global::TabbedTortoiseGit.Shortcut CloseTabShortcut {
+            get {
+                return ((global::TabbedTortoiseGit.Shortcut)(this["CloseTabShortcut"]));
+            }
+            set {
+                this["CloseTabShortcut"] = value;
+            }
+        }
     }
 }

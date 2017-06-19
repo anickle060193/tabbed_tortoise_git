@@ -248,6 +248,21 @@ namespace TabbedTortoiseGit.Properties
                 Settings.Default.NewTabShortcut = Shortcut.Empty;
             }
 
+            if( Settings.Default.NextTabShortcut == null )
+            {
+                Settings.Default.NextTabShortcut = Shortcut.Empty;
+            }
+
+            if( Settings.Default.PreviousTabShortcut == null )
+            {
+                Settings.Default.PreviousTabShortcut = Shortcut.Empty;
+            }
+
+            if( Settings.Default.CloseTabShortcut == null )
+            {
+                Settings.Default.CloseTabShortcut = Shortcut.Empty;
+            }
+
             if( Settings.Default.StartupRepos == null )
             {
                 Settings.Default.StartupRepos = new List<String>();
