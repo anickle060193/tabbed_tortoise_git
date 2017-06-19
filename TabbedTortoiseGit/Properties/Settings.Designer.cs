@@ -444,5 +444,27 @@ namespace TabbedTortoiseGit.Properties {
                 this["ReopenClosedTabShortcut"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        public global::System.Drawing.Font NormalTabFont {
+            get {
+                return ((global::System.Drawing.Font)(this["NormalTabFont"]));
+            }
+            set {
+                this["NormalTabFont"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        public global::System.Drawing.Color NormalTabFontColor {
+            get {
+                return ((global::System.Drawing.Color)(this["NormalTabFontColor"]));
+            }
+            set {
+                this["NormalTabFontColor"] = value;
+            }
+        }
     }
 }

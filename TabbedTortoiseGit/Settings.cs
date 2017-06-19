@@ -301,6 +301,16 @@ namespace TabbedTortoiseGit.Properties
                 Settings.Default.FastFetchMaxProcesses = 6;
             }
 
+            if( Settings.Default.NormalTabFont == null )
+            {
+                Settings.Default.NormalTabFont = SystemFonts.DefaultFont;
+            }
+
+            if( Settings.Default.NormalTabFontColor.IsEmpty )
+            {
+                Settings.Default.NormalTabFontColor = SystemColors.ControlText;
+            }
+
             if( Settings.Default.CheckForModifiedTabsInterval < 1000 )
             {
                 LOG.DebugFormat( "Settings Load - Invalid Check for Modified Tabs Interval: {0}", Settings.Default.CheckForModifiedTabsInterval );

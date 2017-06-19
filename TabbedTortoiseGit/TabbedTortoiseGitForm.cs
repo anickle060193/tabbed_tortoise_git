@@ -380,6 +380,8 @@ namespace TabbedTortoiseGit
             t.Tag = new TabTag( p, path );
             _tabs.Add( p.Id, t );
 
+            UpdateTabDisplay( t );
+
             Native.RemoveBorder( p.MainWindowHandle );
             Native.SetWindowParent( p.MainWindowHandle, t );
             ResizeTab( p, t );
@@ -611,13 +613,13 @@ namespace TabbedTortoiseGit
             TabTag tag = (TabTag)tab.Tag;
             if( Settings.Default.IndicateModifiedTabs && tag.Modified )
             {
-                tab.ForeColor = Settings.Default.ModifiedTabFontColor;
                 tab.Font = Settings.Default.ModifiedTabFont;
+                tab.ForeColor = Settings.Default.ModifiedTabFontColor;
             }
             else
             {
-                tab.ForeColor = SystemColors.ControlText;
-                tab.Font = SystemFonts.DefaultFont;
+                tab.Font = Settings.Default.NormalTabFont;
+                tab.ForeColor = Settings.Default.NormalTabFontColor;
             }
         }
     }

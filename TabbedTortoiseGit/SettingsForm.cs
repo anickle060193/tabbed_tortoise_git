@@ -31,6 +31,8 @@ namespace TabbedTortoiseGit
 
             f.TabContextMenuGitActions = Settings.Default.TabContextMenuGitActions;
 
+            f.NormalTabFont = Settings.Default.NormalTabFont;
+            f.NormalTabFontColor = Settings.Default.NormalTabFontColor;
             f.IndicateModifiedTabs = Settings.Default.IndicateModifiedTabs;
             f.CheckForModifiedTabsInterval = Settings.Default.CheckForModifiedTabsInterval;
             f.ModifiedTabFont = Settings.Default.ModifiedTabFont;
@@ -59,6 +61,8 @@ namespace TabbedTortoiseGit
 
                 Settings.Default.TabContextMenuGitActions = f.TabContextMenuGitActions;
 
+                Settings.Default.NormalTabFont = f.NormalTabFont;
+                Settings.Default.NormalTabFontColor = f.NormalTabFontColor;
                 Settings.Default.CheckForModifiedTabsInterval = f.CheckForModifiedTabsInterval;
                 Settings.Default.IndicateModifiedTabs = f.IndicateModifiedTabs;
                 Settings.Default.ModifiedTabFont = f.ModifiedTabFont;
@@ -205,6 +209,32 @@ namespace TabbedTortoiseGit
                         GitActionsCheckList.SetItemChecked( index, true );
                     }
                 }
+            }
+        }
+
+        public Font NormalTabFont
+        {
+            get
+            {
+                return NormalTabFontSample.Font;
+            }
+
+            set
+            {
+                NormalTabFontSample.Font = value;
+            }
+        }
+
+        public Color NormalTabFontColor
+        {
+            get
+            {
+                return NormalTabFontSample.ForeColor;
+            }
+
+            set
+            {
+                NormalTabFontSample.ForeColor = value;
             }
         }
 
@@ -408,6 +438,9 @@ namespace TabbedTortoiseGit
 
             this.GitActionsCheckList.Items.AddRange( TortoiseGit.ACTIONS.Keys.ToArray() );
 
+            this.ResetNormalTabFontButton.Click += ResetNormalTabFontButton_Click;
+            this.ChangeNormalTabFontButton.Click += ChangeNormalTabFontButton_Click;
+
             this.ResetModifiedTabFontButton.Click += ResetModifiedTabFontButton_Click;
             this.ChangeModifiedTabFontButton.Click += ChangeModifiedTabFontButton_Click;
 
@@ -501,6 +534,23 @@ namespace TabbedTortoiseGit
         private void DefaultReposList_SelectedValueChanged( object sender, EventArgs e )
         {
             UpdateDefaultReposActions();
+        }
+
+        private void ResetNormalTabFontButton_Click( object sender, EventArgs e )
+        {
+            this.NormalTabFont = SystemFonts.DefaultFont;
+            this.NormalTabFontColor = SystemColors.ControlText;
+        }
+
+        private void ChangeNormalTabFontButton_Click( object sender, EventArgs e )
+        {
+            NormalTabFontDialog.Font = this.NormalTabFont;
+            NormalTabFontDialog.Color = this.NormalTabFontColor;
+            if( NormalTabFontDialog.ShowDialog() == DialogResult.OK )
+            {
+                this.NormalTabFont = NormalTabFontDialog.Font;
+                this.NormalTabFontColor = NormalTabFontDialog.Color;
+            }
         }
 
         private void ResetModifiedTabFontButton_Click( object sender, EventArgs e )

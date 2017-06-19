@@ -56,6 +56,8 @@ namespace TabbedTortoiseGit
             this.CloseTabShortcutLabel = new System.Windows.Forms.Label();
             this.PreviousTabShortcutText = new System.Windows.Forms.TextBox();
             this.CloseTabShortcutText = new System.Windows.Forms.TextBox();
+            this.ReopenClosedTabShortcutLabel = new System.Windows.Forms.Label();
+            this.ReopenClosedTabShortcutText = new System.Windows.Forms.TextBox();
             this.StartupReposTab = new System.Windows.Forms.TabPage();
             this.GitActionsTab = new System.Windows.Forms.TabPage();
             this.DisplaySettingsTab = new System.Windows.Forms.TabPage();
@@ -72,8 +74,11 @@ namespace TabbedTortoiseGit
             this.DeveloperSettingsPage = new System.Windows.Forms.TabPage();
             this.ShowHitTestCheck = new System.Windows.Forms.CheckBox();
             this.ModifiedTabFontDialog = new System.Windows.Forms.FontDialog();
-            this.ReopenClosedTabShortcutLabel = new System.Windows.Forms.Label();
-            this.ReopenClosedTabShortcutText = new System.Windows.Forms.TextBox();
+            this.NormalTabFontGroup = new System.Windows.Forms.GroupBox();
+            this.NormalTabFontSample = new System.Windows.Forms.Label();
+            this.ResetNormalTabFontButton = new System.Windows.Forms.Button();
+            this.ChangeNormalTabFontButton = new System.Windows.Forms.Button();
+            this.NormalTabFontDialog = new System.Windows.Forms.FontDialog();
             ((System.ComponentModel.ISupportInitialize)(this.MaxRecentReposNumeric)).BeginInit();
             this.SettingsTabs.SuspendLayout();
             this.KeyboardShortcutsPage.SuspendLayout();
@@ -85,6 +90,7 @@ namespace TabbedTortoiseGit
             this.ModifiedTabFontGroup.SuspendLayout();
             this.OtherSettingsTab.SuspendLayout();
             this.DeveloperSettingsPage.SuspendLayout();
+            this.NormalTabFontGroup.SuspendLayout();
             this.SuspendLayout();
             // 
             // StartupReposList
@@ -384,6 +390,28 @@ namespace TabbedTortoiseGit
             this.CloseTabShortcutText.TabStop = false;
             this.CloseTabShortcutText.WordWrap = false;
             // 
+            // ReopenClosedTabShortcutLabel
+            // 
+            this.ReopenClosedTabShortcutLabel.Anchor = System.Windows.Forms.AnchorStyles.Left;
+            this.ReopenClosedTabShortcutLabel.AutoSize = true;
+            this.ReopenClosedTabShortcutLabel.Location = new System.Drawing.Point(3, 110);
+            this.ReopenClosedTabShortcutLabel.Name = "ReopenClosedTabShortcutLabel";
+            this.ReopenClosedTabShortcutLabel.Size = new System.Drawing.Size(105, 13);
+            this.ReopenClosedTabShortcutLabel.TabIndex = 9;
+            this.ReopenClosedTabShortcutLabel.Text = "Reopen Closed Tab:";
+            // 
+            // ReopenClosedTabShortcutText
+            // 
+            this.ReopenClosedTabShortcutText.AcceptsTab = true;
+            this.ReopenClosedTabShortcutText.Anchor = System.Windows.Forms.AnchorStyles.Left;
+            this.ReopenClosedTabShortcutText.Location = new System.Drawing.Point(114, 107);
+            this.ReopenClosedTabShortcutText.Name = "ReopenClosedTabShortcutText";
+            this.ReopenClosedTabShortcutText.ReadOnly = true;
+            this.ReopenClosedTabShortcutText.ShortcutsEnabled = false;
+            this.ReopenClosedTabShortcutText.Size = new System.Drawing.Size(200, 20);
+            this.ReopenClosedTabShortcutText.TabIndex = 10;
+            this.ReopenClosedTabShortcutText.TabStop = false;
+            // 
             // StartupReposTab
             // 
             this.StartupReposTab.Controls.Add(this.OpenStartupReposOnReOpenCheck);
@@ -412,6 +440,9 @@ namespace TabbedTortoiseGit
             // 
             // DisplaySettingsTab
             // 
+            this.DisplaySettingsTab.Controls.Add(this.ResetNormalTabFontButton);
+            this.DisplaySettingsTab.Controls.Add(this.ChangeNormalTabFontButton);
+            this.DisplaySettingsTab.Controls.Add(this.NormalTabFontGroup);
             this.DisplaySettingsTab.Controls.Add(this.CheckForModifiedTabsIntervalLabel);
             this.DisplaySettingsTab.Controls.Add(this.CheckForModifiedTabsIntervalNumeric);
             this.DisplaySettingsTab.Controls.Add(this.IndicateModifiedTabsCheck);
@@ -429,7 +460,7 @@ namespace TabbedTortoiseGit
             // CheckForModifiedTabsIntervalLabel
             // 
             this.CheckForModifiedTabsIntervalLabel.AutoSize = true;
-            this.CheckForModifiedTabsIntervalLabel.Location = new System.Drawing.Point(10, 31);
+            this.CheckForModifiedTabsIntervalLabel.Location = new System.Drawing.Point(8, 126);
             this.CheckForModifiedTabsIntervalLabel.Name = "CheckForModifiedTabsIntervalLabel";
             this.CheckForModifiedTabsIntervalLabel.Size = new System.Drawing.Size(229, 13);
             this.CheckForModifiedTabsIntervalLabel.TabIndex = 5;
@@ -442,7 +473,7 @@ namespace TabbedTortoiseGit
             0,
             0,
             0});
-            this.CheckForModifiedTabsIntervalNumeric.Location = new System.Drawing.Point(245, 29);
+            this.CheckForModifiedTabsIntervalNumeric.Location = new System.Drawing.Point(245, 123);
             this.CheckForModifiedTabsIntervalNumeric.Maximum = new decimal(new int[] {
             100000,
             0,
@@ -466,7 +497,7 @@ namespace TabbedTortoiseGit
             // 
             this.IndicateModifiedTabsCheck.AutoSize = true;
             this.IndicateModifiedTabsCheck.CheckAlign = System.Drawing.ContentAlignment.MiddleRight;
-            this.IndicateModifiedTabsCheck.Location = new System.Drawing.Point(6, 6);
+            this.IndicateModifiedTabsCheck.Location = new System.Drawing.Point(6, 106);
             this.IndicateModifiedTabsCheck.Name = "IndicateModifiedTabsCheck";
             this.IndicateModifiedTabsCheck.Size = new System.Drawing.Size(134, 17);
             this.IndicateModifiedTabsCheck.TabIndex = 3;
@@ -476,7 +507,7 @@ namespace TabbedTortoiseGit
             // ResetModifiedTabFontButton
             // 
             this.ResetModifiedTabFontButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.ResetModifiedTabFontButton.Location = new System.Drawing.Point(290, 120);
+            this.ResetModifiedTabFontButton.Location = new System.Drawing.Point(290, 215);
             this.ResetModifiedTabFontButton.Name = "ResetModifiedTabFontButton";
             this.ResetModifiedTabFontButton.Size = new System.Drawing.Size(75, 23);
             this.ResetModifiedTabFontButton.TabIndex = 2;
@@ -486,7 +517,7 @@ namespace TabbedTortoiseGit
             // ChangeModifiedTabFontButton
             // 
             this.ChangeModifiedTabFontButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.ChangeModifiedTabFontButton.Location = new System.Drawing.Point(371, 120);
+            this.ChangeModifiedTabFontButton.Location = new System.Drawing.Point(371, 215);
             this.ChangeModifiedTabFontButton.Name = "ChangeModifiedTabFontButton";
             this.ChangeModifiedTabFontButton.Size = new System.Drawing.Size(75, 23);
             this.ChangeModifiedTabFontButton.TabIndex = 1;
@@ -498,7 +529,7 @@ namespace TabbedTortoiseGit
             this.ModifiedTabFontGroup.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.ModifiedTabFontGroup.Controls.Add(this.ModifiedTabFontSample);
-            this.ModifiedTabFontGroup.Location = new System.Drawing.Point(6, 55);
+            this.ModifiedTabFontGroup.Location = new System.Drawing.Point(6, 150);
             this.ModifiedTabFontGroup.Name = "ModifiedTabFontGroup";
             this.ModifiedTabFontGroup.Size = new System.Drawing.Size(440, 59);
             this.ModifiedTabFontGroup.TabIndex = 0;
@@ -582,27 +613,54 @@ namespace TabbedTortoiseGit
             this.ModifiedTabFontDialog.FontMustExist = true;
             this.ModifiedTabFontDialog.ShowColor = true;
             // 
-            // ReopenClosedTabShortcutLabel
+            // NormalTabFontGroup
             // 
-            this.ReopenClosedTabShortcutLabel.Anchor = System.Windows.Forms.AnchorStyles.Left;
-            this.ReopenClosedTabShortcutLabel.AutoSize = true;
-            this.ReopenClosedTabShortcutLabel.Location = new System.Drawing.Point(3, 110);
-            this.ReopenClosedTabShortcutLabel.Name = "ReopenClosedTabShortcutLabel";
-            this.ReopenClosedTabShortcutLabel.Size = new System.Drawing.Size(105, 13);
-            this.ReopenClosedTabShortcutLabel.TabIndex = 9;
-            this.ReopenClosedTabShortcutLabel.Text = "Reopen Closed Tab:";
+            this.NormalTabFontGroup.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.NormalTabFontGroup.Controls.Add(this.NormalTabFontSample);
+            this.NormalTabFontGroup.Location = new System.Drawing.Point(6, 6);
+            this.NormalTabFontGroup.Name = "NormalTabFontGroup";
+            this.NormalTabFontGroup.Size = new System.Drawing.Size(440, 59);
+            this.NormalTabFontGroup.TabIndex = 6;
+            this.NormalTabFontGroup.TabStop = false;
+            this.NormalTabFontGroup.Text = "Normal Tab Font";
             // 
-            // ReopenClosedTabShortcutText
+            // NormalTabFontSample
             // 
-            this.ReopenClosedTabShortcutText.AcceptsTab = true;
-            this.ReopenClosedTabShortcutText.Anchor = System.Windows.Forms.AnchorStyles.Left;
-            this.ReopenClosedTabShortcutText.Location = new System.Drawing.Point(114, 107);
-            this.ReopenClosedTabShortcutText.Name = "ReopenClosedTabShortcutText";
-            this.ReopenClosedTabShortcutText.ReadOnly = true;
-            this.ReopenClosedTabShortcutText.ShortcutsEnabled = false;
-            this.ReopenClosedTabShortcutText.Size = new System.Drawing.Size(200, 20);
-            this.ReopenClosedTabShortcutText.TabIndex = 10;
-            this.ReopenClosedTabShortcutText.TabStop = false;
+            this.NormalTabFontSample.AutoEllipsis = true;
+            this.NormalTabFontSample.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.NormalTabFontSample.Location = new System.Drawing.Point(3, 16);
+            this.NormalTabFontSample.Name = "NormalTabFontSample";
+            this.NormalTabFontSample.Size = new System.Drawing.Size(434, 40);
+            this.NormalTabFontSample.TabIndex = 0;
+            this.NormalTabFontSample.Text = "C:\\sample\\font.git";
+            this.NormalTabFontSample.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
+            // ResetNormalTabFontButton
+            // 
+            this.ResetNormalTabFontButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.ResetNormalTabFontButton.Location = new System.Drawing.Point(290, 71);
+            this.ResetNormalTabFontButton.Name = "ResetNormalTabFontButton";
+            this.ResetNormalTabFontButton.Size = new System.Drawing.Size(75, 23);
+            this.ResetNormalTabFontButton.TabIndex = 8;
+            this.ResetNormalTabFontButton.Text = "Reset";
+            this.ResetNormalTabFontButton.UseVisualStyleBackColor = true;
+            // 
+            // ChangeNormalTabFontButton
+            // 
+            this.ChangeNormalTabFontButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.ChangeNormalTabFontButton.Location = new System.Drawing.Point(371, 71);
+            this.ChangeNormalTabFontButton.Name = "ChangeNormalTabFontButton";
+            this.ChangeNormalTabFontButton.Size = new System.Drawing.Size(75, 23);
+            this.ChangeNormalTabFontButton.TabIndex = 7;
+            this.ChangeNormalTabFontButton.Text = "Change";
+            this.ChangeNormalTabFontButton.UseVisualStyleBackColor = true;
+            // 
+            // NormalTabFontDialog
+            // 
+            this.NormalTabFontDialog.AllowScriptChange = false;
+            this.NormalTabFontDialog.FontMustExist = true;
+            this.NormalTabFontDialog.ShowColor = true;
             // 
             // SettingsForm
             // 
@@ -641,6 +699,7 @@ namespace TabbedTortoiseGit
             this.OtherSettingsTab.PerformLayout();
             this.DeveloperSettingsPage.ResumeLayout(false);
             this.DeveloperSettingsPage.PerformLayout();
+            this.NormalTabFontGroup.ResumeLayout(false);
             this.ResumeLayout(false);
 
         }
@@ -689,5 +748,10 @@ namespace TabbedTortoiseGit
         private TextBox CloseTabShortcutText;
         private Label ReopenClosedTabShortcutLabel;
         private TextBox ReopenClosedTabShortcutText;
+        private Button ResetNormalTabFontButton;
+        private Button ChangeNormalTabFontButton;
+        private GroupBox NormalTabFontGroup;
+        private Label NormalTabFontSample;
+        private FontDialog NormalTabFontDialog;
     }
 }

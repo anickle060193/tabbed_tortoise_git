@@ -36,6 +36,40 @@ namespace Tabs
             }
         }
 
+        public override Font Font
+        {
+            get
+            {
+                return base.Font;
+            }
+
+            set
+            {
+                if( Font != value )
+                {
+                    base.Font = value;
+                    this.Parent?.Invalidate();
+                }
+            }
+        }
+
+        public override Color ForeColor
+        {
+            get
+            {
+                return base.ForeColor;
+            }
+
+            set
+            {
+                if( ForeColor != value )
+                {
+                    base.ForeColor = value;
+                    this.Parent?.Invalidate();
+                }
+            }
+        }
+
         [Browsable( false )]
         [DesignerSerializationVisibility( DesignerSerializationVisibility.Hidden )]
         internal bool Dragging
