@@ -107,5 +107,8 @@
     <Setting Name="CloseTabShortcut" Type="TabbedTortoiseGit.Shortcut" Scope="User">
       <Value Profile="(Default)" />
     </Setting>
+    <Setting Name="ReopenClosedTabShortcut" Type="TabbedTortoiseGit.Shortcut" Scope="User">
+      <Value Profile="(Default)" />
+    </Setting>
   </Settings>
 </SettingsFile>

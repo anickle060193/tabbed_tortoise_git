@@ -433,5 +433,16 @@ namespace TabbedTortoiseGit.Properties {
                 this["CloseTabShortcut"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        public global::TabbedTortoiseGit.Shortcut ReopenClosedTabShortcut {
+            get {
+                return ((global::TabbedTortoiseGit.Shortcut)(this["ReopenClosedTabShortcut"]));
+            }
+            set {
+                this["ReopenClosedTabShortcut"] = value;
+            }
+        }
     }
 }

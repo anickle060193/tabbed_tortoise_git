@@ -24,6 +24,7 @@ namespace TabbedTortoiseGit
             f.NextTabShortcut = Settings.Default.NextTabShortcut;
             f.PreviousTabShortcut = Settings.Default.PreviousTabShortcut;
             f.CloseTabShortcut = Settings.Default.CloseTabShortcut;
+            f.ReopenClosedTabShortcut = Settings.Default.ReopenClosedTabShortcut;
 
             f.StartupRepos = Settings.Default.StartupRepos.ToArray();
             f.OpenStartupReposOnReOpen = Settings.Default.OpenStartupReposOnReOpen;
@@ -51,6 +52,7 @@ namespace TabbedTortoiseGit
                 Settings.Default.NextTabShortcut = f.NextTabShortcut;
                 Settings.Default.PreviousTabShortcut = f.PreviousTabShortcut;
                 Settings.Default.CloseTabShortcut = f.CloseTabShortcut;
+                Settings.Default.ReopenClosedTabShortcut = f.ReopenClosedTabShortcut;
 
                 Settings.Default.StartupRepos = f.StartupRepos.ToList();
                 Settings.Default.OpenStartupReposOnReOpen = f.OpenStartupReposOnReOpen;
@@ -136,6 +138,20 @@ namespace TabbedTortoiseGit
             {
                 CloseTabShortcutText.Tag = value;
                 CloseTabShortcutText.Text = value?.Text ?? "";
+            }
+        }
+
+        public Shortcut ReopenClosedTabShortcut
+        {
+            get
+            {
+                return (Shortcut)ReopenClosedTabShortcutText.Tag;
+            }
+
+            set
+            {
+                ReopenClosedTabShortcutText.Tag = value;
+                ReopenClosedTabShortcutText.Text = value?.Text ?? "";
             }
         }
 
@@ -369,6 +385,7 @@ namespace TabbedTortoiseGit
                 yield return NextTabShortcutText;
                 yield return PreviousTabShortcutText;
                 yield return CloseTabShortcutText;
+                yield return ReopenClosedTabShortcutText;
             }
         }
 

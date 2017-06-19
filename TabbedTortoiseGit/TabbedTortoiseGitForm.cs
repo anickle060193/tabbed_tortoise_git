@@ -33,16 +33,30 @@ namespace TabbedTortoiseGit
         private readonly Dictionary<int, Tab> _tabs = new Dictionary<int, Tab>();
         private readonly Semaphore _checkForModifiedTabsSemaphore = new Semaphore( 1, 1 );
         private readonly bool _startup;
+        private readonly Stack<String> _closedRepos = new Stack<String>();
+
+        private readonly HotKey _newTabHotKey;
+        private readonly HotKey _nextTabHotKey;
+        private readonly HotKey _previousTabHotKey;
+        private readonly HotKey _closeTabHotKey;
+        private readonly HotKey _reopenClosedTabHotKey;
 
         private TreeNode<FavoriteRepo> _favoriteRepos;
 
         private ToolStripDropDownMenu _currentFavoriteDropDown;
         private bool _favoriteRepoContextMenuOpen;
-		
-        private readonly HotKey _newTabHotKey;
-        private readonly HotKey _nextTabHotKey;
-        private readonly HotKey _previousTabHotKey;
-        private readonly HotKey _closeTabHotKey;
+
+        private IEnumerable<HotKey> HotKeys
+        {
+            get
+            {
+                yield return _newTabHotKey;
+                yield return _nextTabHotKey;
+                yield return _previousTabHotKey;
+                yield return _closeTabHotKey;
+                yield return _reopenClosedTabHotKey;
+            }
+        }
 
         class TabTag
         {
@@ -97,6 +111,10 @@ namespace TabbedTortoiseGit
             _closeTabHotKey = new HotKey( this.Handle );
             _closeTabHotKey.AddHandle( this.Handle );
             _closeTabHotKey.HotKeyPressed += CloseTabHotKey_HotKeyPressed;
+
+            _reopenClosedTabHotKey = new HotKey( this.Handle );
+            _reopenClosedTabHotKey.AddHandle( this.Handle );
+            _reopenClosedTabHotKey.HotKeyPressed += ReopenClosedTabHotKey_HotKeyPressed;
 
             this.Icon = Resources.TortoiseIcon;
             NotifyIcon.Icon = this.Icon;
@@ -169,6 +187,7 @@ namespace TabbedTortoiseGit
             _nextTabHotKey.SetShortcut( Settings.Default.NextTabShortcut );
             _previousTabHotKey.SetShortcut( Settings.Default.PreviousTabShortcut );
             _closeTabHotKey.SetShortcut( Settings.Default.CloseTabShortcut );
+            _reopenClosedTabHotKey.SetShortcut( Settings.Default.ReopenClosedTabShortcut );
         }
 
         private void UpdateRecentReposFromSettings()
@@ -365,10 +384,10 @@ namespace TabbedTortoiseGit
             Native.SetWindowParent( p.MainWindowHandle, t );
             ResizeTab( p, t );
 
-            _newTabHotKey.AddHandle( p.MainWindowHandle );
-            _nextTabHotKey.AddHandle( p.MainWindowHandle );
-            _previousTabHotKey.AddHandle( p.MainWindowHandle );
-            _closeTabHotKey.AddHandle( p.MainWindowHandle );
+            foreach( HotKey hotKey in HotKeys )
+            {
+                hotKey.AddHandle( p.MainWindowHandle );
+            }
 
             t.Resize += Tab_Resize;
             p.EnableRaisingEvents = true;
@@ -400,18 +419,28 @@ namespace TabbedTortoiseGit
 
             lock( _processes )
             {
-                if( !_tabs.ContainsKey( p.Id ) )
+                if( !_processes.Contains( p ) )
                 {
+                    LOG.ErrorFormat( "Attempting to remove log not under control - Process ID: {0}", p.Id );
                     return;
                 }
 
                 p.EnableRaisingEvents = false;
                 p.Exited -= Process_Exited;
-            	_newTabHotKey?.RemoveHandle( p.MainWindowHandle );
+
+                foreach( HotKey hotKey in HotKeys )
+                {
+                    hotKey.RemoveHandle( p.MainWindowHandle );
+                    hotKey.RemoveHandle( p.MainWindowHandle );
+                }
 
                 _processes.Remove( p );
 
                 Tab t = _tabs.Pluck( p.Id );
+
+                TabTag tag = (TabTag)t.Tag;
+                _closedRepos.Push( tag.Repo );
+
                 if( t.Parent != null )
                 {
                     t.Parent.Controls.Remove( t );
