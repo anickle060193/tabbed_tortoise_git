@@ -95,5 +95,7 @@
     <Setting Name="FavoriteReposJsonString" Type="System.String" Scope="User">
       <Value Profile="(Default)" />
     </Setting>
+    <Setting Name="NewTabShortcut" Type="TabbedTortoiseGit.Shortcut" Scope="User">
+    </Setting>
   </Settings>
 </SettingsFile>

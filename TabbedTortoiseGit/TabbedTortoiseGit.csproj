@@ -79,6 +79,10 @@
     <Reference Include="System.Net.Http" />
     <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml" />
+    <Reference Include="WindowsInput, Version=1.0.4.0, Culture=neutral, PublicKeyToken=9b287f7dc5073cad, processorArchitecture=MSIL">
+      <HintPath>..\packages\InputSimulator.1.0.4.0\lib\net20\WindowsInput.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AboutBox.cs">
@@ -122,6 +126,7 @@
       <DependentUpon>InputDialog.cs</DependentUpon>
     </Compile>
     <Compile Include="Native.cs" />
+    <Compile Include="NoTypeConverterJsonConverter.cs" />
     <Compile Include="ProcessProgressDialog.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -145,6 +150,7 @@
     <Compile Include="SettingsForm.Designer.cs">
       <DependentUpon>SettingsForm.cs</DependentUpon>
     </Compile>
+    <Compile Include="Shortcut.cs" />
     <Compile Include="TreeNode.cs" />
     <Compile Include="TTG.cs" />
     <Compile Include="TabbedTortoiseGitForm.cs">
@@ -160,7 +166,6 @@
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="TortoiseGit.cs" />
-    <Compile Include="WndProcMessageQueue.cs" />
     <EmbeddedResource Include="AboutBox.resx">
       <DependentUpon>AboutBox.cs</DependentUpon>
     </EmbeddedResource>

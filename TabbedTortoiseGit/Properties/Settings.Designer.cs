@@ -389,5 +389,16 @@ namespace TabbedTortoiseGit.Properties {
                 this["FavoriteReposJsonString"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        public global::TabbedTortoiseGit.Shortcut NewTabShortcut {
+            get {
+                return ((global::TabbedTortoiseGit.Shortcut)(this["NewTabShortcut"]));
+            }
+            set {
+                this["NewTabShortcut"] = value;
+            }
+        }
     }
 }

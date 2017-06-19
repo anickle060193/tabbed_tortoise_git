@@ -1,13 +1,15 @@
-﻿using log4net;
+﻿using Common;
+using log4net;
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
 using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using WindowsInput;
+using WindowsInput.Native;
 
 namespace TabbedTortoiseGit
 {
@@ -26,7 +28,15 @@ namespace TabbedTortoiseGit
     {
         private static readonly ILog LOG = LogManager.GetLogger( typeof( HotKey ) );
 
+        private static readonly KeyValuePair<Keys, KeyModifier>[] MODIFIER_MAPPING = new[]
+        {
+            new KeyValuePair<Keys, KeyModifier>( Keys.Control, KeyModifier.Control ),
+            new KeyValuePair<Keys, KeyModifier>( Keys.Shift, KeyModifier.Shift ),
+            new KeyValuePair<Keys, KeyModifier>( Keys.Alt, KeyModifier.Alt )
+        };
+
         private static int _nextId = 0;
+        private static MessageFilter _filter;
 
         private event EventHandler HotKeyPressedInternal;
 
@@ -66,22 +76,67 @@ namespace TabbedTortoiseGit
             }
         }
 
-        public KeyModifier Modifiers { get; private set; }
-        public Keys Key { get; private set; }
+        public IntPtr WindowHandle { get; private set; }
+        public Shortcut Shortcut { get; private set; }
         public int Id { get; private set; }
 
-        public HotKey( KeyModifier modifiers, Keys key )
+        public KeyModifier Modifiers
         {
-            Modifiers = modifiers;
-            Key = key;
-            Id = Interlocked.Increment( ref _nextId ); ;
+            get
+            {
+                return MODIFIER_MAPPING
+                    .Where( modifier => Shortcut?.Modifiers.HasFlag( modifier.Key ) ?? false )
+                    .Select( modifier => modifier.Value )
+                    .Aggregate( ( m1, m2 ) => m1 | m2 );
+            }
+        }
+
+        public Keys Key
+        {
+            get
+            {
+                return Shortcut?.Key ?? Keys.None;
+            }
+        }
+
+        public HotKey( IntPtr windowHandle )
+        {
+            WindowHandle = windowHandle;
+
+            Shortcut = null;
+            Id = Interlocked.Increment( ref _nextId );
 
             _registered = false;
         }
 
-        private void OnHotKeyPressed( EventArgs e )
+        private void OnHotKeyPressed( HotKeyPressedEventArgs e )
         {
-            HotKeyPressedInternal( this, e );
+            if( _handles.Contains( Native.GetForegroundWindow() ) )
+            {
+                HotKeyPressedInternal?.Invoke( this, e );
+                e.Handled = true;
+            }
+            else
+            {
+                e.Handled = false;
+            }
+        }
+
+        public void SetShortcut( Shortcut shortcut )
+        {
+            bool wasRegistered = _registered;
+            if( _registered )
+            {
+                Unregister();
+            }
+
+            Shortcut = shortcut;
+
+            if( ( wasRegistered || ( HotKeyPressedInternal != null ) )
+             && ( Shortcut?.IsValid ?? false ) )
+            {
+                Register();
+            }
         }
 
         public void AddHandle( IntPtr handle )
@@ -111,18 +166,32 @@ namespace TabbedTortoiseGit
                 throw new ObjectDisposedException( nameof( HotKey ) );
             }
 
+            if( !( Shortcut?.IsValid ?? false ) )
+            {
+                LOG.ErrorFormat( "Register - Invalid shortcut - {0}", Shortcut );
+                return;
+            }
+
             if( !_registered )
             {
-                if( WndProcMessageQueue.RegisterHotKey( this ) )
+                if( _filter == null )
                 {
-                    WndProcMessageQueue.HotKeyMessageReceived += WndProcMessageQueue_HotKeyMessageReceived;
-
+                    _filter = new MessageFilter( WindowHandle );
+                    Application.AddMessageFilter( _filter );
+                }
+                
+                if( _filter.RegisterHotKey( this ) )
+                {
                     _registered = true;
                 }
                 else
                 {
-                    LOG.ErrorFormat( "Register - Failed to Register HotKey - Id: {0} - ModifierKeys: {1} - Key: {2}", this.Id, this.Modifiers, this.Key );
+                    LOG.ErrorFormat( "Register - Failed to Register HotKey - Id: {0} - HotKey: {1}", this.Id, this );
                 }
+            }
+            else
+            {
+                throw new InvalidOperationException( "HotKey has already been registered." );
             }
         }
 
@@ -135,17 +204,20 @@ namespace TabbedTortoiseGit
 
             if( _registered )
             {
-                WndProcMessageQueue.UnregisterHotKey( this );
-                WndProcMessageQueue.HotKeyMessageReceived -= WndProcMessageQueue_HotKeyMessageReceived;
+                if( _filter.UnregisterHotKey( this ) )
+                {
+                    _registered = false;
+                }
+            }
+            else
+            {
+                throw new InvalidOperationException( "HotKey has already been unregistered." );
             }
         }
 
-        private void WndProcMessageQueue_HotKeyMessageReceived( object sender, HotKeyMessageReceivedEventArgs e )
+        public override string ToString()
         {
-            if( _handles.Contains( Native.GetForegroundWindow() ) )
-            {
-                OnHotKeyPressed( EventArgs.Empty );
-            }
+            return "{{ {0}, {1} }}".XFormat( Modifiers, Key );
         }
 
         #region IDisposable Support
@@ -155,7 +227,7 @@ namespace TabbedTortoiseGit
         {
             if( !_disposed )
             {
-                if( disposing )
+                if( disposing && _registered )
                 {
                     Unregister();
                 }
@@ -170,5 +242,108 @@ namespace TabbedTortoiseGit
             GC.SuppressFinalize( this );
         }
         #endregion
+
+        class MessageFilter : IMessageFilter
+        {
+            private static readonly int WM_HOTKEY = 0x0312;
+
+            private static readonly InputSimulator INPUT_SIMULATOR = new InputSimulator();
+
+            private readonly IntPtr _mainWindowHandle;
+            private readonly Dictionary<int, HotKey> _hotKeys = new Dictionary<int, HotKey>();
+
+            public MessageFilter( IntPtr mainWindowHandle )
+            {
+                _mainWindowHandle = mainWindowHandle;
+            }
+
+            public bool RegisterHotKey( HotKey hotkey )
+            {
+                if( RegisterHotKey( _mainWindowHandle, hotkey.Id, (int)hotkey.Modifiers, (int)hotkey.Key ) )
+                {
+                    _hotKeys[ hotkey.Id ] = hotkey;
+                    return true;
+                }
+                else
+                {
+                    return false;
+                }
+            }
+
+            public bool UnregisterHotKey( HotKey hotkey )
+            {
+                if( UnregisterHotKey( _mainWindowHandle, hotkey.Id ) )
+                {
+                    _hotKeys.Remove( hotkey.Id );
+                    return true;
+                }
+                else
+                {
+                    return false;
+                }
+            }
+
+            [DllImport( "user32.dll" )]
+            private static extern bool RegisterHotKey( IntPtr hWnd, int id, int fsModifiers, int vlc );
+
+            [DllImport( "user32.dll" )]
+            private static extern bool UnregisterHotKey( IntPtr hWnd, int id );
+
+            public bool PreFilterMessage( ref Message m )
+            {
+                if( m.Msg == WM_HOTKEY )
+                {
+                    int hotkeyId = m.WParam.ToInt32();
+                    HotKey hotkey;
+                    if( _hotKeys.TryGetValue( hotkeyId, out hotkey ) )
+                    {
+                        HotKeyPressedEventArgs e = new HotKeyPressedEventArgs();
+                        hotkey.OnHotKeyPressed( e );
+                        if( !e.Handled )
+                        {
+                            List<VirtualKeyCode> keys = new List<VirtualKeyCode>();
+                            if( hotkey.Modifiers.HasFlag( KeyModifier.Alt ) )
+                            {
+                                keys.Add( VirtualKeyCode.MENU );
+                            }
+                            if( hotkey.Modifiers.HasFlag( KeyModifier.Control ) )
+                            {
+                                keys.Add( VirtualKeyCode.CONTROL );
+                            }
+                            if( hotkey.Modifiers.HasFlag( KeyModifier.Shift ) )
+                            {
+                                keys.Add( VirtualKeyCode.SHIFT );
+                            }
+                            if( hotkey.Modifiers.HasFlag( KeyModifier.Win ) )
+                            {
+                                keys.Add( VirtualKeyCode.LWIN );
+                            }
+                            keys.Add( (VirtualKeyCode)hotkey.Key );
+
+                            LOG.DebugFormat( "Fowarding unhandled HotKey: {{{0}}}", String.Join( ", ", keys ) );
+
+                            INPUT_SIMULATOR.Keyboard.KeyPress( keys.ToArray() );
+                        }
+                        else
+                        {
+                            LOG.DebugFormat( "Handled HotKey: {0}", hotkey );
+                        }
+                        return true;
+                    }
+                }
+
+                return false;
+            }
+        }
+    }
+
+    public class HotKeyPressedEventArgs : EventArgs
+    {
+        public bool Handled { get; set; }
+
+        public HotKeyPressedEventArgs()
+        {
+            Handled = false;
+        }
     }
 }

@@ -20,6 +20,8 @@ namespace TabbedTortoiseGit
         {
             SettingsForm f = new SettingsForm();
 
+            f.NewTabShortcut = Settings.Default.NewTabShortcut;
+
             f.StartupRepos = Settings.Default.StartupRepos.ToArray();
             f.OpenStartupReposOnReOpen = Settings.Default.OpenStartupReposOnReOpen;
 
@@ -42,6 +44,8 @@ namespace TabbedTortoiseGit
 
             if( f.ShowDialog() == DialogResult.OK )
             {
+                Settings.Default.NewTabShortcut = f.NewTabShortcut;
+
                 Settings.Default.StartupRepos = f.StartupRepos.ToList();
                 Settings.Default.OpenStartupReposOnReOpen = f.OpenStartupReposOnReOpen;
 
@@ -70,6 +74,20 @@ namespace TabbedTortoiseGit
             else
             {
                 return false;
+            }
+        }
+
+        public Shortcut NewTabShortcut
+        {
+            get
+            {
+                return (Shortcut)NewTabShortcutText.Tag;
+            }
+
+            set
+            {
+                NewTabShortcutText.Tag = value;
+                NewTabShortcutText.Text = value?.Text ?? "";
             }
         }
 
@@ -319,6 +337,28 @@ namespace TabbedTortoiseGit
 
             _dragDropHelper = new CheckListDragDrophelper();
             _dragDropHelper.AddControl( GitActionsCheckList );
+
+            NewTabShortcutText.Enter += NewTabShortcutText_Enter;
+            NewTabShortcutText.KeyDown += NewTabShortcut_KeyDown;
+        }
+
+        private void NewTabShortcutText_Enter( object sender, EventArgs e )
+        {
+            TextBox shortcutText = (TextBox)sender;
+
+            shortcutText.Tag = Shortcut.Empty;
+            shortcutText.Text = "";
+        }
+
+        private void NewTabShortcut_KeyDown( object sender, KeyEventArgs e )
+        {
+            TextBox shortcutText = (TextBox)sender;
+
+            Shortcut shortcut = Shortcut.FromKeyEventArgs( e );
+            shortcutText.Tag = shortcut;
+            shortcutText.Text = shortcut.Text;
+
+            e.SuppressKeyPress = true;
         }
 
         private static readonly String CHEAT_CODE = "developer";

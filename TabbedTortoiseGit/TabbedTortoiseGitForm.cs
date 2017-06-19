@@ -66,8 +66,6 @@ namespace TabbedTortoiseGit
             InitializeComponent();
             InitializeEventHandlers();
 
-            UpdateFromSettings( true );
-
             _startup = startup;
 
             _folderDialog = new CommonOpenFileDialog();
@@ -81,11 +79,14 @@ namespace TabbedTortoiseGit
             _watcher.EventArrived += Watcher_EventArrived;
             _watcher.Start();
 
-            _newTabHotKey = new HotKey( KeyModifier.Shift, Keys.T );
+            _newTabHotKey = new HotKey( this.Handle );
+            _newTabHotKey.AddHandle( this.Handle );
             _newTabHotKey.HotKeyPressed += NewTabHotKey_HotKeyPressed;
 
             this.Icon = Resources.TortoiseIcon;
             NotifyIcon.Icon = this.Icon;
+
+            UpdateFromSettings( true );
         }
 
         protected override void WndProc( ref Message m )
@@ -98,6 +99,11 @@ namespace TabbedTortoiseGit
             {
                 base.WndProc( ref m );
             }
+        }
+
+        protected override void OnHandleCreated( EventArgs e )
+        {
+            base.OnHandleCreated( e );
         }
 
         private void UpdateFromSettings( bool updateWindowState )
@@ -141,9 +147,15 @@ namespace TabbedTortoiseGit
                 }
             }
 
+            UpdateShortcutsFromSettings();
             UpdateRecentReposFromSettings();
             UpdateRepoContextMenusFromSettings();
             UpdateFavoriteReposFromSettings();
+        }
+
+        private void UpdateShortcutsFromSettings()
+        {
+            _newTabHotKey.SetShortcut( Settings.Default.NewTabShortcut );
         }
 
         private void UpdateRecentReposFromSettings()

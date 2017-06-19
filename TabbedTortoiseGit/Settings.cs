@@ -6,6 +6,7 @@ using System.ComponentModel;
 using System.Configuration;
 using System.Diagnostics;
 using System.Drawing;
+using System.Windows.Forms;
 
 namespace TabbedTortoiseGit.Properties
 {
@@ -240,6 +241,11 @@ namespace TabbedTortoiseGit.Properties
                 {
                     LOG.Error( "Failed to upgrade DefaultRepos setting", ex );
                 }
+            }
+
+            if( Settings.Default.NewTabShortcut == null )
+            {
+                Settings.Default.NewTabShortcut = Shortcut.Empty;
             }
 
             if( Settings.Default.StartupRepos == null )
