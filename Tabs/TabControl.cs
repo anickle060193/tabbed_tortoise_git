@@ -545,13 +545,13 @@ namespace Tabs
             
             if( index == _selectedIndex )
             {
-                if( _tabCount > 0 )
-                {
-                    _selectedIndex = 0;
-                }
-                else
+                if( _tabCount == 0 )
                 {
                     _selectedIndex = -1;
+                }
+                else if( _selectedIndex == _tabCount )
+                {
+                    _selectedIndex = _tabCount - 1;
                 }
             }
             else if( index < _selectedIndex )
@@ -720,7 +720,6 @@ namespace Tabs
                     if( e.Button == MouseButtons.Middle
                      && this.CloseTabOnMiddleClick )
                     {
-                        SelectedIndex = Tabs.IndexOf( t );
                         this.Tabs.Remove( t );
                         OnTabClosed( new TabClosedEventArgs( t ) );
                         return;
