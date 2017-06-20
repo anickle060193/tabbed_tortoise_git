@@ -43,8 +43,7 @@ namespace TabbedTortoiseGit
 
         private TreeNode<FavoriteRepo> _favoriteRepos;
 
-        private ToolStripDropDownMenu _currentFavoriteDropDown;
-        private bool _favoriteRepoContextMenuOpen;
+        private bool _favoriteContextMenuOpen;
 
         private IEnumerable<HotKey> HotKeys
         {
@@ -621,6 +620,16 @@ namespace TabbedTortoiseGit
                 tab.Font = Settings.Default.NormalTabFont;
                 tab.ForeColor = Settings.Default.NormalTabFontColor;
             }
+        }
+
+        private void CloseDropDowns( ToolStripItemCollection menuItems )
+        {
+            foreach( ToolStripDropDownItem dropDownItem in menuItems.OfType<ToolStripDropDownItem>() )
+            {
+                dropDownItem.HideDropDown();
+                CloseDropDowns( dropDownItem.DropDownItems );
+            }
+
         }
     }
 }

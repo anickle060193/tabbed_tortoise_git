@@ -39,7 +39,8 @@ namespace TabbedTortoiseGit
             LogTabs.DragDrop += TabbedTortoiseGitForm_DragDrop;
 
             FavoritesMenuStrip.MouseClick += FavoritesMenuStrip_MouseClick;
-            FavoriteRepoContextMenu.Closing += FavoriteRepoContextMenu_Closing;
+            FavoritesFolderContextMenu.Closed += FavoriteItemContextMenu_Closed;
+            FavoriteRepoContextMenu.Closed += FavoriteItemContextMenu_Closed;
             OpenFavoriteRepoLocationContextMenuItem.Click += OpenFavoriteRepoLocationContextMenuItem_Click;
             RemoveFavoriteContextMenuItem.Click += RemoveFavoriteItemContextMenuItem_Click;
             RemoveFavoriteFolderContextMenuItem.Click += RemoveFavoriteItemContextMenuItem_Click;
@@ -276,15 +277,7 @@ namespace TabbedTortoiseGit
 
             if( e.Button == MouseButtons.Right )
             {
-                Point p;
-                if( favoriteMenuItem.Owner == FavoritesMenuStrip )
-                {
-                    p = new Point( e.X + favoriteMenuItem.Bounds.X, e.Y + favoriteMenuItem.Bounds.Y );
-                }
-                else
-                {
-                    p = e.Location;
-                }
+                Point p = new Point( e.X + favoriteMenuItem.Bounds.X, e.Y + favoriteMenuItem.Bounds.Y );
 
                 ContextMenuStrip favoriteContextMenu;
                 if( favorite.Value.IsFavoriteFolder )
@@ -296,7 +289,7 @@ namespace TabbedTortoiseGit
                     favoriteContextMenu = FavoriteRepoContextMenu;
                 }
 
-                _favoriteRepoContextMenuOpen = true;
+                _favoriteContextMenuOpen = true;
                 favoriteContextMenu.Tag = favorite;
                 favoriteContextMenu.Show( favoriteMenuItem.Owner, p );
             }
@@ -311,19 +304,16 @@ namespace TabbedTortoiseGit
 
         private void FavoriteMenuItemDropDown_Closing( object sender, ToolStripDropDownClosingEventArgs e )
         {
-            if( _favoriteRepoContextMenuOpen )
+            if( _favoriteContextMenuOpen )
             {
-                _currentFavoriteDropDown = (ToolStripDropDownMenu)sender;
                 e.Cancel = true;
             }
         }
 
-        private void FavoriteRepoContextMenu_Closing( object sender, ToolStripDropDownClosingEventArgs e )
+        private void FavoriteItemContextMenu_Closed( object sender, ToolStripDropDownClosedEventArgs e )
         {
-            _favoriteRepoContextMenuOpen = false;
-
-            _currentFavoriteDropDown?.Close();
-            _currentFavoriteDropDown = null;
+            _favoriteContextMenuOpen = false;
+            CloseDropDowns( FavoritesMenuStrip.Items );
         }
 
         private void OpenFavoriteRepoLocationContextMenuItem_Click( object sender, EventArgs e )
