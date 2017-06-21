@@ -301,28 +301,14 @@ namespace TabbedTortoiseGit
                         hotkey.OnHotKeyPressed( e );
                         if( !e.Handled )
                         {
-                            List<VirtualKeyCode> keys = new List<VirtualKeyCode>();
-                            if( hotkey.Modifiers.HasFlag( KeyModifier.Alt ) )
-                            {
-                                keys.Add( VirtualKeyCode.MENU );
-                            }
-                            if( hotkey.Modifiers.HasFlag( KeyModifier.Control ) )
-                            {
-                                keys.Add( VirtualKeyCode.CONTROL );
-                            }
-                            if( hotkey.Modifiers.HasFlag( KeyModifier.Shift ) )
-                            {
-                                keys.Add( VirtualKeyCode.SHIFT );
-                            }
-                            if( hotkey.Modifiers.HasFlag( KeyModifier.Win ) )
-                            {
-                                keys.Add( VirtualKeyCode.LWIN );
-                            }
-                            keys.Add( (VirtualKeyCode)hotkey.Key );
+                            LOG.DebugFormat( "Fowarding unhandled HotKey: {0}", hotkey.Shortcut.Text );
 
-                            LOG.DebugFormat( "Fowarding unhandled HotKey: {{{0}}}", String.Join( ", ", keys ) );
+                            hotkey.Unregister();
 
-                            INPUT_SIMULATOR.Keyboard.KeyPress( keys.ToArray() );
+                            LOG.DebugFormat( "InputSimulator - KeyPress: {0}", (VirtualKeyCode)hotkey.Key );
+                            INPUT_SIMULATOR.Keyboard.KeyPress( (VirtualKeyCode)hotkey.Key );
+
+                            hotkey.Register();
                         }
                         else
                         {
