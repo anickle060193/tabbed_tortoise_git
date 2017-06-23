@@ -569,11 +569,6 @@ namespace TabbedTortoiseGit
 
         class CheckListDragDrophelper : DragDropHelper<CheckedListBox, String>
         {
-            public CheckListDragDrophelper()
-            {
-                AllowReSwap = true;
-            }
-
             protected override bool AllowDrag( CheckedListBox parent, string item, int index )
             {
                 return true;

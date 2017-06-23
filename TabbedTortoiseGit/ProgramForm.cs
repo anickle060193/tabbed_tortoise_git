@@ -51,9 +51,9 @@ namespace TabbedTortoiseGit
 
             this.FormClosing += ProgramForm_FormClosing;
 
-            CreateNewTabbedTortoiseGit( !startup );
-
             this.CreateHandle();
+
+            CreateNewTabbedTortoiseGit( !startup );
         }
 
         protected override void WndProc( ref Message m )

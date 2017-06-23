@@ -1118,18 +1118,25 @@ namespace Tabs
 
         class TabControlDragDropHelper : DragDropHelper<TabControl, Tab>
         {
-            public TabControlDragDropHelper()
-            {
-                AllowReSwap = true;
-            }
+            private bool _partialMatch = false;
 
             protected override bool AllowDrag( TabControl parent, Tab item, int index )
             {
-                return true;
+                return !_partialMatch;
             }
 
             protected override bool GetItemFromPoint( TabControl parent, Point p, out Tab item, out int itemIndex )
             {
+                _partialMatch = false;
+
+                if( parent.TabCount == 0 )
+                {
+                    _partialMatch = true;
+                    item = null;
+                    itemIndex = 0;
+                    return true;
+                }
+
                 if( parent.SelectedTab != null )
                 {
                     if( !parent.SelectedTab.Dragging && parent._painter.GetTabPath( parent.SelectedIndex ).Bounds.Contains( p ) )
@@ -1153,16 +1160,18 @@ namespace Tabs
                     }
                 }
 
-                if( parent.TabCount >= 2 )
+                if( parent.TabCount >= 1 )
                 {
                     if( p.X < parent._painter.GetTabPath( 0 ).Bounds.Left )
                     {
+                        _partialMatch = true;
                         item = parent.Tabs[ 0 ];
                         itemIndex = 0;
                         return true;
                     }
                     else if( p.X > parent._painter.GetTabPath( parent.TabCount - 1 ).Bounds.Right )
                     {
+                        _partialMatch = true;
                         item = parent.Tabs[ parent.TabCount - 1 ];
                         itemIndex = parent.TabCount - 1;
                         return true;
@@ -1176,17 +1185,11 @@ namespace Tabs
 
             protected override bool MoveItem( TabControl dragParent, Tab dragItem, int dragItemIndex, TabControl pointedParent, Tab pointedItem, int pointedItemIndex )
             {
-                if( dragParent == pointedParent )
-                {
-                    dragParent.Tabs.RemoveAt( dragItemIndex );
-                    dragParent.Tabs.Insert( pointedItemIndex, dragItem );
-                    dragParent.SelectedIndex = pointedItemIndex;
-                    return true;
-                }
-                else
-                {
-                    return false;
-                }
+                dragParent.Tabs.RemoveAt( dragItemIndex );
+                pointedParent.Tabs.Insert( pointedItemIndex, dragItem );
+                pointedParent.SelectedIndex = pointedItemIndex;
+
+                return true;
             }
 
             protected override void OnDragStart( DragStartEventArgs<TabControl, Tab> e )
