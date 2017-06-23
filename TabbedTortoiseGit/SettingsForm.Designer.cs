@@ -37,7 +37,6 @@ namespace TabbedTortoiseGit
             this.Cancel = new System.Windows.Forms.Button();
             this.RemoveDefaultRepo = new System.Windows.Forms.Button();
             this.OpenStartupReposOnReOpenCheck = new System.Windows.Forms.CheckBox();
-            this.RetainLogsOnCloseCheck = new System.Windows.Forms.CheckBox();
             this.RunOnStartupCheck = new System.Windows.Forms.CheckBox();
             this.ConfirmOnCloseCheck = new System.Windows.Forms.CheckBox();
             this.MaxRecentReposNumeric = new System.Windows.Forms.NumericUpDown();
@@ -61,6 +60,10 @@ namespace TabbedTortoiseGit
             this.StartupReposTab = new System.Windows.Forms.TabPage();
             this.GitActionsTab = new System.Windows.Forms.TabPage();
             this.DisplaySettingsTab = new System.Windows.Forms.TabPage();
+            this.ResetNormalTabFontButton = new System.Windows.Forms.Button();
+            this.ChangeNormalTabFontButton = new System.Windows.Forms.Button();
+            this.NormalTabFontGroup = new System.Windows.Forms.GroupBox();
+            this.NormalTabFontSample = new System.Windows.Forms.Label();
             this.CheckForModifiedTabsIntervalLabel = new System.Windows.Forms.Label();
             this.CheckForModifiedTabsIntervalNumeric = new System.Windows.Forms.NumericUpDown();
             this.IndicateModifiedTabsCheck = new System.Windows.Forms.CheckBox();
@@ -74,10 +77,6 @@ namespace TabbedTortoiseGit
             this.DeveloperSettingsPage = new System.Windows.Forms.TabPage();
             this.ShowHitTestCheck = new System.Windows.Forms.CheckBox();
             this.ModifiedTabFontDialog = new System.Windows.Forms.FontDialog();
-            this.NormalTabFontGroup = new System.Windows.Forms.GroupBox();
-            this.NormalTabFontSample = new System.Windows.Forms.Label();
-            this.ResetNormalTabFontButton = new System.Windows.Forms.Button();
-            this.ChangeNormalTabFontButton = new System.Windows.Forms.Button();
             this.NormalTabFontDialog = new System.Windows.Forms.FontDialog();
             ((System.ComponentModel.ISupportInitialize)(this.MaxRecentReposNumeric)).BeginInit();
             this.SettingsTabs.SuspendLayout();
@@ -86,11 +85,11 @@ namespace TabbedTortoiseGit
             this.StartupReposTab.SuspendLayout();
             this.GitActionsTab.SuspendLayout();
             this.DisplaySettingsTab.SuspendLayout();
+            this.NormalTabFontGroup.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.CheckForModifiedTabsIntervalNumeric)).BeginInit();
             this.ModifiedTabFontGroup.SuspendLayout();
             this.OtherSettingsTab.SuspendLayout();
             this.DeveloperSettingsPage.SuspendLayout();
-            this.NormalTabFontGroup.SuspendLayout();
             this.SuspendLayout();
             // 
             // StartupReposList
@@ -160,22 +159,11 @@ namespace TabbedTortoiseGit
             this.SettingsToolTip.SetToolTip(this.OpenStartupReposOnReOpenCheck, "Only valid when \"Retain Logs on Close\" is disabled.");
             this.OpenStartupReposOnReOpenCheck.UseVisualStyleBackColor = true;
             // 
-            // RetainLogsOnCloseCheck
-            // 
-            this.RetainLogsOnCloseCheck.AutoSize = true;
-            this.RetainLogsOnCloseCheck.CheckAlign = System.Drawing.ContentAlignment.MiddleRight;
-            this.RetainLogsOnCloseCheck.Location = new System.Drawing.Point(6, 6);
-            this.RetainLogsOnCloseCheck.Name = "RetainLogsOnCloseCheck";
-            this.RetainLogsOnCloseCheck.Size = new System.Drawing.Size(130, 17);
-            this.RetainLogsOnCloseCheck.TabIndex = 7;
-            this.RetainLogsOnCloseCheck.Text = "Retain Logs on Close:";
-            this.RetainLogsOnCloseCheck.UseVisualStyleBackColor = true;
-            // 
             // RunOnStartupCheck
             // 
             this.RunOnStartupCheck.AutoSize = true;
             this.RunOnStartupCheck.CheckAlign = System.Drawing.ContentAlignment.MiddleRight;
-            this.RunOnStartupCheck.Location = new System.Drawing.Point(6, 124);
+            this.RunOnStartupCheck.Location = new System.Drawing.Point(6, 101);
             this.RunOnStartupCheck.Name = "RunOnStartupCheck";
             this.RunOnStartupCheck.Size = new System.Drawing.Size(99, 17);
             this.RunOnStartupCheck.TabIndex = 11;
@@ -186,7 +174,7 @@ namespace TabbedTortoiseGit
             // 
             this.ConfirmOnCloseCheck.AutoSize = true;
             this.ConfirmOnCloseCheck.CheckAlign = System.Drawing.ContentAlignment.MiddleRight;
-            this.ConfirmOnCloseCheck.Location = new System.Drawing.Point(6, 55);
+            this.ConfirmOnCloseCheck.Location = new System.Drawing.Point(6, 32);
             this.ConfirmOnCloseCheck.Name = "ConfirmOnCloseCheck";
             this.ConfirmOnCloseCheck.Size = new System.Drawing.Size(133, 17);
             this.ConfirmOnCloseCheck.TabIndex = 10;
@@ -195,7 +183,7 @@ namespace TabbedTortoiseGit
             // 
             // MaxRecentReposNumeric
             // 
-            this.MaxRecentReposNumeric.Location = new System.Drawing.Point(115, 29);
+            this.MaxRecentReposNumeric.Location = new System.Drawing.Point(114, 6);
             this.MaxRecentReposNumeric.Minimum = new decimal(new int[] {
             1,
             0,
@@ -213,7 +201,7 @@ namespace TabbedTortoiseGit
             // MaxRecentReposLabel
             // 
             this.MaxRecentReposLabel.AutoSize = true;
-            this.MaxRecentReposLabel.Location = new System.Drawing.Point(7, 31);
+            this.MaxRecentReposLabel.Location = new System.Drawing.Point(6, 8);
             this.MaxRecentReposLabel.Name = "MaxRecentReposLabel";
             this.MaxRecentReposLabel.Size = new System.Drawing.Size(102, 13);
             this.MaxRecentReposLabel.TabIndex = 8;
@@ -457,6 +445,49 @@ namespace TabbedTortoiseGit
             this.DisplaySettingsTab.Text = "Display";
             this.DisplaySettingsTab.UseVisualStyleBackColor = true;
             // 
+            // ResetNormalTabFontButton
+            // 
+            this.ResetNormalTabFontButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.ResetNormalTabFontButton.Location = new System.Drawing.Point(290, 71);
+            this.ResetNormalTabFontButton.Name = "ResetNormalTabFontButton";
+            this.ResetNormalTabFontButton.Size = new System.Drawing.Size(75, 23);
+            this.ResetNormalTabFontButton.TabIndex = 8;
+            this.ResetNormalTabFontButton.Text = "Reset";
+            this.ResetNormalTabFontButton.UseVisualStyleBackColor = true;
+            // 
+            // ChangeNormalTabFontButton
+            // 
+            this.ChangeNormalTabFontButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.ChangeNormalTabFontButton.Location = new System.Drawing.Point(371, 71);
+            this.ChangeNormalTabFontButton.Name = "ChangeNormalTabFontButton";
+            this.ChangeNormalTabFontButton.Size = new System.Drawing.Size(75, 23);
+            this.ChangeNormalTabFontButton.TabIndex = 7;
+            this.ChangeNormalTabFontButton.Text = "Change";
+            this.ChangeNormalTabFontButton.UseVisualStyleBackColor = true;
+            // 
+            // NormalTabFontGroup
+            // 
+            this.NormalTabFontGroup.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.NormalTabFontGroup.Controls.Add(this.NormalTabFontSample);
+            this.NormalTabFontGroup.Location = new System.Drawing.Point(6, 6);
+            this.NormalTabFontGroup.Name = "NormalTabFontGroup";
+            this.NormalTabFontGroup.Size = new System.Drawing.Size(440, 59);
+            this.NormalTabFontGroup.TabIndex = 6;
+            this.NormalTabFontGroup.TabStop = false;
+            this.NormalTabFontGroup.Text = "Normal Tab Font";
+            // 
+            // NormalTabFontSample
+            // 
+            this.NormalTabFontSample.AutoEllipsis = true;
+            this.NormalTabFontSample.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.NormalTabFontSample.Location = new System.Drawing.Point(3, 16);
+            this.NormalTabFontSample.Name = "NormalTabFontSample";
+            this.NormalTabFontSample.Size = new System.Drawing.Size(434, 40);
+            this.NormalTabFontSample.TabIndex = 0;
+            this.NormalTabFontSample.Text = "C:\\sample\\font.git";
+            this.NormalTabFontSample.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
             // CheckForModifiedTabsIntervalLabel
             // 
             this.CheckForModifiedTabsIntervalLabel.AutoSize = true;
@@ -552,7 +583,6 @@ namespace TabbedTortoiseGit
             this.OtherSettingsTab.Controls.Add(this.CloseWindowOnLastTabClosedCheck);
             this.OtherSettingsTab.Controls.Add(this.CloseToSystemTrayCheck);
             this.OtherSettingsTab.Controls.Add(this.RunOnStartupCheck);
-            this.OtherSettingsTab.Controls.Add(this.RetainLogsOnCloseCheck);
             this.OtherSettingsTab.Controls.Add(this.ConfirmOnCloseCheck);
             this.OtherSettingsTab.Controls.Add(this.MaxRecentReposLabel);
             this.OtherSettingsTab.Controls.Add(this.MaxRecentReposNumeric);
@@ -568,7 +598,7 @@ namespace TabbedTortoiseGit
             // 
             this.CloseWindowOnLastTabClosedCheck.AutoSize = true;
             this.CloseWindowOnLastTabClosedCheck.CheckAlign = System.Drawing.ContentAlignment.MiddleRight;
-            this.CloseWindowOnLastTabClosedCheck.Location = new System.Drawing.Point(6, 78);
+            this.CloseWindowOnLastTabClosedCheck.Location = new System.Drawing.Point(6, 55);
             this.CloseWindowOnLastTabClosedCheck.Name = "CloseWindowOnLastTabClosedCheck";
             this.CloseWindowOnLastTabClosedCheck.Size = new System.Drawing.Size(189, 17);
             this.CloseWindowOnLastTabClosedCheck.TabIndex = 13;
@@ -579,7 +609,7 @@ namespace TabbedTortoiseGit
             // 
             this.CloseToSystemTrayCheck.AutoSize = true;
             this.CloseToSystemTrayCheck.CheckAlign = System.Drawing.ContentAlignment.MiddleRight;
-            this.CloseToSystemTrayCheck.Location = new System.Drawing.Point(6, 101);
+            this.CloseToSystemTrayCheck.Location = new System.Drawing.Point(6, 78);
             this.CloseToSystemTrayCheck.Name = "CloseToSystemTrayCheck";
             this.CloseToSystemTrayCheck.Size = new System.Drawing.Size(125, 17);
             this.CloseToSystemTrayCheck.TabIndex = 12;
@@ -612,49 +642,6 @@ namespace TabbedTortoiseGit
             this.ModifiedTabFontDialog.AllowScriptChange = false;
             this.ModifiedTabFontDialog.FontMustExist = true;
             this.ModifiedTabFontDialog.ShowColor = true;
-            // 
-            // NormalTabFontGroup
-            // 
-            this.NormalTabFontGroup.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.NormalTabFontGroup.Controls.Add(this.NormalTabFontSample);
-            this.NormalTabFontGroup.Location = new System.Drawing.Point(6, 6);
-            this.NormalTabFontGroup.Name = "NormalTabFontGroup";
-            this.NormalTabFontGroup.Size = new System.Drawing.Size(440, 59);
-            this.NormalTabFontGroup.TabIndex = 6;
-            this.NormalTabFontGroup.TabStop = false;
-            this.NormalTabFontGroup.Text = "Normal Tab Font";
-            // 
-            // NormalTabFontSample
-            // 
-            this.NormalTabFontSample.AutoEllipsis = true;
-            this.NormalTabFontSample.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.NormalTabFontSample.Location = new System.Drawing.Point(3, 16);
-            this.NormalTabFontSample.Name = "NormalTabFontSample";
-            this.NormalTabFontSample.Size = new System.Drawing.Size(434, 40);
-            this.NormalTabFontSample.TabIndex = 0;
-            this.NormalTabFontSample.Text = "C:\\sample\\font.git";
-            this.NormalTabFontSample.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            // 
-            // ResetNormalTabFontButton
-            // 
-            this.ResetNormalTabFontButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.ResetNormalTabFontButton.Location = new System.Drawing.Point(290, 71);
-            this.ResetNormalTabFontButton.Name = "ResetNormalTabFontButton";
-            this.ResetNormalTabFontButton.Size = new System.Drawing.Size(75, 23);
-            this.ResetNormalTabFontButton.TabIndex = 8;
-            this.ResetNormalTabFontButton.Text = "Reset";
-            this.ResetNormalTabFontButton.UseVisualStyleBackColor = true;
-            // 
-            // ChangeNormalTabFontButton
-            // 
-            this.ChangeNormalTabFontButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.ChangeNormalTabFontButton.Location = new System.Drawing.Point(371, 71);
-            this.ChangeNormalTabFontButton.Name = "ChangeNormalTabFontButton";
-            this.ChangeNormalTabFontButton.Size = new System.Drawing.Size(75, 23);
-            this.ChangeNormalTabFontButton.TabIndex = 7;
-            this.ChangeNormalTabFontButton.Text = "Change";
-            this.ChangeNormalTabFontButton.UseVisualStyleBackColor = true;
             // 
             // NormalTabFontDialog
             // 
@@ -693,13 +680,13 @@ namespace TabbedTortoiseGit
             this.GitActionsTab.PerformLayout();
             this.DisplaySettingsTab.ResumeLayout(false);
             this.DisplaySettingsTab.PerformLayout();
+            this.NormalTabFontGroup.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.CheckForModifiedTabsIntervalNumeric)).EndInit();
             this.ModifiedTabFontGroup.ResumeLayout(false);
             this.OtherSettingsTab.ResumeLayout(false);
             this.OtherSettingsTab.PerformLayout();
             this.DeveloperSettingsPage.ResumeLayout(false);
             this.DeveloperSettingsPage.PerformLayout();
-            this.NormalTabFontGroup.ResumeLayout(false);
             this.ResumeLayout(false);
 
         }
@@ -710,7 +697,6 @@ namespace TabbedTortoiseGit
         private Button OK;
         private Button Cancel;
         private Button RemoveDefaultRepo;
-        private CheckBox RetainLogsOnCloseCheck;
         private NumericUpDown MaxRecentReposNumeric;
         private Label MaxRecentReposLabel;
         private CheckBox ConfirmOnCloseCheck;

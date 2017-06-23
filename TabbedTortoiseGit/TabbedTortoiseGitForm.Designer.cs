@@ -31,10 +31,6 @@
             this.components = new System.ComponentModel.Container();
             this.FavoritesMenuStrip = new System.Windows.Forms.MenuStrip();
             this.NewTabContextMenu = new System.Windows.Forms.ContextMenuStrip(this.components);
-            this.NotifyIcon = new System.Windows.Forms.NotifyIcon(this.components);
-            this.NotifyIconContextMenu = new System.Windows.Forms.ContextMenuStrip(this.components);
-            this.OpenNotifyIconMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.ExitNotifyIconMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.TabContextMenu = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.OpenRepoLocationTabMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.AddToFavoritesRepoTabMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -56,7 +52,6 @@
             this.ShowFavoritesManagerMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.FavoritesFolderContextMenu = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.RemoveFavoriteFolderContextMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.NotifyIconContextMenu.SuspendLayout();
             this.TabContextMenu.SuspendLayout();
             this.FavoriteRepoContextMenu.SuspendLayout();
             this.OptionsContextMenu.SuspendLayout();
@@ -77,32 +72,6 @@
             // 
             this.NewTabContextMenu.Name = "NewTabContextMenu";
             this.NewTabContextMenu.Size = new System.Drawing.Size(61, 4);
-            // 
-            // NotifyIcon
-            // 
-            this.NotifyIcon.ContextMenuStrip = this.NotifyIconContextMenu;
-            this.NotifyIcon.Text = "Tabbed TortoiseGit";
-            this.NotifyIcon.Visible = true;
-            // 
-            // NotifyIconContextMenu
-            // 
-            this.NotifyIconContextMenu.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.OpenNotifyIconMenuItem,
-            this.ExitNotifyIconMenuItem});
-            this.NotifyIconContextMenu.Name = "NotifyIconContextMenu";
-            this.NotifyIconContextMenu.Size = new System.Drawing.Size(104, 48);
-            // 
-            // OpenNotifyIconMenuItem
-            // 
-            this.OpenNotifyIconMenuItem.Name = "OpenNotifyIconMenuItem";
-            this.OpenNotifyIconMenuItem.Size = new System.Drawing.Size(103, 22);
-            this.OpenNotifyIconMenuItem.Text = "Open";
-            // 
-            // ExitNotifyIconMenuItem
-            // 
-            this.ExitNotifyIconMenuItem.Name = "ExitNotifyIconMenuItem";
-            this.ExitNotifyIconMenuItem.Size = new System.Drawing.Size(103, 22);
-            this.ExitNotifyIconMenuItem.Text = "Exit";
             // 
             // TabContextMenu
             // 
@@ -143,7 +112,7 @@
             this.OpenFavoriteRepoLocationContextMenuItem,
             this.RemoveFavoriteContextMenuItem});
             this.FavoriteRepoContextMenu.Name = "FavoriteRepoContextMenu";
-            this.FavoriteRepoContextMenu.Size = new System.Drawing.Size(183, 70);
+            this.FavoriteRepoContextMenu.Size = new System.Drawing.Size(183, 48);
             // 
             // OpenFavoriteRepoLocationContextMenuItem
             // 
@@ -261,8 +230,8 @@
             this.MainMenuStrip = this.FavoritesMenuStrip;
             this.MinimumSize = new System.Drawing.Size(660, 525);
             this.Name = "TabbedTortoiseGitForm";
+            this.StartPosition = System.Windows.Forms.FormStartPosition.Manual;
             this.Text = "Tabbed TortoiseGit";
-            this.NotifyIconContextMenu.ResumeLayout(false);
             this.TabContextMenu.ResumeLayout(false);
             this.FavoriteRepoContextMenu.ResumeLayout(false);
             this.OptionsContextMenu.ResumeLayout(false);
@@ -276,10 +245,6 @@
         #endregion
         private System.Windows.Forms.MenuStrip FavoritesMenuStrip;
         private System.Windows.Forms.ContextMenuStrip NewTabContextMenu;
-        private System.Windows.Forms.NotifyIcon NotifyIcon;
-        private System.Windows.Forms.ContextMenuStrip NotifyIconContextMenu;
-        private System.Windows.Forms.ToolStripMenuItem ExitNotifyIconMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem OpenNotifyIconMenuItem;
         private System.Windows.Forms.ContextMenuStrip TabContextMenu;
         private System.Windows.Forms.ToolStripMenuItem OpenRepoLocationTabMenuItem;
         private System.Windows.Forms.ToolStripMenuItem AddToFavoritesRepoTabMenuItem;

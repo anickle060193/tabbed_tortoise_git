@@ -38,7 +38,6 @@ namespace TabbedTortoiseGit
             f.ModifiedTabFont = Settings.Default.ModifiedTabFont;
             f.ModifiedTabFontColor = Settings.Default.ModifiedTabFontColor;
 
-            f.RetainLogsOnClose = Settings.Default.RetainLogsOnClose;
             f.MaxRecentRepos = Settings.Default.MaxRecentRepos;
             f.ConfirmOnClose = Settings.Default.ConfirmOnClose;
             f.CloseWindowOnLastTabClosed = Settings.Default.CloseWindowOnLastTabClosed;
@@ -68,7 +67,6 @@ namespace TabbedTortoiseGit
                 Settings.Default.ModifiedTabFont = f.ModifiedTabFont;
                 Settings.Default.ModifiedTabFontColor = f.ModifiedTabFontColor;
 
-                Settings.Default.RetainLogsOnClose = f.RetainLogsOnClose;
                 Settings.Default.MaxRecentRepos = f.MaxRecentRepos;
                 Settings.Default.RecentRepos = Settings.Default.RecentRepos.Take( Settings.Default.MaxRecentRepos ).ToList();
                 Settings.Default.ConfirmOnClose = f.ConfirmOnClose;
@@ -287,19 +285,6 @@ namespace TabbedTortoiseGit
             set
             {
                 ModifiedTabFontSample.ForeColor = value;
-            }
-        }
-
-        public bool RetainLogsOnClose
-        {
-            get
-            {
-                return RetainLogsOnCloseCheck.Checked;
-            }
-
-            set
-            {
-                RetainLogsOnCloseCheck.Checked = value;
             }
         }
 

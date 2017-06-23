@@ -20,8 +20,6 @@ namespace TabbedTortoiseGit
 {
     partial class TabbedTortoiseGitForm
     {
-        private static readonly Regex TORTOISE_GIT_COMMAND_LINE_REGEX = new Regex( "/path:\"?(?<repo>.*?)\"? *( /|$)", RegexOptions.IgnoreCase );
-
         private void InitializeEventHandlers()
         {
             this.Shown += TabbedTortoiseGitForm_Shown;
@@ -30,7 +28,6 @@ namespace TabbedTortoiseGit
             this.DragDrop += TabbedTortoiseGitForm_DragDrop;
             this.ResizeEnd += TabbedTortoiseGitForm_ResizeEnd;
             this.FormClosing += TabbedTortoiseGitForm_FormClosing;
-            this.FormClosed += TabbedTortoiseGitForm_FormClosed;
 
             LogTabs.NewTabClick += LogTabs_NewTabClick;
             LogTabs.TabClosed += LogTabs_TabClosed;
@@ -57,16 +54,12 @@ namespace TabbedTortoiseGit
             AddToFavoritesRepoTabMenuItem.Click += AddToFavoritesRepoTabMenuItem_Click;
             CloseRepoTabMenuItem.Click += CloseRepoTabMenuItem_Click;
 
-            NotifyIcon.DoubleClick += NotifyIcon_DoubleClick;
-            OpenNotifyIconMenuItem.Click += OpenNotifyIconMenuItem_Click;
-            ExitNotifyIconMenuItem.Click += ExitMenuItem_Click;
-
             CheckForModifiedTabsTimer.Tick += CheckForModifiedTabsTimer_Tick;
         }
 
         private async void TabbedTortoiseGitForm_Shown( object sender, EventArgs e )
         {
-            if( !_startup )
+            if( _showStartUpRepos )
             {
                 await OpenStartupRepos();
             }
@@ -177,36 +170,10 @@ namespace TabbedTortoiseGit
                     e.Cancel = true;
                     return;
                 }
-
-                if( !Settings.Default.CloseToSystemTray )
-                {
-                    LOG.Debug( "FormClosing - Exiting application" );
-                    Application.Exit();
-                }
-                else
-                {
-                    LOG.Debug( "FormClosing - Closing to system tray" );
-
-                    if( !Settings.Default.RetainLogsOnClose )
-                    {
-                        this.RemoveAllLogs();
-                    }
-                    
-                    e.Cancel = true;
-                    this.Hide();
-                }
             }
 
-            SaveWindowState();
-        }
-
-        private void TabbedTortoiseGitForm_FormClosed( object sender, FormClosedEventArgs e )
-        {
-            LOG.Debug( "Form Closed" );
-
-            _watcher.Stop();
-
             RemoveAllLogs();
+            SaveWindowState();
         }
 
         private void Process_Exited( object sender, EventArgs e )
@@ -371,52 +338,18 @@ namespace TabbedTortoiseGit
             AboutBox.ShowAbout();
         }
 
-        private async void RecentRepoMenuItem_Click( object sender, EventArgs e )
-        {
-            ToolStripItem item = (ToolStripItem)sender;
-            await OpenLog( item.Text );
-        }
-
         private void ExitMenuItem_Click( object sender, EventArgs e )
         {
             if( this.ConfirmClose() )
             {
-                Application.Exit();
+                this.Close();
             }
         }
 
-        private void Watcher_EventArrived( object sender, EventArrivedEventArgs e )
+        private async void RecentRepoMenuItem_Click( object sender, EventArgs e )
         {
-            ManagementBaseObject o = (ManagementBaseObject)e.NewEvent[ "TargetInstance" ];
-            String commandLine = (String)o[ "CommandLine" ];
-            Match m = TORTOISE_GIT_COMMAND_LINE_REGEX.Match( commandLine );
-            String repo = m.Groups[ "repo" ].Value;
-            int pid = (int)(UInt32)o[ "ProcessId" ];
-            LOG.DebugFormat( "Watcher_EventArrived - CommandLine: {0} - Repo: {1} - PID: {2}", commandLine, repo, pid );
-            Process p = Process.GetProcessById( pid );
-            this.UiBeginInvoke( (Func<Process, String, Task>)AddNewLog, p, repo );
-        }
-
-        private async void NotifyIcon_DoubleClick( object sender, EventArgs e )
-        {
-            this.ShowMe();
-
-            if( Settings.Default.OpenStartupReposOnReOpen
-             && !Settings.Default.RetainLogsOnClose )
-            {
-                await OpenStartupRepos();
-            }
-        }
-
-        private async void OpenNotifyIconMenuItem_Click( object sender, EventArgs e )
-        {
-            this.ShowMe();
-
-            if( Settings.Default.OpenStartupReposOnReOpen
-             && !Settings.Default.RetainLogsOnClose )
-            {
-                await OpenStartupRepos();
-            }
+            ToolStripItem item = (ToolStripItem)sender;
+            await OpenLog( item.Text );
         }
 
         private void OpenRepoLocationTabMenuItem_Click( object sender, EventArgs e )

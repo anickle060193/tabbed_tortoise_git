@@ -28,11 +28,10 @@ namespace TabbedTortoiseGit
         private static readonly ILog LOG = LogManager.GetLogger( typeof( TabbedTortoiseGitForm ) );
 
         private readonly CommonOpenFileDialog _folderDialog;
-        private readonly ManagementEventWatcher _watcher;
         private readonly List<Process> _processes = new List<Process>();
         private readonly Dictionary<int, Tab> _tabs = new Dictionary<int, Tab>();
         private readonly Semaphore _checkForModifiedTabsSemaphore = new Semaphore( 1, 1 );
-        private readonly bool _startup;
+        private readonly bool _showStartUpRepos;
         private readonly Stack<String> _closedRepos = new Stack<String>();
 
         private readonly HotKey _newTabHotKey;
@@ -71,29 +70,17 @@ namespace TabbedTortoiseGit
             }
         }
 
-        public TabbedTortoiseGitForm() : this( false )
+        public TabbedTortoiseGitForm( bool showStartUpRepos )
         {
-        }
-
-        public TabbedTortoiseGitForm( bool startup )
-        {
-            LOG.DebugFormat( "Control Constructor - Startup: {0}", startup );
+            LOG.DebugFormat( "Constructor - Show Start-up Repos: {0}", showStartUpRepos );
 
             InitializeComponent();
             InitializeEventHandlers();
 
-            _startup = startup;
+            _showStartUpRepos = showStartUpRepos;
 
             _folderDialog = new CommonOpenFileDialog();
             _folderDialog.IsFolderPicker = true;
-
-            String condition = "TargetInstance ISA 'Win32_Process'" +
-                           "AND TargetInstance.Name = 'TortoiseGitProc.exe'" +
-                           "AND TargetInstance.CommandLine LIKE '%/command:log%'";
-            _watcher = new ManagementEventWatcher( new WqlEventQuery( "__InstanceCreationEvent", new TimeSpan( 10 ), condition ) );
-            _watcher.Options.Timeout = new TimeSpan( 0, 1, 0 );
-            _watcher.EventArrived += Watcher_EventArrived;
-            _watcher.Start();
 
             _newTabHotKey = new HotKey( this.Handle );
             _newTabHotKey.AddHandle( this.Handle );
@@ -116,21 +103,8 @@ namespace TabbedTortoiseGit
             _reopenClosedTabHotKey.HotKeyPressed += ReopenClosedTabHotKey_HotKeyPressed;
 
             this.Icon = Resources.TortoiseIcon;
-            NotifyIcon.Icon = this.Icon;
 
             UpdateFromSettings( true );
-        }
-
-        protected override void WndProc( ref Message m )
-        {
-            if( m.Msg == Native.WM_SHOWME )
-            {
-                ShowMe();
-            }
-            else
-            {
-                base.WndProc( ref m );
-            }
         }
 
         private void UpdateFromSettings( bool updateWindowState )
@@ -140,12 +114,7 @@ namespace TabbedTortoiseGit
                 if( !Settings.Default.Size.IsEmpty )
                 {
                     this.Size = Settings.Default.Size;
-                }
-
-                if( !Settings.Default.Location.IsEmpty )
-                {
-                    this.StartPosition = FormStartPosition.Manual;
-                    this.Location = Settings.Default.Location;
+                    this.CenterToScreen();
                 }
 
                 if( Settings.Default.Maximized )
@@ -353,7 +322,7 @@ namespace TabbedTortoiseGit
             await AddNewLog( p, path );
         }
 
-        private async Task AddNewLog( Process p, String path )
+        internal async Task AddNewLog( Process p, String path )
         {
             LOG.DebugFormat( "AddNewLog - Path: {0} - PID: {1}", path, p.Id );
             lock( _processes )
@@ -491,6 +460,14 @@ namespace TabbedTortoiseGit
             }
         }
 
+        internal bool OwnsLog( Process logProcess )
+        {
+            lock( _processes )
+            {
+                return _processes.Any( p => p.Id == logProcess.Id );
+            }
+        }
+
         private async Task FindRepo()
         {
             LOG.Debug( "FindRepo" );
@@ -555,19 +532,16 @@ namespace TabbedTortoiseGit
             {
                 Settings.Default.Maximized = true;
                 Settings.Default.Size = this.RestoreBounds.Size;
-                Settings.Default.Location = this.RestoreBounds.Location;
             }
             else if( this.WindowState == FormWindowState.Minimized )
             {
                 Settings.Default.Maximized = false;
                 Settings.Default.Size = this.RestoreBounds.Size;
-                Settings.Default.Location = this.RestoreBounds.Location;
             }
             else
             {
                 Settings.Default.Maximized = false;
                 Settings.Default.Size = this.Size;
-                Settings.Default.Location = this.Location;
             }
 
             Settings.Default.Save();

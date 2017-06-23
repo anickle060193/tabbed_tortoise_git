@@ -48,18 +48,6 @@ namespace TabbedTortoiseGit.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("0, 0")]
-        public global::System.Drawing.Point Location {
-            get {
-                return ((global::System.Drawing.Point)(this["Location"]));
-            }
-            set {
-                this["Location"] = value;
-            }
-        }
-        
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("False")]
         public bool Maximized {
             get {
@@ -78,18 +66,6 @@ namespace TabbedTortoiseGit.Properties {
             }
             set {
                 this["StartupRepos"] = value;
-            }
-        }
-        
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("False")]
-        public bool RetainLogsOnClose {
-            get {
-                return ((bool)(this["RetainLogsOnClose"]));
-            }
-            set {
-                this["RetainLogsOnClose"] = value;
             }
         }
         

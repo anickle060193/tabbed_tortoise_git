@@ -97,47 +97,61 @@ namespace Common
 
         private bool TryMoveItem( TControl pointedParent, DragEventArgs e )
         {
-            T pointedItem;
-            int pointedItemIndex;
-            if( GetItemFromPoint( pointedParent, pointedParent.PointToClient( new Point( e.X, e.Y ) ), out pointedItem, out pointedItemIndex )
-             && ( AllowReSwap
-               || !ItemsEqual( _lastSwappedParent, _lastSwappedItem, _lastSwappedIndex, pointedParent, pointedItem, pointedItemIndex ) )
-             && ( ( pointedParent != _dragItemParent )
-               || ( pointedItemIndex != _dragItemIndex ) )
-             && e.AllowedEffect == DragDropEffects.Move )
+            try
             {
-                if( MoveItem( _dragItemParent, _dragItem, _dragItemIndex, pointedParent, pointedItem, pointedItemIndex ) )
+                T pointedItem;
+                int pointedItemIndex;
+                if( GetItemFromPoint( pointedParent, pointedParent.PointToClient( new Point( e.X, e.Y ) ), out pointedItem, out pointedItemIndex )
+                 && ( AllowReSwap
+                   || !ItemsEqual( _lastSwappedParent, _lastSwappedItem, _lastSwappedIndex, pointedParent, pointedItem, pointedItemIndex ) )
+                 && ( ( pointedParent != _dragItemParent )
+                   || ( pointedItemIndex != _dragItemIndex ) )
+                 && e.AllowedEffect == DragDropEffects.Move )
                 {
-                    _dragItemIndex = pointedItemIndex;
+                    if( MoveItem( _dragItemParent, _dragItem, _dragItemIndex, pointedParent, pointedItem, pointedItemIndex ) )
+                    {
+                        _dragItemIndex = pointedItemIndex;
 
-                    _lastSwappedItem = pointedItem;
-                    _lastSwappedIndex = _dragItemIndex;
-                    _lastSwappedParent = _dragItemParent;
+                        _lastSwappedItem = pointedItem;
+                        _lastSwappedIndex = _dragItemIndex;
+                        _lastSwappedParent = _dragItemParent;
 
-                    return true;
+                        return true;
+                    }
                 }
+            }
+            catch( Exception ex )
+            {
+                Console.WriteLine( ex );
             }
             return false;
         }
 
         private void Control_MouseDown( object sender, MouseEventArgs e )
         {
-            if( e.Button == MouseButtons.Left )
+            try
             {
-                TControl parent = (TControl)sender;
-
-                T item;
-                int itemIndex;
-                if( GetItemFromPoint( parent, e.Location, out item, out itemIndex )
-                 && AllowDrag( parent, item, itemIndex ) )
+                if( e.Button == MouseButtons.Left )
                 {
-                    _mouseDown = true;
-                    _mouseDownLocation = parent.PointToScreen( e.Location );
+                    TControl parent = (TControl)sender;
 
-                    _mouseDownItem = item;
-                    _mouseDownItemIndex = itemIndex;
-                    _mouseDownParent = parent;
+                    T item;
+                    int itemIndex;
+                    if( GetItemFromPoint( parent, e.Location, out item, out itemIndex )
+                     && AllowDrag( parent, item, itemIndex ) )
+                    {
+                        _mouseDown = true;
+                        _mouseDownLocation = parent.PointToScreen( e.Location );
+
+                        _mouseDownItem = item;
+                        _mouseDownItemIndex = itemIndex;
+                        _mouseDownParent = parent;
+                    }
                 }
+            }
+            catch( Exception ex )
+            {
+                Console.WriteLine( ex );
             }
         }
 
@@ -151,71 +165,92 @@ namespace Common
 
         private void Control_MouseMove( object sender, MouseEventArgs e )
         {
-            if( _mouseDown )
+            try
             {
-                TControl parent = (TControl)sender;
-                Point p = parent.PointToScreen( e.Location );
-
-                if( Math.Sqrt( Math.Pow( p.X - _mouseDownLocation.X, 2 ) + Math.Pow( p.Y - _mouseDownLocation.Y, 2 ) ) >= DRAG_THRESHOLD )
+                if( _mouseDown )
                 {
-                    T item;
-                    int itemIndex;
-                    if( GetItemFromPoint( parent, e.Location, out item, out itemIndex )
-                     && ItemsEqual( _mouseDownParent, _mouseDownItem, _mouseDownItemIndex, parent, item, itemIndex ) )
+                    TControl parent = (TControl)sender;
+                    Point p = parent.PointToScreen( e.Location );
+
+                    if( Math.Sqrt( Math.Pow( p.X - _mouseDownLocation.X, 2 ) + Math.Pow( p.Y - _mouseDownLocation.Y, 2 ) ) >= DRAG_THRESHOLD )
                     {
-                        _mouseDown = false;
+                        T item;
+                        int itemIndex;
+                        if( GetItemFromPoint( parent, e.Location, out item, out itemIndex )
+                         && ItemsEqual( _mouseDownParent, _mouseDownItem, _mouseDownItemIndex, parent, item, itemIndex ) )
+                        {
+                            _mouseDown = false;
 
-                        _dragging = true;
-                        _dragStart = _mouseDownLocation;
+                            _dragging = true;
+                            _dragStart = _mouseDownLocation;
 
-                        _dragItemParent = parent;
-                        _dragItem = item;
-                        _dragItemIndex = itemIndex;
+                            _dragItemParent = parent;
+                            _dragItem = item;
+                            _dragItemIndex = itemIndex;
 
-                        OnDragStart( new DragStartEventArgs<TControl, T>( _dragItemParent, _dragItem, _dragItemIndex, _dragStart ) );
+                            OnDragStart( new DragStartEventArgs<TControl, T>( _dragItemParent, _dragItem, _dragItemIndex, _dragStart ) );
 
-                        parent.DoDragDrop( _dragItem, DragDropEffects.Move );
+                            parent.DoDragDrop( _dragItem, DragDropEffects.Move );
 
-                        OnDragEnd( new DragEndEventArgs<TControl, T>( _dragItemParent, _dragItem, _dragItemIndex, _dragStart, Control.MousePosition ) );
+                            OnDragEnd( new DragEndEventArgs<TControl, T>( _dragItemParent, _dragItem, _dragItemIndex, _dragStart, Control.MousePosition ) );
 
-                        ClearDragDrop();
-                    }
-                    else
-                    {
-                        ClearDragDrop();
+                            ClearDragDrop();
+                        }
+                        else
+                        {
+                            ClearDragDrop();
+                        }
                     }
                 }
+            }
+            catch( Exception ex )
+            {
+                Console.WriteLine( ex );
             }
         }
 
         private void Control_DragOver( object sender, DragEventArgs e )
         {
-            if( e.Data.GetDataPresent( typeof( T ) ) )
+            try
             {
-                TControl pointedParent = (TControl)sender;
-                Point p = new Point( e.X, e.Y );
-
-                OnDragMove( new DragMoveEventArgs<TControl, T>( _dragItemParent, _dragItem, _dragItemIndex, _dragStart, p ) );
-
-                e.Effect = DragDropEffects.Move;
-
-                if( !MoveOnDragDrop )
+                if( e.Data.GetDataPresent( typeof( T ) ) )
                 {
-                    TryMoveItem( pointedParent, e );
+                    TControl pointedParent = (TControl)sender;
+                    Point p = new Point( e.X, e.Y );
+
+                    OnDragMove( new DragMoveEventArgs<TControl, T>( _dragItemParent, _dragItem, _dragItemIndex, _dragStart, p ) );
+
+                    e.Effect = DragDropEffects.Move;
+
+                    if( !MoveOnDragDrop )
+                    {
+                        TryMoveItem( pointedParent, e );
+                    }
                 }
+            }
+            catch( Exception ex )
+            {
+                Console.WriteLine( ex );
             }
         }
 
         private void Control_DragDrop( object sender, DragEventArgs e )
         {
-            if( MoveOnDragDrop
-             && e.Data.GetDataPresent( typeof( T ) ) )
+            try
             {
-                TControl pointedParent = (TControl)sender;
+                if( MoveOnDragDrop
+                 && e.Data.GetDataPresent( typeof( T ) ) )
+                {
+                    TControl pointedParent = (TControl)sender;
 
-                e.Effect = DragDropEffects.Move;
+                    e.Effect = DragDropEffects.Move;
 
-                TryMoveItem( pointedParent, e );
+                    TryMoveItem( pointedParent, e );
+                }
+            }
+            catch( Exception ex )
+            {
+                Console.WriteLine( ex );
             }
         }
     }

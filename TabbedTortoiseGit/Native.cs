@@ -141,8 +141,9 @@ namespace TabbedTortoiseGit
         public const uint WS_EX_NOACTIVATE = 0x08000000;
         //#endif /* _WIN32_WINNT >= 0x0500 */
 
+        public static readonly IntPtr HWND_MESSAGE = new IntPtr( -3 );
+
         public const int HWND_BROADCAST = 0xffff;
-        public static readonly int WM_SHOWME = RegisterWindowMessage( "WM_SHOWME" );
 
         [DllImport( "user32" )]
         public static extern bool PostMessage( IntPtr hwnd, int msg, IntPtr wparam, IntPtr lparam );
@@ -157,7 +158,7 @@ namespace TabbedTortoiseGit
         static extern IntPtr FindWindow( string lpClassName, string lpWindowName );
 
         [DllImport( "user32.dll", SetLastError = true )]
-        static extern IntPtr SetParent( IntPtr hWndChild, IntPtr hWndNewParent );
+        public static extern IntPtr SetParent( IntPtr hWndChild, IntPtr hWndNewParent );
 
         [DllImport( "user32.dll", ExactSpelling = true, CharSet = CharSet.Auto )]
         public static extern IntPtr GetParent( IntPtr hWnd );

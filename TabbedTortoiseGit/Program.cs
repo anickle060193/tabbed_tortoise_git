@@ -14,7 +14,7 @@ namespace TabbedTortoiseGit
     {
         private static ILog LOG = LogManager.GetLogger( typeof( Program ) );
 
-        private static Mutex _mutex = new Mutex( true, "{fa53bc4a-ae04-444f-9c4e-0cf94346e62e}" );
+        private static readonly Mutex _mutex = new Mutex( true, "{fa53bc4a-ae04-444f-9c4e-0cf94346e62e}" );
 
         /// <summary>
         /// The main entry point for the application.
@@ -42,19 +42,13 @@ namespace TabbedTortoiseGit
                     Application.SetCompatibleTextRenderingDefault( false );
 
                     LOG.Debug( "Starting Tabbed TortoiseGit" );
-                    TabbedTortoiseGitForm f = new TabbedTortoiseGitForm( a.Startup );
-                    f.Show();
-                    if( a.Startup )
-                    {
-                        f.Hide();
-                    }
-                    Application.Run();
+                    Application.Run( new ProgramForm( a.Startup ) );
                     _mutex.ReleaseMutex();
                 }
                 else
                 {
                     LOG.Debug( "Tabbed TortoiseGit instance already exists" );
-                    Native.PostMessage( (IntPtr)Native.HWND_BROADCAST, Native.WM_SHOWME, IntPtr.Zero, IntPtr.Zero );
+                    Native.PostMessage( (IntPtr)Native.HWND_BROADCAST, ProgramForm.WM_SHOWME, IntPtr.Zero, IntPtr.Zero );
                 }
             }
 
