@@ -101,6 +101,46 @@ namespace TabbedTortoiseGit
                     await OpenLog( repo );
                 }
             }
+            else if( keyboardShortcut == KeyboardShortcuts.Commit )
+            {
+                await TortoiseGit.Commit( LogTabs.SelectedTab.Controller().Repo );
+            }
+            else if( keyboardShortcut == KeyboardShortcuts.FastFetch )
+            {
+                await TortoiseGit.FastFetch( LogTabs.SelectedTab.Controller().Repo );
+            }
+            else if( keyboardShortcut == KeyboardShortcuts.FastSubmoduleUpdate )
+            {
+                await TortoiseGit.FastSubmoduleUpdate( LogTabs.SelectedTab.Controller().Repo );
+            }
+            else if( keyboardShortcut == KeyboardShortcuts.Fetch )
+            {
+                await TortoiseGit.Fetch( LogTabs.SelectedTab.Controller().Repo );
+            }
+            else if( keyboardShortcut == KeyboardShortcuts.Pull )
+            {
+                await TortoiseGit.Pull( LogTabs.SelectedTab.Controller().Repo );
+            }
+            else if( keyboardShortcut == KeyboardShortcuts.Push )
+            {
+                await TortoiseGit.Push( LogTabs.SelectedTab.Controller().Repo );
+            }
+            else if( keyboardShortcut == KeyboardShortcuts.Rebase )
+            {
+                await TortoiseGit.Rebase( LogTabs.SelectedTab.Controller().Repo );
+            }
+            else if( keyboardShortcut == KeyboardShortcuts.SubmoduleUpdate )
+            {
+                await TortoiseGit.SubmoduleUpdate( LogTabs.SelectedTab.Controller().Repo );
+            }
+            else if( keyboardShortcut == KeyboardShortcuts.SwitchCheckout )
+            {
+                await TortoiseGit.Switch( LogTabs.SelectedTab.Controller().Repo );
+            }
+            else
+            {
+                LOG.ErrorFormat( "Unhandled keyboard shortcut - KeyboardShortcut: {0}", keyboardShortcut );
+            }
         }
 
         private void UpdateFromSettings( bool updateWindowState )

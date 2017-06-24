@@ -20,7 +20,26 @@ namespace TabbedTortoiseGit
         [Description( "Close Tab" )]
         CloseTab,
         [Description( "Reopen Closed Tab" )]
-        ReopenClosedTab
+        ReopenClosedTab,
+
+        [Description( "Commit" )]
+        Commit,
+        [Description( "Fast Fetch" )]
+        FastFetch,
+        [Description( "Fast Submodule Update" )]
+        FastSubmoduleUpdate,
+        [Description( "Fetch" )]
+        Fetch,
+        [Description( "Pull" )]
+        Pull,
+        [Description( "Push" )]
+        Push,
+        [Description( "Rebase" )]
+        Rebase,
+        [Description( "Submodule Update" )]
+        SubmoduleUpdate,
+        [Description( "Switch/Checkout" )]
+        SwitchCheckout
     }
 
     class KeyboardShortcutPressedEventArgs : EventArgs
