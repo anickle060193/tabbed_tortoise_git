@@ -153,9 +153,9 @@ namespace Common
                             OnDragStart( new DragStartEventArgs<TControl, T>( parent, item, itemIndex, _mouseDownLocation ) );
 
                             DragDropItem<TControl, T> dragDropItem = new DragDropItem<TControl, T>( parent, item, itemIndex, _mouseDownLocation );
-                            parent.DoDragDrop( dragDropItem, DragDropEffects.Move );
+                            DragDropEffects effects = parent.DoDragDrop( dragDropItem, DragDropEffects.Move );
 
-                            OnDragEnd( new DragEndEventArgs<TControl, T>( parent, item, itemIndex, _mouseDownLocation, Control.MousePosition ) );
+                            OnDragEnd( new DragEndEventArgs<TControl, T>( parent, item, itemIndex, _mouseDownLocation, Control.MousePosition, effects ) );
 
                             ClearDragDrop();
                         }
@@ -283,11 +283,13 @@ namespace Common
     public class DragEndEventArgs<TControl, T> : DragStartEventArgs<TControl, T> where TControl : Control
     {
         public Point DragEndPosition { get; private set; }
+        public DragDropEffects Effects { get; private set; }
 
-        public DragEndEventArgs( TControl dragParent, T dragItem, int dragItemIndex, Point dragStartPosition, Point dragEndPosition )
+        public DragEndEventArgs( TControl dragParent, T dragItem, int dragItemIndex, Point dragStartPosition, Point dragEndPosition, DragDropEffects effects )
             : base( dragParent, dragItem, dragItemIndex, dragStartPosition )
         {
             DragEndPosition = dragEndPosition;
+            Effects = effects;
         }
     }
 }

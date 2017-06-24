@@ -27,11 +27,11 @@ namespace TabbedTortoiseGit
     {
         private static readonly ILog LOG = LogManager.GetLogger( typeof( TabbedTortoiseGitForm ) );
 
+        private readonly Dictionary<int, TabControllerTag> _tags = new Dictionary<int, TabControllerTag>();
         private readonly CommonOpenFileDialog _folderDialog;
-        private readonly List<Process> _processes = new List<Process>();
-        private readonly Dictionary<int, Tab> _tabs = new Dictionary<int, Tab>();
         private readonly Semaphore _checkForModifiedTabsSemaphore = new Semaphore( 1, 1 );
         private readonly bool _showStartUpRepos;
+        private readonly Point _createdAtPoint;
         private readonly Stack<String> _closedRepos = new Stack<String>();
 
         private readonly HotKey _newTabHotKey;
@@ -56,21 +56,7 @@ namespace TabbedTortoiseGit
             }
         }
 
-        class TabTag
-        {
-            public Process Process { get; private set; }
-            public String Repo { get; private set; }
-            public bool Modified { get; set; }
-
-            public TabTag( Process process, String repo )
-            {
-                Process = process;
-                Repo = repo;
-                Modified = false;
-            }
-        }
-
-        public TabbedTortoiseGitForm( bool showStartUpRepos )
+        public TabbedTortoiseGitForm( bool showStartUpRepos, Point createdAtPoint )
         {
             LOG.DebugFormat( "Constructor - Show Start-up Repos: {0}", showStartUpRepos );
 
@@ -78,6 +64,7 @@ namespace TabbedTortoiseGit
             InitializeEventHandlers();
 
             _showStartUpRepos = showStartUpRepos;
+            _createdAtPoint = createdAtPoint;
 
             _folderDialog = new CommonOpenFileDialog();
             _folderDialog.IsFolderPicker = true;
@@ -117,6 +104,20 @@ namespace TabbedTortoiseGit
                     this.CenterToScreen();
                 }
 
+                if( !_createdAtPoint.IsEmpty )
+                {
+                    this.StartPosition = FormStartPosition.Manual;
+
+                    Rectangle formBounds = this.Bounds;
+                    Rectangle tabBounds = LogTabs.RectangleToScreen( LogTabs.GetTabRect( 0 ) );
+                    int tabX = tabBounds.Left - formBounds.Left;
+                    int tabY = tabBounds.Top - formBounds.Top;
+
+                    int x = _createdAtPoint.X - tabX - tabBounds.Width / 2;
+                    int y = _createdAtPoint.Y - tabY - tabBounds.Height / 2;
+                    this.Location = new Point( x, y );
+                }
+
                 if( Settings.Default.Maximized )
                 {
                     this.WindowState = FormWindowState.Maximized;
@@ -135,11 +136,11 @@ namespace TabbedTortoiseGit
             CheckForModifiedTabsTimer.Enabled = Settings.Default.IndicateModifiedTabs;
             CheckForModifiedTabsTimer.Interval = Settings.Default.CheckForModifiedTabsInterval;
 
-            lock( _processes )
+            lock( _tags )
             {
-                foreach( Tab t in LogTabs.Tabs )
+                foreach( TabControllerTag tag in _tags.Values )
                 {
-                    UpdateTabDisplay( t );
+                    tag.UpdateTabDisplay();
                 }
             }
 
@@ -319,84 +320,88 @@ namespace TabbedTortoiseGit
             AddToRecentRepos( path );
 
             Process p = TortoiseGit.Log( path );
-            await AddNewLog( p, path );
+            await AddNewLogProcess( p, path );
         }
 
-        internal async Task AddNewLog( Process p, String path )
+        internal void AddExistingTab( Tab tab )
         {
-            LOG.DebugFormat( "AddNewLog - Path: {0} - PID: {1}", path, p.Id );
-            lock( _processes )
+            LOG.DebugFormat( "AddExistingTab - Tab: {0}", tab );
+
+            TabControllerTag tag = tab.Controller();
+
+            if( this.OwnsLogProcess( tag.Process ) )
             {
-                if( _processes.Any( ( pf ) => pf.Id == p.Id ) )
+                LOG.ErrorFormat( "AddExistingTab - Already own process - PID: {0}", tag.Process.Id );
+                return;
+            }
+
+            LogTabs.Tabs.Add( tab );
+            LogTabs.SelectedTab = tab;
+        }
+
+        internal async Task AddNewLogProcess( Process p, String path )
+        {
+            TabControllerTag tag;
+            lock( _tags )
+            {
+                LOG.DebugFormat( "AddNewLogProcess - Path: {0} - PID: {1}", path, p.Id );
+                if( this.OwnsLogProcess( p ) )
                 {
-                    LOG.DebugFormat( "AddNewLog - Process already under control - Path: {0} - PID: {1}", path, p.Id );
+                    LOG.DebugFormat( "AddNewLogProcess - Process already under control - Path: {0} - PID: {1}", path, p.Id );
                     return;
                 }
-                _processes.Add( p );
+
+                tag = TabControllerTag.CreateController( p, path );
+                _tags.Add( tag.Process.Id, tag );
             }
 
-            LOG.DebugFormat( "AddNewLog - Start Wait for MainWindowHandle - Path: {0} - PID: {1}", path, p.Id );
-            while( !p.HasExited && p.MainWindowHandle == IntPtr.Zero )
-            {
-                await Task.Delay( 10 );
-            }
-            LOG.DebugFormat( "AddNewLog - End Wait for MainWindowHandle - Path: {0} - PID: {1}", path, p.Id );
-
-            Tab t = new Tab( path );
-            LogTabs.Tabs.Add( t );
-            LogTabs.SelectedTab = t;
-            t.Tag = new TabTag( p, path );
-            _tabs.Add( p.Id, t );
-
-            UpdateTabDisplay( t );
-
-            Native.RemoveBorder( p.MainWindowHandle );
-            Native.SetWindowParent( p.MainWindowHandle, t );
-            ResizeTab( p, t );
+            await tag.WaitForStartup();
 
             foreach( HotKey hotKey in HotKeys )
             {
-                hotKey.AddHandle( p.MainWindowHandle );
+                hotKey.AddHandle( tag.Process.MainWindowHandle );
             }
 
-            t.Resize += Tab_Resize;
-            p.EnableRaisingEvents = true;
-            p.Exited += Process_Exited;
+            LogTabs.Tabs.Add( tag.Tab );
+            LogTabs.SelectedTab = tag.Tab;
+        }
+
+        private void RegisterExistingTab( Tab tab )
+        {
+            LOG.DebugFormat( "RegisterExistingTab - Tab: {0}", tab );
+
+            TabControllerTag tag = tab.Controller();
+
+            if( this.OwnsLogProcess( tag.Process ) )
+            {
+                LOG.ErrorFormat( "RegisterExistingTab - Already own process - PID: {0}", tag.Process.Id );
+                return;
+            }
+
+            lock( _tags )
+            {
+                _tags.Add( tag.Process.Id, tag );
+            }
+
+            foreach( HotKey hotKey in HotKeys )
+            {
+                hotKey.AddHandle( tag.Process.MainWindowHandle );
+            }
 
             ShowMe();
         }
 
-        private void ResizeTab( Process p, Tab t )
+        private void RemoveLogProcess( Process p, bool killProcess )
         {
-            Size sizeDiff = Native.ResizeToParent( p.MainWindowHandle, t );
+            LOG.DebugFormat( "RemoveLogProcess - PID: {0} - Kill Process: {1}", p.Id, killProcess );
 
-            if( sizeDiff.Width > 0 )
+            lock( _tags )
             {
-                this.Width += sizeDiff.Width;
-                this.MinimumSize = new Size( this.Width, this.MinimumSize.Height );
-            }
-
-            if( sizeDiff.Height > 0 )
-            {
-                this.Height += sizeDiff.Height;
-                this.MinimumSize = new Size( this.MinimumSize.Width, this.Height );
-            }
-        }
-
-        private void RemoveLog( Process p )
-        {
-            LOG.DebugFormat( "RemoveLog - {0}", p.Id );
-
-            lock( _processes )
-            {
-                if( !_processes.Contains( p ) )
+                if( !this.OwnsLogProcess( p ) )
                 {
                     LOG.ErrorFormat( "Attempting to remove log not under control - Process ID: {0}", p.Id );
                     return;
                 }
-
-                p.EnableRaisingEvents = false;
-                p.Exited -= Process_Exited;
 
                 foreach( HotKey hotKey in HotKeys )
                 {
@@ -404,53 +409,41 @@ namespace TabbedTortoiseGit
                     hotKey.RemoveHandle( p.MainWindowHandle );
                 }
 
-                _processes.Remove( p );
+                TabControllerTag tag = _tags[ p.Id ];
 
-                Tab t = _tabs.Pluck( p.Id );
+                _tags.Remove( p.Id );
 
-                TabTag tag = (TabTag)t.Tag;
-                _closedRepos.Push( tag.Repo );
+                tag.Tab.Parent = null;
 
-                if( t.Parent != null )
+                if( killProcess )
                 {
-                    t.Parent.Controls.Remove( t );
-                }
-                else
-                {
-                    LOG.DebugFormat( "RemoveLog - Tab has already been removed: {0}", t.Text );
-                }
+                    _closedRepos.Push( tag.Repo );
 
-                if( !p.HasExited )
-                {
-                    p.Kill();
-                }
-                else
-                {
-                    LOG.DebugFormat( "RemoveLog - Process has already exited: {0}", p.Id );
+                    tag.Close();
                 }
             }
         }
 
         private void RemoveAllLogs()
         {
-            lock( _processes )
+            lock( _tags )
             {
-                LOG.DebugFormat( "RemoveAllLogs - Count: {0}", _processes.Count );
+                LOG.DebugFormat( "RemoveAllLogs - Count: {0}", _tags.Count );
 
-                while( _processes.Count > 0 )
+                while( _tags.Count > 0 )
                 {
-                    RemoveLog( _processes.First() );
+                    RemoveLogProcess( _tags.Values.First().Process, true );
                 }
             }
         }
 
         private void CloseTab( Tab tab )
         {
-            TabTag t = (TabTag)tab.Tag;
+            TabControllerTag t = tab.Controller();
 
             LOG.DebugFormat( "Close Tab - Repo: {0} - ID: {1}", t.Repo, t.Process.Id );
 
-            RemoveLog( t.Process );
+            RemoveLogProcess( t.Process, true );
 
             if( LogTabs.TabCount == 0
              && Settings.Default.CloseWindowOnLastTabClosed )
@@ -460,11 +453,11 @@ namespace TabbedTortoiseGit
             }
         }
 
-        internal bool OwnsLog( Process logProcess )
+        internal bool OwnsLogProcess( Process logProcess )
         {
-            lock( _processes )
+            lock( _tags )
             {
-                return _processes.Any( p => p.Id == logProcess.Id );
+                return _tags.ContainsKey( logProcess.Id );
             }
         }
 
@@ -553,7 +546,7 @@ namespace TabbedTortoiseGit
             {
                 return true;
             }
-            else if( _processes.Count == 0 )
+            else if( _tags.Count == 0 )
             {
                 return true;
             }
@@ -578,21 +571,6 @@ namespace TabbedTortoiseGit
             else
             {
                 return true;
-            }
-        }
-
-        private void UpdateTabDisplay( Tab tab )
-        {
-            TabTag tag = (TabTag)tab.Tag;
-            if( Settings.Default.IndicateModifiedTabs && tag.Modified )
-            {
-                tab.Font = Settings.Default.ModifiedTabFont;
-                tab.ForeColor = Settings.Default.ModifiedTabFontColor;
-            }
-            else
-            {
-                tab.Font = Settings.Default.NormalTabFont;
-                tab.ForeColor = Settings.Default.NormalTabFontColor;
             }
         }
 

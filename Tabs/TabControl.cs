@@ -34,7 +34,10 @@ namespace Tabs
         public event EventHandler NewTabClick;
         public event EventHandler<TabClickEventArgs> TabClick;
         public event EventHandler SelectedIndexChanged;
+        public event EventHandler<TabAddedEventArgs> TabAdded;
+        public event EventHandler<TabRemovedEventArgs> TabRemoved;
         public event EventHandler<TabClosedEventArgs> TabClosed;
+        public event EventHandler<TabPulledOutEventArgs> TabPulledOut;
 
         [Browsable( false )]
         [EditorBrowsable( EditorBrowsableState.Never )]
@@ -52,6 +55,8 @@ namespace Tabs
         }
 
         private bool RemovingItem { get; set; }
+        private bool SupressTabEvents { get; set; }
+        private bool ClosingTab { get; set; }
 
         [DefaultValue( typeof( ContextMenuStrip ), "(none)" )]
         public ContextMenuStrip TabContextMenu { get; set; }
@@ -366,7 +371,7 @@ namespace Tabs
 
             _painter = new TabPainter( this );
 
-            _dragDropHelper = new TabControlDragDropHelper();
+            _dragDropHelper = new TabControlDragDropHelper( this );
             _dragDropHelper.AddControl( this );
         }
 
@@ -398,6 +403,11 @@ namespace Tabs
                     this.SelectedIndex--;
                 }
             }
+        }
+
+        public Rectangle GetTabRect( int index )
+        {
+            return _painter.GetTabPath( index ).Bounds;
         }
 
         internal int FindTab( Tab tab )
@@ -508,6 +518,8 @@ namespace Tabs
             }
 
             Invalidate();
+
+            OnTabAdded( new TabAddedEventArgs( tab ) );
         }
 
         private void InsertItem( int index, Tab tab )
@@ -537,6 +549,9 @@ namespace Tabs
             {
                 throw new ArgumentOutOfRangeException( "index" );
             }
+
+            Tab tab = _tabs[ index ];
+
             _tabCount--;
             if( index < _tabCount )
             {
@@ -562,6 +577,8 @@ namespace Tabs
             _tabs[ _tabCount ] = null;
 
             this.UpdateTabSelection();
+
+            OnTabRemoved( new TabRemovedEventArgs( tab ) );
         }
 
         private void ResizeTabs()
@@ -706,8 +723,10 @@ namespace Tabs
                 Tab closeTab = this.GetTabCloseFromPoint( e.Location );
                 if( closeTab != null )
                 {
+                    ClosingTab = true;
                     this.Tabs.Remove( closeTab );
                     OnTabClosed( new TabClosedEventArgs( closeTab ) );
+                    ClosingTab = false;
                     return;
                 }
             }
@@ -720,8 +739,10 @@ namespace Tabs
                     if( e.Button == MouseButtons.Middle
                      && this.CloseTabOnMiddleClick )
                     {
+                        ClosingTab = true;
                         this.Tabs.Remove( t );
                         OnTabClosed( new TabClosedEventArgs( t ) );
+                        ClosingTab = false;
                         return;
                     }
                     else if( e.Button == MouseButtons.Right
@@ -760,9 +781,30 @@ namespace Tabs
             SelectedIndexChanged?.Invoke( this, e );
         }
 
+        protected void OnTabAdded( TabAddedEventArgs e )
+        {
+            if( !SupressTabEvents )
+            {
+                TabAdded?.Invoke( this, e );
+            }
+        }
+
+        protected void OnTabRemoved( TabRemovedEventArgs e )
+        {
+            if( !SupressTabEvents && !ClosingTab )
+            {
+                TabRemoved?.Invoke( this, e );
+            }
+        }
+
         protected void OnTabClosed( TabClosedEventArgs e )
         {
             TabClosed?.Invoke( this, e );
+        }
+
+        protected void OnTabPulledOut( TabPulledOutEventArgs e )
+        {
+            TabPulledOut?.Invoke( this, e );
         }
 
         private void OptionsMenu_Closed( object sender, ToolStripDropDownClosedEventArgs e )
@@ -1118,7 +1160,14 @@ namespace Tabs
 
         class TabControlDragDropHelper : DragDropHelper<TabControl, Tab>
         {
+            private readonly TabControl _owner;
+
             private bool _partialMatch = false;
+
+            public TabControlDragDropHelper( TabControl owner )
+            {
+                _owner = owner;
+            }
 
             protected override bool AllowDrag( TabControl parent, Tab item, int index )
             {
@@ -1185,9 +1234,16 @@ namespace Tabs
 
             protected override bool MoveItem( TabControl dragParent, Tab dragItem, int dragItemIndex, TabControl pointedParent, Tab pointedItem, int pointedItemIndex )
             {
+                if( dragParent == pointedParent )
+                {
+                    _owner.SupressTabEvents = true;
+                }
+
                 dragParent.Tabs.RemoveAt( dragItemIndex );
                 pointedParent.Tabs.Insert( pointedItemIndex, dragItem );
                 pointedParent.SelectedIndex = pointedItemIndex;
+
+                _owner.SupressTabEvents = false;
 
                 return true;
             }
@@ -1211,6 +1267,11 @@ namespace Tabs
                 e.DragItem.Dragging = false;
                 e.DragItem.DraggingOffset = 0;
                 e.DragItem.DraggingX = 0;
+
+                if( e.Effects == DragDropEffects.None )
+                {
+                    _owner.OnTabPulledOut( new TabPulledOutEventArgs( e.DragItem, e.DragEndPosition ) );
+                }
             }
         }
     }
@@ -1225,6 +1286,26 @@ namespace Tabs
         public Tab Tab { get; private set; }
     }
 
+    public class TabAddedEventArgs : EventArgs
+    {
+        public Tab Tab { get; private set; }
+
+        public TabAddedEventArgs( Tab tab )
+        {
+            Tab = tab;
+        }
+    }
+
+    public class TabRemovedEventArgs : EventArgs
+    {
+        public Tab Tab { get; private set; }
+
+        public TabRemovedEventArgs( Tab tab )
+        {
+            Tab = tab;
+        }
+    }
+
     public class TabClosedEventArgs : EventArgs
     {
         public Tab Tab { get; private set; }
@@ -1232,6 +1313,18 @@ namespace Tabs
         public TabClosedEventArgs( Tab tab )
         {
             Tab = tab;
+        }
+    }
+
+    public class TabPulledOutEventArgs : EventArgs
+    {
+        public Tab Tab { get; private set; }
+        public Point Location { get; private set; }
+
+        public TabPulledOutEventArgs( Tab tab, Point location )
+        {
+            Tab = tab;
+            Location = location;
         }
     }
 }

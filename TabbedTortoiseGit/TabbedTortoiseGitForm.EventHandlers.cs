@@ -30,7 +30,10 @@ namespace TabbedTortoiseGit
             this.FormClosing += TabbedTortoiseGitForm_FormClosing;
 
             LogTabs.NewTabClick += LogTabs_NewTabClick;
+            LogTabs.TabAdded += LogTabs_TabAdded;
+            LogTabs.TabRemoved += LogTabs_TabRemoved;
             LogTabs.TabClosed += LogTabs_TabClosed;
+            LogTabs.TabPulledOut += LogTabs_TabPulledOut;
             LogTabs.SelectedIndexChanged += LogTabs_SelectedIndexChanged;
             LogTabs.DragOver += TabbedTortoiseGitForm_DragOver;
             LogTabs.DragDrop += TabbedTortoiseGitForm_DragDrop;
@@ -172,17 +175,11 @@ namespace TabbedTortoiseGit
                 }
             }
 
+            LogTabs.TabRemoved -= LogTabs_TabRemoved;
+            LogTabs.TabClosed -= LogTabs_TabClosed;
+
             RemoveAllLogs();
             SaveWindowState();
-        }
-
-        private void Process_Exited( object sender, EventArgs e )
-        {
-            Process p = (Process)sender;
-
-            LOG.DebugFormat( "Process Exited - ID: {0}", p.Id );
-
-            this.UiBeginInvoke( (Action<Process>)RemoveLog, p );
         }
 
         private async void LogTabs_NewTabClick( object sender, EventArgs e )
@@ -190,10 +187,31 @@ namespace TabbedTortoiseGit
             await FindRepo();
         }
 
+        private void LogTabs_TabAdded( object sender, TabAddedEventArgs e )
+        {
+            LOG.DebugFormat( "TabAdded - Tab: {0}", e.Tab );
+
+            RegisterExistingTab( e.Tab );
+        }
+
+        private void LogTabs_TabRemoved( object sender, TabRemovedEventArgs e )
+        {
+            LOG.DebugFormat( "TabRemoved - Tab: {0}", e.Tab );
+
+            this.RemoveLogProcess( e.Tab.Controller().Process, false );
+        }
+
         private void LogTabs_TabClosed( object sender, TabClosedEventArgs e )
         {
             LOG.Debug( "Tab Closed" );
+
             CloseTab( e.Tab );
+        }
+
+        private void LogTabs_TabPulledOut( object sender, TabPulledOutEventArgs e )
+        {
+            LogTabs.Tabs.Remove( e.Tab );
+            ProgramForm.Instance.CreateNewFromTab( e.Tab, e.Location );
         }
 
         private void LogTabs_SelectedIndexChanged( object sender, EventArgs e )
@@ -205,16 +223,6 @@ namespace TabbedTortoiseGit
             else
             {
                 this.Text = "Tabbed TortoiseGit";
-            }
-        }
-
-        private void Tab_Resize( object sender, EventArgs e )
-        {
-            if( this.WindowState != FormWindowState.Minimized )
-            {
-                Tab t = (Tab)sender;
-                TabTag tag = (TabTag)t.Tag;
-                ResizeTab( tag.Process, t );
             }
         }
 
@@ -354,26 +362,25 @@ namespace TabbedTortoiseGit
 
         private void OpenRepoLocationTabMenuItem_Click( object sender, EventArgs e )
         {
-            TabTag t = (TabTag)LogTabs.SelectedTab.Tag;
-            Util.OpenInExplorer( t.Repo );
+            Util.OpenInExplorer( LogTabs.SelectedTab.Controller().Repo );
         }
 
         private void AddToFavoritesRepoTabMenuItem_Click( object sender, EventArgs e )
         {
-            TabTag t = (TabTag)LogTabs.SelectedTab.Tag;
+            TabControllerTag tag = LogTabs.SelectedTab.Controller();
 
             bool added = false;
             String name = null;
             while( !added )
             {
-                name = InputDialog.ShowInput( "Favorite Repo Name", "Name for \"{0}\"".XFormat( t.Repo ), name );
+                name = InputDialog.ShowInput( "Favorite Repo Name", "Name for \"{0}\"".XFormat( tag.Repo ), name );
                 if( name == null )
                 {
                     break;
                 }
                 else if( !String.IsNullOrWhiteSpace( name ) )
                 {
-                    AddFavoriteRepo( name, t.Repo );
+                    AddFavoriteRepo( name, tag.Repo );
                     added = true;
                 }
             }
@@ -390,7 +397,7 @@ namespace TabbedTortoiseGit
             ToolStripItem c = (ToolStripItem)sender;
             TortoiseGitCommandFunc gitCommandFunc = (TortoiseGitCommandFunc)c.Tag;
 
-            TabTag tag = (TabTag)LogTabs.SelectedTab.Tag;
+            TabControllerTag tag = LogTabs.SelectedTab.Controller();
             await gitCommandFunc.Invoke( tag.Repo );
             Native.SendKeyDown( tag.Process.MainWindowHandle, Keys.F5 );
         }
@@ -404,11 +411,9 @@ namespace TabbedTortoiseGit
                     for( int i = 0; i < LogTabs.TabCount; i++ )
                     {
                         Tab tab = LogTabs.Tabs[ i ];
-                        TabTag tag = (TabTag)tab.Tag;
+                        TabControllerTag tag = LogTabs.SelectedTab.Controller();
 
                         tag.Modified = await Git.IsModified( tag.Repo );
-
-                        UpdateTabDisplay( tab );
                     }
                 }
                 finally

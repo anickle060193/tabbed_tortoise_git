@@ -3,6 +3,7 @@ using log4net;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Drawing;
 using System.Linq;
 using System.Management;
 using System.Text;
@@ -10,6 +11,7 @@ using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using TabbedTortoiseGit.Properties;
+using Tabs;
 
 namespace TabbedTortoiseGit
 {
@@ -27,7 +29,18 @@ namespace TabbedTortoiseGit
 
         private TabbedTortoiseGitForm _activeForm;
 
-        public ProgramForm( bool startup )
+        public static ProgramForm Instance { get; private set; }
+
+        public static ProgramForm Create( bool startup )
+        {
+            if( Instance == null )
+            {
+                Instance = new ProgramForm( startup );
+            }
+            return Instance;
+        }
+
+        private ProgramForm( bool startup )
         {
             String condition = "TargetInstance ISA 'Win32_Process'" +
                            "AND TargetInstance.Name = 'TortoiseGitProc.exe'" +
@@ -53,14 +66,20 @@ namespace TabbedTortoiseGit
 
             this.CreateHandle();
 
-            CreateNewTabbedTortoiseGit( !startup );
+            CreateNewTabbedTortoiseGit( !startup, Point.Empty );
+        }
+
+        public void CreateNewFromTab( Tab tab, Point location )
+        {
+            TabbedTortoiseGitForm form = CreateNewTabbedTortoiseGit( false, location );
+            form.AddExistingTab( tab );
         }
 
         protected override void WndProc( ref Message m )
         {
             if( m.Msg == WM_SHOWME )
             {
-                CreateNewTabbedTortoiseGit( true );
+                CreateNewTabbedTortoiseGit( true, Point.Empty );
             }
             else
             {
@@ -80,22 +99,24 @@ namespace TabbedTortoiseGit
             Native.SetParent( this.Handle, Native.HWND_MESSAGE );
         }
 
-        private void CreateNewTabbedTortoiseGit( bool showStartUpRepos )
+        private TabbedTortoiseGitForm CreateNewTabbedTortoiseGit( bool showStartUpRepos, Point createdAtPoint )
         {
-            TabbedTortoiseGitForm form = new TabbedTortoiseGitForm( showStartUpRepos );
+            TabbedTortoiseGitForm form = new TabbedTortoiseGitForm( showStartUpRepos, createdAtPoint );
             form.FormClosed += TabbedTortoiseGitForm_FormClosed;
             form.Activated += TabbedTortoiseGitForm_Activated;
 
             _forms.Add( form );
             _activeForm = form;
             form.Show();
+
+            return form;
         }
 
         private void ShowLastTabbedTortoiseGit()
         {
             if( _activeForm == null )
             {
-                CreateNewTabbedTortoiseGit( Settings.Default.OpenStartupReposOnReOpen );
+                CreateNewTabbedTortoiseGit( Settings.Default.OpenStartupReposOnReOpen, Point.Empty );
             }
 
             if( _activeForm.WindowState == FormWindowState.Minimized )
@@ -111,9 +132,9 @@ namespace TabbedTortoiseGit
             if( _activeForm == null )
             {
                 LOG.Debug( "CaptureNewLog - No active form" );
-                CreateNewTabbedTortoiseGit( false );
+                CreateNewTabbedTortoiseGit( false, Point.Empty );
             }
-            await _activeForm.AddNewLog( p, repo );
+            await _activeForm.AddNewLogProcess( p, repo );
         }
 
         private void ProgramForm_FormClosing( object sender, FormClosingEventArgs e )
@@ -133,7 +154,7 @@ namespace TabbedTortoiseGit
             LOG.DebugFormat( "Watcher_EventArrived - CommandLine: {0} - Repo: {1} - PID: {2}", commandLine, repo, pid );
             Process p = Process.GetProcessById( pid );
 
-            if( _forms.Any( form => form.OwnsLog( p ) ) )
+            if( _forms.Any( form => form.OwnsLogProcess( p ) ) )
             {
                 LOG.DebugFormat( "Watcher_EventArrived - Log opened by child - PID: {0}", p.Id );
                 return;

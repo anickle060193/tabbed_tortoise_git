@@ -51,8 +51,6 @@ namespace Tabs
 
         public PointPath GetTabPath( int index )
         {
-            Tab tab = this.Owner.Tabs[ index ];
-
             int tabInclineWidth = (int)( TAB_HEIGHT / Math.Tan( TAB_INCLINE_ANGLE ) );
             int tabOverlapWidth = tabInclineWidth / 2;
 
@@ -73,9 +71,9 @@ namespace Tabs
             }
 
             int blX;
-            if( tab.Dragging )
+            if( this.Owner.TabCount > 0 && this.Owner.Tabs[ index ].Dragging )
             {
-                blX = tab.DraggingX - tab.DraggingOffset;
+                blX = this.Owner.Tabs[ index ].DraggingX - this.Owner.Tabs[ index ].DraggingOffset;
                 blX = Math.Max( LEFT_PADDING, blX );
                 blX = Math.Min( blX, LEFT_PADDING + tabAreaWidth - tabWidth - RIGHT_PADDING );
             }

@@ -42,7 +42,7 @@ namespace TabbedTortoiseGit
                     Application.SetCompatibleTextRenderingDefault( false );
 
                     LOG.Debug( "Starting Tabbed TortoiseGit" );
-                    Application.Run( new ProgramForm( a.Startup ) );
+                    Application.Run( ProgramForm.Create( a.Startup ) );
                     _mutex.ReleaseMutex();
                 }
                 else
