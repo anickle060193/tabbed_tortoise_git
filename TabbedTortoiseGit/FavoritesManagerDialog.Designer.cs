@@ -33,14 +33,16 @@
             this.FavoritesTree = new System.Windows.Forms.TreeView();
             this.ImageList = new System.Windows.Forms.ImageList(this.components);
             this.FavoritesContextMenu = new System.Windows.Forms.ContextMenuStrip(this.components);
-            this.AddFavoritesFolderMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.CreateFavoritesFolderMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.RemoveFavoritesFolderMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.AddFavoriteMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.AddFavoriteFileMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.RemoveFavoriteMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.Cancel = new System.Windows.Forms.Button();
             this.Ok = new System.Windows.Forms.Button();
             this.FavoritesList = new System.Windows.Forms.ListView();
             this.SplitContainer = new System.Windows.Forms.SplitContainer();
+            this.FindFavoriteFileDialog = new System.Windows.Forms.OpenFileDialog();
+            this.AddFavoriteFolderMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.FavoritesContextMenu.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.SplitContainer)).BeginInit();
             this.SplitContainer.Panel1.SuspendLayout();
@@ -73,35 +75,36 @@
             // FavoritesContextMenu
             // 
             this.FavoritesContextMenu.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.AddFavoritesFolderMenuItem,
+            this.CreateFavoritesFolderMenuItem,
             this.RemoveFavoritesFolderMenuItem,
-            this.AddFavoriteMenuItem,
+            this.AddFavoriteFileMenuItem,
+            this.AddFavoriteFolderMenuItem,
             this.RemoveFavoriteMenuItem});
             this.FavoritesContextMenu.Name = "FavoritesTreeViewContextMenu";
-            this.FavoritesContextMenu.Size = new System.Drawing.Size(163, 92);
+            this.FavoritesContextMenu.Size = new System.Drawing.Size(178, 136);
             // 
-            // AddFavoritesFolderMenuItem
+            // CreateFavoritesFolderMenuItem
             // 
-            this.AddFavoritesFolderMenuItem.Name = "AddFavoritesFolderMenuItem";
-            this.AddFavoritesFolderMenuItem.Size = new System.Drawing.Size(162, 22);
-            this.AddFavoritesFolderMenuItem.Text = "Add Folder";
+            this.CreateFavoritesFolderMenuItem.Name = "CreateFavoritesFolderMenuItem";
+            this.CreateFavoritesFolderMenuItem.Size = new System.Drawing.Size(177, 22);
+            this.CreateFavoritesFolderMenuItem.Text = "Create Folder";
             // 
             // RemoveFavoritesFolderMenuItem
             // 
             this.RemoveFavoritesFolderMenuItem.Name = "RemoveFavoritesFolderMenuItem";
-            this.RemoveFavoritesFolderMenuItem.Size = new System.Drawing.Size(162, 22);
+            this.RemoveFavoritesFolderMenuItem.Size = new System.Drawing.Size(177, 22);
             this.RemoveFavoritesFolderMenuItem.Text = "Remove Folder";
             // 
-            // AddFavoriteMenuItem
+            // AddFavoriteFileMenuItem
             // 
-            this.AddFavoriteMenuItem.Name = "AddFavoriteMenuItem";
-            this.AddFavoriteMenuItem.Size = new System.Drawing.Size(162, 22);
-            this.AddFavoriteMenuItem.Text = "Add Favorite";
+            this.AddFavoriteFileMenuItem.Name = "AddFavoriteFileMenuItem";
+            this.AddFavoriteFileMenuItem.Size = new System.Drawing.Size(177, 22);
+            this.AddFavoriteFileMenuItem.Text = "Add Favorite File";
             // 
             // RemoveFavoriteMenuItem
             // 
             this.RemoveFavoriteMenuItem.Name = "RemoveFavoriteMenuItem";
-            this.RemoveFavoriteMenuItem.Size = new System.Drawing.Size(162, 22);
+            this.RemoveFavoriteMenuItem.Size = new System.Drawing.Size(177, 22);
             this.RemoveFavoriteMenuItem.Text = "Remove Favorite";
             // 
             // Cancel
@@ -159,6 +162,17 @@
             this.SplitContainer.SplitterDistance = 203;
             this.SplitContainer.TabIndex = 4;
             // 
+            // FindFavoriteFileDialog
+            // 
+            this.FindFavoriteFileDialog.AddExtension = false;
+            this.FindFavoriteFileDialog.Title = "Select Favorite File:";
+            // 
+            // AddFavoriteFolderMenuItem
+            // 
+            this.AddFavoriteFolderMenuItem.Name = "AddFavoriteFolderMenuItem";
+            this.AddFavoriteFolderMenuItem.Size = new System.Drawing.Size(177, 22);
+            this.AddFavoriteFolderMenuItem.Text = "Add Favorite Folder";
+            // 
             // FavoritesManagerDialog
             // 
             this.AcceptButton = this.Ok;
@@ -189,10 +203,12 @@
         private System.Windows.Forms.ListView FavoritesList;
         private System.Windows.Forms.SplitContainer SplitContainer;
         private System.Windows.Forms.ContextMenuStrip FavoritesContextMenu;
-        private System.Windows.Forms.ToolStripMenuItem AddFavoritesFolderMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem CreateFavoritesFolderMenuItem;
         private System.Windows.Forms.ImageList ImageList;
         private System.Windows.Forms.ToolStripMenuItem RemoveFavoritesFolderMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem AddFavoriteMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem AddFavoriteFileMenuItem;
         private System.Windows.Forms.ToolStripMenuItem RemoveFavoriteMenuItem;
+        private System.Windows.Forms.OpenFileDialog FindFavoriteFileDialog;
+        private System.Windows.Forms.ToolStripMenuItem AddFavoriteFolderMenuItem;
     }
 }

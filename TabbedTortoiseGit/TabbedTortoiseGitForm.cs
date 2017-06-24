@@ -103,39 +103,39 @@ namespace TabbedTortoiseGit
             }
             else if( keyboardShortcut == KeyboardShortcuts.Commit )
             {
-                await TortoiseGit.Commit( LogTabs.SelectedTab.Controller().Repo );
+                await TortoiseGit.Commit( LogTabs.SelectedTab.Controller().RepoItem );
             }
             else if( keyboardShortcut == KeyboardShortcuts.FastFetch )
             {
-                await TortoiseGit.FastFetch( LogTabs.SelectedTab.Controller().Repo );
+                await TortoiseGit.FastFetch( LogTabs.SelectedTab.Controller().RepoItem );
             }
             else if( keyboardShortcut == KeyboardShortcuts.FastSubmoduleUpdate )
             {
-                await TortoiseGit.FastSubmoduleUpdate( LogTabs.SelectedTab.Controller().Repo );
+                await TortoiseGit.FastSubmoduleUpdate( LogTabs.SelectedTab.Controller().RepoItem );
             }
             else if( keyboardShortcut == KeyboardShortcuts.Fetch )
             {
-                await TortoiseGit.Fetch( LogTabs.SelectedTab.Controller().Repo );
+                await TortoiseGit.Fetch( LogTabs.SelectedTab.Controller().RepoItem );
             }
             else if( keyboardShortcut == KeyboardShortcuts.Pull )
             {
-                await TortoiseGit.Pull( LogTabs.SelectedTab.Controller().Repo );
+                await TortoiseGit.Pull( LogTabs.SelectedTab.Controller().RepoItem );
             }
             else if( keyboardShortcut == KeyboardShortcuts.Push )
             {
-                await TortoiseGit.Push( LogTabs.SelectedTab.Controller().Repo );
+                await TortoiseGit.Push( LogTabs.SelectedTab.Controller().RepoItem );
             }
             else if( keyboardShortcut == KeyboardShortcuts.Rebase )
             {
-                await TortoiseGit.Rebase( LogTabs.SelectedTab.Controller().Repo );
+                await TortoiseGit.Rebase( LogTabs.SelectedTab.Controller().RepoItem );
             }
             else if( keyboardShortcut == KeyboardShortcuts.SubmoduleUpdate )
             {
-                await TortoiseGit.SubmoduleUpdate( LogTabs.SelectedTab.Controller().Repo );
+                await TortoiseGit.SubmoduleUpdate( LogTabs.SelectedTab.Controller().RepoItem );
             }
             else if( keyboardShortcut == KeyboardShortcuts.SwitchCheckout )
             {
-                await TortoiseGit.Switch( LogTabs.SelectedTab.Controller().Repo );
+                await TortoiseGit.Switch( LogTabs.SelectedTab.Controller().RepoItem );
             }
             else
             {
@@ -330,13 +330,13 @@ namespace TabbedTortoiseGit
 
         private void AddFavoriteRepo( String name, String path )
         {
-            String repo = Git.GetBaseRepoDirectory( path );
-            if( repo == null )
+            if( !Git.IsInRepo( path ) )
             {
                 LOG.ErrorFormat( "Failed to add favorite repo: {0}", path );
+                return;
             }
 
-            bool isDirectroy = Directory.Exists( repo );
+            bool isDirectroy = Directory.Exists( path );
             _favoriteRepos.Add( new FavoriteRepo( name, path, isDirectroy, false ) );
 
             Settings.Default.FavoriteRepos = _favoriteRepos;
@@ -442,7 +442,7 @@ namespace TabbedTortoiseGit
 
                 if( killProcess )
                 {
-                    _closedRepos.Push( tag.Repo );
+                    _closedRepos.Push( tag.RepoItem );
 
                     KeyboardShortcutsManager.Instance.RemoveHandle( p.MainWindowHandle );
 
@@ -468,7 +468,7 @@ namespace TabbedTortoiseGit
         {
             TabControllerTag t = tab.Controller();
 
-            LOG.DebugFormat( "Close Tab - Repo: {0} - ID: {1}", t.Repo, t.Process.Id );
+            LOG.DebugFormat( "Close Tab - Repo: {0} - ID: {1}", t.RepoItem, t.Process.Id );
 
             RemoveLogProcess( t.Process, true );
 
@@ -495,7 +495,7 @@ namespace TabbedTortoiseGit
             if( _folderDialog.ShowDialog() == CommonFileDialogResult.Ok )
             {
                 String path = _folderDialog.FileName;
-                if( !Git.IsRepo( path ) )
+                if( !Git.IsInRepo( path ) )
                 {
                     LOG.DebugFormat( "FindRepo - Invalid repo: {0}", path );
                     MessageBox.Show( "Directory is not a git repo!", "Invalid Directory", MessageBoxButtons.OK, MessageBoxIcon.Error );
@@ -524,7 +524,7 @@ namespace TabbedTortoiseGit
 
             foreach( String repo in Settings.Default.StartupRepos )
             {
-                if( Git.IsRepo( repo ) )
+                if( Git.IsInRepo( repo ) )
                 {
                     await OpenLog( repo );
                 }

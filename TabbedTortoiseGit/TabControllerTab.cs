@@ -21,7 +21,7 @@ namespace TabbedTortoiseGit
 
         public Tab Tab { get; private set; }
         public Process Process { get; private set; }
-        public String Repo { get; private set; }
+        public String RepoItem { get; private set; }
 
         public bool Modified
         {
@@ -55,7 +55,7 @@ namespace TabbedTortoiseGit
         {
             Tab = tab;
             Process = process;
-            Repo = repo;
+            RepoItem = repo;
             Modified = false;
 
             Tab.Resize += Tab_Resize;
@@ -66,12 +66,12 @@ namespace TabbedTortoiseGit
 
         public async Task WaitForStartup()
         {
-            LOG.DebugFormat( "WaitForStartup - Start Wait for MainWindowHandle - Repo: {0} - PID: {1}", this.Repo, this.Process.Id );
+            LOG.DebugFormat( "WaitForStartup - Start Wait for MainWindowHandle - Repo: {0} - PID: {1}", this.RepoItem, this.Process.Id );
             while( !this.Process.HasExited && this.Process.MainWindowHandle == IntPtr.Zero )
             {
                 await Task.Delay( 10 );
             }
-            LOG.DebugFormat( "WaitForStartup - End Wait for MainWindowHandle - Repo: {0} - PID: {1}", this.Repo, this.Process.Id );
+            LOG.DebugFormat( "WaitForStartup - End Wait for MainWindowHandle - Repo: {0} - PID: {1}", this.RepoItem, this.Process.Id );
 
             Native.RemoveBorder( this.Process.MainWindowHandle );
             Native.SetWindowParent( this.Process.MainWindowHandle, this.Tab );

@@ -68,11 +68,14 @@ namespace TabbedTortoiseGit
 
             FavoritesContextMenu.Opening += FavoritesContextMenu_Opening;
 
-            AddFavoritesFolderMenuItem.Click += AddFavoritesFolderMenuItem_Click;
+            CreateFavoritesFolderMenuItem.Click += CreateFavoritesFolderMenuItem_Click;
             RemoveFavoritesFolderMenuItem.Click += RemoveFavoritesFolderMenuItem_Click;
 
-            AddFavoriteMenuItem.Click += AddFavoriteMenuItem_Click;
+            AddFavoriteFileMenuItem.Click += AddFavoriteFileMenuItem_Click;
+            AddFavoriteFolderMenuItem.Click += AddFavoriteFolderMenuItem_Click;
             RemoveFavoriteMenuItem.Click += RemoveFavoriteMenuItem_Click;
+
+            FindFavoriteFileDialog.FileOk += FindFavoriteFileDialog_FileOk;
 
             _favoritesDragDropHelper = new FavoritesDragDropHelper( this );
             _favoritesDragDropHelper.AddControl( FavoritesTree );
@@ -122,21 +125,23 @@ namespace TabbedTortoiseGit
         {
             if( _selectedFavoriteItem == null )
             {
-                AddFavoritesFolderMenuItem.Visible = false;
+                CreateFavoritesFolderMenuItem.Visible = false;
                 RemoveFavoritesFolderMenuItem.Visible = false;
-                AddFavoriteMenuItem.Visible = false;
+                AddFavoriteFileMenuItem.Visible = false;
+                AddFavoriteFolderMenuItem.Visible = false;
                 RemoveFavoriteMenuItem.Visible = false;
             }
             else
             {
-                AddFavoritesFolderMenuItem.Visible = true;
+                CreateFavoritesFolderMenuItem.Visible = true;
                 RemoveFavoritesFolderMenuItem.Visible = _selectedFavoriteItem.Value.IsFavoriteFolder && _selectedFavoriteItem != _root;
-                AddFavoriteMenuItem.Visible = true;
+                AddFavoriteFileMenuItem.Visible = true;
+                AddFavoriteFolderMenuItem.Visible = true;
                 RemoveFavoriteMenuItem.Visible = !_selectedFavoriteItem.Value.IsFavoriteFolder;
             }
         }
 
-        private void AddFavoritesFolderMenuItem_Click( object sender, EventArgs e )
+        private void CreateFavoritesFolderMenuItem_Click( object sender, EventArgs e )
         {
             String folderName = InputDialog.ShowInput( "Favorite Folder Name", "", "" );
             if( folderName != null )
@@ -161,7 +166,27 @@ namespace TabbedTortoiseGit
             UpdateFavoritesTree( parent );
         }
 
-        private void AddFavoriteMenuItem_Click( object sender, EventArgs e )
+        private void AddFavoriteFileMenuItem_Click( object sender, EventArgs e )
+        {
+            if( FindFavoriteFileDialog.ShowDialog() == DialogResult.OK )
+            {
+                if( Git.IsInRepo( FindFavoriteFileDialog.FileName ) )
+                {
+                    AddFavoriteItem( FindFavoriteFileDialog.FileName );
+                }
+            }
+        }
+
+        private void FindFavoriteFileDialog_FileOk( object sender, CancelEventArgs e )
+        {
+            if( !Git.IsInRepo( FindFavoriteFileDialog.FileName  ))
+            {
+                MessageBox.Show( "File is not in a Git repo.", "Not a Git Repo", MessageBoxButtons.OK, MessageBoxIcon.Error );
+                e.Cancel = true;
+            }
+        }
+
+        private void AddFavoriteFolderMenuItem_Click( object sender, EventArgs e )
         {
             String repo = null;
             while( repo == null )
@@ -171,37 +196,17 @@ namespace TabbedTortoiseGit
                     return;
                 }
 
-                String path = _folderDialog.FileName;
-
-                if( !Git.IsRepo( path ) )
+                if( !Git.IsInRepo( _folderDialog.FileName ) )
                 {
                     MessageBox.Show( "Directory is not a Git repo.", "Invalid Directory", MessageBoxButtons.OK );
                 }
                 else
                 {
-                    repo = path;
+                    repo = _folderDialog.FileName;
                 }
             }
 
-            String favoriteName = InputDialog.ShowInput( "Favorite Name", "Name for \"{0}\"".XFormat( repo ), "" );
-            if( favoriteName == null )
-            {
-                return;
-            }
-
-            bool isDirectory = Directory.Exists( repo );
-
-            TreeNode<FavoriteRepo> newNode = new TreeNode<FavoriteRepo>( new FavoriteRepo( favoriteName, repo, isDirectory, false ) );
-            if( _selectedFavoriteItem.Value.IsFavoriteFolder )
-            {
-                _selectedFavoriteItem.Add( newNode );
-                UpdateFavoritesList( _selectedFavoriteItem );
-            }
-            else
-            {
-                _selectedFavoriteItem.Parent.Children.Insert( _selectedFavoriteItem.Index, newNode );
-                UpdateFavoritesList( _selectedFavoriteItem.Parent );
-            }
+            AddFavoriteItem( repo );
         }
 
         private void RemoveFavoriteMenuItem_Click( object sender, EventArgs e )
@@ -307,6 +312,29 @@ namespace TabbedTortoiseGit
                 {
                     Add( t.Nodes, child );
                 }
+            }
+        }
+
+        private void AddFavoriteItem( String path )
+        {
+            String favoriteName = InputDialog.ShowInput( "Favorite Name", "Name for \"{0}\"".XFormat( path ), "" );
+            if( favoriteName == null )
+            {
+                return;
+            }
+
+            bool isDirectory = Directory.Exists( path );
+
+            TreeNode<FavoriteRepo> newNode = new TreeNode<FavoriteRepo>( new FavoriteRepo( favoriteName, path, isDirectory, false ) );
+            if( _selectedFavoriteItem.Value.IsFavoriteFolder )
+            {
+                _selectedFavoriteItem.Add( newNode );
+                UpdateFavoritesList( _selectedFavoriteItem );
+            }
+            else
+            {
+                _selectedFavoriteItem.Parent.Children.Insert( _selectedFavoriteItem.Index, newNode );
+                UpdateFavoritesList( _selectedFavoriteItem.Parent );
             }
         }
 

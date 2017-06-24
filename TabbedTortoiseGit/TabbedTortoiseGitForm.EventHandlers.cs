@@ -128,7 +128,7 @@ namespace TabbedTortoiseGit
                 {
                     foreach( String file in files )
                     {
-                        if( Directory.Exists( file ) && Git.IsRepo( file ) )
+                        if( Directory.Exists( file ) && Git.IsInRepo( file ) )
                         {
                             e.Effect = DragDropEffects.Copy;
                         }
@@ -146,7 +146,7 @@ namespace TabbedTortoiseGit
                 {
                     foreach( String file in files )
                     {
-                        if( Directory.Exists( file ) && Git.IsRepo( file ) )
+                        if( Directory.Exists( file ) && Git.IsInRepo( file ) )
                         {
                             await OpenLog( file );
                             e.Effect = DragDropEffects.Copy;
@@ -367,27 +367,17 @@ namespace TabbedTortoiseGit
 
         private void OpenRepoLocationTabMenuItem_Click( object sender, EventArgs e )
         {
-            Util.OpenInExplorer( LogTabs.SelectedTab.Controller().Repo );
+            Util.OpenInExplorer( LogTabs.SelectedTab.Controller().RepoItem );
         }
 
         private void AddToFavoritesRepoTabMenuItem_Click( object sender, EventArgs e )
         {
             TabControllerTag tag = LogTabs.SelectedTab.Controller();
 
-            bool added = false;
-            String name = null;
-            while( !added )
+            String name = InputDialog.ShowInput( "Favorite Repo Name", "Name for \"{0}\"".XFormat( tag.RepoItem ), "" );
+            if( !String.IsNullOrWhiteSpace( name ) )
             {
-                name = InputDialog.ShowInput( "Favorite Repo Name", "Name for \"{0}\"".XFormat( tag.Repo ), name );
-                if( name == null )
-                {
-                    break;
-                }
-                else if( !String.IsNullOrWhiteSpace( name ) )
-                {
-                    AddFavoriteRepo( name, tag.Repo );
-                    added = true;
-                }
+                AddFavoriteRepo( name, tag.RepoItem );
             }
         }
 
@@ -403,7 +393,7 @@ namespace TabbedTortoiseGit
             TortoiseGitCommandFunc gitCommandFunc = (TortoiseGitCommandFunc)c.Tag;
 
             TabControllerTag tag = LogTabs.SelectedTab.Controller();
-            await gitCommandFunc.Invoke( tag.Repo );
+            await gitCommandFunc.Invoke( tag.RepoItem );
             Native.SendKeyDown( tag.Process.MainWindowHandle, Keys.F5 );
         }
 
@@ -418,7 +408,7 @@ namespace TabbedTortoiseGit
                         Tab tab = LogTabs.Tabs[ i ];
                         TabControllerTag tag = LogTabs.SelectedTab.Controller();
 
-                        tag.Modified = await Git.IsModified( tag.Repo );
+                        tag.Modified = await Git.IsModified( tag.RepoItem );
                     }
                 }
                 finally

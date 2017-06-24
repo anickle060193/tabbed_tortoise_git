@@ -14,7 +14,7 @@ namespace TabbedTortoiseGit
     {
         private static readonly Regex GIT_STATUS_REGEX = new Regex( @"^[ MADRCU](?<submoduleStatus>[ MADRCU]) (?<name>.+?)$", RegexOptions.Compiled );
 
-        public static bool IsRepo( String path )
+        public static bool IsInRepo( String path )
         {
             if( Repository.IsValid( path ) )
             {
@@ -115,7 +115,7 @@ namespace TabbedTortoiseGit
                 return false;
             }
 
-            ProcessStartInfo info = CreateGitProcessStartInfo( repo, "diff-index --quiet HEAD --" );
+            ProcessStartInfo info = CreateGitProcessStartInfo( repo, "diff-index --quiet HEAD -- \"{0}\"".XFormat( path ) );
             Process p = Process.Start( info );
             await Task.Run( () => p.WaitForExit() );
 
