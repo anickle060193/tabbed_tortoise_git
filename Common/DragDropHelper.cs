@@ -1,4 +1,5 @@
-﻿using System;
+﻿using log4net;
+using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
@@ -10,6 +11,8 @@ namespace Common
 {
     public abstract class DragDropHelper<TControl, T> where TControl : Control
     {
+        private static readonly ILog LOG = LogManager.GetLogger( typeof( DragDropHelper<TControl, T> ) );
+
         private static readonly int DRAG_THRESHOLD = 4;
 
         private bool _mouseDown;
@@ -91,7 +94,7 @@ namespace Common
             }
             catch( Exception ex )
             {
-                Console.WriteLine( ex );
+                LOG.Error( "TryMoveItem - An error occurred while trying to move item", ex );
             }
             return false;
         }
@@ -120,7 +123,7 @@ namespace Common
             }
             catch( Exception ex )
             {
-                Console.WriteLine( ex );
+                LOG.Error( "Control_MouseDown - An error occurred while mousing down", ex );
             }
         }
 
@@ -168,7 +171,7 @@ namespace Common
             }
             catch( Exception ex )
             {
-                Console.WriteLine( ex );
+                LOG.Error( "Control_MouseMove - An error occurred while mousing moving", ex );
             }
         }
 
@@ -195,7 +198,7 @@ namespace Common
             }
             catch( Exception ex )
             {
-                Console.WriteLine( ex );
+                LOG.Error( "Control_DragOver - An error occurred while dragging over", ex );
             }
         }
 
@@ -217,7 +220,7 @@ namespace Common
             }
             catch( Exception ex )
             {
-                Console.WriteLine( ex );
+                LOG.Error( "Control_DragDrop - An error occurred while drag dropping", ex );
             }
         }
     }
