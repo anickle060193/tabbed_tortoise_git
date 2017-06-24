@@ -20,11 +20,7 @@ namespace TabbedTortoiseGit
         {
             SettingsForm f = new SettingsForm();
 
-            f.NewTabShortcut = Settings.Default.NewTabShortcut;
-            f.NextTabShortcut = Settings.Default.NextTabShortcut;
-            f.PreviousTabShortcut = Settings.Default.PreviousTabShortcut;
-            f.CloseTabShortcut = Settings.Default.CloseTabShortcut;
-            f.ReopenClosedTabShortcut = Settings.Default.ReopenClosedTabShortcut;
+            f.KeyboardShortcuts = Settings.Default.KeyboardShortcuts;
 
             f.StartupRepos = Settings.Default.StartupRepos.ToArray();
             f.OpenStartupReposOnReOpen = Settings.Default.OpenStartupReposOnReOpen;
@@ -49,11 +45,7 @@ namespace TabbedTortoiseGit
 
             if( f.ShowDialog() == DialogResult.OK )
             {
-                Settings.Default.NewTabShortcut = f.NewTabShortcut;
-                Settings.Default.NextTabShortcut = f.NextTabShortcut;
-                Settings.Default.PreviousTabShortcut = f.PreviousTabShortcut;
-                Settings.Default.CloseTabShortcut = f.CloseTabShortcut;
-                Settings.Default.ReopenClosedTabShortcut = f.ReopenClosedTabShortcut;
+                Settings.Default.KeyboardShortcuts = f.KeyboardShortcuts;
 
                 Settings.Default.StartupRepos = f.StartupRepos.ToList();
                 Settings.Default.OpenStartupReposOnReOpen = f.OpenStartupReposOnReOpen;
@@ -87,73 +79,23 @@ namespace TabbedTortoiseGit
             }
         }
 
-        public Shortcut NewTabShortcut
+        public Dictionary<KeyboardShortcuts, Shortcut> KeyboardShortcuts
         {
             get
             {
-                return (Shortcut)NewTabShortcutText.Tag;
+                return _shortcutTextboxes.ToDictionary( pair => pair.Key, pair => (Shortcut)pair.Value.Tag );
             }
 
             set
             {
-                NewTabShortcutText.Tag = value;
-                NewTabShortcutText.Text = value?.Text ?? "";
-            }
-        }
-
-        public Shortcut NextTabShortcut
-        {
-            get
-            {
-                return (Shortcut)NextTabShortcutText.Tag;
-            }
-
-            set
-            {
-                NextTabShortcutText.Tag = value;
-                NextTabShortcutText.Text = value?.Text ?? "";
-            }
-        }
-
-        public Shortcut PreviousTabShortcut
-        {
-            get
-            {
-                return (Shortcut)PreviousTabShortcutText.Tag;
-            }
-
-            set
-            {
-                PreviousTabShortcutText.Tag = value;
-                PreviousTabShortcutText.Text = value?.Text ?? "";
-            }
-        }
-
-        public Shortcut CloseTabShortcut
-        {
-            get
-            {
-                return (Shortcut)CloseTabShortcutText.Tag;
-            }
-
-            set
-            {
-                CloseTabShortcutText.Tag = value;
-                CloseTabShortcutText.Text = value?.Text ?? "";
-            }
-        }
-
-        public Shortcut ReopenClosedTabShortcut
-        {
-            get
-            {
-                return (Shortcut)ReopenClosedTabShortcutText.Tag;
-            }
-
-            set
-            {
-                ReopenClosedTabShortcutText.Tag = value;
-                ReopenClosedTabShortcutText.Text = value?.Text ?? "";
+                foreach( KeyboardShortcuts keyboardShortcut in Enum.GetValues( typeof( KeyboardShortcuts ) ) )
+                {
+                    Shortcut shortcut;
+                    if( value.TryGetValue( keyboardShortcut, out shortcut ) )
+                    {
+                        UpdateShortcutTextBox( _shortcutTextboxes[ keyboardShortcut ], shortcut );
+                    }
+                }
             }
         }
 
@@ -392,20 +334,9 @@ namespace TabbedTortoiseGit
             }
         }
 
-        private IEnumerable<TextBox> ShortcutTextBoxes
-        {
-            get
-            {
-                yield return NewTabShortcutText;
-                yield return NextTabShortcutText;
-                yield return PreviousTabShortcutText;
-                yield return CloseTabShortcutText;
-                yield return ReopenClosedTabShortcutText;
-            }
-        }
-
         private readonly CommonOpenFileDialog _folderDialog;
         private readonly CheckListDragDrophelper _dragDropHelper;
+        private readonly Dictionary<KeyboardShortcuts, TextBox> _shortcutTextboxes = new Dictionary<KeyboardShortcuts, TextBox>();
 
         public SettingsForm()
         {
@@ -432,17 +363,45 @@ namespace TabbedTortoiseGit
             _dragDropHelper = new CheckListDragDrophelper();
             _dragDropHelper.AddControl( GitActionsCheckList );
 
-            foreach( TextBox shortcutTextBox in ShortcutTextBoxes )
+            KeyBoardShortcutsTableLayout.RowStyles.Clear();
+
+            foreach( KeyboardShortcuts keyboardShortcut in Enum.GetValues( typeof( KeyboardShortcuts ) ) )
             {
-                shortcutTextBox.Enter += ShortcutText_Enter;
-                shortcutTextBox.PreviewKeyDown += ShortcutTextBox_PreviewKeyDown;
-                shortcutTextBox.KeyDown += ShortcutText_KeyDown;
+                Label shortcutLabel = new Label()
+                {
+                    Anchor = AnchorStyles.Left,
+                    AutoSize = true,
+                    Text = keyboardShortcut.GetDescription()
+                };
+
+                TextBox shortcutText = new TextBox()
+                {
+                    AcceptsTab = true,
+                    Anchor = AnchorStyles.Left,
+                    Width = 180,
+                    ReadOnly = true,
+                    ShortcutsEnabled = false,
+                    TabStop = false
+                };
+
+                shortcutText.Enter += ShortcutText_Enter;
+                shortcutText.PreviewKeyDown += ShortcutTextBox_PreviewKeyDown;
+                shortcutText.KeyDown += ShortcutText_KeyDown;
+                _shortcutTextboxes.Add( keyboardShortcut, shortcutText );
+
+                KeyBoardShortcutsTableLayout.RowStyles.Add( new RowStyle( SizeType.AutoSize ) );
+
+                KeyBoardShortcutsTableLayout.Controls.Add( shortcutLabel );
+                KeyBoardShortcutsTableLayout.Controls.Add( shortcutText );
             }
+
+            KeyBoardShortcutsTableLayout.RowStyles.Add( new RowStyle( SizeType.Percent, 1.0f ) );
+            KeyBoardShortcutsTableLayout.RowCount++;
         }
 
         protected override bool ProcessTabKey( bool forward )
         {
-            if( ShortcutTextBoxes.Contains( this.ActiveControl ) )
+            if( _shortcutTextboxes.Values.Contains( this.ActiveControl ) )
             {
                 return true;
             }
@@ -456,8 +415,7 @@ namespace TabbedTortoiseGit
         {
             TextBox shortcutText = (TextBox)sender;
 
-            shortcutText.Tag = Shortcut.Empty;
-            shortcutText.Text = "";
+            UpdateShortcutTextBox( shortcutText, Shortcut.Empty );
         }
 
         private void ShortcutTextBox_PreviewKeyDown( object sender, PreviewKeyDownEventArgs e )
@@ -465,15 +423,20 @@ namespace TabbedTortoiseGit
             TextBox shortcutText = (TextBox)sender;
 
             Shortcut shortcut = Shortcut.FromKeyEventArgs( e );
-            shortcutText.Tag = shortcut;
-            shortcutText.Text = shortcut.Text;
-            shortcutText.SelectionStart = shortcutText.TextLength;
+            UpdateShortcutTextBox( shortcutText, shortcut );
         }
 
         private void ShortcutText_KeyDown( object sender, KeyEventArgs e )
         {
             e.SuppressKeyPress = true;
             e.Handled = true;
+        }
+
+        private void UpdateShortcutTextBox( TextBox textbox, Shortcut shortcut )
+        {
+            textbox.Tag = shortcut;
+            textbox.Text = shortcut.Text;
+            textbox.SelectionStart = textbox.TextLength;
         }
 
         private static readonly String CHEAT_CODE = "developer";

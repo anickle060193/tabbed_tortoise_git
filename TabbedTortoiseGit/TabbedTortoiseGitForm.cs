@@ -34,27 +34,9 @@ namespace TabbedTortoiseGit
         private readonly Point _createdAtPoint;
         private readonly Stack<String> _closedRepos = new Stack<String>();
 
-        private readonly HotKey _newTabHotKey;
-        private readonly HotKey _nextTabHotKey;
-        private readonly HotKey _previousTabHotKey;
-        private readonly HotKey _closeTabHotKey;
-        private readonly HotKey _reopenClosedTabHotKey;
-
         private TreeNode<FavoriteRepo> _favoriteRepos;
 
         private bool _favoriteContextMenuOpen;
-
-        private IEnumerable<HotKey> HotKeys
-        {
-            get
-            {
-                yield return _newTabHotKey;
-                yield return _nextTabHotKey;
-                yield return _previousTabHotKey;
-                yield return _closeTabHotKey;
-                yield return _reopenClosedTabHotKey;
-            }
-        }
 
         public TabbedTortoiseGitForm( bool showStartUpRepos, Point createdAtPoint )
         {
@@ -69,29 +51,56 @@ namespace TabbedTortoiseGit
             _folderDialog = new CommonOpenFileDialog();
             _folderDialog.IsFolderPicker = true;
 
-            _newTabHotKey = new HotKey( this.Handle );
-            _newTabHotKey.AddHandle( this.Handle );
-            _newTabHotKey.HotKeyPressed += NewTabHotKey_HotKeyPressed;
-
-            _nextTabHotKey = new HotKey( this.Handle );
-            _nextTabHotKey.AddHandle( this.Handle );
-            _nextTabHotKey.HotKeyPressed += NextTabHotKey_HotKeyPressed;
-
-            _previousTabHotKey = new HotKey( this.Handle );
-            _previousTabHotKey.AddHandle( this.Handle );
-            _previousTabHotKey.HotKeyPressed += PreviousTabHotKey_HotKeyPressed;
-
-            _closeTabHotKey = new HotKey( this.Handle );
-            _closeTabHotKey.AddHandle( this.Handle );
-            _closeTabHotKey.HotKeyPressed += CloseTabHotKey_HotKeyPressed;
-
-            _reopenClosedTabHotKey = new HotKey( this.Handle );
-            _reopenClosedTabHotKey.AddHandle( this.Handle );
-            _reopenClosedTabHotKey.HotKeyPressed += ReopenClosedTabHotKey_HotKeyPressed;
-
             this.Icon = Resources.TortoiseIcon;
 
             UpdateFromSettings( true );
+        }
+
+        protected override void OnHandleCreated( EventArgs e )
+        {
+            base.OnHandleCreated( e );
+
+            KeyboardShortcutsManager.Instance.AddHandle( this.Handle );
+        }
+
+        protected override void DestroyHandle()
+        {
+            KeyboardShortcutsManager.Instance.RemoveHandle( this.Handle );
+
+            base.DestroyHandle();
+        }
+
+        internal async void HandleKeyboardShortcut( KeyboardShortcuts keyboardShortcut )
+        {
+            LOG.DebugFormat( "HandleKeyboardShortcut - KeyboardShortcut: {0}", keyboardShortcut );
+
+            if( keyboardShortcut == KeyboardShortcuts.NewTab )
+            {
+                await FindRepo();
+            }
+            else if( keyboardShortcut == KeyboardShortcuts.NextTab )
+            {
+                LogTabs.NextTab();
+            }
+            else if( keyboardShortcut == KeyboardShortcuts.PreviousTab )
+            {
+                LogTabs.PreviousTab();
+            }
+            else if( keyboardShortcut == KeyboardShortcuts.CloseTab )
+            {
+                CloseTab( LogTabs.SelectedTab );
+            }
+            else if( keyboardShortcut == KeyboardShortcuts.ReopenClosedTab )
+            {
+                if( _closedRepos.Count > 0 )
+                {
+                    String repo = _closedRepos.Pop();
+
+                    LOG.DebugFormat( "HotKey - Reopen Closed Tab - Reopening: {0}", repo );
+
+                    await OpenLog( repo );
+                }
+            }
         }
 
         private void UpdateFromSettings( bool updateWindowState )
@@ -144,19 +153,9 @@ namespace TabbedTortoiseGit
                 }
             }
 
-            UpdateShortcutsFromSettings();
             UpdateRecentReposFromSettings();
             UpdateRepoContextMenusFromSettings();
             UpdateFavoriteReposFromSettings();
-        }
-
-        private void UpdateShortcutsFromSettings()
-        {
-            _newTabHotKey.SetShortcut( Settings.Default.NewTabShortcut );
-            _nextTabHotKey.SetShortcut( Settings.Default.NextTabShortcut );
-            _previousTabHotKey.SetShortcut( Settings.Default.PreviousTabShortcut );
-            _closeTabHotKey.SetShortcut( Settings.Default.CloseTabShortcut );
-            _reopenClosedTabHotKey.SetShortcut( Settings.Default.ReopenClosedTabShortcut );
         }
 
         private void UpdateRecentReposFromSettings()
@@ -357,10 +356,7 @@ namespace TabbedTortoiseGit
 
             await tag.WaitForStartup();
 
-            foreach( HotKey hotKey in HotKeys )
-            {
-                hotKey.AddHandle( tag.Process.MainWindowHandle );
-            }
+            KeyboardShortcutsManager.Instance.AddHandle( tag.Process.MainWindowHandle );
 
             LogTabs.Tabs.Add( tag.Tab );
             LogTabs.SelectedTab = tag.Tab;
@@ -383,11 +379,6 @@ namespace TabbedTortoiseGit
                 _tags.Add( tag.Process.Id, tag );
             }
 
-            foreach( HotKey hotKey in HotKeys )
-            {
-                hotKey.AddHandle( tag.Process.MainWindowHandle );
-            }
-
             ShowMe();
         }
 
@@ -403,12 +394,6 @@ namespace TabbedTortoiseGit
                     return;
                 }
 
-                foreach( HotKey hotKey in HotKeys )
-                {
-                    hotKey.RemoveHandle( p.MainWindowHandle );
-                    hotKey.RemoveHandle( p.MainWindowHandle );
-                }
-
                 TabControllerTag tag = _tags[ p.Id ];
 
                 _tags.Remove( p.Id );
@@ -418,6 +403,8 @@ namespace TabbedTortoiseGit
                 if( killProcess )
                 {
                     _closedRepos.Push( tag.Repo );
+
+                    KeyboardShortcutsManager.Instance.RemoveHandle( p.MainWindowHandle );
 
                     tag.Close();
                 }

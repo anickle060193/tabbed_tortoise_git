@@ -427,42 +427,5 @@ namespace TabbedTortoiseGit
                 }
             }
         }
-
-        private async void NewTabHotKey_HotKeyPressed( object sender, EventArgs e )
-        {
-            LOG.Debug( "HotKey - New Tab" );
-            await FindRepo();
-        }
-
-        private void NextTabHotKey_HotKeyPressed( object sender, EventArgs e )
-        {
-            LOG.Debug( "HotKey - Next Tab" );
-            LogTabs.NextTab();
-        }
-
-        private void PreviousTabHotKey_HotKeyPressed( object sender, EventArgs e )
-        {
-            LOG.Debug( "HotKey - Previous Tab" );
-            LogTabs.PreviousTab();
-        }
-
-        private void CloseTabHotKey_HotKeyPressed( object sender, EventArgs e )
-        {
-            LOG.Debug( "HotKey - Close Tab" );
-            CloseTab( LogTabs.SelectedTab );
-        }
-
-        private async void ReopenClosedTabHotKey_HotKeyPressed( object sender, EventArgs e )
-        {
-            LOG.Debug( "HotKey - Reopen Closed Tab" );
-            if( _closedRepos.Count > 0 )
-            {
-                String repo = _closedRepos.Pop();
-
-                LOG.DebugFormat( "HotKey - Reopen Closed Tab - Reopening: {0}", repo );
-
-                await OpenLog( repo );
-            }
-        }
     }
 }

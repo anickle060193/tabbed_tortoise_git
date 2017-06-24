@@ -26,6 +26,7 @@ namespace TabbedTortoiseGit
         private readonly List<TabbedTortoiseGitForm> _forms = new List<TabbedTortoiseGitForm>();
         private readonly ManagementEventWatcher _watcher;
         private readonly NotifyIcon _notifyIcon;
+        private readonly bool _startup;
 
         private TabbedTortoiseGitForm _activeForm;
 
@@ -42,6 +43,8 @@ namespace TabbedTortoiseGit
 
         private ProgramForm( bool startup )
         {
+            _startup = startup;
+
             String condition = "TargetInstance ISA 'Win32_Process'" +
                            "AND TargetInstance.Name = 'TortoiseGitProc.exe'" +
                            "AND TargetInstance.CommandLine LIKE '%/command:log%'";
@@ -65,8 +68,6 @@ namespace TabbedTortoiseGit
             this.FormClosing += ProgramForm_FormClosing;
 
             this.CreateHandle();
-
-            CreateNewTabbedTortoiseGit( !startup, Point.Empty );
         }
 
         public void CreateNewFromTab( Tab tab, Point location )
@@ -97,6 +98,13 @@ namespace TabbedTortoiseGit
             base.OnHandleCreated( e );
 
             Native.SetParent( this.Handle, Native.HWND_MESSAGE );
+            KeyboardShortcutsManager.Create( this.Handle );
+            KeyboardShortcutsManager.Instance.KeyboardShortcutPressed += KeyboardShortcutsManager_KeyboardShortcutPressed;
+
+            if( !_startup )
+            {
+                CreateNewTabbedTortoiseGit( Settings.Default.OpenStartupReposOnReOpen, Point.Empty );
+            }
         }
 
         private TabbedTortoiseGitForm CreateNewTabbedTortoiseGit( bool showStartUpRepos, Point createdAtPoint )
@@ -137,11 +145,26 @@ namespace TabbedTortoiseGit
             await _activeForm.AddNewLogProcess( p, repo );
         }
 
+        private void KeyboardShortcutsManager_KeyboardShortcutPressed( object sender, KeyboardShortcutPressedEventArgs e )
+        {
+            LOG.DebugFormat( "KeyboardShortcutPressed - KeyboardShortcut: {0}", e.KeyboardShortcut );
+            
+            if( _activeForm == null )
+            {
+                LOG.Error( "KeyboardShortcut received but there is no active form" );
+                return;
+            }
+
+            _activeForm.HandleKeyboardShortcut( e.KeyboardShortcut );
+        }
+
         private void ProgramForm_FormClosing( object sender, FormClosingEventArgs e )
         {
             LOG.DebugFormat( "ProgramForm_FormClosing - Close Reason: {0}", e.CloseReason );
 
             _watcher.Stop();
+
+            KeyboardShortcutsManager.Instance.Dispose();
         }
 
         private void Watcher_EventArrived( object sender, EventArrivedEventArgs e )

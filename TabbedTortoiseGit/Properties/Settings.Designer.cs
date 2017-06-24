@@ -368,61 +368,6 @@ namespace TabbedTortoiseGit.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        public global::TabbedTortoiseGit.Shortcut NewTabShortcut {
-            get {
-                return ((global::TabbedTortoiseGit.Shortcut)(this["NewTabShortcut"]));
-            }
-            set {
-                this["NewTabShortcut"] = value;
-            }
-        }
-        
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        public global::TabbedTortoiseGit.Shortcut NextTabShortcut {
-            get {
-                return ((global::TabbedTortoiseGit.Shortcut)(this["NextTabShortcut"]));
-            }
-            set {
-                this["NextTabShortcut"] = value;
-            }
-        }
-        
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        public global::TabbedTortoiseGit.Shortcut PreviousTabShortcut {
-            get {
-                return ((global::TabbedTortoiseGit.Shortcut)(this["PreviousTabShortcut"]));
-            }
-            set {
-                this["PreviousTabShortcut"] = value;
-            }
-        }
-        
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        public global::TabbedTortoiseGit.Shortcut CloseTabShortcut {
-            get {
-                return ((global::TabbedTortoiseGit.Shortcut)(this["CloseTabShortcut"]));
-            }
-            set {
-                this["CloseTabShortcut"] = value;
-            }
-        }
-        
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        public global::TabbedTortoiseGit.Shortcut ReopenClosedTabShortcut {
-            get {
-                return ((global::TabbedTortoiseGit.Shortcut)(this["ReopenClosedTabShortcut"]));
-            }
-            set {
-                this["ReopenClosedTabShortcut"] = value;
-            }
-        }
-        
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         public global::System.Drawing.Font NormalTabFont {
             get {
                 return ((global::System.Drawing.Font)(this["NormalTabFont"]));
@@ -440,6 +385,18 @@ namespace TabbedTortoiseGit.Properties {
             }
             set {
                 this["NormalTabFontColor"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        public string KeyboardShortcutsString {
+            get {
+                return ((string)(this["KeyboardShortcutsString"]));
+            }
+            set {
+                this["KeyboardShortcutsString"] = value;
             }
         }
     }

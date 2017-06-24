@@ -1,4 +1,5 @@
-﻿using log4net;
+﻿using Common;
+using log4net;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
@@ -50,6 +51,66 @@ namespace TabbedTortoiseGit.Properties
             set { throw new NotSupportedException( "DefaultRepos is obsolete. Use StartupRepos." ); }
         }
 
+        [UserScopedSetting]
+        [DebuggerNonUserCode]
+        [DefaultSettingValue( "" )]
+        [EditorBrowsable( EditorBrowsableState.Never )]
+        [Obsolete( "User KeyboardShortcuts instead.", true )]
+        [NoSettingsVersionUpgrade]
+        public Shortcut NewTabShortcut
+        {
+            get { throw new NotSupportedException( "NewTabShortcut is obsolete. Use KeyboardShortcuts." ); }
+            set { throw new NotSupportedException( "NewTabShortcut is obsolete. Use KeyboardShortcuts." ); }
+        }
+
+        [UserScopedSetting]
+        [DebuggerNonUserCode]
+        [DefaultSettingValue( "" )]
+        [EditorBrowsable( EditorBrowsableState.Never )]
+        [Obsolete( "User KeyboardShortcuts instead.", true )]
+        [NoSettingsVersionUpgrade]
+        public Shortcut NextTabShortcut
+        {
+            get { throw new NotSupportedException( "NextTabShortcut is obsolete. Use KeyboardShortcuts." ); }
+            set { throw new NotSupportedException( "NextTabShortcut is obsolete. Use KeyboardShortcuts." ); }
+        }
+
+        [UserScopedSetting]
+        [DebuggerNonUserCode]
+        [DefaultSettingValue( "" )]
+        [EditorBrowsable( EditorBrowsableState.Never )]
+        [Obsolete( "User KeyboardShortcuts instead.", true )]
+        [NoSettingsVersionUpgrade]
+        public Shortcut PreviousTabShortcut
+        {
+            get { throw new NotSupportedException( "PreviousTabShortcut is obsolete. Use KeyboardShortcuts." ); }
+            set { throw new NotSupportedException( "PreviousTabShortcut is obsolete. Use KeyboardShortcuts." ); }
+        }
+
+        [UserScopedSetting]
+        [DebuggerNonUserCode]
+        [DefaultSettingValue( "" )]
+        [EditorBrowsable( EditorBrowsableState.Never )]
+        [Obsolete( "User KeyboardShortcuts instead.", true )]
+        [NoSettingsVersionUpgrade]
+        public Shortcut CloseTabShortcut
+        {
+            get { throw new NotSupportedException( "CloseTabShortcut is obsolete. Use KeyboardShortcuts." ); }
+            set { throw new NotSupportedException( "CloseTabShortcut is obsolete. Use KeyboardShortcuts." ); }
+        }
+
+        [UserScopedSetting]
+        [DebuggerNonUserCode]
+        [DefaultSettingValue( "" )]
+        [EditorBrowsable( EditorBrowsableState.Never )]
+        [Obsolete( "User KeyboardShortcuts instead.", true )]
+        [NoSettingsVersionUpgrade]
+        public Shortcut ReopenClosedTabShortcut
+        {
+            get { throw new NotSupportedException( "ReopenClosedTabShortcut is obsolete. Use KeyboardShortcuts." ); }
+            set { throw new NotSupportedException( "ReopenClosedTabShortcut is obsolete. Use KeyboardShortcuts." ); }
+        }
+
         public TreeNode<FavoriteRepo> FavoriteRepos
         {
             get
@@ -84,6 +145,37 @@ namespace TabbedTortoiseGit.Properties
                 catch( JsonException e )
                 {
                     LOG.Error( "Failed to serialize FavoriteRepos", e );
+                }
+            }
+        }
+
+        public Dictionary<KeyboardShortcuts, Shortcut> KeyboardShortcuts
+        {
+            get
+            {
+                Dictionary<KeyboardShortcuts, Shortcut> keyboardShortcuts = null;
+                try
+                {
+                    String keyboardShortcutsString = Settings.Default.KeyboardShortcutsString;
+                    keyboardShortcuts = JsonConvert.DeserializeObject<Dictionary<KeyboardShortcuts, Shortcut>>( keyboardShortcutsString );
+                }
+                catch( JsonException e )
+                {
+                    LOG.ErrorFormat( "Failed to deserialize KeyboardShortcuts setting - KeyboardShortcuts: {0}", Settings.Default.KeyboardShortcutsString );
+                    LOG.Error( e );
+                }
+                return keyboardShortcuts ?? new Dictionary<KeyboardShortcuts, Shortcut>();
+            }
+
+            set
+            {
+                try
+                {
+                    Settings.Default.KeyboardShortcutsString = JsonConvert.SerializeObject( value );
+                }
+                catch( JsonException e )
+                {
+                    LOG.Error( "Failed to serialize KeyboardShortcuts.", e );
                 }
             }
         }
@@ -241,26 +333,35 @@ namespace TabbedTortoiseGit.Properties
                 {
                     LOG.Error( "Failed to upgrade DefaultRepos setting", ex );
                 }
-            }
 
-            if( Settings.Default.NewTabShortcut == null )
-            {
-                Settings.Default.NewTabShortcut = Shortcut.Empty;
-            }
+                Dictionary<String, KeyboardShortcuts> shortcutsMapping = new Dictionary<String, KeyboardShortcuts>()
+                {
+                    { "NewTabShortcut",             TabbedTortoiseGit.KeyboardShortcuts.NewTab          },
+                    { "NextTabShortcut",            TabbedTortoiseGit.KeyboardShortcuts.NextTab         },
+                    { "PreviousTabShortcut",        TabbedTortoiseGit.KeyboardShortcuts.PreviousTab     },
+                    { "CloseTabShortcut",           TabbedTortoiseGit.KeyboardShortcuts.CloseTab        },
+                    { "ReopenClosedTabShortcut",    TabbedTortoiseGit.KeyboardShortcuts.ReopenClosedTab }
+                };
 
-            if( Settings.Default.NextTabShortcut == null )
-            {
-                Settings.Default.NextTabShortcut = Shortcut.Empty;
-            }
+                Dictionary<KeyboardShortcuts, Shortcut> shortcuts = new Dictionary<KeyboardShortcuts, Shortcut>();
 
-            if( Settings.Default.PreviousTabShortcut == null )
-            {
-                Settings.Default.PreviousTabShortcut = Shortcut.Empty;
-            }
+                foreach( KeyValuePair<String, KeyboardShortcuts> pair in shortcutsMapping )
+                {
+                    try
+                    {
+                        Shortcut oldShortcut = Settings.Default.GetPreviousVersion( pair.Key ) as Shortcut;
+                        if( oldShortcut != null )
+                        {
+                            shortcuts[ pair.Value ] = oldShortcut;
+                        }
+                    }
+                    catch( SettingsPropertyNotFoundException ex )
+                    {
+                        LOG.Error( "Failed to upgrade {0}.".XFormat( pair.Key ), ex );
+                    }
+                }
 
-            if( Settings.Default.CloseTabShortcut == null )
-            {
-                Settings.Default.CloseTabShortcut = Shortcut.Empty;
+                Settings.Default.KeyboardShortcuts = shortcuts;
             }
 
             if( Settings.Default.StartupRepos == null )
@@ -325,6 +426,11 @@ namespace TabbedTortoiseGit.Properties
             if( Settings.Default.ModifiedTabFontColor.IsEmpty )
             {
                 Settings.Default.ModifiedTabFontColor = Settings.Default.DefaultModifiedTabFontColor;
+            }
+
+            if( Settings.Default.KeyboardShortcutsString == null )
+            {
+                Settings.Default.KeyboardShortcutsString = "";
             }
 
             Settings.Default.Save();

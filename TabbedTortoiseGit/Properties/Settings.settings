@@ -89,25 +89,13 @@
     <Setting Name="FavoriteReposJsonString" Type="System.String" Scope="User">
       <Value Profile="(Default)" />
     </Setting>
-    <Setting Name="NewTabShortcut" Type="TabbedTortoiseGit.Shortcut" Scope="User">
-      <Value Profile="(Default)" />
-    </Setting>
-    <Setting Name="NextTabShortcut" Type="TabbedTortoiseGit.Shortcut" Scope="User">
-      <Value Profile="(Default)" />
-    </Setting>
-    <Setting Name="PreviousTabShortcut" Type="TabbedTortoiseGit.Shortcut" Scope="User">
-      <Value Profile="(Default)" />
-    </Setting>
-    <Setting Name="CloseTabShortcut" Type="TabbedTortoiseGit.Shortcut" Scope="User">
-      <Value Profile="(Default)" />
-    </Setting>
-    <Setting Name="ReopenClosedTabShortcut" Type="TabbedTortoiseGit.Shortcut" Scope="User">
-      <Value Profile="(Default)" />
-    </Setting>
     <Setting Name="NormalTabFont" Type="System.Drawing.Font" Scope="User">
       <Value Profile="(Default)" />
     </Setting>
     <Setting Name="NormalTabFontColor" Type="System.Drawing.Color" Scope="User">
+      <Value Profile="(Default)" />
+    </Setting>
+    <Setting Name="KeyboardShortcutsString" Type="System.String" Scope="User">
       <Value Profile="(Default)" />
     </Setting>
   </Settings>

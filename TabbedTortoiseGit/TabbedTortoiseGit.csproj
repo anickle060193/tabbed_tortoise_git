@@ -125,6 +125,7 @@
     <Compile Include="InputDialog.Designer.cs">
       <DependentUpon>InputDialog.cs</DependentUpon>
     </Compile>
+    <Compile Include="KeyboardShortcuts.cs" />
     <Compile Include="Native.cs" />
     <Compile Include="NoTypeConverterJsonConverter.cs" />
     <Compile Include="ProcessProgressDialog.cs">

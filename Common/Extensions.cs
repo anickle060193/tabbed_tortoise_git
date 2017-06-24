@@ -6,6 +6,7 @@ using System.ComponentModel;
 using System.Drawing;
 using System.Globalization;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
@@ -62,6 +63,25 @@ namespace Common
         public static void FillCircle( this Graphics graphics, Brush brush, float x, float y, float radius )
         {
             graphics.FillEllipse( brush, x - radius, y - radius, radius * 2, radius * 2 );
+        }
+
+        public static String GetDescription( this Enum value )
+        {
+            Type type = value.GetType();
+            String name = Enum.GetName( type, value );
+            if( name != null )
+            {
+                FieldInfo field = type.GetField( name );
+                if( field != null )
+                {
+                    DescriptionAttribute attr = Attribute.GetCustomAttribute( field, typeof( DescriptionAttribute ) ) as DescriptionAttribute;
+                    if( attr != null )
+                    {
+                        return attr.Description;
+                    }
+                }
+            }
+            return name;
         }
     }
 

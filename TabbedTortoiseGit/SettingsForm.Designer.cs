@@ -46,17 +46,7 @@ namespace TabbedTortoiseGit
             this.SettingsToolTip = new System.Windows.Forms.ToolTip(this.components);
             this.SettingsTabs = new System.Windows.Forms.TabControl();
             this.KeyboardShortcutsPage = new System.Windows.Forms.TabPage();
-            this.KeyBoardShortcutsTableLayouut = new System.Windows.Forms.TableLayoutPanel();
-            this.NextTabShortcutLabel = new System.Windows.Forms.Label();
-            this.NextTabShortcutText = new System.Windows.Forms.TextBox();
-            this.NewTabShortcutLabel = new System.Windows.Forms.Label();
-            this.NewTabShortcutText = new System.Windows.Forms.TextBox();
-            this.PreviousTabShortcutLabel = new System.Windows.Forms.Label();
-            this.CloseTabShortcutLabel = new System.Windows.Forms.Label();
-            this.PreviousTabShortcutText = new System.Windows.Forms.TextBox();
-            this.CloseTabShortcutText = new System.Windows.Forms.TextBox();
-            this.ReopenClosedTabShortcutLabel = new System.Windows.Forms.Label();
-            this.ReopenClosedTabShortcutText = new System.Windows.Forms.TextBox();
+            this.KeyBoardShortcutsTableLayout = new System.Windows.Forms.TableLayoutPanel();
             this.StartupReposTab = new System.Windows.Forms.TabPage();
             this.GitActionsTab = new System.Windows.Forms.TabPage();
             this.DisplaySettingsTab = new System.Windows.Forms.TabPage();
@@ -81,7 +71,6 @@ namespace TabbedTortoiseGit
             ((System.ComponentModel.ISupportInitialize)(this.MaxRecentReposNumeric)).BeginInit();
             this.SettingsTabs.SuspendLayout();
             this.KeyboardShortcutsPage.SuspendLayout();
-            this.KeyBoardShortcutsTableLayouut.SuspendLayout();
             this.StartupReposTab.SuspendLayout();
             this.GitActionsTab.SuspendLayout();
             this.DisplaySettingsTab.SuspendLayout();
@@ -249,7 +238,8 @@ namespace TabbedTortoiseGit
             // 
             // KeyboardShortcutsPage
             // 
-            this.KeyboardShortcutsPage.Controls.Add(this.KeyBoardShortcutsTableLayouut);
+            this.KeyboardShortcutsPage.AutoScroll = true;
+            this.KeyboardShortcutsPage.Controls.Add(this.KeyBoardShortcutsTableLayout);
             this.KeyboardShortcutsPage.Location = new System.Drawing.Point(4, 22);
             this.KeyboardShortcutsPage.Name = "KeyboardShortcutsPage";
             this.KeyboardShortcutsPage.Padding = new System.Windows.Forms.Padding(3);
@@ -258,147 +248,25 @@ namespace TabbedTortoiseGit
             this.KeyboardShortcutsPage.Text = "Keyboard Shortcuts";
             this.KeyboardShortcutsPage.UseVisualStyleBackColor = true;
             // 
-            // KeyBoardShortcutsTableLayouut
+            // KeyBoardShortcutsTableLayout
             // 
-            this.KeyBoardShortcutsTableLayouut.ColumnCount = 2;
-            this.KeyBoardShortcutsTableLayouut.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
-            this.KeyBoardShortcutsTableLayouut.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.KeyBoardShortcutsTableLayouut.Controls.Add(this.NextTabShortcutLabel, 0, 1);
-            this.KeyBoardShortcutsTableLayouut.Controls.Add(this.NextTabShortcutText, 0, 1);
-            this.KeyBoardShortcutsTableLayouut.Controls.Add(this.NewTabShortcutLabel, 0, 0);
-            this.KeyBoardShortcutsTableLayouut.Controls.Add(this.NewTabShortcutText, 1, 0);
-            this.KeyBoardShortcutsTableLayouut.Controls.Add(this.PreviousTabShortcutLabel, 0, 2);
-            this.KeyBoardShortcutsTableLayouut.Controls.Add(this.CloseTabShortcutLabel, 0, 3);
-            this.KeyBoardShortcutsTableLayouut.Controls.Add(this.PreviousTabShortcutText, 1, 2);
-            this.KeyBoardShortcutsTableLayouut.Controls.Add(this.CloseTabShortcutText, 1, 3);
-            this.KeyBoardShortcutsTableLayouut.Controls.Add(this.ReopenClosedTabShortcutLabel, 0, 4);
-            this.KeyBoardShortcutsTableLayouut.Controls.Add(this.ReopenClosedTabShortcutText, 1, 4);
-            this.KeyBoardShortcutsTableLayouut.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.KeyBoardShortcutsTableLayouut.Location = new System.Drawing.Point(3, 3);
-            this.KeyBoardShortcutsTableLayouut.Name = "KeyBoardShortcutsTableLayouut";
-            this.KeyBoardShortcutsTableLayouut.RowCount = 6;
-            this.KeyBoardShortcutsTableLayouut.RowStyles.Add(new System.Windows.Forms.RowStyle());
-            this.KeyBoardShortcutsTableLayouut.RowStyles.Add(new System.Windows.Forms.RowStyle());
-            this.KeyBoardShortcutsTableLayouut.RowStyles.Add(new System.Windows.Forms.RowStyle());
-            this.KeyBoardShortcutsTableLayouut.RowStyles.Add(new System.Windows.Forms.RowStyle());
-            this.KeyBoardShortcutsTableLayouut.RowStyles.Add(new System.Windows.Forms.RowStyle());
-            this.KeyBoardShortcutsTableLayouut.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.KeyBoardShortcutsTableLayouut.Size = new System.Drawing.Size(446, 276);
-            this.KeyBoardShortcutsTableLayouut.TabIndex = 2;
-            // 
-            // NextTabShortcutLabel
-            // 
-            this.NextTabShortcutLabel.Anchor = System.Windows.Forms.AnchorStyles.Left;
-            this.NextTabShortcutLabel.AutoSize = true;
-            this.NextTabShortcutLabel.Location = new System.Drawing.Point(3, 32);
-            this.NextTabShortcutLabel.Name = "NextTabShortcutLabel";
-            this.NextTabShortcutLabel.Size = new System.Drawing.Size(54, 13);
-            this.NextTabShortcutLabel.TabIndex = 3;
-            this.NextTabShortcutLabel.Text = "Next Tab:";
-            // 
-            // NextTabShortcutText
-            // 
-            this.NextTabShortcutText.AcceptsTab = true;
-            this.NextTabShortcutText.Anchor = System.Windows.Forms.AnchorStyles.Left;
-            this.NextTabShortcutText.Location = new System.Drawing.Point(114, 29);
-            this.NextTabShortcutText.Name = "NextTabShortcutText";
-            this.NextTabShortcutText.ReadOnly = true;
-            this.NextTabShortcutText.ShortcutsEnabled = false;
-            this.NextTabShortcutText.Size = new System.Drawing.Size(200, 20);
-            this.NextTabShortcutText.TabIndex = 2;
-            this.NextTabShortcutText.TabStop = false;
-            this.NextTabShortcutText.WordWrap = false;
-            // 
-            // NewTabShortcutLabel
-            // 
-            this.NewTabShortcutLabel.Anchor = System.Windows.Forms.AnchorStyles.Left;
-            this.NewTabShortcutLabel.AutoSize = true;
-            this.NewTabShortcutLabel.Location = new System.Drawing.Point(3, 6);
-            this.NewTabShortcutLabel.Name = "NewTabShortcutLabel";
-            this.NewTabShortcutLabel.Size = new System.Drawing.Size(54, 13);
-            this.NewTabShortcutLabel.TabIndex = 0;
-            this.NewTabShortcutLabel.Text = "New Tab:";
-            // 
-            // NewTabShortcutText
-            // 
-            this.NewTabShortcutText.AcceptsTab = true;
-            this.NewTabShortcutText.Anchor = System.Windows.Forms.AnchorStyles.Left;
-            this.NewTabShortcutText.Location = new System.Drawing.Point(114, 3);
-            this.NewTabShortcutText.Name = "NewTabShortcutText";
-            this.NewTabShortcutText.ReadOnly = true;
-            this.NewTabShortcutText.ShortcutsEnabled = false;
-            this.NewTabShortcutText.Size = new System.Drawing.Size(200, 20);
-            this.NewTabShortcutText.TabIndex = 1;
-            this.NewTabShortcutText.TabStop = false;
-            this.NewTabShortcutText.WordWrap = false;
-            // 
-            // PreviousTabShortcutLabel
-            // 
-            this.PreviousTabShortcutLabel.Anchor = System.Windows.Forms.AnchorStyles.Left;
-            this.PreviousTabShortcutLabel.AutoSize = true;
-            this.PreviousTabShortcutLabel.Location = new System.Drawing.Point(3, 58);
-            this.PreviousTabShortcutLabel.Name = "PreviousTabShortcutLabel";
-            this.PreviousTabShortcutLabel.Size = new System.Drawing.Size(73, 13);
-            this.PreviousTabShortcutLabel.TabIndex = 4;
-            this.PreviousTabShortcutLabel.Text = "Previous Tab:";
-            // 
-            // CloseTabShortcutLabel
-            // 
-            this.CloseTabShortcutLabel.Anchor = System.Windows.Forms.AnchorStyles.Left;
-            this.CloseTabShortcutLabel.AutoSize = true;
-            this.CloseTabShortcutLabel.Location = new System.Drawing.Point(3, 84);
-            this.CloseTabShortcutLabel.Name = "CloseTabShortcutLabel";
-            this.CloseTabShortcutLabel.Size = new System.Drawing.Size(58, 13);
-            this.CloseTabShortcutLabel.TabIndex = 5;
-            this.CloseTabShortcutLabel.Text = "Close Tab:";
-            // 
-            // PreviousTabShortcutText
-            // 
-            this.PreviousTabShortcutText.AcceptsTab = true;
-            this.PreviousTabShortcutText.Anchor = System.Windows.Forms.AnchorStyles.Left;
-            this.PreviousTabShortcutText.Location = new System.Drawing.Point(114, 55);
-            this.PreviousTabShortcutText.Name = "PreviousTabShortcutText";
-            this.PreviousTabShortcutText.ReadOnly = true;
-            this.PreviousTabShortcutText.ShortcutsEnabled = false;
-            this.PreviousTabShortcutText.Size = new System.Drawing.Size(200, 20);
-            this.PreviousTabShortcutText.TabIndex = 7;
-            this.PreviousTabShortcutText.TabStop = false;
-            this.PreviousTabShortcutText.WordWrap = false;
-            // 
-            // CloseTabShortcutText
-            // 
-            this.CloseTabShortcutText.AcceptsTab = true;
-            this.CloseTabShortcutText.Anchor = System.Windows.Forms.AnchorStyles.Left;
-            this.CloseTabShortcutText.Location = new System.Drawing.Point(114, 81);
-            this.CloseTabShortcutText.Name = "CloseTabShortcutText";
-            this.CloseTabShortcutText.ReadOnly = true;
-            this.CloseTabShortcutText.ShortcutsEnabled = false;
-            this.CloseTabShortcutText.Size = new System.Drawing.Size(200, 20);
-            this.CloseTabShortcutText.TabIndex = 8;
-            this.CloseTabShortcutText.TabStop = false;
-            this.CloseTabShortcutText.WordWrap = false;
-            // 
-            // ReopenClosedTabShortcutLabel
-            // 
-            this.ReopenClosedTabShortcutLabel.Anchor = System.Windows.Forms.AnchorStyles.Left;
-            this.ReopenClosedTabShortcutLabel.AutoSize = true;
-            this.ReopenClosedTabShortcutLabel.Location = new System.Drawing.Point(3, 110);
-            this.ReopenClosedTabShortcutLabel.Name = "ReopenClosedTabShortcutLabel";
-            this.ReopenClosedTabShortcutLabel.Size = new System.Drawing.Size(105, 13);
-            this.ReopenClosedTabShortcutLabel.TabIndex = 9;
-            this.ReopenClosedTabShortcutLabel.Text = "Reopen Closed Tab:";
-            // 
-            // ReopenClosedTabShortcutText
-            // 
-            this.ReopenClosedTabShortcutText.AcceptsTab = true;
-            this.ReopenClosedTabShortcutText.Anchor = System.Windows.Forms.AnchorStyles.Left;
-            this.ReopenClosedTabShortcutText.Location = new System.Drawing.Point(114, 107);
-            this.ReopenClosedTabShortcutText.Name = "ReopenClosedTabShortcutText";
-            this.ReopenClosedTabShortcutText.ReadOnly = true;
-            this.ReopenClosedTabShortcutText.ShortcutsEnabled = false;
-            this.ReopenClosedTabShortcutText.Size = new System.Drawing.Size(200, 20);
-            this.ReopenClosedTabShortcutText.TabIndex = 10;
-            this.ReopenClosedTabShortcutText.TabStop = false;
+            this.KeyBoardShortcutsTableLayout.AutoSize = true;
+            this.KeyBoardShortcutsTableLayout.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
+            this.KeyBoardShortcutsTableLayout.ColumnCount = 2;
+            this.KeyBoardShortcutsTableLayout.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
+            this.KeyBoardShortcutsTableLayout.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            this.KeyBoardShortcutsTableLayout.Dock = System.Windows.Forms.DockStyle.Top;
+            this.KeyBoardShortcutsTableLayout.Location = new System.Drawing.Point(3, 3);
+            this.KeyBoardShortcutsTableLayout.Name = "KeyBoardShortcutsTableLayout";
+            this.KeyBoardShortcutsTableLayout.RowCount = 1;
+            this.KeyBoardShortcutsTableLayout.RowStyles.Add(new System.Windows.Forms.RowStyle());
+            this.KeyBoardShortcutsTableLayout.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 1F));
+            this.KeyBoardShortcutsTableLayout.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 1F));
+            this.KeyBoardShortcutsTableLayout.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 1F));
+            this.KeyBoardShortcutsTableLayout.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 1F));
+            this.KeyBoardShortcutsTableLayout.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 1F));
+            this.KeyBoardShortcutsTableLayout.Size = new System.Drawing.Size(446, 0);
+            this.KeyBoardShortcutsTableLayout.TabIndex = 2;
             // 
             // StartupReposTab
             // 
@@ -672,8 +540,7 @@ namespace TabbedTortoiseGit
             ((System.ComponentModel.ISupportInitialize)(this.MaxRecentReposNumeric)).EndInit();
             this.SettingsTabs.ResumeLayout(false);
             this.KeyboardShortcutsPage.ResumeLayout(false);
-            this.KeyBoardShortcutsTableLayouut.ResumeLayout(false);
-            this.KeyBoardShortcutsTableLayouut.PerformLayout();
+            this.KeyboardShortcutsPage.PerformLayout();
             this.StartupReposTab.ResumeLayout(false);
             this.StartupReposTab.PerformLayout();
             this.GitActionsTab.ResumeLayout(false);
@@ -723,17 +590,7 @@ namespace TabbedTortoiseGit
         private NumericUpDown CheckForModifiedTabsIntervalNumeric;
         private CheckBox CloseWindowOnLastTabClosedCheck;
         private TabPage KeyboardShortcutsPage;
-        private TableLayoutPanel KeyBoardShortcutsTableLayouut;
-        private Label NewTabShortcutLabel;
-        private TextBox NewTabShortcutText;
-        private Label NextTabShortcutLabel;
-        private TextBox NextTabShortcutText;
-        private Label PreviousTabShortcutLabel;
-        private Label CloseTabShortcutLabel;
-        private TextBox PreviousTabShortcutText;
-        private TextBox CloseTabShortcutText;
-        private Label ReopenClosedTabShortcutLabel;
-        private TextBox ReopenClosedTabShortcutText;
+        private TableLayoutPanel KeyBoardShortcutsTableLayout;
         private Button ResetNormalTabFontButton;
         private Button ChangeNormalTabFontButton;
         private GroupBox NormalTabFontGroup;
