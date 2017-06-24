@@ -110,6 +110,12 @@
     <Compile Include="FastSubmoduleUpdateForm.Designer.cs">
       <DependentUpon>FastSubmoduleUpdateForm.cs</DependentUpon>
     </Compile>
+    <Compile Include="FavoriteCreatorDialog.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FavoriteCreatorDialog.Designer.cs">
+      <DependentUpon>FavoriteCreatorDialog.cs</DependentUpon>
+    </Compile>
     <Compile Include="FavoriteRepo.cs" />
     <Compile Include="FavoritesManagerDialog.cs">
       <SubType>Form</SubType>
@@ -119,12 +125,6 @@
     </Compile>
     <Compile Include="Git.cs" />
     <Compile Include="HotKey.cs" />
-    <Compile Include="InputDialog.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="InputDialog.Designer.cs">
-      <DependentUpon>InputDialog.cs</DependentUpon>
-    </Compile>
     <Compile Include="KeyboardShortcuts.cs" />
     <Compile Include="Native.cs" />
     <Compile Include="NoTypeConverterJsonConverter.cs" />
@@ -183,11 +183,11 @@
     <EmbeddedResource Include="FastSubmoduleUpdateForm.resx">
       <DependentUpon>FastSubmoduleUpdateForm.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="FavoriteCreatorDialog.resx">
+      <DependentUpon>FavoriteCreatorDialog.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="FavoritesManagerDialog.resx">
       <DependentUpon>FavoritesManagerDialog.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="InputDialog.resx">
-      <DependentUpon>InputDialog.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="ProcessProgressDialog.resx">
       <DependentUpon>ProcessProgressDialog.cs</DependentUpon>

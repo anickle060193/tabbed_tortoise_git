@@ -374,10 +374,11 @@ namespace TabbedTortoiseGit
         {
             TabControllerTag tag = LogTabs.SelectedTab.Controller();
 
-            String name = InputDialog.ShowInput( "Favorite Repo Name", "Name for \"{0}\"".XFormat( tag.RepoItem ), "" );
-            if( !String.IsNullOrWhiteSpace( name ) )
+            if( _favoriteCreatorDialog.ShowDialog( tag.RepoItem ) == DialogResult.OK )
             {
-                AddFavoriteRepo( name, tag.RepoItem );
+                String favoriteName = _favoriteCreatorDialog.FavoriteName;
+                Color favoriteColor = _favoriteCreatorDialog.FavoriteColor;
+                AddFavoriteRepo( tag.RepoItem, favoriteName, favoriteColor );
             }
         }
 

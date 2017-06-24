@@ -2,6 +2,8 @@
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Drawing;
+using System.Drawing.Imaging;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -40,6 +42,33 @@ namespace Common
 
                 return false;
             }
+        }
+
+        public static Bitmap ColorIcon( Bitmap icon, Color color )
+        {
+            Bitmap colorIcon = new Bitmap( icon );
+            using( Graphics g = Graphics.FromImage( colorIcon ) )
+            {
+                ImageAttributes attributes = new ImageAttributes();
+
+                float redScale = color.R / 255.0f;
+                float greenScale = color.G / 255.0f;
+                float blueScale = color.B / 255.0f;
+
+                float[][] matrix =
+                {
+                    new float[] { 1, 0, 0, 0, 0 },
+                    new float[] { 0, 1, 0, 0, 0 },
+                    new float[] { 0, 0, 1, 0, 0 },
+                    new float[] { 0, 0, 0, 1, 0 },
+                    new float[] { redScale, greenScale, blueScale, 0, 1 }
+                };
+
+                attributes.SetColorMatrix( new ColorMatrix( matrix ), ColorMatrixFlag.Default, ColorAdjustType.Bitmap );
+
+                g.DrawImage( icon, new Rectangle( 0, 0, icon.Width, icon.Height ), 0, 0, icon.Width, icon.Height, GraphicsUnit.Pixel, attributes );
+            }
+            return colorIcon;
         }
     }
 }

@@ -29,6 +29,7 @@ namespace TabbedTortoiseGit
 
         private readonly Dictionary<int, TabControllerTag> _tags = new Dictionary<int, TabControllerTag>();
         private readonly CommonOpenFileDialog _folderDialog;
+        private readonly FavoriteCreatorDialog _favoriteCreatorDialog;
         private readonly Semaphore _checkForModifiedTabsSemaphore = new Semaphore( 1, 1 );
         private readonly bool _showStartUpRepos;
         private readonly Point _createdAtPoint;
@@ -50,6 +51,8 @@ namespace TabbedTortoiseGit
 
             _folderDialog = new CommonOpenFileDialog();
             _folderDialog.IsFolderPicker = true;
+
+            _favoriteCreatorDialog = new FavoriteCreatorDialog();
 
             this.Icon = Resources.TortoiseIcon;
 
@@ -279,20 +282,22 @@ namespace TabbedTortoiseGit
             {
                 ToolStripMenuItem item = new ToolStripMenuItem( favorite.Value.Name );
                 item.ToolTipText = favorite.Value.Repo;
+                Bitmap icon;
                 if( favorite.Value.IsFavoriteFolder )
                 {
-                    item.Image = Resources.FolderFolder;
+                    icon = Resources.FolderFolder;
                 }
                 else if( favorite.Value.IsDirectory )
                 {
-                    item.Image = Resources.Folder;
+                    icon = Resources.Folder;
                     item.Click += FavoritedRepoMenuItem_Click;
                 }
                 else
                 {
-                    item.Image = Resources.File;
+                    icon = Resources.File;
                     item.Click += FavoritedRepoMenuItem_Click;
                 }
+                item.Image = Util.ColorIcon( icon, favorite.Value.Color );
                 item.Tag = favorite;
                 item.MouseUp += FavoriteMenuItem_MouseUp;
                 item.DropDown.Closing += FavoriteMenuItemDropDown_Closing;
@@ -328,7 +333,7 @@ namespace TabbedTortoiseGit
             UpdateRecentReposFromSettings();
         }
 
-        private void AddFavoriteRepo( String name, String path )
+        private void AddFavoriteRepo( String path, String name, Color color )
         {
             if( !Git.IsInRepo( path ) )
             {
@@ -337,7 +342,7 @@ namespace TabbedTortoiseGit
             }
 
             bool isDirectroy = Directory.Exists( path );
-            _favoriteRepos.Add( new FavoriteRepo( name, path, isDirectroy, false ) );
+            _favoriteRepos.Add( new FavoriteRepo( name, path, isDirectroy, false, color ) );
 
             Settings.Default.FavoriteRepos = _favoriteRepos;
             Settings.Default.Save();
@@ -400,6 +405,8 @@ namespace TabbedTortoiseGit
 
             LogTabs.Tabs.Add( tag.Tab );
             LogTabs.SelectedTab = tag.Tab;
+
+            ShowMe();
         }
 
         private void RegisterExistingTab( Tab tab )

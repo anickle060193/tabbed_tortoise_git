@@ -48,6 +48,7 @@ namespace TabbedTortoiseGit
         };
 
         private readonly FavoritesDragDropHelper _favoritesDragDropHelper;
+        private readonly FavoriteCreatorDialog _favoriteCreatorDialog;
 
         private TreeNode<FavoriteRepo> _root;
         private TreeNode<FavoriteRepo> _lastSelectedFavoriteFolder;
@@ -69,13 +70,17 @@ namespace TabbedTortoiseGit
             FavoritesContextMenu.Opening += FavoritesContextMenu_Opening;
 
             CreateFavoritesFolderMenuItem.Click += CreateFavoritesFolderMenuItem_Click;
-            RemoveFavoritesFolderMenuItem.Click += RemoveFavoritesFolderMenuItem_Click;
 
             AddFavoriteFileMenuItem.Click += AddFavoriteFileMenuItem_Click;
             AddFavoriteFolderMenuItem.Click += AddFavoriteFolderMenuItem_Click;
-            RemoveFavoriteMenuItem.Click += RemoveFavoriteMenuItem_Click;
+
+            EditFavoriteItemMenuItem.Click += EditFavoriteItemMenuItem_Click;
+
+            RemoveFavoriteItemMenuItem.Click += RemoveFavoriteItemMenuItem_Click;
 
             FindFavoriteFileDialog.FileOk += FindFavoriteFileDialog_FileOk;
+
+            _favoriteCreatorDialog = new FavoriteCreatorDialog();
 
             _favoritesDragDropHelper = new FavoritesDragDropHelper( this );
             _favoritesDragDropHelper.AddControl( FavoritesTree );
@@ -123,30 +128,25 @@ namespace TabbedTortoiseGit
 
         private void FavoritesContextMenu_Opening( object sender, CancelEventArgs e )
         {
-            if( _selectedFavoriteItem == null )
+            if( _selectedFavoriteItem == _root )
             {
-                CreateFavoritesFolderMenuItem.Visible = false;
-                RemoveFavoritesFolderMenuItem.Visible = false;
-                AddFavoriteFileMenuItem.Visible = false;
-                AddFavoriteFolderMenuItem.Visible = false;
-                RemoveFavoriteMenuItem.Visible = false;
+                EditFavoriteItemMenuItem.Enabled = false;
+                RemoveFavoriteItemMenuItem.Enabled = false;
             }
             else
             {
-                CreateFavoritesFolderMenuItem.Visible = true;
-                RemoveFavoritesFolderMenuItem.Visible = _selectedFavoriteItem.Value.IsFavoriteFolder && _selectedFavoriteItem != _root;
-                AddFavoriteFileMenuItem.Visible = true;
-                AddFavoriteFolderMenuItem.Visible = true;
-                RemoveFavoriteMenuItem.Visible = !_selectedFavoriteItem.Value.IsFavoriteFolder;
+                EditFavoriteItemMenuItem.Enabled = true;
+                RemoveFavoriteItemMenuItem.Enabled = true;
             }
         }
 
         private void CreateFavoritesFolderMenuItem_Click( object sender, EventArgs e )
         {
-            String folderName = InputDialog.ShowInput( "Favorite Folder Name", "", "" );
-            if( folderName != null )
+            if( _favoriteCreatorDialog.ShowDialog() == DialogResult.OK )
             {
-                TreeNode<FavoriteRepo> newNode = new TreeNode<FavoriteRepo>( new FavoriteRepo( folderName, "", false, true ) );
+                String favoriteName = _favoriteCreatorDialog.FavoriteName;
+                Color favoriteColor = _favoriteCreatorDialog.FavoriteColor;
+                TreeNode<FavoriteRepo> newNode = new TreeNode<FavoriteRepo>( new FavoriteRepo( favoriteName, "", false, true, favoriteColor ) );
                 if( _selectedFavoriteItem.Value.IsFavoriteFolder )
                 {
                     _selectedFavoriteItem.Add( newNode );
@@ -157,13 +157,6 @@ namespace TabbedTortoiseGit
                 }
                 UpdateFavoritesTree( _lastSelectedFavoriteFolder );
             }
-        }
-
-        private void RemoveFavoritesFolderMenuItem_Click( object sender, EventArgs e )
-        {
-            TreeNode<FavoriteRepo> parent = _selectedFavoriteItem.Parent;
-            parent.Remove( _selectedFavoriteItem );
-            UpdateFavoritesTree( parent );
         }
 
         private void AddFavoriteFileMenuItem_Click( object sender, EventArgs e )
@@ -209,18 +202,49 @@ namespace TabbedTortoiseGit
             AddFavoriteItem( repo );
         }
 
-        private void RemoveFavoriteMenuItem_Click( object sender, EventArgs e )
+        private void EditFavoriteItemMenuItem_Click( object sender, EventArgs e )
+        {
+            FavoriteRepo f = _selectedFavoriteItem.Value;
+            if( _favoriteCreatorDialog.ShowDialog( f.Repo, f.Name, f.Color ) == DialogResult.OK )
+            {
+                String newFavoriteName = _favoriteCreatorDialog.FavoriteName;
+                Color newFavoriteColor = _favoriteCreatorDialog.FavoriteColor;
+                FavoriteRepo newFavorite = new FavoriteRepo( newFavoriteName, f.Repo, f.IsDirectory, f.IsFavoriteFolder, newFavoriteColor );
+                TreeNode<FavoriteRepo> newNode = new TreeNode<FavoriteRepo>( newFavorite );
+
+                while( _selectedFavoriteItem.Children.Count > 0 )
+                {
+                    TreeNode<FavoriteRepo> child = _selectedFavoriteItem.Children[ 0 ];
+                    child.Parent.Remove( child );
+                    newNode.Add( child );
+                }
+
+                _selectedFavoriteItem.Parent.Children[ _selectedFavoriteItem.Index ] = newNode;
+
+                if( newNode.Value.IsFavoriteFolder )
+                {
+                    UpdateFavoritesTree( newNode );
+                }
+                else
+                {
+                    UpdateFavoritesTree( newNode.Parent );
+                }
+            }
+        }
+
+        private void RemoveFavoriteItemMenuItem_Click( object sender, EventArgs e )
         {
             TreeNode<FavoriteRepo> parent = _selectedFavoriteItem.Parent;
             parent.Remove( _selectedFavoriteItem );
-            UpdateFavoritesList( parent );
+
+            UpdateFavoritesTree( parent );
         }
 
         private void UpdateFavoritesTree( TreeNode<FavoriteRepo> selectNode )
         {
             FavoritesTree.SuspendLayout();
-
             FavoritesTree.Nodes.Clear();
+            FavoritesTreeImageList.Images.Clear();
 
             Add( FavoritesTree.Nodes, _root );
 
@@ -273,8 +297,8 @@ namespace TabbedTortoiseGit
         private void UpdateFavoritesList( TreeNode<FavoriteRepo> node )
         {
             FavoritesList.SuspendLayout();
-
             FavoritesList.Items.Clear();
+            FavoritesListImageList.Images.Clear();
 
             if( node != null )
             {
@@ -282,18 +306,31 @@ namespace TabbedTortoiseGit
                 {
                     ListViewItem item = FavoritesList.Items.Add( child.Value.Name );
                     item.Tag = child;
+
+                    Color favoriteColor = child.Value.Color;
+                    String imageKey = favoriteColor.ToString();
+                    Bitmap icon;
                     if( child.Value.IsFavoriteFolder )
                     {
-                        item.ImageKey = "FolderFolder";
+                        icon = Resources.FolderFolder;
+                        imageKey += " FolderFolder";
                     }
                     else if( child.Value.IsDirectory )
                     {
-                        item.ImageKey = "Folder";
+                        icon = Resources.Folder;
+                        imageKey += " Folder";
                     }
                     else
                     {
-                        item.ImageKey = "File";
+                        icon = Resources.File;
+                        imageKey += " File";
                     }
+                    if( !FavoritesListImageList.Images.ContainsKey( imageKey ) )
+                    {
+                        FavoritesListImageList.Images.Add( imageKey, Util.ColorIcon( icon, favoriteColor ) );
+                    }
+
+                    item.ImageKey = imageKey;
                 }
             }
 
@@ -304,8 +341,14 @@ namespace TabbedTortoiseGit
         {
             if( node.Value.IsFavoriteFolder )
             {
+                Color favoriteColor = node.Value.Color;
+                String imageKey = favoriteColor.ToString() + " FolderFolder";
+                if( !FavoritesTreeImageList.Images.ContainsKey( imageKey ) )
+                {
+                    FavoritesTreeImageList.Images.Add( imageKey, Util.ColorIcon( Resources.FolderFolder, favoriteColor ) );
+                }
                 TreeNode t = parentNodes.Add( node.Value.Name );
-                t.ImageKey = t.SelectedImageKey = "FolderFolder";
+                t.ImageKey = t.SelectedImageKey = imageKey;
                 t.Tag = node;
 
                 foreach( TreeNode<FavoriteRepo> child in node.Children )
@@ -317,24 +360,23 @@ namespace TabbedTortoiseGit
 
         private void AddFavoriteItem( String path )
         {
-            String favoriteName = InputDialog.ShowInput( "Favorite Name", "Name for \"{0}\"".XFormat( path ), "" );
-            if( favoriteName == null )
+            if( _favoriteCreatorDialog.ShowDialog( path ) == DialogResult.OK )
             {
-                return;
-            }
+                String favoriteName = _favoriteCreatorDialog.FavoriteName;
+                Color favoriteColor = _favoriteCreatorDialog.FavoriteColor;
+                bool isDirectory = Directory.Exists( path );
 
-            bool isDirectory = Directory.Exists( path );
-
-            TreeNode<FavoriteRepo> newNode = new TreeNode<FavoriteRepo>( new FavoriteRepo( favoriteName, path, isDirectory, false ) );
-            if( _selectedFavoriteItem.Value.IsFavoriteFolder )
-            {
-                _selectedFavoriteItem.Add( newNode );
-                UpdateFavoritesList( _selectedFavoriteItem );
-            }
-            else
-            {
-                _selectedFavoriteItem.Parent.Children.Insert( _selectedFavoriteItem.Index, newNode );
-                UpdateFavoritesList( _selectedFavoriteItem.Parent );
+                TreeNode<FavoriteRepo> newNode = new TreeNode<FavoriteRepo>( new FavoriteRepo( favoriteName, path, isDirectory, false, favoriteColor ) );
+                if( _selectedFavoriteItem.Value.IsFavoriteFolder )
+                {
+                    _selectedFavoriteItem.Add( newNode );
+                    UpdateFavoritesList( _selectedFavoriteItem );
+                }
+                else
+                {
+                    _selectedFavoriteItem.Parent.Children.Insert( _selectedFavoriteItem.Index, newNode );
+                    UpdateFavoritesList( _selectedFavoriteItem.Parent );
+                }
             }
         }
 

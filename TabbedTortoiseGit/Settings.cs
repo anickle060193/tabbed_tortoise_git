@@ -184,7 +184,7 @@ namespace TabbedTortoiseGit.Properties
         {
             get
             {
-                return new TreeNode<FavoriteRepo>( new FavoriteRepo( "Favorites", "", false, true ) );
+                return new TreeNode<FavoriteRepo>( new FavoriteRepo( "Favorites", "", false, true, Color.Black ) );
             }
         }
 
@@ -272,7 +272,7 @@ namespace TabbedTortoiseGit.Properties
                         {
                             foreach( KeyValuePair<String, String> favorite in favoritedRepos )
                             {
-                                root.Add( new FavoriteRepo( favorite.Key, favorite.Value, true, false ) );
+                                root.Add( new FavoriteRepo( favorite.Key, favorite.Value, true, false, Color.Black ) );
                             }
                         }
 
@@ -305,7 +305,7 @@ namespace TabbedTortoiseGit.Properties
                             {
                                 foreach( KeyValuePair<String, String> favorite in favoritedRepos )
                                 {
-                                    root.Add( new FavoriteRepo( favorite.Key, favorite.Value, true, false ) );
+                                    root.Add( new FavoriteRepo( favorite.Key, favorite.Value, true, false, Color.Black ) );
                                 }
                             }
 
