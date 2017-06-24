@@ -1180,10 +1180,13 @@ namespace Tabs
 
                 if( parent.TabCount == 0 )
                 {
-                    _partialMatch = true;
-                    item = null;
-                    itemIndex = 0;
-                    return true;
+                    if( !parent._painter.GetTabPanelBounds().Contains( p ) )
+                    {
+                        _partialMatch = true;
+                        item = null;
+                        itemIndex = 0;
+                        return true;
+                    }
                 }
 
                 if( parent.SelectedTab != null )

@@ -212,6 +212,11 @@ namespace TabbedTortoiseGit
         {
             LogTabs.Tabs.Remove( e.Tab );
             ProgramForm.Instance.CreateNewFromTab( e.Tab, e.Location );
+
+            if( LogTabs.TabCount == 0 )
+            {
+                this.Close();
+            }
         }
 
         private void LogTabs_SelectedIndexChanged( object sender, EventArgs e )
