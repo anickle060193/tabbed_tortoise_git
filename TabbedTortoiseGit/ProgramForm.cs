@@ -21,7 +21,7 @@ namespace TabbedTortoiseGit
 
         private static readonly ILog LOG = LogManager.GetLogger( typeof( ProgramForm ) );
 
-        private static readonly Regex TORTOISE_GIT_COMMAND_LINE_REGEX = new Regex( "/path:\"?(?<repo>.*?)\"? *( /|$)", RegexOptions.IgnoreCase );
+        private static readonly Regex TORTOISE_GIT_COMMAND_LINE_REGEX = new Regex( @"(/|-)path:?\s*""?(?<path>.+?)""? *( /|$)", RegexOptions.IgnoreCase );
 
         private readonly List<TabbedTortoiseGitForm> _forms = new List<TabbedTortoiseGitForm>();
         private readonly ManagementEventWatcher _watcher;
@@ -45,9 +45,12 @@ namespace TabbedTortoiseGit
         {
             _startup = startup;
 
-            String condition = "TargetInstance ISA 'Win32_Process'" +
-                           "AND TargetInstance.Name = 'TortoiseGitProc.exe'" +
-                           "AND TargetInstance.CommandLine LIKE '%/command:log%'";
+            String condition = @"TargetInstance ISA 'Win32_Process' 
+                             AND TargetInstance.Name = 'TortoiseGitProc.exe'
+                             AND ( TargetInstance.CommandLine LIKE '%/command:log%'
+                                OR TargetInstance.CommandLine LIKE '%/command log%'
+                                OR TargetInstance.CommandLine LIKE '%-command:log%'
+                                OR TargetInstance.CommandLine LIKE '%-command log%' )";
             _watcher = new ManagementEventWatcher( new WqlEventQuery( "__InstanceCreationEvent", new TimeSpan( 10 ), condition ) );
             _watcher.Options.Timeout = new TimeSpan( 0, 1, 0 );
             _watcher.EventArrived += Watcher_EventArrived;
@@ -172,9 +175,9 @@ namespace TabbedTortoiseGit
             ManagementBaseObject o = (ManagementBaseObject)e.NewEvent[ "TargetInstance" ];
             String commandLine = (String)o[ "CommandLine" ];
             Match m = TORTOISE_GIT_COMMAND_LINE_REGEX.Match( commandLine );
-            String repo = m.Groups[ "repo" ].Value;
+            String path = m.Groups[ "path" ].Value;
             int pid = (int)(UInt32)o[ "ProcessId" ];
-            LOG.DebugFormat( "Watcher_EventArrived - CommandLine: {0} - Repo: {1} - PID: {2}", commandLine, repo, pid );
+            LOG.DebugFormat( "Watcher_EventArrived - CommandLine: {0} - Repo: {1} - PID: {2}", commandLine, path, pid );
             Process p = Process.GetProcessById( pid );
 
             if( _forms.Any( form => form.OwnsLogProcess( p ) ) )
@@ -183,7 +186,7 @@ namespace TabbedTortoiseGit
                 return;
             }
 
-            this.UiBeginInvoke( (Func<Process, String, Task>)CaptureNewLog, p, repo );
+            this.UiBeginInvoke( (Func<Process, String, Task>)CaptureNewLog, p, path );
         }
 
         private void NotifyIcon_DoubleClick( object sender, EventArgs e )
