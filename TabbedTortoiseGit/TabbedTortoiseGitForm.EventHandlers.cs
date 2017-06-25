@@ -231,11 +231,11 @@ namespace TabbedTortoiseGit
             }
         }
 
-        private async void FavoritedRepoMenuItem_Click( object sender, EventArgs e )
+        private async void FavoriteRepoMenuItem_Click( object sender, EventArgs e )
         {
             ToolStripItem item = (ToolStripItem)sender;
             TreeNode<FavoriteRepo> favorite = (TreeNode<FavoriteRepo>)item.Tag;
-            await OpenLog( favorite.Value.Repo );
+            await OpenLog( favorite.Value.Repo, favorite.Value.References );
         }
 
         private void FavoritesMenuStrip_MouseClick( object sender, MouseEventArgs e )
@@ -374,12 +374,7 @@ namespace TabbedTortoiseGit
         {
             TabControllerTag tag = LogTabs.SelectedTab.Controller();
 
-            if( _favoriteCreatorDialog.ShowDialog( tag.RepoItem ) == DialogResult.OK )
-            {
-                String favoriteName = _favoriteCreatorDialog.FavoriteName;
-                Color favoriteColor = _favoriteCreatorDialog.FavoriteColor;
-                AddFavoriteRepo( tag.RepoItem, favoriteName, favoriteColor );
-            }
+            AddFavoriteRepo( tag.RepoItem );
         }
 
         private void CloseRepoTabMenuItem_Click( object sender, EventArgs e )

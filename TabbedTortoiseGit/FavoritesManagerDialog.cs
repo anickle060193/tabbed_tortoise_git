@@ -48,7 +48,6 @@ namespace TabbedTortoiseGit
         };
 
         private readonly FavoritesDragDropHelper _favoritesDragDropHelper;
-        private readonly FavoriteCreatorDialog _favoriteCreatorDialog;
 
         private TreeNode<FavoriteRepo> _root;
         private TreeNode<FavoriteRepo> _lastSelectedFavoriteFolder;
@@ -79,8 +78,6 @@ namespace TabbedTortoiseGit
             RemoveFavoriteItemMenuItem.Click += RemoveFavoriteItemMenuItem_Click;
 
             FindFavoriteFileDialog.FileOk += FindFavoriteFileDialog_FileOk;
-
-            _favoriteCreatorDialog = new FavoriteCreatorDialog();
 
             _favoritesDragDropHelper = new FavoritesDragDropHelper( this );
             _favoritesDragDropHelper.AddControl( FavoritesTree );
@@ -142,11 +139,10 @@ namespace TabbedTortoiseGit
 
         private void CreateFavoritesFolderMenuItem_Click( object sender, EventArgs e )
         {
-            if( _favoriteCreatorDialog.ShowDialog() == DialogResult.OK )
+            FavoriteCreatorDialog dialog = new FavoriteCreatorDialog( true );
+            if( dialog.ShowDialog() == DialogResult.OK )
             {
-                String favoriteName = _favoriteCreatorDialog.FavoriteName;
-                Color favoriteColor = _favoriteCreatorDialog.FavoriteColor;
-                TreeNode<FavoriteRepo> newNode = new TreeNode<FavoriteRepo>( new FavoriteRepo( favoriteName, "", false, true, favoriteColor ) );
+                TreeNode<FavoriteRepo> newNode = new TreeNode<FavoriteRepo>( dialog.ToFavoriteRepo() );
                 if( _selectedFavoriteItem.Value.IsFavoriteFolder )
                 {
                     _selectedFavoriteItem.Add( newNode );
@@ -205,12 +201,11 @@ namespace TabbedTortoiseGit
         private void EditFavoriteItemMenuItem_Click( object sender, EventArgs e )
         {
             FavoriteRepo f = _selectedFavoriteItem.Value;
-            if( _favoriteCreatorDialog.ShowDialog( f.Repo, f.Name, f.Color ) == DialogResult.OK )
+
+            FavoriteCreatorDialog dialog = FavoriteCreatorDialog.FromFavoriteRepo( f );
+            if( dialog.ShowDialog() == DialogResult.OK )
             {
-                String newFavoriteName = _favoriteCreatorDialog.FavoriteName;
-                Color newFavoriteColor = _favoriteCreatorDialog.FavoriteColor;
-                FavoriteRepo newFavorite = new FavoriteRepo( newFavoriteName, f.Repo, f.IsDirectory, f.IsFavoriteFolder, newFavoriteColor );
-                TreeNode<FavoriteRepo> newNode = new TreeNode<FavoriteRepo>( newFavorite );
+                TreeNode<FavoriteRepo> newNode = new TreeNode<FavoriteRepo>( dialog.ToFavoriteRepo() );
 
                 while( _selectedFavoriteItem.Children.Count > 0 )
                 {
@@ -360,13 +355,13 @@ namespace TabbedTortoiseGit
 
         private void AddFavoriteItem( String path )
         {
-            if( _favoriteCreatorDialog.ShowDialog( path ) == DialogResult.OK )
+            FavoriteCreatorDialog dialog = new FavoriteCreatorDialog( false )
             {
-                String favoriteName = _favoriteCreatorDialog.FavoriteName;
-                Color favoriteColor = _favoriteCreatorDialog.FavoriteColor;
-                bool isDirectory = Directory.Exists( path );
-
-                TreeNode<FavoriteRepo> newNode = new TreeNode<FavoriteRepo>( new FavoriteRepo( favoriteName, path, isDirectory, false, favoriteColor ) );
+                FavoriteRepo = path
+            };
+            if( dialog.ShowDialog() == DialogResult.OK )
+            {
+                TreeNode<FavoriteRepo> newNode = new TreeNode<FavoriteRepo>( dialog.ToFavoriteRepo() );
                 if( _selectedFavoriteItem.Value.IsFavoriteFolder )
                 {
                     _selectedFavoriteItem.Add( newNode );

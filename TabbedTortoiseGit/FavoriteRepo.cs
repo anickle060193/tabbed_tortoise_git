@@ -8,17 +8,18 @@ using System.Threading.Tasks;
 
 namespace TabbedTortoiseGit
 {
-    class FavoriteRepo
+    public class FavoriteRepo
     {
         public String Name { get; private set; }
         public String Repo { get; private set; }
         public bool IsDirectory { get; private set; }
         public Color Color { get; private set; }
+        public IEnumerable<String> References { get; private set; }
 
         public bool IsFavoriteFolder { get; private set; }
 
         [JsonConstructor]
-        public FavoriteRepo( String name, String repo, bool isDirectory, bool isFavoriteFolder, Color color )
+        public FavoriteRepo( String name, String repo, bool isDirectory, bool isFavoriteFolder, Color color, IEnumerable<String> references )
         {
             Name = name ?? "";
             Color = color;
@@ -28,11 +29,13 @@ namespace TabbedTortoiseGit
             {
                 Repo = repo ?? "";
                 IsDirectory = isDirectory;
+                References = ( references ?? Enumerable.Empty<String>() ).ToList().AsReadOnly();
             }
             else
             {
                 Repo = "";
                 IsDirectory = false;
+                References = Enumerable.Empty<String>();
             }
         }
 

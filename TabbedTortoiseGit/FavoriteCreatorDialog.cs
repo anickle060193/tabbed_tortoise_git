@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
 using System.Drawing;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -16,22 +17,32 @@ namespace TabbedTortoiseGit
         private String _favoriteRepo;
         private Color _favoriteColor;
 
+        public bool IsFavoritesFolder { get; private set; }
+
         public String FavoriteRepo
         {
             get
             {
-                return _favoriteRepo;
+                if( IsFavoritesFolder )
+                {
+                    return "";
+                }
+                else
+                {
+                    return _favoriteRepo;
+                }
             }
 
             set
             {
-                _favoriteRepo = value;
-                if( String.IsNullOrWhiteSpace( _favoriteRepo ) )
+                if( IsFavoritesFolder || String.IsNullOrWhiteSpace( value ) )
                 {
+                    _favoriteRepo = "";
                     this.Text = "Favorite Creator";
                 }
                 else
                 {
+                    _favoriteRepo = value;
                     this.Text = "Favorite Creator - " + _favoriteRepo;
                 }
             }
@@ -65,19 +76,99 @@ namespace TabbedTortoiseGit
             }
         }
 
-        public FavoriteCreatorDialog()
+        public IEnumerable<String> FavoriteReferences
+        {
+            get
+            {
+                if( IsFavoritesFolder )
+                {
+                    return Enumerable.Empty<String>();
+                }
+                else
+                {
+                    return ReferencesListBox.Items.Cast<String>();
+                }
+            }
+
+            set
+            {
+                ReferencesListBox.Items.Clear();
+
+                if( !IsFavoritesFolder )
+                {
+                    String[] references = value.ToArray();
+                    ReferencesListBox.Items.AddRange( references );
+                }
+            }
+        }
+
+        public static FavoriteCreatorDialog FromFavoriteRepo( FavoriteRepo favorite )
+        {
+            return new FavoriteCreatorDialog( favorite.IsFavoriteFolder )
+            {
+                FavoriteRepo = favorite.Repo,
+                FavoriteName = favorite.Name,
+                FavoriteColor = favorite.Color,
+                FavoriteReferences = favorite.References
+            };
+        }
+
+        public FavoriteCreatorDialog( bool isFavoriteFolder )
         {
             InitializeComponent();
 
             this.Icon = Resources.TortoiseIcon;
 
+            this.IsFavoritesFolder = isFavoriteFolder;
+
             this.FavoriteRepo = "";
             this.FavoriteName = "";
             this.FavoriteColor = Color.Black;
+            this.FavoriteReferences = Enumerable.Empty<String>();
 
-            this.ChangeFavoriteColorButton.Click += ChangeFavoriteColorButton_Click;
+            SelectReferencesButton.Click += SelectReferencesButton_Click;
+            RemoveReferencesButton.Click += RemoveReferencesButton_Click;
 
-            this.Ok.Click += Ok_Click;
+            ChangeFavoriteColorButton.Click += ChangeFavoriteColorButton_Click;
+
+            Ok.Click += Ok_Click;
+
+            if( IsFavoritesFolder )
+            {
+                ReferencesGroup.Visible = false;
+
+                TableLayout.RowStyles[ 1 ] = new RowStyle( SizeType.Absolute, 0.0f );
+                TableLayout.AutoSize = true;
+                TableLayout.AutoSizeMode = AutoSizeMode.GrowAndShrink;
+
+                this.MinimumSize = new Size( 0, 0 );
+                this.AutoSize = true;
+                this.AutoSizeMode = AutoSizeMode.GrowAndShrink;
+                this.FormBorderStyle = FormBorderStyle.Fixed3D;
+            }
+        }
+
+        public FavoriteRepo ToFavoriteRepo()
+        {
+            bool isDirectory = !IsFavoritesFolder && Directory.Exists( FavoriteRepo );
+            return new TabbedTortoiseGit.FavoriteRepo( FavoriteName, FavoriteRepo, isDirectory, IsFavoritesFolder, FavoriteColor, FavoriteReferences );
+        }
+
+        private void RemoveReferencesButton_Click( object sender, EventArgs e )
+        {
+            foreach( String branch in ReferencesListBox.SelectedItems.Cast<String>().ToList() )
+            {
+                ReferencesListBox.Items.Remove( branch );
+            }
+        }
+
+        private void SelectReferencesButton_Click( object sender, EventArgs e )
+        {
+            ReferencesDialog d = new ReferencesDialog( this.FavoriteRepo );
+            if( d.ShowDialog() == DialogResult.OK )
+            {
+                ReferencesListBox.Items.AddRange( d.SelectedReferences );
+            }
         }
 
         private void ChangeFavoriteColorButton_Click( object sender, EventArgs e )
@@ -86,24 +177,6 @@ namespace TabbedTortoiseGit
             {
                 this.FavoriteColor = FavoriteColorDialog.Color;
             }
-        }
-
-        public new DialogResult ShowDialog()
-        {
-            return this.ShowDialog( "" );
-        }
-
-        public DialogResult ShowDialog( String repo )
-        {
-            return this.ShowDialog( repo, "", Color.Black );
-        }
-
-        public DialogResult ShowDialog( String repo, String name, Color color )
-        {
-            this.FavoriteRepo = repo;
-            this.FavoriteName = name;
-            this.FavoriteColor = color;
-            return base.ShowDialog();
         }
 
         private void Ok_Click( object sender, EventArgs e )

@@ -80,9 +80,18 @@ namespace TabbedTortoiseGit
             return p;
         }
 
-        public static Process Log( String path )
+        public static Process Log( String path, IEnumerable<String> references = null )
         {
-            return PathCommand( "log", path );
+            String command = "/command:log /path:\"{0}\"".XFormat( path );
+            if( references != null )
+            {
+                String[] refs = references.ToArray();
+                if( refs.Length > 0 )
+                {
+                    command += " /range:\"{0}\"".XFormat( String.Join( " ", refs ) );
+                }
+            }
+            return TortoiseGitCommand( command, path );
         }
 
         public static async Task Fetch( String path )

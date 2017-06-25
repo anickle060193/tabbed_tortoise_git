@@ -7,6 +7,7 @@ using System.ComponentModel;
 using System.Configuration;
 using System.Diagnostics;
 using System.Drawing;
+using System.Linq;
 using System.Windows.Forms;
 
 namespace TabbedTortoiseGit.Properties
@@ -184,7 +185,7 @@ namespace TabbedTortoiseGit.Properties
         {
             get
             {
-                return new TreeNode<FavoriteRepo>( new FavoriteRepo( "Favorites", "", false, true, Color.Black ) );
+                return new TreeNode<FavoriteRepo>( new FavoriteRepo( "Favorites", "", false, true, Color.Black, Enumerable.Empty<String>() ) );
             }
         }
 
@@ -272,7 +273,7 @@ namespace TabbedTortoiseGit.Properties
                         {
                             foreach( KeyValuePair<String, String> favorite in favoritedRepos )
                             {
-                                root.Add( new FavoriteRepo( favorite.Key, favorite.Value, true, false, Color.Black ) );
+                                root.Add( new FavoriteRepo( favorite.Key, favorite.Value, true, false, Color.Black, Enumerable.Empty<String>() ) );
                             }
                         }
 
@@ -305,7 +306,7 @@ namespace TabbedTortoiseGit.Properties
                             {
                                 foreach( KeyValuePair<String, String> favorite in favoritedRepos )
                                 {
-                                    root.Add( new FavoriteRepo( favorite.Key, favorite.Value, true, false, Color.Black ) );
+                                    root.Add( new FavoriteRepo( favorite.Key, favorite.Value, true, false, Color.Black, Enumerable.Empty<String>() ) );
                                 }
                             }
 

@@ -29,7 +29,6 @@ namespace TabbedTortoiseGit
 
         private readonly Dictionary<int, TabControllerTag> _tags = new Dictionary<int, TabControllerTag>();
         private readonly CommonOpenFileDialog _folderDialog;
-        private readonly FavoriteCreatorDialog _favoriteCreatorDialog;
         private readonly Semaphore _checkForModifiedTabsSemaphore = new Semaphore( 1, 1 );
         private readonly bool _showStartUpRepos;
         private readonly Point _createdAtPoint;
@@ -51,8 +50,6 @@ namespace TabbedTortoiseGit
 
             _folderDialog = new CommonOpenFileDialog();
             _folderDialog.IsFolderPicker = true;
-
-            _favoriteCreatorDialog = new FavoriteCreatorDialog();
 
             this.Icon = Resources.TortoiseIcon;
 
@@ -290,12 +287,12 @@ namespace TabbedTortoiseGit
                 else if( favorite.Value.IsDirectory )
                 {
                     icon = Resources.Folder;
-                    item.Click += FavoritedRepoMenuItem_Click;
+                    item.Click += FavoriteRepoMenuItem_Click;
                 }
                 else
                 {
                     icon = Resources.File;
-                    item.Click += FavoritedRepoMenuItem_Click;
+                    item.Click += FavoriteRepoMenuItem_Click;
                 }
                 item.Image = Util.ColorIcon( icon, favorite.Value.Color );
                 item.Tag = favorite;
@@ -333,7 +330,7 @@ namespace TabbedTortoiseGit
             UpdateRecentReposFromSettings();
         }
 
-        private void AddFavoriteRepo( String path, String name, Color color )
+        private void AddFavoriteRepo( String path )
         {
             if( !Git.IsInRepo( path ) )
             {
@@ -341,13 +338,19 @@ namespace TabbedTortoiseGit
                 return;
             }
 
-            bool isDirectroy = Directory.Exists( path );
-            _favoriteRepos.Add( new FavoriteRepo( name, path, isDirectroy, false, color ) );
+            FavoriteCreatorDialog dialog = new FavoriteCreatorDialog( false )
+            {
+                FavoriteRepo = path
+            };
+            if( dialog.ShowDialog() == DialogResult.OK )
+            {
+                _favoriteRepos.Add( dialog.ToFavoriteRepo() );
 
-            Settings.Default.FavoriteRepos = _favoriteRepos;
-            Settings.Default.Save();
+                Settings.Default.FavoriteRepos = _favoriteRepos;
+                Settings.Default.Save();
 
-            UpdateFavoriteReposFromSettings();
+                UpdateFavoriteReposFromSettings();
+            }
         }
 
         private void RemoveFavorite( TreeNode<FavoriteRepo> favorite )
@@ -359,11 +362,11 @@ namespace TabbedTortoiseGit
             UpdateFavoriteReposFromSettings();
         }
 
-        private async Task OpenLog( String path )
+        private async Task OpenLog( String path, IEnumerable<String> references = null )
         {
             AddToRecentRepos( path );
 
-            Process p = TortoiseGit.Log( path );
+            Process p = TortoiseGit.Log( path, references );
             await AddNewLogProcess( p, path );
         }
 
