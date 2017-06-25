@@ -105,6 +105,7 @@
             this.ReferencesListBox.IntegralHeight = false;
             this.ReferencesListBox.Location = new System.Drawing.Point(6, 19);
             this.ReferencesListBox.Name = "ReferencesListBox";
+            this.ReferencesListBox.SelectionMode = System.Windows.Forms.SelectionMode.MultiExtended;
             this.ReferencesListBox.Size = new System.Drawing.Size(317, 65);
             this.ReferencesListBox.TabIndex = 1;
             // 

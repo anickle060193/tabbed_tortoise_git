@@ -119,7 +119,7 @@ namespace TabbedTortoiseGit.Properties
                 TreeNode<FavoriteRepo> favoriteRepos = null;
                 try
                 {
-                    favoriteRepos = JsonConvert.DeserializeObject<TreeNode<FavoriteRepo>>( Settings.Default.FavoriteReposJsonString );
+                    favoriteRepos = JsonConvert.DeserializeObject<TreeNode<FavoriteRepo>>( Settings.Default.FavoriteReposJsonString, FavoriteReposContractResolver.Settings );
                 }
                 catch( JsonException e )
                 {
@@ -141,7 +141,7 @@ namespace TabbedTortoiseGit.Properties
             {
                 try
                 {
-                    Settings.Default.FavoriteReposJsonString = JsonConvert.SerializeObject( value );
+                    Settings.Default.FavoriteReposJsonString = JsonConvert.SerializeObject( value, FavoriteReposContractResolver.Settings );
                 }
                 catch( JsonException e )
                 {
@@ -172,7 +172,7 @@ namespace TabbedTortoiseGit.Properties
             {
                 try
                 {
-                    Settings.Default.KeyboardShortcutsString = JsonConvert.SerializeObject( value );
+                    Settings.Default.KeyboardShortcutsString = JsonConvert.SerializeObject( value, Formatting.Indented );
                 }
                 catch( JsonException e )
                 {
@@ -185,7 +185,7 @@ namespace TabbedTortoiseGit.Properties
         {
             get
             {
-                return new TreeNode<FavoriteRepo>( new FavoriteRepo( "Favorites", "", false, true, Color.Black, Enumerable.Empty<String>() ) );
+                return new TreeNode<FavoriteRepo>( new FavoriteRepo( "Favorites", "", false, true, Color.Black, null ) );
             }
         }
 
@@ -273,7 +273,7 @@ namespace TabbedTortoiseGit.Properties
                         {
                             foreach( KeyValuePair<String, String> favorite in favoritedRepos )
                             {
-                                root.Add( new FavoriteRepo( favorite.Key, favorite.Value, true, false, Color.Black, Enumerable.Empty<String>() ) );
+                                root.Add( new FavoriteRepo( favorite.Key, favorite.Value, true, false, Color.Black, null ) );
                             }
                         }
 
@@ -306,7 +306,7 @@ namespace TabbedTortoiseGit.Properties
                             {
                                 foreach( KeyValuePair<String, String> favorite in favoritedRepos )
                                 {
-                                    root.Add( new FavoriteRepo( favorite.Key, favorite.Value, true, false, Color.Black, Enumerable.Empty<String>() ) );
+                                    root.Add( new FavoriteRepo( favorite.Key, favorite.Value, true, false, Color.Black, null ) );
                                 }
                             }
 

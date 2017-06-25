@@ -117,6 +117,7 @@
       <DependentUpon>FavoriteCreatorDialog.cs</DependentUpon>
     </Compile>
     <Compile Include="FavoriteRepo.cs" />
+    <Compile Include="FavoriteReposContractResolver.cs" />
     <Compile Include="FavoritesManagerDialog.cs">
       <SubType>Form</SubType>
     </Compile>

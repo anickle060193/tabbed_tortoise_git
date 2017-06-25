@@ -1,10 +1,12 @@
 ﻿using Newtonsoft.Json;
+using Newtonsoft.Json.Serialization;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Reflection;
 
 namespace TabbedTortoiseGit
 {
@@ -14,7 +16,7 @@ namespace TabbedTortoiseGit
         public String Repo { get; private set; }
         public bool IsDirectory { get; private set; }
         public Color Color { get; private set; }
-        public IEnumerable<String> References { get; private set; }
+        public IReadOnlyList<String> References { get; private set; }
 
         public bool IsFavoriteFolder { get; private set; }
 
@@ -29,13 +31,13 @@ namespace TabbedTortoiseGit
             {
                 Repo = repo ?? "";
                 IsDirectory = isDirectory;
-                References = ( references ?? Enumerable.Empty<String>() ).ToList().AsReadOnly();
+                References = references?.ToList().AsReadOnly() ?? new List<String>().AsReadOnly();
             }
             else
             {
                 Repo = "";
                 IsDirectory = false;
-                References = Enumerable.Empty<String>();
+                References = new List<String>().AsReadOnly();
             }
         }
 

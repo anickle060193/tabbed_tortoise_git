@@ -14,7 +14,7 @@ namespace TabbedTortoiseGit
 {
     public partial class ReferencesDialog : Form
     {
-        class DisplayReference : IFormattable
+        class DisplayReference : IFormattable, IComparable<DisplayReference>
         {
             public String Reference { get; private set; }
             public String ShortReference { get; private set; }
@@ -41,6 +41,11 @@ namespace TabbedTortoiseGit
                     return ShortReference;
                 }
             }
+
+            public int CompareTo( DisplayReference other )
+            {
+                return String.Compare( this.Reference, other?.Reference );
+            }
         }
 
         private readonly String _repo;
@@ -49,9 +54,19 @@ namespace TabbedTortoiseGit
         {
             get
             {
-                return SelectedReferencesListBox.Items.Cast<DisplayReference>().Select( r => r.Reference ).ToArray();
+                return _selectedReferences.Select( r => r.Reference ).ToArray();
             }
         }
+
+        private IList<DisplayReference> SelectedReferencesList
+        {
+            get
+            {
+                return _selectedReferences.ToList();
+            }
+        }
+
+        private readonly SortedSet<DisplayReference> _selectedReferences = new SortedSet<DisplayReference>();
 
         public ReferencesDialog( String repo )
         {
@@ -73,7 +88,7 @@ namespace TabbedTortoiseGit
 
             SelectedReferencesListBox.KeyUp += SelectedReferencesListBox_KeyUp;
 
-            RemoveSelectedReferences.Click += RemoveSelectedReferences_Click;
+            RemoveSelectedReferencesButton.Click += RemoveSelectedReferencesButton_Click;
 
             Ok.Click += Ok_Click;
 
@@ -96,13 +111,18 @@ namespace TabbedTortoiseGit
             if( index != ListBox.NoMatches )
             {
                 DisplayReference reference = (DisplayReference)ReferencesListBox.Items[ index ];
-                SelectedReferencesListBox.Items.Add( reference );
+                _selectedReferences.Add( reference );
+                SelectedReferencesListBox.DataSource = SelectedReferencesList;
             }
         }
 
         private void AddSelectedReferencesButton_Click( object sender, EventArgs e )
         {
-            SelectedReferencesListBox.Items.AddRange( ReferencesListBox.SelectedItems.Cast<DisplayReference>().ToArray() );
+            foreach( DisplayReference reference in ReferencesListBox.SelectedItems.Cast<DisplayReference>() )
+            {
+                _selectedReferences.Add( reference );
+            }
+            SelectedReferencesListBox.DataSource = SelectedReferencesList;
             ReferencesListBox.SelectedItems.Clear();
         }
 
@@ -111,19 +131,14 @@ namespace TabbedTortoiseGit
             if( e.KeyCode == Keys.Delete
              || e.KeyCode == Keys.Back )
             {
-                foreach( DisplayReference reference in SelectedReferencesListBox.SelectedItems.Cast<DisplayReference>().ToArray() )
-                {
-                    SelectedReferencesListBox.Items.Remove( reference );
-                }
+                RemoveFromSelectedReferences();
+                e.Handled = true;
             }
         }
 
-        private void RemoveSelectedReferences_Click( object sender, EventArgs e )
+        private void RemoveSelectedReferencesButton_Click( object sender, EventArgs e )
         {
-            foreach( DisplayReference reference in SelectedReferencesListBox.SelectedItems.Cast<DisplayReference>().ToArray() )
-            {
-                SelectedReferencesListBox.Items.Remove( reference );
-            }
+            RemoveFromSelectedReferences();
         }
 
         private void Ok_Click( object sender, EventArgs e )
@@ -169,6 +184,15 @@ namespace TabbedTortoiseGit
             {
                 AddReference( reference, splitRef, index + 1, node.Nodes );
             }
+        }
+
+        private void RemoveFromSelectedReferences()
+        {
+            foreach( DisplayReference reference in SelectedReferencesListBox.SelectedItems.Cast<DisplayReference>() )
+            {
+                _selectedReferences.Remove( reference );
+            }
+            SelectedReferencesListBox.DataSource = SelectedReferencesList;
         }
 
         private void UpdateDisplayedReferences()

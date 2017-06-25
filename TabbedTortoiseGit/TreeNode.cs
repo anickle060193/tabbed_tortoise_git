@@ -79,7 +79,10 @@ namespace TabbedTortoiseGit
         [JsonConstructor]
         public TreeNode( T value, IEnumerable<TreeNode<T>> children ) : this( value )
         {
-            this.Children.AddRange( children );
+            if( children != null )
+            {
+                this.Children.AddRange( children );
+            }
         }
 
         public void Add( TreeNode<T> node )
