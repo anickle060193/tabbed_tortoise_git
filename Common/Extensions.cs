@@ -7,6 +7,7 @@ using System.Drawing;
 using System.Globalization;
 using System.Linq;
 using System.Reflection;
+using System.Runtime.InteropServices;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
@@ -83,6 +84,20 @@ namespace Common
             }
             return name;
         }
+
+        public static Icon ToIcon( this Bitmap bitmap )
+        {
+            IntPtr hIcon = bitmap.GetHicon();
+            using( Icon icon = Icon.FromHandle( hIcon ) )
+            {
+                Icon clonedIcon = (Icon)icon.Clone();
+                DestroyIcon( hIcon );
+                return clonedIcon;
+            }
+        }
+
+        [DllImport( "user32.dll", CharSet = CharSet.Auto )]
+        private static extern bool DestroyIcon( IntPtr handle );
     }
 
     // From http://mo.notono.us/2008/07/c-stringinject-format-strings-by-key.html

@@ -271,6 +271,8 @@ namespace TabbedTortoiseGit
             CreateFavoritesMenu( _favoriteRepos, FavoritesMenuStrip.Items );
 
             FavoritesMenuStrip.ResumeLayout();
+
+            UpdateIcon();
         }
 
         private void CreateFavoritesMenu( TreeNode<FavoriteRepo> favorites, ToolStripItemCollection menuItems )
@@ -294,7 +296,7 @@ namespace TabbedTortoiseGit
                     icon = Resources.File;
                     item.Click += FavoriteRepoMenuItem_Click;
                 }
-                item.Image = Util.ColorIcon( icon, favorite.Value.Color );
+                item.Image = Util.ColorBitmap( icon, favorite.Value.Color );
                 item.Tag = favorite;
                 item.MouseUp += FavoriteMenuItem_MouseUp;
                 item.DropDown.Closing += FavoriteMenuItemDropDown_Closing;
@@ -328,6 +330,18 @@ namespace TabbedTortoiseGit
 
             Settings.Default.Save();
             UpdateRecentReposFromSettings();
+        }
+
+        private FavoriteRepo FindFavorite( String repo )
+        {
+            foreach( TreeNode<FavoriteRepo> favorite in Settings.Default.FavoriteRepos.BreadthFirst )
+            {
+                if( favorite.Value.Repo == repo )
+                {
+                    return favorite.Value;
+                }
+            }
+            return null;
         }
 
         private void AddFavoriteRepo( String path )
@@ -541,18 +555,11 @@ namespace TabbedTortoiseGit
             }
         }
 
-        private async Task OpenFavoriteRepos( TreeNode<FavoriteRepo> favorite )
+        private async Task OpenFavoriteRepos( TreeNode<FavoriteRepo> favoriteFolder )
         {
-            foreach( TreeNode<FavoriteRepo> child in favorite.Children )
+            foreach( TreeNode<FavoriteRepo> favorite in favoriteFolder.BreadthFirst.Where( f => !f.Value.IsFavoriteFolder ) )
             {
-                if( !child.Value.IsFavoriteFolder )
-                {
-                    await OpenLog( child.Value.Repo );
-                }
-                else
-                {
-                    await OpenFavoriteRepos( child );
-                }
+                await OpenLog( favorite.Value.Repo );
             }
         }
 
@@ -619,6 +626,33 @@ namespace TabbedTortoiseGit
                 CloseDropDowns( dropDownItem.DropDownItems );
             }
 
+        }
+
+        private void UpdateIcon()
+        {
+            String repo = LogTabs.SelectedTab?.Controller().RepoItem;
+            if( repo == null )
+            {
+                this.Icon = Resources.TortoiseIcon;
+                return;
+            }
+
+            FavoriteRepo favorite = FindFavorite( repo );
+            if( favorite == null
+             || favorite.Color == Color.Black )
+            {
+                this.Icon = Resources.TortoiseIcon;
+                return;
+            }
+
+            using( Bitmap shell = Resources.TortoiseShell )
+            using( Bitmap coloredShell = Util.ColorBitmap( shell, favorite.Color ) )
+            using( Bitmap background = Resources.TortoiseBody )
+            using( Graphics g = Graphics.FromImage( background ) )
+            {
+                g.DrawImage( coloredShell, 0, 0 );
+                this.Icon = background.ToIcon();
+            }
         }
     }
 }

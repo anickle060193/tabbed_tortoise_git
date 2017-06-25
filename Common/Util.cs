@@ -44,7 +44,7 @@ namespace Common
             }
         }
 
-        public static Bitmap ColorIcon( Bitmap icon, Color color )
+        public static Bitmap ColorBitmap( Bitmap icon, Color color )
         {
             Bitmap colorIcon = new Bitmap( icon );
             using( Graphics g = Graphics.FromImage( colorIcon ) )

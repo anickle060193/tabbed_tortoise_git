@@ -229,6 +229,8 @@ namespace TabbedTortoiseGit
             {
                 this.Text = "Tabbed TortoiseGit";
             }
+
+            UpdateIcon();
         }
 
         private async void FavoriteRepoMenuItem_Click( object sender, EventArgs e )

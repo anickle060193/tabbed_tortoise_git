@@ -191,12 +191,32 @@ namespace TabbedTortoiseGit.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap TortoiseBody {
+            get {
+                object obj = ResourceManager.GetObject("TortoiseBody", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Icon similar to (Icon).
         /// </summary>
         internal static System.Drawing.Icon TortoiseIcon {
             get {
                 object obj = ResourceManager.GetObject("TortoiseIcon", resourceCulture);
                 return ((System.Drawing.Icon)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap TortoiseShell {
+            get {
+                object obj = ResourceManager.GetObject("TortoiseShell", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
             }
         }
     }

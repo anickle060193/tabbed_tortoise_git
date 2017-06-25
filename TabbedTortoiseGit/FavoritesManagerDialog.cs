@@ -322,7 +322,7 @@ namespace TabbedTortoiseGit
                     }
                     if( !FavoritesListImageList.Images.ContainsKey( imageKey ) )
                     {
-                        FavoritesListImageList.Images.Add( imageKey, Util.ColorIcon( icon, favoriteColor ) );
+                        FavoritesListImageList.Images.Add( imageKey, Util.ColorBitmap( icon, favoriteColor ) );
                     }
 
                     item.ImageKey = imageKey;
@@ -340,7 +340,7 @@ namespace TabbedTortoiseGit
                 String imageKey = favoriteColor.ToString() + " FolderFolder";
                 if( !FavoritesTreeImageList.Images.ContainsKey( imageKey ) )
                 {
-                    FavoritesTreeImageList.Images.Add( imageKey, Util.ColorIcon( Resources.FolderFolder, favoriteColor ) );
+                    FavoritesTreeImageList.Images.Add( imageKey, Util.ColorBitmap( Resources.FolderFolder, favoriteColor ) );
                 }
                 TreeNode t = parentNodes.Add( node.Value.Name );
                 t.ImageKey = t.SelectedImageKey = imageKey;

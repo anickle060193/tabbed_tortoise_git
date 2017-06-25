@@ -69,6 +69,41 @@ namespace TabbedTortoiseGit
 
         public TreeNodeCollection<T> Children { get; private set; }
 
+        [JsonIgnore]
+        public IEnumerable<TreeNode<T>> DepthFirst
+        {
+            get
+            {
+                yield return this;
+                foreach( TreeNode<T> child in this.Children )
+                {
+                    foreach( TreeNode<T> childChild in child.DepthFirst )
+                    {
+                        yield return childChild;
+                    }
+                }
+            }
+        }
+
+        [JsonIgnore]
+        public IEnumerable<TreeNode<T>> BreadthFirst
+        {
+            get
+            {
+                Queue<TreeNode<T>> nodesToGo = new Queue<TreeNode<T>>();
+                nodesToGo.Enqueue( this );
+                while( nodesToGo.Count > 0 )
+                {
+                    TreeNode<T> current = nodesToGo.Dequeue();
+                    yield return current;
+                    foreach( TreeNode<T> child in current.Children )
+                    {
+                        nodesToGo.Enqueue( child );
+                    }
+                }
+            }
+        }
+
         public TreeNode( T value )
         {
             Children = new TreeNodeCollection<T>( this );
@@ -102,42 +137,14 @@ namespace TabbedTortoiseGit
 
         public bool NestedContains( TreeNode<T> node )
         {
-            if( this.Children.Contains( node ) )
+            foreach( TreeNode<T> n in this.BreadthFirst )
             {
-                return true;
-            }
-            else
-            {
-                foreach( TreeNode<T> child in this.Children )
+                if( n.Children.Contains( node ) )
                 {
-                    if( child.NestedContains( node ) )
-                    {
-                        return true;
-                    }
+                    return true;
                 }
-                return false;
             }
-        }
-
-        public TreeNode<T> FindValue( T value )
-        {
-            if( this.Value.Equals( value ) )
-            {
-                return this;
-            }
-            else
-            {
-                foreach( TreeNode<T> child in Children )
-                {
-                    TreeNode<T> foundNode = child.FindValue( value );
-                    if( foundNode != null )
-                    {
-                        return foundNode;
-                    }
-                }
-
-                return null;
-            }
+            return false;
         }
 
         public override string ToString()
