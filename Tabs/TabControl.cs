@@ -33,7 +33,7 @@ namespace Tabs
 
         public event EventHandler NewTabClick;
         public event EventHandler<TabClickEventArgs> TabClick;
-        public event EventHandler SelectedIndexChanged;
+        public event EventHandler SelectedTabChanged;
         public event EventHandler<TabAddedEventArgs> TabAdded;
         public event EventHandler<TabRemovedEventArgs> TabRemoved;
         public event EventHandler<TabClosedEventArgs> TabClosed;
@@ -98,7 +98,7 @@ namespace Tabs
                     else
                     {
                         _selectedIndex = value;
-                        OnSelectedIndexChanged( EventArgs.Empty );
+                        OnSelectedTabChanged( EventArgs.Empty );
                     }
                 }
             }
@@ -563,10 +563,12 @@ namespace Tabs
                 if( _tabCount == 0 )
                 {
                     _selectedIndex = -1;
+                    OnSelectedTabChanged( EventArgs.Empty );
                 }
                 else if( _selectedIndex == _tabCount )
                 {
                     _selectedIndex = _tabCount - 1;
+                    OnSelectedTabChanged( EventArgs.Empty );
                 }
             }
             else if( index < _selectedIndex )
@@ -774,11 +776,11 @@ namespace Tabs
             TabClick?.Invoke( this, e );
         }
 
-        protected void OnSelectedIndexChanged( EventArgs e )
+        protected void OnSelectedTabChanged( EventArgs e )
         {
             UpdateTabSelection();
 
-            SelectedIndexChanged?.Invoke( this, e );
+            SelectedTabChanged?.Invoke( this, e );
         }
 
         protected void OnTabAdded( TabAddedEventArgs e )

@@ -34,7 +34,7 @@ namespace TabbedTortoiseGit
             LogTabs.TabRemoved += LogTabs_TabRemoved;
             LogTabs.TabClosed += LogTabs_TabClosed;
             LogTabs.TabPulledOut += LogTabs_TabPulledOut;
-            LogTabs.SelectedIndexChanged += LogTabs_SelectedIndexChanged;
+            LogTabs.SelectedTabChanged += LogTabs_SelectedTabChanged;
             LogTabs.DragOver += TabbedTortoiseGitForm_DragOver;
             LogTabs.DragDrop += TabbedTortoiseGitForm_DragDrop;
 
@@ -212,16 +212,10 @@ namespace TabbedTortoiseGit
 
         private void LogTabs_TabPulledOut( object sender, TabPulledOutEventArgs e )
         {
-            LogTabs.Tabs.Remove( e.Tab );
             ProgramForm.Instance.CreateNewFromTab( e.Tab, e.Location );
-
-            if( LogTabs.TabCount == 0 )
-            {
-                this.Close();
-            }
         }
 
-        private void LogTabs_SelectedIndexChanged( object sender, EventArgs e )
+        private void LogTabs_SelectedTabChanged( object sender, EventArgs e )
         {
             if( LogTabs.SelectedTab != null )
             {
