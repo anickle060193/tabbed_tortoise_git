@@ -102,6 +102,7 @@
             this.MaximizeBox = false;
             this.MinimizeBox = false;
             this.Name = "CloseConfirmationDialog";
+            this.ShowInTaskbar = false;
             this.Text = "Tabbed TortoiseGit";
             this.TopMost = true;
             this.ResumeLayout(false);

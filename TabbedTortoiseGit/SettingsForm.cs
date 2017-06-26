@@ -342,6 +342,8 @@ namespace TabbedTortoiseGit
         {
             InitializeComponent();
 
+            this.Icon = Resources.TortoiseIcon;
+
             _folderDialog = new CommonOpenFileDialog();
             _folderDialog.IsFolderPicker = true;
 
@@ -435,7 +437,7 @@ namespace TabbedTortoiseGit
         private void UpdateShortcutTextBox( TextBox textbox, Shortcut shortcut )
         {
             textbox.Tag = shortcut;
-            textbox.Text = shortcut.Text;
+            textbox.Text = shortcut?.Text;
             textbox.SelectionStart = textbox.TextLength;
         }
 

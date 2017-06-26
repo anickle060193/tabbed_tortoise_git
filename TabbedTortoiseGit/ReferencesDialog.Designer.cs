@@ -270,6 +270,7 @@
             this.Controls.Add(this.Cancel);
             this.Controls.Add(this.OuterSplitContainer);
             this.Name = "ReferencesDialog";
+            this.ShowInTaskbar = false;
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
             this.Text = "Select References";
             this.OuterSplitContainer.Panel1.ResumeLayout(false);

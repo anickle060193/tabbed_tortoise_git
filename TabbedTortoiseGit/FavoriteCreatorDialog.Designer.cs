@@ -181,6 +181,7 @@
             this.MinimizeBox = false;
             this.MinimumSize = new System.Drawing.Size(270, 250);
             this.Name = "FavoriteCreatorDialog";
+            this.ShowInTaskbar = false;
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
             this.Text = "Favorite Creator";
             this.ReferencesGroup.ResumeLayout(false);

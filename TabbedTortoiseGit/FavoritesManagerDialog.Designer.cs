@@ -166,6 +166,7 @@
             this.Controls.Add(this.Cancel);
             this.MinimumSize = new System.Drawing.Size(300, 300);
             this.Name = "FavoritesManagerDialog";
+            this.ShowInTaskbar = false;
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
             this.Text = "Favorites Manager";
             this.FavoritesContextMenu.ResumeLayout(false);

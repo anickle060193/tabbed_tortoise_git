@@ -11,6 +11,7 @@ using System.Linq;
 using System.Reflection;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using TabbedTortoiseGit.Properties;
 
 namespace TabbedTortoiseGit
 {
@@ -28,6 +29,9 @@ namespace TabbedTortoiseGit
         private AboutBox()
         {
             InitializeComponent();
+
+            this.Icon = Resources.TortoiseIcon;
+
             this.Text = "About {0}".XFormat( AssemblyTitle );
             this.ProductNameLabel.Text = AssemblyProduct;
             this.VersionLabel.Text = "Version {0}".XFormat( AssemblyVersion );
