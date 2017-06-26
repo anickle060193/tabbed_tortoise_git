@@ -554,7 +554,12 @@ namespace TabbedTortoiseGit
                 }
             }
 
-            protected override bool MoveItem( CheckedListBox dragParent, string dragItem, int dragItemIndex, CheckedListBox pointedParent, string pointedItem, int pointedItemIndex )
+            protected override bool AllowDrop( CheckedListBox dragParent, string dragItem, int dragItemIndex, CheckedListBox pointedParent, string pointedItem, int pointedItemIndex )
+            {
+                return true;
+            }
+
+            protected override void MoveItem( CheckedListBox dragParent, string dragItem, int dragItemIndex, CheckedListBox pointedParent, string pointedItem, int pointedItemIndex )
             {
                 bool dragItemChecked = dragParent.GetItemChecked( dragItemIndex );
                 bool pointedItemChecked = pointedParent.GetItemChecked( pointedItemIndex );
@@ -566,8 +571,6 @@ namespace TabbedTortoiseGit
                 pointedParent.Items[ pointedItemIndex ] = dragItem;
                 pointedParent.SetItemChecked( pointedItemIndex, dragItemChecked );
                 pointedParent.SetSelected( pointedItemIndex, true );
-
-                return true;
             }
         }
     }

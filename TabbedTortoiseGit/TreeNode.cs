@@ -104,6 +104,42 @@ namespace TabbedTortoiseGit
             }
         }
 
+        [JsonIgnore]
+        public TreeNode<T> Previous
+        {
+            get
+            {
+                if( this.Index > 0 )
+                {
+                    return this.Parent.Children[ this.Index - 1 ];
+                }
+                else
+                {
+                    return null;
+                }
+            }
+        }
+
+        [JsonIgnore]
+        public TreeNode<T> Next
+        {
+            get
+            {
+                if( this.Parent == null )
+                {
+                    return null;
+                }
+                else if( this.Index + 1 >= this.Parent.Children.Count )
+                {
+                    return null;
+                }
+                else
+                {
+                    return this.Parent.Children[ this.Index + 1 ];
+                }
+            }
+        }
+
         public TreeNode( T value )
         {
             Children = new TreeNodeCollection<T>( this );

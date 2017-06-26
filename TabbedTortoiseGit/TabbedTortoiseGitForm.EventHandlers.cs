@@ -199,6 +199,8 @@ namespace TabbedTortoiseGit
             LOG.DebugFormat( "TabRemoved - Tab: {0}", e.Tab );
 
             this.RemoveLogProcess( e.Tab.Controller().Process, false );
+
+            CheckIfLastTab();
         }
 
         private void LogTabs_TabClosed( object sender, TabClosedEventArgs e )

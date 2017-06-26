@@ -1191,7 +1191,8 @@ namespace Tabs
 
                 if( parent.SelectedTab != null )
                 {
-                    if( !parent.SelectedTab.Dragging && parent._painter.GetTabPath( parent.SelectedIndex ).Bounds.Contains( p ) )
+                    if( !parent.SelectedTab.Dragging
+                     && parent._painter.GetTabPath( parent.SelectedIndex ).Bounds.Contains( p ) )
                     {
                         item = parent.SelectedTab;
                         itemIndex = parent.SelectedIndex;
@@ -1230,13 +1231,31 @@ namespace Tabs
                     }
                 }
 
+                if( parent.SelectedTab != null
+                 && parent.SelectedTab.Dragging )
+                {
+                    item = parent.SelectedTab;
+                    itemIndex = parent.SelectedIndex;
+                    return true;
+                }
+
                 item = null;
                 itemIndex = -1;
                 return false;
             }
 
-            protected override bool MoveItem( TabControl dragParent, Tab dragItem, int dragItemIndex, TabControl pointedParent, Tab pointedItem, int pointedItemIndex )
+            protected override bool AllowDrop( TabControl dragParent, Tab dragItem, int dragItemIndex, TabControl pointedParent, Tab pointedItem, int pointedItemIndex )
             {
+                return true;
+            }
+
+            protected override void MoveItem( TabControl dragParent, Tab dragItem, int dragItemIndex, TabControl pointedParent, Tab pointedItem, int pointedItemIndex )
+            {
+                if( dragItem == pointedItem )
+                {
+                    return;
+                }
+
                 if( dragParent == pointedParent )
                 {
                     _owner.SupressTabEvents = true;
@@ -1247,8 +1266,6 @@ namespace Tabs
                 pointedParent.SelectedIndex = pointedItemIndex;
 
                 _owner.SupressTabEvents = false;
-
-                return true;
             }
 
             protected override void OnDragStart( DragStartEventArgs<TabControl, Tab> e )

@@ -45,7 +45,9 @@ namespace Common
 
         protected abstract bool AllowDrag( TControl parent, T item, int index );
 
-        protected abstract bool MoveItem( TControl dragParent, T dragItem, int dragItemIndex, TControl pointedParent, T pointedItem, int pointedItemIndex );
+        protected abstract bool AllowDrop( TControl dragParent, T dragItem, int dragItemIndex, TControl pointedParent, T pointedItem, int pointedItemIndex );
+
+        protected abstract void MoveItem( TControl dragParent, T dragItem, int dragItemIndex, TControl pointedParent, T pointedItem, int pointedItemIndex );
 
         protected virtual bool ItemsEqual( TControl parent1, T item1, int itemIndex1, TControl parent2, T item2, int itemIndex2 )
         {
@@ -57,6 +59,10 @@ namespace Common
         }
 
         protected virtual void OnDragMove( DragMoveEventArgs<TControl, T> e )
+        {
+        }
+
+        protected virtual void OnDragMoveOver( DragMoveOverEventArgs<TControl, T> e )
         {
         }
 
@@ -74,28 +80,45 @@ namespace Common
             _mouseDownParent = null;
         }
 
-        private bool TryMoveItem( TControl pointedParent, DragDropItem<TControl, T> d, DragEventArgs e )
+        private bool MoveItemInternal( TControl pointedParent, DragDropItem<TControl, T> d, DragEventArgs e, bool dropping )
         {
             try
             {
+                Point p = new Point( e.X, e.Y );
+
                 T pointedItem;
                 int pointedItemIndex;
-                if( GetItemFromPoint( pointedParent, pointedParent.PointToClient( new Point( e.X, e.Y ) ), out pointedItem, out pointedItemIndex )
-                 && ( ( pointedParent != d.DragParent )
-                   || ( pointedItemIndex != d.DragItemIndex ) )
+                if( GetItemFromPoint( pointedParent, pointedParent.PointToClient( p ), out pointedItem, out pointedItemIndex )
                  && e.AllowedEffect == DragDropEffects.Move )
                 {
-                    if( MoveItem( d.DragParent, d.DragItem, d.DragItemIndex, pointedParent, pointedItem, pointedItemIndex ) )
+                    OnDragMoveOver( new DragMoveOverEventArgs<TControl, T>( d.DragParent, d.DragItem, d.DragItemIndex, d.DragStart, p, pointedParent, pointedItem, pointedItemIndex ) );
+
+                    if( AllowDrop( d.DragParent, d.DragItem, d.DragItemIndex, pointedParent, pointedItem, pointedItemIndex ) )
                     {
-                        d.UpdateSwapped( pointedParent, pointedItemIndex );
-                        return true;
+                        e.Effect = DragDropEffects.Move;
+
+                        if( dropping
+                         || !MoveOnDragDrop )
+                        {
+                            MoveItem( d.DragParent, d.DragItem, d.DragItemIndex, pointedParent, pointedItem, pointedItemIndex );
+
+                            d.UpdateSwapped( pointedParent, pointedItemIndex );
+
+                            return true;
+                        }
+                        else
+                        {
+                            return false;
+                        }
                     }
                 }
             }
             catch( Exception ex )
             {
-                LOG.Error( "TryMoveItem - An error occurred while trying to move item", ex );
+                LOG.Error( "MoveItemInternal - An error occurred while moving item", ex );
             }
+
+            e.Effect = DragDropEffects.None;
             return false;
         }
 
@@ -184,16 +207,10 @@ namespace Common
                     DragDropItem<TControl, T> d = (DragDropItem<TControl, T>)e.Data.GetData( typeof( DragDropItem<TControl, T> ) );
 
                     TControl pointedParent = (TControl)sender;
-                    Point p = new Point( e.X, e.Y );
 
-                    OnDragMove( new DragMoveEventArgs<TControl, T>( d.DragParent, d.DragItem, d.DragItemIndex, d.DragStart, p ) );
+                    OnDragMove( new DragMoveEventArgs<TControl, T>( d.DragParent, d.DragItem, d.DragItemIndex, d.DragStart, new Point( e.X, e.Y ) ) );
 
-                    e.Effect = DragDropEffects.Move;
-
-                    if( !MoveOnDragDrop )
-                    {
-                        TryMoveItem( pointedParent, d, e );
-                    }
+                    MoveItemInternal( pointedParent, d, e, false );
                 }
             }
             catch( Exception ex )
@@ -206,16 +223,13 @@ namespace Common
         {
             try
             {
-                if( MoveOnDragDrop
-                 && e.Data.GetDataPresent( typeof( DragDropItem<TControl, T> ) ) )
+                if( e.Data.GetDataPresent( typeof( DragDropItem<TControl, T> ) ) )
                 {
                     DragDropItem<TControl, T> d = (DragDropItem<TControl, T>)e.Data.GetData( typeof( DragDropItem<TControl, T> ) );
 
                     TControl pointedParent = (TControl)sender;
 
-                    e.Effect = DragDropEffects.Move;
-
-                    TryMoveItem( pointedParent, d, e );
+                    MoveItemInternal( pointedParent, d, e, true );
                 }
             }
             catch( Exception ex )
@@ -280,6 +294,21 @@ namespace Common
             : base( dragParent, dragItem, dragItemIndex, dragStartPosition )
         {
             DragCurrentPosition = dragCurrentPosition;
+        }
+    }
+
+    public class DragMoveOverEventArgs<TControl, T> : DragMoveEventArgs<TControl, T> where TControl : Control
+    {
+        public TControl PointedParent { get; private set; }
+        public T PointedItem { get; private set; }
+        public int PointedItemIndex { get; private set; }
+
+        public DragMoveOverEventArgs( TControl dragParent, T dragItem, int dragItemIndex, Point dragStartPosition, Point dragCurrentPosition, TControl pointedParent, T pointedItem, int pointedItemIndex )
+            : base( dragParent, dragItem, dragItemIndex, dragStartPosition, dragCurrentPosition )
+        {
+            PointedParent = pointedParent;
+            PointedItem = pointedItem;
+            PointedItemIndex = pointedItemIndex;
         }
     }
 

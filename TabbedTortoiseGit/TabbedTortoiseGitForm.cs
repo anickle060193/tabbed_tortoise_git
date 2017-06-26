@@ -496,10 +496,15 @@ namespace TabbedTortoiseGit
 
             RemoveLogProcess( t.Process, true );
 
+            CheckIfLastTab();
+        }
+
+        private void CheckIfLastTab()
+        {
             if( LogTabs.TabCount == 0
              && Settings.Default.CloseWindowOnLastTabClosed )
             {
-                LOG.Debug( "Close Tab - Closing window after last tab closed" );
+                LOG.Debug( "CheckIfLastTab - Closing window after last tab closed" );
                 this.Close();
             }
         }

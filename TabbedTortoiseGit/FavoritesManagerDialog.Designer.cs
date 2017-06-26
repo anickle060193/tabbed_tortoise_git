@@ -42,29 +42,24 @@
             this.RemoveFavoriteItemMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.Cancel = new System.Windows.Forms.Button();
             this.Ok = new System.Windows.Forms.Button();
-            this.FavoritesList = new System.Windows.Forms.ListView();
-            this.FavoritesListImageList = new System.Windows.Forms.ImageList(this.components);
-            this.SplitContainer = new System.Windows.Forms.SplitContainer();
             this.FindFavoriteFileDialog = new System.Windows.Forms.OpenFileDialog();
             this.FavoritesContextMenu.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.SplitContainer)).BeginInit();
-            this.SplitContainer.Panel1.SuspendLayout();
-            this.SplitContainer.Panel2.SuspendLayout();
-            this.SplitContainer.SuspendLayout();
             this.SuspendLayout();
             // 
             // FavoritesTree
             // 
-            this.FavoritesTree.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.FavoritesTree.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.FavoritesTree.HideSelection = false;
             this.FavoritesTree.ImageIndex = 0;
             this.FavoritesTree.ImageList = this.FavoritesTreeImageList;
-            this.FavoritesTree.Location = new System.Drawing.Point(0, 0);
+            this.FavoritesTree.Location = new System.Drawing.Point(12, 12);
             this.FavoritesTree.Name = "FavoritesTree";
             this.FavoritesTree.SelectedImageIndex = 0;
             this.FavoritesTree.ShowPlusMinus = false;
             this.FavoritesTree.ShowRootLines = false;
-            this.FavoritesTree.Size = new System.Drawing.Size(203, 328);
+            this.FavoritesTree.Size = new System.Drawing.Size(260, 308);
             this.FavoritesTree.TabIndex = 0;
             // 
             // FavoritesTreeImageList
@@ -136,7 +131,7 @@
             // 
             this.Cancel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.Cancel.DialogResult = System.Windows.Forms.DialogResult.Cancel;
-            this.Cancel.Location = new System.Drawing.Point(467, 346);
+            this.Cancel.Location = new System.Drawing.Point(197, 326);
             this.Cancel.Name = "Cancel";
             this.Cancel.Size = new System.Drawing.Size(75, 23);
             this.Cancel.TabIndex = 1;
@@ -147,51 +142,12 @@
             // 
             this.Ok.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.Ok.DialogResult = System.Windows.Forms.DialogResult.OK;
-            this.Ok.Location = new System.Drawing.Point(386, 346);
+            this.Ok.Location = new System.Drawing.Point(116, 326);
             this.Ok.Name = "Ok";
             this.Ok.Size = new System.Drawing.Size(75, 23);
             this.Ok.TabIndex = 2;
             this.Ok.Text = "OK";
             this.Ok.UseVisualStyleBackColor = true;
-            // 
-            // FavoritesList
-            // 
-            this.FavoritesList.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.FavoritesList.LabelWrap = false;
-            this.FavoritesList.Location = new System.Drawing.Point(0, 0);
-            this.FavoritesList.MultiSelect = false;
-            this.FavoritesList.Name = "FavoritesList";
-            this.FavoritesList.ShowGroups = false;
-            this.FavoritesList.Size = new System.Drawing.Size(323, 328);
-            this.FavoritesList.SmallImageList = this.FavoritesListImageList;
-            this.FavoritesList.TabIndex = 3;
-            this.FavoritesList.UseCompatibleStateImageBehavior = false;
-            this.FavoritesList.View = System.Windows.Forms.View.List;
-            // 
-            // FavoritesListImageList
-            // 
-            this.FavoritesListImageList.ColorDepth = System.Windows.Forms.ColorDepth.Depth32Bit;
-            this.FavoritesListImageList.ImageSize = new System.Drawing.Size(16, 16);
-            this.FavoritesListImageList.TransparentColor = System.Drawing.Color.Transparent;
-            // 
-            // SplitContainer
-            // 
-            this.SplitContainer.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.SplitContainer.Location = new System.Drawing.Point(12, 12);
-            this.SplitContainer.Name = "SplitContainer";
-            // 
-            // SplitContainer.Panel1
-            // 
-            this.SplitContainer.Panel1.Controls.Add(this.FavoritesTree);
-            // 
-            // SplitContainer.Panel2
-            // 
-            this.SplitContainer.Panel2.Controls.Add(this.FavoritesList);
-            this.SplitContainer.Size = new System.Drawing.Size(530, 328);
-            this.SplitContainer.SplitterDistance = 203;
-            this.SplitContainer.TabIndex = 4;
             // 
             // FindFavoriteFileDialog
             // 
@@ -204,18 +160,15 @@
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.CancelButton = this.Cancel;
-            this.ClientSize = new System.Drawing.Size(554, 381);
-            this.Controls.Add(this.SplitContainer);
+            this.ClientSize = new System.Drawing.Size(284, 361);
+            this.Controls.Add(this.FavoritesTree);
             this.Controls.Add(this.Ok);
             this.Controls.Add(this.Cancel);
+            this.MinimumSize = new System.Drawing.Size(300, 300);
             this.Name = "FavoritesManagerDialog";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
             this.Text = "Favorites Manager";
             this.FavoritesContextMenu.ResumeLayout(false);
-            this.SplitContainer.Panel1.ResumeLayout(false);
-            this.SplitContainer.Panel2.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.SplitContainer)).EndInit();
-            this.SplitContainer.ResumeLayout(false);
             this.ResumeLayout(false);
 
         }
@@ -225,8 +178,6 @@
         private System.Windows.Forms.TreeView FavoritesTree;
         private System.Windows.Forms.Button Cancel;
         private System.Windows.Forms.Button Ok;
-        private System.Windows.Forms.ListView FavoritesList;
-        private System.Windows.Forms.SplitContainer SplitContainer;
         private System.Windows.Forms.ContextMenuStrip FavoritesContextMenu;
         private System.Windows.Forms.ToolStripMenuItem CreateFavoritesFolderMenuItem;
         private System.Windows.Forms.ImageList FavoritesTreeImageList;
@@ -238,6 +189,5 @@
         private System.Windows.Forms.ToolStripSeparator FavoritesContextMenuSeparator2;
         private System.Windows.Forms.ToolStripMenuItem EditFavoriteItemMenuItem;
         private System.Windows.Forms.ToolStripSeparator FavoritesContextMenuSeparator3;
-        private System.Windows.Forms.ImageList FavoritesListImageList;
     }
 }
