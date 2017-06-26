@@ -7,6 +7,7 @@ using System.Drawing;
 using System.Drawing.Drawing2D;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
@@ -17,6 +18,7 @@ namespace Tabs
         private readonly TabCollection _tabCollection;
         private readonly TabPainter _painter;
         private readonly TabControlDragDropHelper _dragDropHelper;
+        private readonly ToolTip _tabToolTip;
 
         private Tab[] _tabs;
         private int _tabCount = 0;
@@ -30,6 +32,7 @@ namespace Tabs
         private bool _insertingItem = false;
         private bool _currentlyScaling = false;
         private ContextMenuStrip _optionsMenu;
+        private CancellationTokenSource _tabToolTipCancellationToken;
 
         public event EventHandler NewTabClick;
         public event EventHandler<TabClickEventArgs> TabClick;
@@ -373,6 +376,11 @@ namespace Tabs
 
             _dragDropHelper = new TabControlDragDropHelper( this );
             _dragDropHelper.AddControl( this );
+
+            _tabToolTip = new ToolTip()
+            {
+                AutomaticDelay = 750
+            };
         }
 
         public void NextTab()
@@ -643,6 +651,17 @@ namespace Tabs
             UpdateTabSelection();
         }
 
+        private void ShowTabToolTip( Tab tab )
+        {
+            int index = this.Tabs.IndexOf( tab );
+            if( index != -1 )
+            {
+                Rectangle bounds = this.GetTabRect( index );
+                int x = this.PointToClient( MousePosition ).X;
+                _tabToolTip.Show( tab.Text, this, x, bounds.Bottom );
+            }
+        }
+
         protected override Control.ControlCollection CreateControlsInstance()
         {
             return new ControlCollection( this );
@@ -690,6 +709,29 @@ namespace Tabs
             base.OnMouseMove( e );
 
             this.Invalidate();
+
+            Tab tab = this.GetTabFromPoint( e.Location );
+            if( tab != null )
+            {
+                if( _tabToolTip.Tag != tab )
+                {
+                    _tabToolTipCancellationToken?.Cancel();
+
+                    _tabToolTip.Tag = tab;
+
+                    _tabToolTipCancellationToken = new CancellationTokenSource();
+
+                    Task.Delay( _tabToolTip.InitialDelay, _tabToolTipCancellationToken.Token )
+                        .ContinueWith( task => ShowTabToolTip( tab ), TaskScheduler.FromCurrentSynchronizationContext() );
+                }
+            }
+            else
+            {
+                _tabToolTipCancellationToken?.Cancel();
+
+                _tabToolTip.Tag = null;
+                _tabToolTip.Hide( this );
+            }
         }
 
         protected override void OnMouseClick( MouseEventArgs e )
