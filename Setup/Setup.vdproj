@@ -39,12 +39,6 @@
         }
         "Entry"
         {
-        "MsmKey" = "8:_10FD9D5B390F420A7B70E8BA24FD56B6"
-        "OwnerKey" = "8:_160F0C2105ED43BEB9FF74D75B8A5D4F"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
         "MsmKey" = "8:_126B9DCDF79D6158FDF99DBB3038549C"
         "OwnerKey" = "8:_160F0C2105ED43BEB9FF74D75B8A5D4F"
         "MsmSig" = "8:_UNDEFINED"
@@ -557,12 +551,6 @@
         {
         "MsmKey" = "8:_UNDEFINED"
         "OwnerKey" = "8:_A3AC5914C40B429172DD3A0558D905FB"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
-        "MsmKey" = "8:_UNDEFINED"
-        "OwnerKey" = "8:_10FD9D5B390F420A7B70E8BA24FD56B6"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
@@ -1126,37 +1114,6 @@
             "IsDependency" = "11:TRUE"
             "IsolateTo" = "8:"
             }
-            "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_10FD9D5B390F420A7B70E8BA24FD56B6"
-            {
-            "AssemblyRegister" = "3:1"
-            "AssemblyIsInGAC" = "11:FALSE"
-            "AssemblyAsmDisplayName" = "8:Gma.System.MouseKeyHook, Version=5.4.0.0, Culture=neutral, processorArchitecture=MSIL"
-                "ScatterAssemblies"
-                {
-                    "_10FD9D5B390F420A7B70E8BA24FD56B6"
-                    {
-                    "Name" = "8:Gma.System.MouseKeyHook.dll"
-                    "Attributes" = "3:512"
-                    }
-                }
-            "SourcePath" = "8:Gma.System.MouseKeyHook.dll"
-            "TargetName" = "8:"
-            "Tag" = "8:"
-            "Folder" = "8:_E3807B2F33FD4261B64F191A30468331"
-            "Condition" = "8:"
-            "Transitive" = "11:FALSE"
-            "Vital" = "11:TRUE"
-            "ReadOnly" = "11:FALSE"
-            "Hidden" = "11:FALSE"
-            "System" = "11:FALSE"
-            "Permanent" = "11:FALSE"
-            "SharedLegacy" = "11:FALSE"
-            "PackageAs" = "3:1"
-            "Register" = "3:1"
-            "Exclude" = "11:FALSE"
-            "IsDependency" = "11:TRUE"
-            "IsolateTo" = "8:"
-            }
             "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_126B9DCDF79D6158FDF99DBB3038549C"
             {
             "AssemblyRegister" = "3:1"
@@ -1626,7 +1583,7 @@
             {
             "AssemblyRegister" = "3:1"
             "AssemblyIsInGAC" = "11:FALSE"
-            "AssemblyAsmDisplayName" = "8:Tabs, Version=0.20.1.0, Culture=neutral, processorArchitecture=MSIL"
+            "AssemblyAsmDisplayName" = "8:Tabs, Version=0.20.2.0, Culture=neutral, processorArchitecture=MSIL"
                 "ScatterAssemblies"
                 {
                     "_44623D4DCC9C57132255F2287A495C6B"
@@ -2018,7 +1975,7 @@
             {
             "AssemblyRegister" = "3:1"
             "AssemblyIsInGAC" = "11:FALSE"
-            "AssemblyAsmDisplayName" = "8:Common, Version=0.20.1.0, Culture=neutral, processorArchitecture=MSIL"
+            "AssemblyAsmDisplayName" = "8:Common, Version=0.20.2.0, Culture=neutral, processorArchitecture=MSIL"
                 "ScatterAssemblies"
                 {
                     "_8197BCB484177ECC3E798F9C581E0873"
@@ -3137,15 +3094,15 @@
         {
         "Name" = "8:Microsoft Visual Studio"
         "ProductName" = "8:Tabbed TortoiseGit"
-        "ProductCode" = "8:{EDE4F691-8B8D-4F90-AA80-739E761ECCC3}"
-        "PackageCode" = "8:{9F197794-3114-401F-A382-7C7BD48AD001}"
+        "ProductCode" = "8:{3EDA7177-ABAA-4AB8-A84A-54FCFFA07049}"
+        "PackageCode" = "8:{854B4057-6DFD-4426-84C7-6AE99FB700CE}"
         "UpgradeCode" = "8:{3DE2617B-9A43-49DF-AE0C-4DD2428C49F0}"
         "AspNetVersion" = "8:4.0.30319.0"
         "RestartWWWService" = "11:FALSE"
         "RemovePreviousVersions" = "11:TRUE"
         "DetectNewerInstalledVersion" = "11:FALSE"
         "InstallAllUsers" = "11:FALSE"
-        "ProductVersion" = "8:0.20.2"
+        "ProductVersion" = "8:0.21.0"
         "Manufacturer" = "8:TabbedTortoiseGit"
         "ARPHELPTELEPHONE" = "8:"
         "ARPHELPLINK" = "8:"
