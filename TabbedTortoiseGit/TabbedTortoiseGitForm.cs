@@ -102,39 +102,39 @@ namespace TabbedTortoiseGit
             }
             else if( keyboardShortcut == KeyboardShortcuts.Commit )
             {
-                await TortoiseGit.Commit( LogTabs.SelectedTab.Controller().RepoItem );
+                await GitAction.Commit( LogTabs.SelectedTab.Controller().RepoItem );
             }
             else if( keyboardShortcut == KeyboardShortcuts.FastFetch )
             {
-                await TortoiseGit.FastFetch( LogTabs.SelectedTab.Controller().RepoItem );
+                await GitAction.FastFetch( LogTabs.SelectedTab.Controller().RepoItem );
             }
             else if( keyboardShortcut == KeyboardShortcuts.FastSubmoduleUpdate )
             {
-                await TortoiseGit.FastSubmoduleUpdate( LogTabs.SelectedTab.Controller().RepoItem );
+                await GitAction.FastSubmoduleUpdate( LogTabs.SelectedTab.Controller().RepoItem );
             }
             else if( keyboardShortcut == KeyboardShortcuts.Fetch )
             {
-                await TortoiseGit.Fetch( LogTabs.SelectedTab.Controller().RepoItem );
+                await GitAction.Fetch( LogTabs.SelectedTab.Controller().RepoItem );
             }
             else if( keyboardShortcut == KeyboardShortcuts.Pull )
             {
-                await TortoiseGit.Pull( LogTabs.SelectedTab.Controller().RepoItem );
+                await GitAction.Pull( LogTabs.SelectedTab.Controller().RepoItem );
             }
             else if( keyboardShortcut == KeyboardShortcuts.Push )
             {
-                await TortoiseGit.Push( LogTabs.SelectedTab.Controller().RepoItem );
+                await GitAction.Push( LogTabs.SelectedTab.Controller().RepoItem );
             }
             else if( keyboardShortcut == KeyboardShortcuts.Rebase )
             {
-                await TortoiseGit.Rebase( LogTabs.SelectedTab.Controller().RepoItem );
+                await GitAction.Rebase( LogTabs.SelectedTab.Controller().RepoItem );
             }
             else if( keyboardShortcut == KeyboardShortcuts.SubmoduleUpdate )
             {
-                await TortoiseGit.SubmoduleUpdate( LogTabs.SelectedTab.Controller().RepoItem );
+                await GitAction.SubmoduleUpdate( LogTabs.SelectedTab.Controller().RepoItem );
             }
             else if( keyboardShortcut == KeyboardShortcuts.SwitchCheckout )
             {
-                await TortoiseGit.Switch( LogTabs.SelectedTab.Controller().RepoItem );
+                await GitAction.Switch( LogTabs.SelectedTab.Controller().RepoItem );
             }
             else
             {
@@ -232,16 +232,16 @@ namespace TabbedTortoiseGit
             FavoriteRepoContextMenu.Items.Clear();
             FavoriteRepoContextMenu.Items.Add( OpenFavoriteRepoLocationContextMenuItem );
 
-            List<TortoiseGitCommand> actions = Settings.Default.TabContextMenuGitActions
-                                                    .Where( action => TortoiseGit.ACTIONS.ContainsKey( action ) )
-                                                    .Select( action => TortoiseGit.ACTIONS[ action ] ).ToList();
+            List<GitAction> actions = Settings.Default.TabContextMenuGitActions
+                                                    .Where( action => GitAction.ACTIONS.ContainsKey( action ) )
+                                                    .Select( action => GitAction.ACTIONS[ action ] ).ToList();
             if( actions.Count > 0 )
             {
                 TabContextMenu.Items.Add( "-" );
 
                 FavoriteRepoContextMenu.Items.Add( "-" );
 
-                foreach( TortoiseGitCommand action in actions )
+                foreach( GitAction action in actions )
                 {
                     ToolStripItem tabMenuItem = TabContextMenu.Items.Add( action.Name, action.Icon );
                     tabMenuItem.Click += GitCommandTabMenuItem_Click;
@@ -388,7 +388,7 @@ namespace TabbedTortoiseGit
         {
             AddToRecentRepos( path );
 
-            Process p = TortoiseGit.Log( path, references );
+            Process p = GitAction.Log( path, references );
             await AddNewLogProcess( p, path );
         }
 

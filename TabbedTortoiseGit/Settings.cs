@@ -385,7 +385,7 @@ namespace TabbedTortoiseGit.Properties
 
             if( Settings.Default.TabContextMenuGitActions == null )
             {
-                Settings.Default.TabContextMenuGitActions = new List<String>( TortoiseGit.ACTIONS.Keys );
+                Settings.Default.TabContextMenuGitActions = new List<String>( GitAction.ACTIONS.Keys );
             }
 
             if( Settings.Default.MaxRecentRepos <= 0 )

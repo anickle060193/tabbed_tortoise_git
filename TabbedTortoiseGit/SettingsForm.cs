@@ -143,7 +143,7 @@ namespace TabbedTortoiseGit
                 }
                 foreach( String action in value.Reverse<String>() )
                 {
-                    if( TortoiseGit.ACTIONS.ContainsKey( action ) )
+                    if( GitAction.ACTIONS.ContainsKey( action ) )
                     {
                         GitActionsCheckList.Items.Remove( action );
                         GitActionsCheckList.Items.Insert( 0, action );
@@ -369,7 +369,7 @@ namespace TabbedTortoiseGit
 
             this.StartupReposList.SelectedValueChanged += DefaultReposList_SelectedValueChanged;
 
-            this.GitActionsCheckList.Items.AddRange( TortoiseGit.ACTIONS.Keys.ToArray() );
+            this.GitActionsCheckList.Items.AddRange( GitAction.ACTIONS.Keys.ToArray() );
 
             this.ResetNormalTabFontButton.Click += ResetNormalTabFontButton_Click;
             this.ChangeNormalTabFontButton.Click += ChangeNormalTabFontButton_Click;

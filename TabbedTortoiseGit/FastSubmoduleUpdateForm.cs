@@ -28,10 +28,10 @@ namespace TabbedTortoiseGit
 
         public String Repo { get; private set; }
 
-        public static void UpdateSubmodules( String repo )
+        public static bool UpdateSubmodules( String repo )
         {
             FastSubmoduleUpdateForm f = new FastSubmoduleUpdateForm( repo );
-            f.ShowDialog();
+            return f.ShowDialog() == DialogResult.OK;
         }
 
         private FastSubmoduleUpdateForm( String repo )
@@ -315,9 +315,11 @@ namespace TabbedTortoiseGit
                 int maxProcesses = (int)MaxProcessCountNumeric.Value;
 
                 List<String> checkedSubmodules = SubmoduleCheckList.CheckedItems.Cast<String>().ToList();
-                this.Close();
-                var processes = checkedSubmodules.Select( submodule => CreateUpdateSubmoduleProcess( Repo, submodule, init, recursive, force ) );
+                IEnumerable<Process> processes = checkedSubmodules.Select( submodule => CreateUpdateSubmoduleProcess( Repo, submodule, init, recursive, force ) );
                 ProcessProgressDialog.ShowProgress( this.Text, "Submodule Update Completed", processes, maxProcesses );
+
+                this.DialogResult = DialogResult.OK;
+                this.Close();
             }
             else
             {

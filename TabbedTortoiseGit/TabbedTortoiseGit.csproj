@@ -171,7 +171,7 @@
       <DependentUpon>TabbedTortoiseGitForm.cs</DependentUpon>
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="TortoiseGit.cs" />
+    <Compile Include="GitAction.cs" />
     <EmbeddedResource Include="AboutBox.resx">
       <DependentUpon>AboutBox.cs</DependentUpon>
     </EmbeddedResource>

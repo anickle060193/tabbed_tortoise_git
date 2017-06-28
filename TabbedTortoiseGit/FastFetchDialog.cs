@@ -18,10 +18,10 @@ namespace TabbedTortoiseGit
 {
     public partial class FastFetchDialog : Form
     {
-        public static void FastFetch( String repo )
+        public static bool FastFetch( String repo )
         {
             FastFetchDialog f = new FastFetchDialog( repo );
-            f.ShowDialog();
+            return f.ShowDialog() == DialogResult.OK;
         }
 
         public String Repo { get; private set; }
@@ -131,6 +131,7 @@ namespace TabbedTortoiseGit
 
             FastFetchDialog.Fetch( this.Text, "Fast Fetch Completed", Repo, tags, prune, progress, maxProcesses );
 
+            this.DialogResult = DialogResult.OK;
             this.Close();
         }
 
@@ -157,7 +158,7 @@ namespace TabbedTortoiseGit
             ProcessProgressDialog.ShowProgress( title, completedText, fetchProcesses, maxProcesses, options );
         }
 
-        public static void FasterFetch( String repo )
+        public static bool FasterFetch( String repo )
         {
             if( Settings.Default.ConfirmFasterFetch )
             {
@@ -179,7 +180,7 @@ namespace TabbedTortoiseGit
                 }
                 else
                 {
-                    return;
+                    return false;
                 }
             }
 
@@ -189,6 +190,7 @@ namespace TabbedTortoiseGit
             int maxProcesses = Settings.Default.FastFetchMaxProcesses;
 
             FastFetchDialog.Fetch( repo + " - " + "Faster Fetch", "Faster Fetch Completed", repo, tags, prune, progress, maxProcesses );
+            return true;
         }
     }
 }
