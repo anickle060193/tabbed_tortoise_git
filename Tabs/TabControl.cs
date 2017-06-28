@@ -662,6 +662,17 @@ namespace Tabs
             }
         }
 
+        private void HideTabToolTip()
+        {
+            _tabToolTipCancellationToken?.Cancel();
+
+            _tabToolTip.Tag = null;
+            if( !this.IsDisposed )
+            {
+                _tabToolTip.Hide( this );
+            }
+        }
+
         protected override Control.ControlCollection CreateControlsInstance()
         {
             return new ControlCollection( this );
@@ -715,22 +726,22 @@ namespace Tabs
             {
                 if( _tabToolTip.Tag != tab )
                 {
-                    _tabToolTipCancellationToken?.Cancel();
+                    this.HideTabToolTip();
 
                     _tabToolTip.Tag = tab;
 
-                    _tabToolTipCancellationToken = new CancellationTokenSource();
+                    if( !tab.Dragging )
+                    {
+                        _tabToolTipCancellationToken = new CancellationTokenSource();
 
-                    Task.Delay( _tabToolTip.InitialDelay, _tabToolTipCancellationToken.Token )
-                        .ContinueWith( task => ShowTabToolTip( tab ), TaskScheduler.FromCurrentSynchronizationContext() );
+                        Task.Delay( _tabToolTip.InitialDelay, _tabToolTipCancellationToken.Token )
+                            .ContinueWith( task => ShowTabToolTip( tab ), TaskScheduler.FromCurrentSynchronizationContext() );
+                    }
                 }
             }
             else
             {
-                _tabToolTipCancellationToken?.Cancel();
-
-                _tabToolTip.Tag = null;
-                _tabToolTip.Hide( this );
+                this.HideTabToolTip();
             }
         }
 
@@ -1323,6 +1334,8 @@ namespace Tabs
 
             protected override void OnDragMove( DragMoveEventArgs<TabControl, Tab> e )
             {
+                _owner.HideTabToolTip();
+
                 e.DragItem.DraggingX = e.DragParent.PointToClient( e.DragCurrentPosition ).X;
             }
 
