@@ -162,7 +162,7 @@
       <DependentUpon>SettingsForm.cs</DependentUpon>
     </Compile>
     <Compile Include="Shortcut.cs" />
-    <Compile Include="TabControllerTab.cs" />
+    <Compile Include="TabControllerTag.cs" />
     <Compile Include="TreeNode.cs" />
     <Compile Include="TTG.cs" />
     <Compile Include="TabbedTortoiseGitForm.cs">

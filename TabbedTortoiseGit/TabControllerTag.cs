@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Drawing;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -17,6 +18,7 @@ namespace TabbedTortoiseGit
     {
         private static readonly ILog LOG = LogManager.GetLogger( typeof( TabControllerTag ) );
 
+        private Color _lastColor;
         private bool _modified;
 
         public Tab Tab { get; private set; }
@@ -47,6 +49,9 @@ namespace TabbedTortoiseGit
             TabControllerTag tag = new TabControllerTag( t, p, repo );
 
             t.Tag = tag;
+
+            tag.UpdateTabDisplay();
+            tag.UpdateIcon();
 
             return tag;
         }
@@ -89,6 +94,38 @@ namespace TabbedTortoiseGit
             {
                 this.Tab.Font = Settings.Default.NormalTabFont;
                 this.Tab.ForeColor = Settings.Default.NormalTabFontColor;
+            }
+        }
+
+        public void UpdateIcon()
+        {
+            Color tabColor = Settings.Default.FavoriteRepos
+                                                .BreadthFirst
+                                                .Where( f => f.Value.Repo == this.RepoItem )
+                                                .FirstOrDefault()?.Value?.Color ?? Color.Black;
+            if( tabColor != _lastColor
+             || this.Tab.Icon == null )
+            {
+                Bitmap icon;
+                if( File.Exists( this.RepoItem ) )
+                {
+                    icon = Resources.File;
+                }
+                else
+                {
+                    icon = Resources.Folder;
+                }
+
+                if( tabColor == Color.Black )
+                {
+                    this.Tab.Icon = icon;
+                }
+                else
+                {
+                    this.Tab.Icon = Util.ColorBitmap( icon, tabColor );
+                }
+
+                _lastColor = tabColor;
             }
         }
 
@@ -146,7 +183,7 @@ namespace TabbedTortoiseGit
     {
         public static TabControllerTag Controller( this Tab tab )
         {
-            return tab?.Tag as TabControllerTag;
+            return (TabControllerTag)tab.Tag;
         }
     }
 }

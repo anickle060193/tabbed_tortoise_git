@@ -13,6 +13,8 @@ namespace Tabs
     [ToolboxItem( false )]
     public class Tab : Panel
     {
+        private Bitmap _icon;
+
         private bool _dragging = false;
         private int _draggingOffset = 0;
         private int _draggingX = 0;
@@ -65,6 +67,25 @@ namespace Tabs
                 if( ForeColor != value )
                 {
                     base.ForeColor = value;
+                    this.Parent?.Invalidate();
+                }
+            }
+        }
+
+        [DefaultValue( typeof( Bitmap ), "" )]
+        [Browsable( true )]
+        public Bitmap Icon
+        {
+            get
+            {
+                return _icon;
+            }
+
+            set
+            {
+                if( _icon != value )
+                {
+                    _icon = value;
                     this.Parent?.Invalidate();
                 }
             }

@@ -190,6 +190,7 @@ namespace TabbedTortoiseGit
                 foreach( TabControllerTag tag in _tags.Values )
                 {
                     tag.UpdateTabDisplay();
+                    tag.UpdateIcon();
                 }
             }
 
@@ -271,6 +272,11 @@ namespace TabbedTortoiseGit
             CreateFavoritesMenu( _favoriteRepos, FavoritesMenuStrip.Items );
 
             FavoritesMenuStrip.ResumeLayout();
+
+            foreach( Tab tab in LogTabs.Tabs )
+            {
+                tab.Controller().UpdateIcon();
+            }
 
             UpdateIcon();
         }
@@ -630,7 +636,6 @@ namespace TabbedTortoiseGit
                 dropDownItem.HideDropDown();
                 CloseDropDowns( dropDownItem.DropDownItems );
             }
-
         }
 
         private void UpdateIcon()

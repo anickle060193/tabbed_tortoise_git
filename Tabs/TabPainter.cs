@@ -13,24 +13,27 @@ namespace Tabs
 {
     internal class TabPainter
     {
-        private static readonly int TOP_PADDING = 1;
-        private static readonly int LEFT_PADDING = 6;
-        private static readonly int RIGHT_PADDING = 6;
+        private const int TOP_PADDING = 1;
+        private const int LEFT_PADDING = 6;
+        private const int RIGHT_PADDING = 6;
 
-        private static readonly int TAB_HEIGHT = 26;
-        private static readonly double TAB_INCLINE_ANGLE = 65 * ( Math.PI ) / 180;
+        private const int TAB_HEIGHT = 26;
+        private const double TAB_INCLINE_ANGLE = 65 * ( Math.PI ) / 180;
 
-        private static readonly int TAB_CLOSE_BUTTON_RADIUS = 7;
-        private static readonly float TAB_CLOSE_X_INSET = 3.5f;
+        private const int TAB_ICON_PADDING = 3;
+        private const int TAB_ICON_SIZE = 16;
 
-        private static readonly int NEW_TAB_BUTTON_WIDTH = 32;
-        private static readonly float NEW_TAB_HEIGHT_PERCENTAGE = 0.65f;
-        private static readonly int NEW_TAB_PLUS_SIZE = 8;
+        private const int TAB_CLOSE_BUTTON_RADIUS = 7;
+        private const float TAB_CLOSE_X_INSET = 3.5f;
 
-        private static readonly int OPTIONS_MENU_BUTTON_WIDTH = 24;
-        private static readonly float OPTIONS_MENU_BUTTON_HEIGHT_PERCENTAGE = 0.90f;
+        private const int NEW_TAB_BUTTON_WIDTH = 32;
+        private const float NEW_TAB_HEIGHT_PERCENTAGE = 0.65f;
+        private const int NEW_TAB_PLUS_SIZE = 8;
 
-        private static readonly int BOTTOM_BORDER_HEIGHT = 4;
+        private const int OPTIONS_MENU_BUTTON_WIDTH = 24;
+        private const float OPTIONS_MENU_BUTTON_HEIGHT_PERCENTAGE = 0.90f;
+
+        private const int BOTTOM_BORDER_HEIGHT = 4;
 
         public Point OptionsMenuLocation
         {
@@ -227,21 +230,33 @@ namespace Tabs
                 g.DrawPointPath( p, path, false );
             }
 
-            using( SolidBrush b = new SolidBrush( t.ForeColor ) )
+            int textAreaWidth = path.MinimumBounds.Width - 2 * TAB_CLOSE_BUTTON_RADIUS;
+            int textAreaX = path.MinimumBounds.X;
+
+            if( t.Icon != null )
             {
-                bool isPath = t.Text.Contains( Path.DirectorySeparatorChar ) || t.Text.Contains( Path.AltDirectorySeparatorChar );
-                StringFormat f = new StringFormat()
-                {
-                    FormatFlags = StringFormatFlags.NoWrap,
-                    Alignment = StringAlignment.Center,
-                    LineAlignment = StringAlignment.Center,
-                    Trimming = isPath ? StringTrimming.EllipsisPath : StringTrimming.EllipsisWord
-                };
-                int width = path.MinimumBounds.Width - 2 * TAB_CLOSE_BUTTON_RADIUS;
-                int height = path.MinimumBounds.Height;
-                Rectangle bounds = new Rectangle( path.MinimumBounds.Location, new Size( width, height ) );
-                g.DrawString( t.Text, t.Font, b, bounds, f );
+                int x = path.MinimumBounds.Left + TAB_ICON_PADDING;
+                int y = path.MinimumBounds.Top + ( path.MinimumBounds.Height - TAB_ICON_SIZE ) / 2;
+                g.DrawImage( t.Icon, new Rectangle( x, y, TAB_ICON_SIZE, TAB_ICON_SIZE ) );
+                textAreaWidth -= TAB_ICON_SIZE + 2 * TAB_ICON_PADDING;
+                textAreaX += TAB_ICON_SIZE + 2 * TAB_ICON_PADDING;
             }
+
+            Rectangle bounds = new Rectangle( textAreaX, path.MinimumBounds.Y, textAreaWidth, path.MinimumBounds.Height );
+            TextFormatFlags flags = TextFormatFlags.HorizontalCenter
+                                  | TextFormatFlags.VerticalCenter
+                                  | TextFormatFlags.SingleLine
+                                  | TextFormatFlags.LeftAndRightPadding;
+            if( t.Text.Contains( Path.DirectorySeparatorChar )
+             || t.Text.Contains( Path.AltDirectorySeparatorChar ) )
+            {
+                flags |= TextFormatFlags.PathEllipsis;
+            }
+            else
+            {
+                flags |= TextFormatFlags.WordEllipsis;
+            }
+            TextRenderer.DrawText( g, t.Text, t.Font, bounds, t.ForeColor, flags );
 
             PaintTabClose( g, index );
         }

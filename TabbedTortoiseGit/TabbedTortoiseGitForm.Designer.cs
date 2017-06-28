@@ -211,7 +211,7 @@
             this.FavoritesFolderContextMenu.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.RemoveFavoriteFolderContextMenuItem});
             this.FavoritesFolderContextMenu.Name = "FavoritesFolderContextMenu";
-            this.FavoritesFolderContextMenu.Size = new System.Drawing.Size(199, 48);
+            this.FavoritesFolderContextMenu.Size = new System.Drawing.Size(199, 26);
             // 
             // RemoveFavoriteFolderContextMenuItem
             // 
