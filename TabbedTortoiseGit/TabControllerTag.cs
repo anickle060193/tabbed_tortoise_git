@@ -129,6 +129,14 @@ namespace TabbedTortoiseGit
             }
         }
 
+        private void EndProcess()
+        {
+            if( !this.Process.CloseMainWindow() )
+            {
+                this.Process.Kill();
+            }
+        }
+
         public void Close()
         {
             this.Tab.Resize -= Tab_Resize;
@@ -139,7 +147,7 @@ namespace TabbedTortoiseGit
 
             if( !this.Process.HasExited )
             {
-                this.Process.Kill();
+                Task.Run( (Action)this.EndProcess );
             }
         }
 
