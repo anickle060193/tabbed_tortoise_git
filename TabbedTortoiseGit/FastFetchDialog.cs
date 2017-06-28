@@ -1,5 +1,6 @@
 ﻿using Common;
 using LibGit2Sharp;
+using Microsoft.WindowsAPICodePack.Dialogs;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -86,11 +87,11 @@ namespace TabbedTortoiseGit
             MaxProcessesNumeric.Value = Settings.Default.FastFetchMaxProcesses;
         }
 
-        private Process CreateFetchProcess( String path, bool tags, bool prune, bool isSubmodule )
+        private static Process CreateFetchProcess( String path, bool tags, bool prune, bool progress, bool isSubmodule )
         {
             StringBuilder args = new StringBuilder( "fetch " );
 
-            if( ShowProgressCheck.Checked )
+            if( progress )
             {
                 args.Append( "--progress " );
             }
@@ -125,29 +126,69 @@ namespace TabbedTortoiseGit
         {
             bool tags = TagsCheck.Checked;
             bool prune = PruneCheck.Checked;
+            bool progress = ShowProgressCheck.Checked;
             int maxProcesses = (int)MaxProcessesNumeric.Value;
 
-            List<Process> fetchProcesses = new List<Process>();
-            fetchProcesses.Add( CreateFetchProcess( Repo, tags, prune, false ) );
+            FastFetchDialog.Fetch( this.Text, "Fast Fetch Completed", Repo, tags, prune, progress, maxProcesses );
 
-            using( Repository r = new Repository( Repo ) )
+            this.Close();
+        }
+
+        private static void Fetch( String title, String completedText, String repo, bool tags, bool prune, bool progress, int maxProcesses )
+        {
+            List<Process> fetchProcesses = new List<Process>();
+            fetchProcesses.Add( CreateFetchProcess( repo, tags, prune, progress, false ) );
+
+            using( Repository r = new Repository( repo ) )
             {
                 foreach( Submodule submodule in r.Submodules )
                 {
-                    String submodulePath = Path.Combine( Repo, submodule.Path );
-                    Process p = CreateFetchProcess( submodulePath, tags, prune, true );
+                    String submodulePath = Path.Combine( repo, submodule.Path );
+                    Process p = CreateFetchProcess( submodulePath, tags, prune, progress, true );
                     fetchProcesses.Add( p );
                 }
             }
-
-            this.Close();
 
             ProcessProgressOptions options = new ProcessProgressOptions()
             {
                 ErrorTextColor = Color.Black
             };
 
-            ProcessProgressDialog.ShowProgress( this.Text, "Fast Fetch Completed", fetchProcesses, maxProcesses, options );
+            ProcessProgressDialog.ShowProgress( title, completedText, fetchProcesses, maxProcesses, options );
+        }
+
+        public static void FasterFetch( String repo )
+        {
+            if( Settings.Default.ConfirmFasterFetch )
+            {
+                TaskDialog confirmationDialog = new TaskDialog()
+                {
+                    StandardButtons = TaskDialogStandardButtons.Yes | TaskDialogStandardButtons.No,
+                    Text = "Faster Fetch uses settings previously configured in the Fast Fetch dialog.\n\nDo you want to continue?",
+                    Caption = "Faster Fetch",
+                    FooterCheckBoxText = "Do not ask me again",
+                    FooterCheckBoxChecked = false
+                };
+                if( confirmationDialog.Show() == TaskDialogResult.Yes )
+                {
+                    if( confirmationDialog.FooterCheckBoxChecked ?? false )
+                    {
+                        Settings.Default.ConfirmFasterFetch = false;
+                        Settings.Default.Save();
+                    }
+                }
+                else
+                {
+                    return;
+                }
+            }
+
+            bool tags = Settings.Default.FastFetchTagsChecked;
+            bool prune = Settings.Default.FastFetchPruneChecked;
+            bool progress = Settings.Default.FastFetchShowProgress;
+            int maxProcesses = Settings.Default.FastFetchMaxProcesses;
+
+            FastFetchDialog.Fetch( repo + " - " + "Faster Fetch", "Faster Fetch Completed", repo, tags, prune, progress, maxProcesses );
         }
     }
 }

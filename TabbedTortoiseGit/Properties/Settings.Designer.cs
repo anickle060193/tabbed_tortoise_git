@@ -399,5 +399,17 @@ namespace TabbedTortoiseGit.Properties {
                 this["KeyboardShortcutsString"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("True")]
+        public bool ConfirmFasterFetch {
+            get {
+                return ((bool)(this["ConfirmFasterFetch"]));
+            }
+            set {
+                this["ConfirmFasterFetch"] = value;
+            }
+        }
     }
 }

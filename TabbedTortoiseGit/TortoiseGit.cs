@@ -36,6 +36,7 @@ namespace TabbedTortoiseGit
             {
                 new TortoiseGitCommand( "Fetch", TortoiseGit.Fetch, Resources.Fetch ),
                 new TortoiseGitCommand( "Fast Fetch", TortoiseGit.FastFetch, Resources.Fetch ),
+                new TortoiseGitCommand( "Faster Fetch", TortoiseGit.FasterFetch, Resources.Fetch ),
                 new TortoiseGitCommand( "Commit", TortoiseGit.Commit, Resources.Commit ),
                 new TortoiseGitCommand( "Switch/Checkout", TortoiseGit.Switch, Resources.Switch ),
                 new TortoiseGitCommand( "Pull", TortoiseGit.Pull, Resources.Pull ),
@@ -102,6 +103,12 @@ namespace TabbedTortoiseGit
         public static Task FastFetch( String path )
         {
             FastFetchDialog.FastFetch( path );
+            return Task.FromResult( true );
+        }
+
+        public static Task FasterFetch( String path )
+        {
+            FastFetchDialog.FasterFetch( path );
             return Task.FromResult( true );
         }
 
