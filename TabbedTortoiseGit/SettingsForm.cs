@@ -26,6 +26,7 @@ namespace TabbedTortoiseGit
             f.OpenStartupReposOnReOpen = Settings.Default.OpenStartupReposOnReOpen;
 
             f.TabContextMenuGitActions = Settings.Default.TabContextMenuGitActions;
+            f.ConfirmFasterFetch = Settings.Default.ConfirmFasterFetch;
 
             f.NormalTabFont = Settings.Default.NormalTabFont;
             f.NormalTabFontColor = Settings.Default.NormalTabFontColor;
@@ -51,6 +52,7 @@ namespace TabbedTortoiseGit
                 Settings.Default.OpenStartupReposOnReOpen = f.OpenStartupReposOnReOpen;
 
                 Settings.Default.TabContextMenuGitActions = f.TabContextMenuGitActions;
+                Settings.Default.ConfirmFasterFetch = f.ConfirmFasterFetch;
 
                 Settings.Default.NormalTabFont = f.NormalTabFont;
                 Settings.Default.NormalTabFontColor = f.NormalTabFontColor;
@@ -149,6 +151,19 @@ namespace TabbedTortoiseGit
                         GitActionsCheckList.SetItemChecked( index, true );
                     }
                 }
+            }
+        }
+
+        public bool ConfirmFasterFetch
+        {
+            get
+            {
+                return ConfirmFasterFetchCheck.Checked;
+            }
+
+            set
+            {
+                ConfirmFasterFetchCheck.Checked = value;
             }
         }
 

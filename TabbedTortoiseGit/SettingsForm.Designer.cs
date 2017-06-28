@@ -68,6 +68,8 @@ namespace TabbedTortoiseGit
             this.ShowHitTestCheck = new System.Windows.Forms.CheckBox();
             this.ModifiedTabFontDialog = new System.Windows.Forms.FontDialog();
             this.NormalTabFontDialog = new System.Windows.Forms.FontDialog();
+            this.ConfirmFasterFetchCheck = new System.Windows.Forms.CheckBox();
+            this.GitActionsOptionsGroup = new System.Windows.Forms.GroupBox();
             ((System.ComponentModel.ISupportInitialize)(this.MaxRecentReposNumeric)).BeginInit();
             this.SettingsTabs.SuspendLayout();
             this.KeyboardShortcutsPage.SuspendLayout();
@@ -79,6 +81,7 @@ namespace TabbedTortoiseGit
             this.ModifiedTabFontGroup.SuspendLayout();
             this.OtherSettingsTab.SuspendLayout();
             this.DeveloperSettingsPage.SuspendLayout();
+            this.GitActionsOptionsGroup.SuspendLayout();
             this.SuspendLayout();
             // 
             // StartupReposList
@@ -200,7 +203,7 @@ namespace TabbedTortoiseGit
             // 
             this.GitActionsLabel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.GitActionsLabel.AutoSize = true;
-            this.GitActionsLabel.Location = new System.Drawing.Point(6, 262);
+            this.GitActionsLabel.Location = new System.Drawing.Point(6, 212);
             this.GitActionsLabel.Name = "GitActionsLabel";
             this.GitActionsLabel.Size = new System.Drawing.Size(279, 13);
             this.GitActionsLabel.TabIndex = 1;
@@ -215,7 +218,7 @@ namespace TabbedTortoiseGit
             this.GitActionsCheckList.IntegralHeight = false;
             this.GitActionsCheckList.Location = new System.Drawing.Point(6, 6);
             this.GitActionsCheckList.Name = "GitActionsCheckList";
-            this.GitActionsCheckList.Size = new System.Drawing.Size(440, 253);
+            this.GitActionsCheckList.Size = new System.Drawing.Size(440, 203);
             this.GitActionsCheckList.TabIndex = 0;
             this.SettingsToolTip.SetToolTip(this.GitActionsCheckList, "Only valid when \"Retain Logs on Close\" is disabled.\r\n");
             // 
@@ -284,6 +287,7 @@ namespace TabbedTortoiseGit
             // 
             // GitActionsTab
             // 
+            this.GitActionsTab.Controls.Add(this.GitActionsOptionsGroup);
             this.GitActionsTab.Controls.Add(this.GitActionsLabel);
             this.GitActionsTab.Controls.Add(this.GitActionsCheckList);
             this.GitActionsTab.Location = new System.Drawing.Point(4, 22);
@@ -517,6 +521,29 @@ namespace TabbedTortoiseGit
             this.NormalTabFontDialog.FontMustExist = true;
             this.NormalTabFontDialog.ShowColor = true;
             // 
+            // ConfirmFasterFetchCheck
+            // 
+            this.ConfirmFasterFetchCheck.AutoSize = true;
+            this.ConfirmFasterFetchCheck.Location = new System.Drawing.Point(6, 20);
+            this.ConfirmFasterFetchCheck.Name = "ConfirmFasterFetchCheck";
+            this.ConfirmFasterFetchCheck.Size = new System.Drawing.Size(156, 17);
+            this.ConfirmFasterFetchCheck.TabIndex = 2;
+            this.ConfirmFasterFetchCheck.Text = "Confirm before Faster Fetch";
+            this.ConfirmFasterFetchCheck.UseVisualStyleBackColor = true;
+            // 
+            // GitActionsOptionsGroup
+            // 
+            this.GitActionsOptionsGroup.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.GitActionsOptionsGroup.Controls.Add(this.ConfirmFasterFetchCheck);
+            this.GitActionsOptionsGroup.Location = new System.Drawing.Point(6, 233);
+            this.GitActionsOptionsGroup.Name = "GitActionsOptionsGroup";
+            this.GitActionsOptionsGroup.Size = new System.Drawing.Size(440, 43);
+            this.GitActionsOptionsGroup.TabIndex = 3;
+            this.GitActionsOptionsGroup.TabStop = false;
+            this.GitActionsOptionsGroup.Text = "Git Actions Options";
+            // 
             // SettingsForm
             // 
             this.AcceptButton = this.OK;
@@ -553,6 +580,8 @@ namespace TabbedTortoiseGit
             this.OtherSettingsTab.PerformLayout();
             this.DeveloperSettingsPage.ResumeLayout(false);
             this.DeveloperSettingsPage.PerformLayout();
+            this.GitActionsOptionsGroup.ResumeLayout(false);
+            this.GitActionsOptionsGroup.PerformLayout();
             this.ResumeLayout(false);
 
         }
@@ -595,5 +624,7 @@ namespace TabbedTortoiseGit
         private GroupBox NormalTabFontGroup;
         private Label NormalTabFontSample;
         private FontDialog NormalTabFontDialog;
+        private GroupBox GitActionsOptionsGroup;
+        private CheckBox ConfirmFasterFetchCheck;
     }
 }
