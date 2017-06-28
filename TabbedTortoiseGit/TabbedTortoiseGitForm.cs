@@ -29,7 +29,6 @@ namespace TabbedTortoiseGit
 
         private readonly Dictionary<int, TabControllerTag> _tags = new Dictionary<int, TabControllerTag>();
         private readonly CommonOpenFileDialog _folderDialog;
-        private readonly Semaphore _checkForModifiedTabsSemaphore = new Semaphore( 1, 1 );
         private readonly bool _showStartUpRepos;
         private readonly Point _createdAtPoint;
         private readonly Stack<String> _closedRepos = new Stack<String>();
@@ -182,8 +181,11 @@ namespace TabbedTortoiseGit
                 LogTabs.ShowHitTest = false;
             }
 
-            CheckForModifiedTabsTimer.Enabled = Settings.Default.IndicateModifiedTabs;
-            CheckForModifiedTabsTimer.Interval = Settings.Default.CheckForModifiedTabsInterval;
+            if( Settings.Default.IndicateModifiedTabs
+             && !ModifiedRepoCheckBackgroundWorker.IsBusy )
+            {
+                ModifiedRepoCheckBackgroundWorker.RunWorkerAsync();
+            }
 
             lock( _tags )
             {

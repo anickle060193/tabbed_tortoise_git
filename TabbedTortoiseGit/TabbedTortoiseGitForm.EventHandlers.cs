@@ -4,6 +4,7 @@ using log4net.Appender;
 using log4net.Repository.Hierarchy;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Diagnostics;
 using System.Drawing;
 using System.IO;
@@ -11,6 +12,7 @@ using System.Linq;
 using System.Management;
 using System.Text;
 using System.Text.RegularExpressions;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using TabbedTortoiseGit.Properties;
@@ -57,7 +59,7 @@ namespace TabbedTortoiseGit
             AddToFavoritesRepoTabMenuItem.Click += AddToFavoritesRepoTabMenuItem_Click;
             CloseRepoTabMenuItem.Click += CloseRepoTabMenuItem_Click;
 
-            CheckForModifiedTabsTimer.Tick += CheckForModifiedTabsTimer_Tick;
+            ModifiedRepoCheckBackgroundWorker.DoWork += ModifiedRepoCheckBackgroundWorker_DoWork;
         }
 
         private async void TabbedTortoiseGitForm_Shown( object sender, EventArgs e )
@@ -391,24 +393,29 @@ namespace TabbedTortoiseGit
             Native.SendKeyDown( tag.Process.MainWindowHandle, Keys.F5 );
         }
 
-        private async void CheckForModifiedTabsTimer_Tick( object sender, EventArgs e )
+        private async void ModifiedRepoCheckBackgroundWorker_DoWork( object sender, DoWorkEventArgs e )
         {
-            if( _checkForModifiedTabsSemaphore.WaitOne( 0 ) )
+            while( true )
             {
-                try
+                for( int i = 0; i < LogTabs.TabCount; i++ )
                 {
-                    for( int i = 0; i < LogTabs.TabCount; i++ )
+                    if( !Settings.Default.IndicateModifiedTabs )
                     {
-                        Tab tab = LogTabs.Tabs[ i ];
-                        TabControllerTag tag = LogTabs.SelectedTab.Controller();
-
-                        tag.Modified = await Git.IsModified( tag.RepoItem );
+                        return;
                     }
+
+                    Tab tab = LogTabs.Tabs[ i ];
+                    TabControllerTag tag = LogTabs.SelectedTab.Controller();
+
+                    tag.Modified = await Git.IsModified( tag.RepoItem );
                 }
-                finally
+
+                if( !Settings.Default.IndicateModifiedTabs )
                 {
-                    _checkForModifiedTabsSemaphore.Release();
+                    return;
                 }
+
+                Thread.Sleep( Settings.Default.CheckForModifiedTabsInterval );
             }
         }
     }

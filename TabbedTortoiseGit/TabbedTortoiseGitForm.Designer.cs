@@ -35,7 +35,6 @@
             this.OpenRepoLocationTabMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.AddToFavoritesRepoTabMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.CloseRepoTabMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.CheckForModifiedTabsTimer = new System.Windows.Forms.Timer(this.components);
             this.FavoriteRepoContextMenu = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.OpenFavoriteRepoLocationContextMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.RemoveFavoriteContextMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -52,6 +51,7 @@
             this.ShowFavoritesManagerMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.FavoritesFolderContextMenu = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.RemoveFavoriteFolderContextMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.ModifiedRepoCheckBackgroundWorker = new System.ComponentModel.BackgroundWorker();
             this.TabContextMenu.SuspendLayout();
             this.FavoriteRepoContextMenu.SuspendLayout();
             this.OptionsContextMenu.SuspendLayout();
@@ -101,10 +101,6 @@
             this.CloseRepoTabMenuItem.Name = "CloseRepoTabMenuItem";
             this.CloseRepoTabMenuItem.Size = new System.Drawing.Size(182, 22);
             this.CloseRepoTabMenuItem.Text = "Close";
-            // 
-            // CheckForModifiedTabsTimer
-            // 
-            this.CheckForModifiedTabsTimer.Interval = 10000;
             // 
             // FavoriteRepoContextMenu
             // 
@@ -250,7 +246,6 @@
         private System.Windows.Forms.ToolStripMenuItem AddToFavoritesRepoTabMenuItem;
         private System.Windows.Forms.ToolStripMenuItem CloseRepoTabMenuItem;
         private Tabs.TabControl LogTabs;
-        private System.Windows.Forms.Timer CheckForModifiedTabsTimer;
         private System.Windows.Forms.ContextMenuStrip FavoriteRepoContextMenu;
         private System.Windows.Forms.ToolStripMenuItem RemoveFavoriteContextMenuItem;
         private System.Windows.Forms.ContextMenuStrip OptionsContextMenu;
@@ -266,6 +261,7 @@
         private System.Windows.Forms.ContextMenuStrip FavoritesFolderContextMenu;
         private System.Windows.Forms.ToolStripMenuItem RemoveFavoriteFolderContextMenuItem;
         private System.Windows.Forms.ToolStripMenuItem OpenFavoriteRepoLocationContextMenuItem;
+        private System.ComponentModel.BackgroundWorker ModifiedRepoCheckBackgroundWorker;
     }
 }
 
