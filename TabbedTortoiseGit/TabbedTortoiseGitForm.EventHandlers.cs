@@ -353,10 +353,7 @@ namespace TabbedTortoiseGit
 
         private void ExitMenuItem_Click( object sender, EventArgs e )
         {
-            if( this.ConfirmClose() )
-            {
-                this.Close();
-            }
+            this.Close();
         }
 
         private async void RecentRepoMenuItem_Click( object sender, EventArgs e )

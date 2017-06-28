@@ -609,21 +609,27 @@ namespace TabbedTortoiseGit
             }
             else if( Settings.Default.ConfirmOnClose )
             {
-                CloseConfirmationDialog d = new CloseConfirmationDialog( this.Visible );
-                DialogResult result = d.ShowDialog();
-                if( result == DialogResult.Yes
-                 || result == DialogResult.No )
+                TaskDialog confirmationDialog = new TaskDialog()
                 {
-                    Settings.Default.ConfirmOnClose = !d.DontAskAgain;
-                    Settings.Default.Save();
-
-                    if( result == DialogResult.Yes )
+                    StandardButtons = TaskDialogStandardButtons.Yes | TaskDialogStandardButtons.No,
+                    Text = "Are you sure you want to exit?",
+                    Caption = "Tabbed TortoiseGit",
+                    FooterCheckBoxText = "Do not ask me again",
+                    FooterCheckBoxChecked = false
+                };
+                if( confirmationDialog.Show() == TaskDialogResult.Yes )
+                {
+                    if( confirmationDialog.FooterCheckBoxChecked ?? false )
                     {
-                        return true;
+                        Settings.Default.ConfirmOnClose = false;
+                        Settings.Default.Save();
                     }
+                    return true;
                 }
-
-                return false;
+                else
+                {
+                    return false;
+                }
             }
             else
             {
