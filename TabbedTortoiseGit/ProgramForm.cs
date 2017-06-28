@@ -110,6 +110,20 @@ namespace TabbedTortoiseGit
             }
         }
 
+        protected override void Dispose( bool disposing )
+        {
+            base.Dispose( disposing );
+
+            if( disposing )
+            {
+                _notifyIcon.Icon = null;
+                _notifyIcon.Visible = false;
+                _notifyIcon.Dispose();
+
+                _watcher.Dispose();
+            }
+        }
+
         private TabbedTortoiseGitForm CreateNewTabbedTortoiseGit( bool showStartUpRepos, Point createdAtPoint )
         {
             TabbedTortoiseGitForm form = new TabbedTortoiseGitForm( showStartUpRepos, createdAtPoint );
