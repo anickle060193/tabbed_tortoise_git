@@ -335,34 +335,37 @@ namespace TabbedTortoiseGit.Properties
                     LOG.Error( "Failed to upgrade DefaultRepos setting", ex );
                 }
 
-                Dictionary<String, KeyboardShortcuts> shortcutsMapping = new Dictionary<String, KeyboardShortcuts>()
+                if( Settings.Default.KeyboardShortcutsString == "" )
                 {
-                    { "NewTabShortcut",             TabbedTortoiseGit.KeyboardShortcuts.NewTab          },
-                    { "NextTabShortcut",            TabbedTortoiseGit.KeyboardShortcuts.NextTab         },
-                    { "PreviousTabShortcut",        TabbedTortoiseGit.KeyboardShortcuts.PreviousTab     },
-                    { "CloseTabShortcut",           TabbedTortoiseGit.KeyboardShortcuts.CloseTab        },
-                    { "ReopenClosedTabShortcut",    TabbedTortoiseGit.KeyboardShortcuts.ReopenClosedTab }
-                };
-
-                Dictionary<KeyboardShortcuts, Shortcut> shortcuts = new Dictionary<KeyboardShortcuts, Shortcut>();
-
-                foreach( KeyValuePair<String, KeyboardShortcuts> pair in shortcutsMapping )
-                {
-                    try
+                    Dictionary<String, KeyboardShortcuts> shortcutsMapping = new Dictionary<String, KeyboardShortcuts>()
                     {
-                        Shortcut oldShortcut = Settings.Default.GetPreviousVersion( pair.Key ) as Shortcut;
-                        if( oldShortcut != null )
+                        { "NewTabShortcut",             TabbedTortoiseGit.KeyboardShortcuts.NewTab          },
+                        { "NextTabShortcut",            TabbedTortoiseGit.KeyboardShortcuts.NextTab         },
+                        { "PreviousTabShortcut",        TabbedTortoiseGit.KeyboardShortcuts.PreviousTab     },
+                        { "CloseTabShortcut",           TabbedTortoiseGit.KeyboardShortcuts.CloseTab        },
+                        { "ReopenClosedTabShortcut",    TabbedTortoiseGit.KeyboardShortcuts.ReopenClosedTab }
+                    };
+
+                    Dictionary<KeyboardShortcuts, Shortcut> shortcuts = new Dictionary<KeyboardShortcuts, Shortcut>();
+
+                    foreach( KeyValuePair<String, KeyboardShortcuts> pair in shortcutsMapping )
+                    {
+                        try
                         {
-                            shortcuts[ pair.Value ] = oldShortcut;
+                            Shortcut oldShortcut = Settings.Default.GetPreviousVersion( pair.Key ) as Shortcut;
+                            if( oldShortcut != null )
+                            {
+                                shortcuts[ pair.Value ] = oldShortcut;
+                            }
+                        }
+                        catch( SettingsPropertyNotFoundException ex )
+                        {
+                            LOG.Error( "Failed to upgrade {0}.".XFormat( pair.Key ), ex );
                         }
                     }
-                    catch( SettingsPropertyNotFoundException ex )
-                    {
-                        LOG.Error( "Failed to upgrade {0}.".XFormat( pair.Key ), ex );
-                    }
-                }
 
-                Settings.Default.KeyboardShortcuts = shortcuts;
+                    Settings.Default.KeyboardShortcuts = shortcuts;
+                }
             }
 
             if( Settings.Default.StartupRepos == null )
