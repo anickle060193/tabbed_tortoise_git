@@ -8,6 +8,7 @@ using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Forms;
 using TabbedTortoiseGit.Properties;
 
 namespace TabbedTortoiseGit
@@ -92,16 +93,17 @@ namespace TabbedTortoiseGit
             return p.ExitCode == 0;
         }
 
-        public static Task<bool> FastFetch( String path )
+        public static async Task<bool> FastFetch( String path )
         {
-            bool update = FastFetchDialog.FastFetch( path );
-            return Task.FromResult( update );
+            FastFetchDialog dialog = new FastFetchDialog( path );
+            dialog.Show();
+            await dialog.WaitForClose();
+            return dialog.DialogResult == DialogResult.OK;
         }
 
         public static Task<bool> FasterFetch( String path )
         {
-            bool update = FastFetchDialog.FasterFetch( path );
-            return Task.FromResult( update );
+            return FastFetchDialog.FasterFetch( path );
         }
 
         public static async Task<bool> Commit( String path )
@@ -146,10 +148,12 @@ namespace TabbedTortoiseGit
             return p.ExitCode == 0;
         }
 
-        public static Task<bool> FastSubmoduleUpdate( String path )
+        public static async Task<bool> FastSubmoduleUpdate( String path )
         {
-            bool update = FastSubmoduleUpdateForm.UpdateSubmodules( path );
-            return Task.FromResult( update );
+            FastSubmoduleUpdateDialog dialog = new FastSubmoduleUpdateDialog( path );
+            dialog.Show();
+            await dialog.WaitForClose();
+            return dialog.DialogResult == DialogResult.OK;
         }
     }
 }

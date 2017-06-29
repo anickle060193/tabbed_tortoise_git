@@ -386,13 +386,7 @@ namespace TabbedTortoiseGit
             GitActionFunc gitActionFunc = (GitActionFunc)c.Tag;
 
             TabControllerTag tag = LogTabs.SelectedTab.Controller();
-            if( await gitActionFunc.Invoke( tag.RepoItem ) )
-            {
-                if( !tag.Process.HasExited )
-                {
-                    Native.SendKeyDown( tag.Process.MainWindowHandle, Keys.F5 );
-                }
-            }
+            await RunGitAction( tag, gitActionFunc );
         }
 
         private async void ModifiedRepoCheckBackgroundWorker_DoWork( object sender, DoWorkEventArgs e )

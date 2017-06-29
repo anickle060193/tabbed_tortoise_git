@@ -16,9 +16,9 @@ using TabbedTortoiseGit.Properties;
 
 namespace TabbedTortoiseGit
 {
-    public partial class FastSubmoduleUpdateForm : Form
+    public partial class FastSubmoduleUpdateDialog : Form
     {
-        private static readonly ILog LOG = LogManager.GetLogger( typeof( FastSubmoduleUpdateForm ) );
+        private static readonly ILog LOG = LogManager.GetLogger( typeof( FastSubmoduleUpdateDialog ) );
 
         private readonly List<String> _submodules = new List<String>();
         private readonly Dictionary<String, bool> _checkedSubmodules = new Dictionary<String, bool>();
@@ -28,13 +28,7 @@ namespace TabbedTortoiseGit
 
         public String Repo { get; private set; }
 
-        public static bool UpdateSubmodules( String repo )
-        {
-            FastSubmoduleUpdateForm f = new FastSubmoduleUpdateForm( repo );
-            return f.ShowDialog() == DialogResult.OK;
-        }
-
-        private FastSubmoduleUpdateForm( String repo )
+        public FastSubmoduleUpdateDialog( String repo )
         {
             InitializeComponent();
             UpdateFromSettings();
@@ -136,6 +130,7 @@ namespace TabbedTortoiseGit
 
         private void Cancel_Click( object sender, EventArgs e )
         {
+            this.DialogResult = DialogResult.Cancel;
             this.Close();
         }
 
@@ -209,10 +204,10 @@ namespace TabbedTortoiseGit
             SetModifiedSubmodulesChecked();
         }
 
-        private void UpdateSubmodulesButton_Click( object sender, EventArgs e )
+        private async void UpdateSubmodulesButton_Click( object sender, EventArgs e )
         {
             UpdateSubmodulesButton.Enabled = false;
-            UpdateSubmodules();
+            await UpdateSubmodules();
         }
 
         private void UpdateFromSettings()
@@ -303,11 +298,13 @@ namespace TabbedTortoiseGit
             UpdateChecked();
         }
 
-        private void UpdateSubmodules()
+        private async Task UpdateSubmodules()
         {
             if( SubmoduleCheckList.CheckedItems.Count > 0 )
             {
                 LOG.DebugFormat( "UpdateSubmodules" );
+
+                this.Hide();
 
                 bool init = InitCheck.Checked;
                 bool recursive = RecursiveCheck.Checked;
@@ -316,7 +313,18 @@ namespace TabbedTortoiseGit
 
                 List<String> checkedSubmodules = SubmoduleCheckList.CheckedItems.Cast<String>().ToList();
                 IEnumerable<Process> processes = checkedSubmodules.Select( submodule => CreateUpdateSubmoduleProcess( Repo, submodule, init, recursive, force ) );
-                ProcessProgressDialog.ShowProgress( this.Text, "Submodule Update Completed", processes, maxProcesses );
+
+                ProcessProgressDialog dialog = new ProcessProgressDialog()
+                {
+                    Title = this.Text,
+                    CompletedText = "Submodule Update Completed",
+                    MaxProcesses = maxProcesses
+                };
+                dialog.AddProcesses( processes );
+                dialog.Show();
+                dialog.DoProgress();
+
+                await dialog.WaitForClose();
 
                 this.DialogResult = DialogResult.OK;
                 this.Close();

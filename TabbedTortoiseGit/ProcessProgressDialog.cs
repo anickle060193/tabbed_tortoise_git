@@ -26,6 +26,7 @@ namespace TabbedTortoiseGit
         private readonly ConcurrentQueue<Process> _processes = new ConcurrentQueue<Process>();
         private readonly ConcurrentDictionary<int, Process> _runningProcesses = new ConcurrentDictionary<int, Process>();
 
+        private bool _started;
         private DateTime _start;
         private bool _cancel;
         private bool _completed;
@@ -36,6 +37,11 @@ namespace TabbedTortoiseGit
             {
                 this.Text = value;
             }
+
+            get
+            {
+                return this.Text;
+            }
         }
 
         public String CompletedText { get; set; }
@@ -45,47 +51,7 @@ namespace TabbedTortoiseGit
         public Color CompletedTextColor { get; set; }
         public Color CancelledTextColor { get; set; }
 
-        public static void ShowProgress( String title, String completedText, IEnumerable<Process> processes, int maxProcesses )
-        {
-            ShowProgress( title, completedText, processes, maxProcesses, null );
-        }
-
-        public static void ShowProgress( String title, String completedText, IEnumerable<Process> processes, int maxProcesses, ProcessProgressOptions options )
-        {
-            LOG.DebugFormat( "ShowProgress - Title: {0} - Completed Text: {1}", title, completedText );
-            ProcessProgressDialog f = new ProcessProgressDialog();
-            f.Title = title;
-            f.CompletedText = completedText;
-            f.MaxProcesses = maxProcesses;
-
-            if( options != null )
-            {
-                if( options.CommandTextColor != Color.Empty )
-                {
-                    f.CommandTextColor = options.CommandTextColor;
-                }
-                if( options.ErrorTextColor != Color.Empty )
-                {
-                    f.ErrorTextColor = options.ErrorTextColor;
-                }
-                if( options.CompletedTextColor != Color.Empty )
-                {
-                    f.CompletedTextColor = options.CompletedTextColor;
-                }
-                if( options.CancelledTextColor != Color.Empty )
-                {
-                    f.CancelledTextColor = options.CancelledTextColor;
-                }
-            }
-
-            foreach( Process p in processes )
-            {
-                f.AddProcess( p );
-            }
-            f.ShowDialog();
-        }
-
-        private ProcessProgressDialog()
+        public ProcessProgressDialog()
         {
             InitializeComponent();
             this.Icon = Resources.TortoiseIcon;
@@ -97,9 +63,9 @@ namespace TabbedTortoiseGit
             CompletedTextColor = Color.Blue;
             CancelledTextColor = Color.DarkBlue;
 
+            _started = false;
             _cancel = false;
 
-            this.Shown += ProcessProgressDialog_Shown;
             this.FormClosing += ProcessProgressForm_FormClosing;
 
             Cancel.Click += Cancel_Click;
@@ -110,8 +76,26 @@ namespace TabbedTortoiseGit
             Worker.RunWorkerCompleted += Worker_RunWorkerCompleted;
         }
 
-        private void AddProcess( Process p )
+        public void AddProcesses( IEnumerable<Process> processes )
         {
+            if( _started )
+            {
+                throw new InvalidOperationException( "Cannot add processes once progress has started." );
+            }
+
+            foreach( Process p in processes )
+            {
+                AddProcess( p );
+            }
+        }
+
+        public void AddProcess( Process p )
+        {
+            if( _started )
+            {
+                throw new InvalidOperationException( "Cannot add process once progress has started." );
+            }
+
             LOG.DebugFormat( "AddProcess - Filename: {0} - Arguments: {1} - Working Directory: {2}", p.StartInfo.FileName, p.StartInfo.Arguments, p.StartInfo.WorkingDirectory );
             _processes.Enqueue( p );
 
@@ -127,37 +111,43 @@ namespace TabbedTortoiseGit
             ProgressBar.Maximum++;
         }
 
+        public void DoProgress()
+        {
+            if( _started )
+            {
+                throw new InvalidOperationException( "Progress has already been started" );
+            }
+
+            if( !_cancel )
+            {
+                this.Show();
+                _started = true;
+                _start = DateTime.Now;
+                ElapsedUpdateTimer.Start();
+                Worker.RunWorkerAsync();
+            }
+        }
+
         private void Cancel_Click( object sender, EventArgs e )
         {
-            if( _completed )
-            {
-                this.Close();
-            }
-            else
-            {
-                this.CancelProcesses();
-            }
+            this.Close();
         }
 
         private void ProcessProgressForm_FormClosing( object sender, FormClosingEventArgs e )
         {
             LOG.Debug( "Form Closing" );
 
-            if( !_completed )
+            if( _started
+             && !_completed )
             {
                 LOG.Debug( "Form Closing - Not Completed, Cancelling Processes" );
                 this.CancelProcesses();
                 e.Cancel = true;
             }
-        }
-
-        private void ProcessProgressDialog_Shown( object sender, EventArgs e )
-        {
-            LOG.Debug( "Shown" );
-
-            _start = DateTime.Now;
-            ElapsedUpdateTimer.Start();
-            Worker.RunWorkerAsync();
+            else
+            {
+                _cancel = true;
+            }
         }
 
         private void ElapsedUpdateTimer_Tick( object sender, EventArgs e )
@@ -276,13 +266,5 @@ namespace TabbedTortoiseGit
             }
             ProgressBar.UiBeginInvoke( (Action)ProgressBar.PerformStep );
         }
-    }
-
-    public class ProcessProgressOptions
-    {
-        public Color CommandTextColor { get; set; }
-        public Color ErrorTextColor { get; set; }
-        public Color CompletedTextColor { get; set; }
-        public Color CancelledTextColor { get; set; }
     }
 }

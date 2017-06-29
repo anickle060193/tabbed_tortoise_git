@@ -18,15 +18,9 @@ namespace TabbedTortoiseGit
 {
     public partial class FastFetchDialog : Form
     {
-        public static bool FastFetch( String repo )
-        {
-            FastFetchDialog f = new FastFetchDialog( repo );
-            return f.ShowDialog() == DialogResult.OK;
-        }
-
         public String Repo { get; private set; }
 
-        private FastFetchDialog( String repo )
+        public FastFetchDialog( String repo )
         {
             InitializeComponent();
             UpdateFromSettings();
@@ -71,12 +65,13 @@ namespace TabbedTortoiseGit
 
         private void Cancel_Click( object sender, EventArgs e )
         {
+            this.DialogResult = DialogResult.Cancel;
             this.Close();
         }
 
-        private void Ok_Click( object sender, EventArgs e )
+        private async void Ok_Click( object sender, EventArgs e )
         {
-            Fetch();
+            await Fetch();
         }
 
         private void UpdateFromSettings()
@@ -122,23 +117,33 @@ namespace TabbedTortoiseGit
             return p;
         }
 
-        private void Fetch()
+        private async Task Fetch()
         {
+            this.Hide();
+
             bool tags = TagsCheck.Checked;
             bool prune = PruneCheck.Checked;
             bool progress = ShowProgressCheck.Checked;
             int maxProcesses = (int)MaxProcessesNumeric.Value;
 
-            FastFetchDialog.Fetch( this.Text, "Fast Fetch Completed", Repo, tags, prune, progress, maxProcesses );
+            await FastFetchDialog.Fetch( this.Text, "Fast Fetch Completed", Repo, tags, prune, progress, maxProcesses );
 
             this.DialogResult = DialogResult.OK;
             this.Close();
         }
 
-        private static void Fetch( String title, String completedText, String repo, bool tags, bool prune, bool progress, int maxProcesses )
+        private static Task Fetch( String title, String completedText, String repo, bool tags, bool prune, bool progress, int maxProcesses )
         {
-            List<Process> fetchProcesses = new List<Process>();
-            fetchProcesses.Add( CreateFetchProcess( repo, tags, prune, progress, false ) );
+            ProcessProgressDialog dialog = new ProcessProgressDialog()
+            {
+                Title = title,
+                CompletedText = completedText,
+                MaxProcesses = maxProcesses,
+                ErrorTextColor = Color.Black
+            };
+            dialog.Show();
+
+            dialog.AddProcess( CreateFetchProcess( repo, tags, prune, progress, false ) );
 
             using( Repository r = new Repository( repo ) )
             {
@@ -146,19 +151,16 @@ namespace TabbedTortoiseGit
                 {
                     String submodulePath = Path.Combine( repo, submodule.Path );
                     Process p = CreateFetchProcess( submodulePath, tags, prune, progress, true );
-                    fetchProcesses.Add( p );
+                    dialog.AddProcess( p );
                 }
             }
 
-            ProcessProgressOptions options = new ProcessProgressOptions()
-            {
-                ErrorTextColor = Color.Black
-            };
+            dialog.DoProgress();
 
-            ProcessProgressDialog.ShowProgress( title, completedText, fetchProcesses, maxProcesses, options );
+            return dialog.WaitForClose();
         }
 
-        public static bool FasterFetch( String repo )
+        public static async Task<bool> FasterFetch( String repo )
         {
             if( Settings.Default.ConfirmFasterFetch )
             {
@@ -189,7 +191,7 @@ namespace TabbedTortoiseGit
             bool progress = Settings.Default.FastFetchShowProgress;
             int maxProcesses = Settings.Default.FastFetchMaxProcesses;
 
-            FastFetchDialog.Fetch( repo + " - " + "Faster Fetch", "Faster Fetch Completed", repo, tags, prune, progress, maxProcesses );
+            await FastFetchDialog.Fetch( repo + " - " + "Faster Fetch", "Faster Fetch Completed", repo, tags, prune, progress, maxProcesses );
             return true;
         }
     }

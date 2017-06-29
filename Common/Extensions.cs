@@ -98,6 +98,15 @@ namespace Common
 
         [DllImport( "user32.dll", CharSet = CharSet.Auto )]
         private static extern bool DestroyIcon( IntPtr handle );
+
+        public static Task WaitForClose( this Form form )
+        {
+            TaskCompletionSource<bool> completionSource = new TaskCompletionSource<bool>();
+
+            form.FormClosed += ( sender, e ) => completionSource.SetResult( true );
+
+            return completionSource.Task;
+        }
     }
 
     // From http://mo.notono.us/2008/07/c-stringinject-format-strings-by-key.html

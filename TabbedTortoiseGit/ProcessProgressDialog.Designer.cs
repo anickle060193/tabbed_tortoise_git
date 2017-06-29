@@ -110,8 +110,7 @@
             this.MinimizeBox = false;
             this.MinimumSize = new System.Drawing.Size(250, 150);
             this.Name = "ProcessProgressDialog";
-            this.ShowInTaskbar = false;
-            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Progress";
             this.ResumeLayout(false);
             this.PerformLayout();

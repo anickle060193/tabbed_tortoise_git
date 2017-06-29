@@ -20,12 +20,30 @@ using log4net;
 using log4net.Config;
 using Tabs;
 using System.IO;
+using System.Collections.Immutable;
 
 namespace TabbedTortoiseGit
 {
     public partial class TabbedTortoiseGitForm : Form
     {
         private static readonly ILog LOG = LogManager.GetLogger( typeof( TabbedTortoiseGitForm ) );
+
+        private static readonly ImmutableDictionary<KeyboardShortcuts, GitActionFunc> KEYBOARD_SHORTCUT_ACTIONS;
+        static TabbedTortoiseGitForm()
+        {
+            KEYBOARD_SHORTCUT_ACTIONS = new Dictionary<KeyboardShortcuts, GitActionFunc>()
+            {
+                { KeyboardShortcuts.Commit,                 GitAction.Commit                },
+                { KeyboardShortcuts.FastFetch,              GitAction.FastFetch             },
+                { KeyboardShortcuts.FastSubmoduleUpdate,    GitAction.FastSubmoduleUpdate   },
+                { KeyboardShortcuts.Fetch,                  GitAction.Fetch                 },
+                { KeyboardShortcuts.Pull,                   GitAction.Pull                  },
+                { KeyboardShortcuts.Push,                   GitAction.Push                  },
+                { KeyboardShortcuts.Rebase,                 GitAction.Rebase                },
+                { KeyboardShortcuts.SubmoduleUpdate,        GitAction.SubmoduleUpdate       },
+                { KeyboardShortcuts.SwitchCheckout,         GitAction.Switch                }
+            }.ToImmutableDictionary();
+        }
 
         private readonly Dictionary<int, TabControllerTag> _tags = new Dictionary<int, TabControllerTag>();
         private readonly CommonOpenFileDialog _folderDialog;
@@ -100,41 +118,12 @@ namespace TabbedTortoiseGit
                     await OpenLog( repo );
                 }
             }
-            else if( keyboardShortcut == KeyboardShortcuts.Commit )
+            else if( KEYBOARD_SHORTCUT_ACTIONS.ContainsKey( keyboardShortcut ) )
             {
-                await GitAction.Commit( LogTabs.SelectedTab.Controller().RepoItem );
-            }
-            else if( keyboardShortcut == KeyboardShortcuts.FastFetch )
-            {
-                await GitAction.FastFetch( LogTabs.SelectedTab.Controller().RepoItem );
-            }
-            else if( keyboardShortcut == KeyboardShortcuts.FastSubmoduleUpdate )
-            {
-                await GitAction.FastSubmoduleUpdate( LogTabs.SelectedTab.Controller().RepoItem );
-            }
-            else if( keyboardShortcut == KeyboardShortcuts.Fetch )
-            {
-                await GitAction.Fetch( LogTabs.SelectedTab.Controller().RepoItem );
-            }
-            else if( keyboardShortcut == KeyboardShortcuts.Pull )
-            {
-                await GitAction.Pull( LogTabs.SelectedTab.Controller().RepoItem );
-            }
-            else if( keyboardShortcut == KeyboardShortcuts.Push )
-            {
-                await GitAction.Push( LogTabs.SelectedTab.Controller().RepoItem );
-            }
-            else if( keyboardShortcut == KeyboardShortcuts.Rebase )
-            {
-                await GitAction.Rebase( LogTabs.SelectedTab.Controller().RepoItem );
-            }
-            else if( keyboardShortcut == KeyboardShortcuts.SubmoduleUpdate )
-            {
-                await GitAction.SubmoduleUpdate( LogTabs.SelectedTab.Controller().RepoItem );
-            }
-            else if( keyboardShortcut == KeyboardShortcuts.SwitchCheckout )
-            {
-                await GitAction.Switch( LogTabs.SelectedTab.Controller().RepoItem );
+                TabControllerTag tag = LogTabs.SelectedTab.Controller();
+                GitActionFunc gitActionFunc = KEYBOARD_SHORTCUT_ACTIONS[ keyboardShortcut ];
+
+                await RunGitAction( tag, gitActionFunc );
             }
             else
             {
@@ -670,6 +659,17 @@ namespace TabbedTortoiseGit
             {
                 g.DrawImage( coloredShell, 0, 0 );
                 this.Icon = background.ToIcon();
+            }
+        }
+
+        private async Task RunGitAction( TabControllerTag tag, GitActionFunc gitActionFunc )
+        {
+            if( await gitActionFunc.Invoke( tag.RepoItem ) )
+            {
+                if( !tag.Process.HasExited )
+                {
+                    Native.SendKeyDown( tag.Process.MainWindowHandle, Keys.F5 );
+                }
             }
         }
     }

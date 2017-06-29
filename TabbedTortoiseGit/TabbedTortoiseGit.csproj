@@ -98,11 +98,11 @@
     <Compile Include="FastFetchDialog.Designer.cs">
       <DependentUpon>FastFetchDialog.cs</DependentUpon>
     </Compile>
-    <Compile Include="FastSubmoduleUpdateForm.cs">
+    <Compile Include="FastSubmoduleUpdateDialog.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="FastSubmoduleUpdateForm.Designer.cs">
-      <DependentUpon>FastSubmoduleUpdateForm.cs</DependentUpon>
+    <Compile Include="FastSubmoduleUpdateDialog.Designer.cs">
+      <DependentUpon>FastSubmoduleUpdateDialog.cs</DependentUpon>
     </Compile>
     <Compile Include="FavoriteCreatorDialog.cs">
       <SubType>Form</SubType>
@@ -178,8 +178,8 @@
     <EmbeddedResource Include="FastFetchDialog.resx">
       <DependentUpon>FastFetchDialog.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="FastSubmoduleUpdateForm.resx">
-      <DependentUpon>FastSubmoduleUpdateForm.cs</DependentUpon>
+    <EmbeddedResource Include="FastSubmoduleUpdateDialog.resx">
+      <DependentUpon>FastSubmoduleUpdateDialog.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="FavoriteCreatorDialog.resx">
       <DependentUpon>FavoriteCreatorDialog.cs</DependentUpon>

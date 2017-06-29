@@ -1,6 +1,6 @@
 ﻿namespace TabbedTortoiseGit
 {
-    partial class FastSubmoduleUpdateForm
+    partial class FastSubmoduleUpdateDialog
     {
         /// <summary>
         /// Required designer variable.
@@ -220,7 +220,7 @@
             this.CheckModifiedSubmodulesByDefaultCheck.Text = "Check Modified Submodules By Default";
             this.CheckModifiedSubmodulesByDefaultCheck.UseVisualStyleBackColor = true;
             // 
-            // FastSubmoduleUpdateForm
+            // FastSubmoduleUpdateDialog
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
@@ -239,9 +239,8 @@
             this.MaximumSize = new System.Drawing.Size(480, 1000);
             this.MinimizeBox = false;
             this.MinimumSize = new System.Drawing.Size(480, 300);
-            this.Name = "FastSubmoduleUpdateForm";
-            this.ShowInTaskbar = false;
-            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
+            this.Name = "FastSubmoduleUpdateDialog";
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Fast Submodule Update";
             ((System.ComponentModel.ISupportInitialize)(this.MaxProcessCountNumeric)).EndInit();
             this.SubmoduleUpdateOptionsGroup.ResumeLayout(false);
