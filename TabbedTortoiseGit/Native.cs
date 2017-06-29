@@ -248,7 +248,10 @@ namespace TabbedTortoiseGit
 
         [DllImport( "user32.dll", SetLastError = true )]
         public static extern IntPtr GetForegroundWindow();
-		
+
+        [DllImport( "user32.dll" )]
+        public static extern bool SetForegroundWindow( IntPtr hWnd );
+
         public static void SendKeyDown( IntPtr windowHandle, Keys key )
         {
             PostMessage( windowHandle, WindowMessage.WM_KEYDOWN, (IntPtr)key, IntPtr.Zero );

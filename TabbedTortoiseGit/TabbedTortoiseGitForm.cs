@@ -46,6 +46,13 @@ namespace TabbedTortoiseGit
             }.ToImmutableDictionary();
         }
 
+        private static readonly Keys[] FORWARD_KEYS = new[]
+        {
+            Keys.F5,
+            Keys.Up,
+            Keys.Down
+        };
+
         private readonly Dictionary<int, TabControllerTag> _tags = new Dictionary<int, TabControllerTag>();
         private readonly CommonOpenFileDialog _folderDialog;
         private readonly bool _showStartUpRepos;
@@ -86,6 +93,22 @@ namespace TabbedTortoiseGit
             KeyboardShortcutsManager.Instance.RemoveHandle( this.Handle );
 
             base.DestroyHandle();
+        }
+
+        protected override bool ProcessCmdKey( ref Message msg, Keys keyData )
+        {
+            if( FORWARD_KEYS.Any( k => keyData == k ) )
+            {
+                TabControllerTag tag = LogTabs.SelectedTab?.Controller();
+                if( tag != null )
+                {
+                    Native.SetForegroundWindow( tag.Process.MainWindowHandle );
+                    Native.SendKeyDown( tag.Process.MainWindowHandle, keyData );
+                    return true;
+                }
+            }
+
+            return base.ProcessCmdKey( ref msg, keyData );
         }
 
         private void UpdateFromSettings( bool updateWindowState )
