@@ -26,6 +26,8 @@ namespace TabbedTortoiseGit
         Commit,
         [Description( "Fast Fetch" )]
         FastFetch,
+        [Description( "Faster Fetch" )]
+        FasterFetch,
         [Description( "Fast Submodule Update" )]
         FastSubmoduleUpdate,
         [Description( "Fetch" )]

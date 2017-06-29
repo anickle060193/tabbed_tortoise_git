@@ -35,6 +35,7 @@ namespace TabbedTortoiseGit
             {
                 { KeyboardShortcuts.Commit,                 GitAction.Commit                },
                 { KeyboardShortcuts.FastFetch,              GitAction.FastFetch             },
+                { KeyboardShortcuts.FasterFetch,            GitAction.FasterFetch           },
                 { KeyboardShortcuts.FastSubmoduleUpdate,    GitAction.FastSubmoduleUpdate   },
                 { KeyboardShortcuts.Fetch,                  GitAction.Fetch                 },
                 { KeyboardShortcuts.Pull,                   GitAction.Pull                  },
