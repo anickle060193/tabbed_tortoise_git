@@ -87,50 +87,6 @@ namespace TabbedTortoiseGit
             base.DestroyHandle();
         }
 
-        internal async void HandleKeyboardShortcut( KeyboardShortcuts keyboardShortcut )
-        {
-            LOG.DebugFormat( "HandleKeyboardShortcut - KeyboardShortcut: {0}", keyboardShortcut );
-
-            if( keyboardShortcut == KeyboardShortcuts.NewTab )
-            {
-                await FindRepo();
-            }
-            else if( keyboardShortcut == KeyboardShortcuts.NextTab )
-            {
-                LogTabs.NextTab();
-            }
-            else if( keyboardShortcut == KeyboardShortcuts.PreviousTab )
-            {
-                LogTabs.PreviousTab();
-            }
-            else if( keyboardShortcut == KeyboardShortcuts.CloseTab )
-            {
-                CloseTab( LogTabs.SelectedTab );
-            }
-            else if( keyboardShortcut == KeyboardShortcuts.ReopenClosedTab )
-            {
-                if( _closedRepos.Count > 0 )
-                {
-                    String repo = _closedRepos.Pop();
-
-                    LOG.DebugFormat( "HotKey - Reopen Closed Tab - Reopening: {0}", repo );
-
-                    await OpenLog( repo );
-                }
-            }
-            else if( KEYBOARD_SHORTCUT_ACTIONS.ContainsKey( keyboardShortcut ) )
-            {
-                TabControllerTag tag = LogTabs.SelectedTab.Controller();
-                GitActionFunc gitActionFunc = KEYBOARD_SHORTCUT_ACTIONS[ keyboardShortcut ];
-
-                await RunGitAction( tag, gitActionFunc );
-            }
-            else
-            {
-                LOG.ErrorFormat( "Unhandled keyboard shortcut - KeyboardShortcut: {0}", keyboardShortcut );
-            }
-        }
-
         private void UpdateFromSettings( bool updateWindowState )
         {
             if( updateWindowState )
@@ -379,6 +335,50 @@ namespace TabbedTortoiseGit
 
             Process p = GitAction.Log( path, references );
             await AddNewLogProcess( p, path );
+        }
+
+        internal async void HandleKeyboardShortcut( KeyboardShortcuts keyboardShortcut )
+        {
+            LOG.DebugFormat( "HandleKeyboardShortcut - KeyboardShortcut: {0}", keyboardShortcut );
+
+            if( keyboardShortcut == KeyboardShortcuts.NewTab )
+            {
+                await FindRepo();
+            }
+            else if( keyboardShortcut == KeyboardShortcuts.NextTab )
+            {
+                LogTabs.NextTab();
+            }
+            else if( keyboardShortcut == KeyboardShortcuts.PreviousTab )
+            {
+                LogTabs.PreviousTab();
+            }
+            else if( keyboardShortcut == KeyboardShortcuts.CloseTab )
+            {
+                CloseTab( LogTabs.SelectedTab );
+            }
+            else if( keyboardShortcut == KeyboardShortcuts.ReopenClosedTab )
+            {
+                if( _closedRepos.Count > 0 )
+                {
+                    String repo = _closedRepos.Pop();
+
+                    LOG.DebugFormat( "HotKey - Reopen Closed Tab - Reopening: {0}", repo );
+
+                    await OpenLog( repo );
+                }
+            }
+            else if( KEYBOARD_SHORTCUT_ACTIONS.ContainsKey( keyboardShortcut ) )
+            {
+                TabControllerTag tag = LogTabs.SelectedTab.Controller();
+                GitActionFunc gitActionFunc = KEYBOARD_SHORTCUT_ACTIONS[ keyboardShortcut ];
+
+                await RunGitAction( tag, gitActionFunc );
+            }
+            else
+            {
+                LOG.ErrorFormat( "Unhandled keyboard shortcut - KeyboardShortcut: {0}", keyboardShortcut );
+            }
         }
 
         internal void AddExistingTab( Tab tab )
