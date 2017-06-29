@@ -28,23 +28,19 @@ namespace TabbedTortoiseGit
     {
         private static readonly ILog LOG = LogManager.GetLogger( typeof( TabbedTortoiseGitForm ) );
 
-        private static readonly ImmutableDictionary<KeyboardShortcuts, GitActionFunc> KEYBOARD_SHORTCUT_ACTIONS;
-        static TabbedTortoiseGitForm()
+        private static readonly ImmutableDictionary<KeyboardShortcuts, GitActionFunc> KEYBOARD_SHORTCUT_ACTIONS = new Dictionary<KeyboardShortcuts, GitActionFunc>()
         {
-            KEYBOARD_SHORTCUT_ACTIONS = new Dictionary<KeyboardShortcuts, GitActionFunc>()
-            {
-                { KeyboardShortcuts.Commit,                 GitAction.Commit                },
-                { KeyboardShortcuts.FastFetch,              GitAction.FastFetch             },
-                { KeyboardShortcuts.FasterFetch,            GitAction.FasterFetch           },
-                { KeyboardShortcuts.FastSubmoduleUpdate,    GitAction.FastSubmoduleUpdate   },
-                { KeyboardShortcuts.Fetch,                  GitAction.Fetch                 },
-                { KeyboardShortcuts.Pull,                   GitAction.Pull                  },
-                { KeyboardShortcuts.Push,                   GitAction.Push                  },
-                { KeyboardShortcuts.Rebase,                 GitAction.Rebase                },
-                { KeyboardShortcuts.SubmoduleUpdate,        GitAction.SubmoduleUpdate       },
-                { KeyboardShortcuts.SwitchCheckout,         GitAction.Switch                }
-            }.ToImmutableDictionary();
-        }
+            { KeyboardShortcuts.Commit,                 GitAction.Commit                },
+            { KeyboardShortcuts.FastFetch,              GitAction.FastFetch             },
+            { KeyboardShortcuts.FasterFetch,            GitAction.FasterFetch           },
+            { KeyboardShortcuts.FastSubmoduleUpdate,    GitAction.FastSubmoduleUpdate   },
+            { KeyboardShortcuts.Fetch,                  GitAction.Fetch                 },
+            { KeyboardShortcuts.Pull,                   GitAction.Pull                  },
+            { KeyboardShortcuts.Push,                   GitAction.Push                  },
+            { KeyboardShortcuts.Rebase,                 GitAction.Rebase                },
+            { KeyboardShortcuts.SubmoduleUpdate,        GitAction.SubmoduleUpdate       },
+            { KeyboardShortcuts.SwitchCheckout,         GitAction.Switch                }
+        }.ToImmutableDictionary();
 
         private static readonly Keys[] FORWARD_KEYS = new[]
         {

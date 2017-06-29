@@ -19,24 +19,20 @@ namespace TabbedTortoiseGit
     {
         private static readonly ILog LOG = LogManager.GetLogger( typeof( GitAction ) );
 
-        public static readonly ImmutableDictionary<String, GitAction> ACTIONS;
-        static GitAction()
+        public static readonly ImmutableDictionary<String, GitAction> ACTIONS = new[]
         {
-            ACTIONS = new []
-            {
-                new GitAction( "Fetch",                 GitAction.Fetch,                Resources.Fetch             ),
-                new GitAction( "Fast Fetch",            GitAction.FastFetch,            Resources.Fetch             ),
-                new GitAction( "Faster Fetch",          GitAction.FasterFetch,          Resources.Fetch             ),
-                new GitAction( "Commit",                GitAction.Commit,               Resources.Commit            ),
-                new GitAction( "Switch/Checkout",       GitAction.Switch,               Resources.Switch            ),
-                new GitAction( "Pull",                  GitAction.Pull,                 Resources.Pull              ),
-                new GitAction( "Push",                  GitAction.Push,                 Resources.Push              ),
-                new GitAction( "Rebase",                GitAction.Rebase,               Resources.Rebase            ),
-                new GitAction( "Sync",                  GitAction.Sync,                 Resources.Sync              ),
-                new GitAction( "Submodule Update",      GitAction.SubmoduleUpdate,      Resources.SubmoduleUpdate   ),
-                new GitAction( "Fast Submodule Update", GitAction.FastSubmoduleUpdate,  Resources.SubmoduleUpdate   )
-            }.ToImmutableDictionary( command => command.Name );
-        }
+            new GitAction( "Fetch",                 GitAction.Fetch,                Resources.Fetch             ),
+            new GitAction( "Fast Fetch",            GitAction.FastFetch,            Resources.Fetch             ),
+            new GitAction( "Faster Fetch",          GitAction.FasterFetch,          Resources.Fetch             ),
+            new GitAction( "Commit",                GitAction.Commit,               Resources.Commit            ),
+            new GitAction( "Switch/Checkout",       GitAction.Switch,               Resources.Switch            ),
+            new GitAction( "Pull",                  GitAction.Pull,                 Resources.Pull              ),
+            new GitAction( "Push",                  GitAction.Push,                 Resources.Push              ),
+            new GitAction( "Rebase",                GitAction.Rebase,               Resources.Rebase            ),
+            new GitAction( "Sync",                  GitAction.Sync,                 Resources.Sync              ),
+            new GitAction( "Submodule Update",      GitAction.SubmoduleUpdate,      Resources.SubmoduleUpdate   ),
+            new GitAction( "Fast Submodule Update", GitAction.FastSubmoduleUpdate,  Resources.SubmoduleUpdate   )
+        }.ToImmutableDictionary( command => command.Name );
 
         private static readonly String TORTOISE_GIT_EXE = "TortoiseGitProc.exe";
 
