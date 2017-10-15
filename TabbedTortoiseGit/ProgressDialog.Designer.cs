@@ -1,6 +1,6 @@
 ﻿namespace TabbedTortoiseGit
 {
-    partial class ProcessProgressDialog
+    partial class ProgressDialog
     {
         /// <summary>
         /// Required designer variable.

@@ -312,15 +312,15 @@ namespace TabbedTortoiseGit
                 int maxProcesses = (int)MaxProcessCountNumeric.Value;
 
                 List<String> checkedSubmodules = SubmoduleCheckList.CheckedItems.Cast<String>().ToList();
-                IEnumerable<Process> processes = checkedSubmodules.Select( submodule => Git.CreateSubmoduleUpdateProcess( Repo, submodule, init, recursive, force ) );
+                IEnumerable<ProcessProgressTask> tasks = checkedSubmodules.Select( submodule => Git.CreateSubmoduleUpdateTask( Repo, submodule, init, recursive, force ) );
 
-                ProcessProgressDialog dialog = new ProcessProgressDialog()
+                ProgressDialog dialog = new ProgressDialog()
                 {
                     Title = this.Text,
                     CompletedText = "Submodule Update Completed",
-                    MaxProcesses = maxProcesses
+                    MaxTasks = maxProcesses
                 };
-                dialog.AddProcesses( processes );
+                dialog.AddTasks( tasks );
                 dialog.Show();
                 dialog.DoProgress();
 

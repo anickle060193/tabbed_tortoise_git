@@ -123,11 +123,11 @@
     <Compile Include="KeyboardShortcuts.cs" />
     <Compile Include="Native.cs" />
     <Compile Include="NoTypeConverterJsonConverter.cs" />
-    <Compile Include="ProcessProgressDialog.cs">
+    <Compile Include="ProgressDialog.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="ProcessProgressDialog.Designer.cs">
-      <DependentUpon>ProcessProgressDialog.cs</DependentUpon>
+    <Compile Include="ProgressDialog.Designer.cs">
+      <DependentUpon>ProgressDialog.cs</DependentUpon>
     </Compile>
     <Compile Include="ProgramForm.cs">
       <SubType>Form</SubType>
@@ -187,8 +187,8 @@
     <EmbeddedResource Include="FavoritesManagerDialog.resx">
       <DependentUpon>FavoritesManagerDialog.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="ProcessProgressDialog.resx">
-      <DependentUpon>ProcessProgressDialog.cs</DependentUpon>
+    <EmbeddedResource Include="ProgressDialog.resx">
+      <DependentUpon>ProgressDialog.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>

@@ -82,7 +82,7 @@ namespace TabbedTortoiseGit
             MaxProcessesNumeric.Value = Settings.Default.FastFetchMaxProcesses;
         }
 
-        private static Process CreateFetchProcess( String path, bool tags, bool prune, bool progress, bool isSubmodule )
+        private static ProcessProgressTask CreateFetchTask( String path, bool tags, bool prune, bool progress, bool isSubmodule )
         {
             StringBuilder args = new StringBuilder( "fetch " );
 
@@ -114,7 +114,7 @@ namespace TabbedTortoiseGit
             p.StartInfo.FileName = "git.exe";
             p.StartInfo.Arguments = args.ToString();
             p.StartInfo.WorkingDirectory = path;
-            return p;
+            return new ProcessProgressTask( p );
         }
 
         private async Task Fetch()
@@ -134,24 +134,24 @@ namespace TabbedTortoiseGit
 
         private static Task Fetch( String title, String completedText, String repo, bool tags, bool prune, bool progress, int maxProcesses )
         {
-            ProcessProgressDialog dialog = new ProcessProgressDialog()
+            ProgressDialog dialog = new ProgressDialog()
             {
                 Title = title,
                 CompletedText = completedText,
-                MaxProcesses = maxProcesses,
+                MaxTasks = maxProcesses,
                 ErrorTextColor = Color.Black
             };
             dialog.Show();
 
-            dialog.AddProcess( CreateFetchProcess( repo, tags, prune, progress, false ) );
+            dialog.AddTask( CreateFetchTask( repo, tags, prune, progress, false ) );
 
             using( Repository r = new Repository( repo ) )
             {
                 foreach( Submodule submodule in r.Submodules )
                 {
                     String submodulePath = Path.Combine( repo, submodule.Path );
-                    Process p = CreateFetchProcess( submodulePath, tags, prune, progress, true );
-                    dialog.AddProcess( p );
+                    ProcessProgressTask t = CreateFetchTask( submodulePath, tags, prune, progress, true );
+                    dialog.AddTask( t );
                 }
             }
 

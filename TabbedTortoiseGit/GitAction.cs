@@ -150,15 +150,15 @@ namespace TabbedTortoiseGit
             List<String> submodules = await Git.GetSubmodules( path );
             List<String> modifiedSubmodules = await Git.GetModifiedSubmodules( path, submodules );
 
-            IEnumerable<Process> processes = modifiedSubmodules.Select( submodule => Git.CreateSubmoduleUpdateProcess( path, submodule, true, true, false ) );
+            IEnumerable<ProcessProgressTask> tasks = modifiedSubmodules.Select( submodule => Git.CreateSubmoduleUpdateTask( path, submodule, true, true, false ) );
 
-            ProcessProgressDialog dialog = new ProcessProgressDialog()
+            ProgressDialog dialog = new ProgressDialog()
             {
                 Title = "Faster Submodule Update",
                 CompletedText = "Faster Submodule Update Completed",
-                MaxProcesses = 6
+                MaxTasks = 6
             };
-            dialog.AddProcesses( processes );
+            dialog.AddTasks( tasks );
             dialog.Show();
             dialog.DoProgress();
 

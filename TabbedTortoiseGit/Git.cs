@@ -122,7 +122,7 @@ namespace TabbedTortoiseGit
             return p.ExitCode == 1;
         }
 
-        public static Process CreateSubmoduleUpdateProcess( String repoPath, String submodulePath, bool init, bool recursive, bool force )
+        public static ProcessProgressTask CreateSubmoduleUpdateTask( String repoPath, String submodulePath, bool init, bool recursive, bool force )
         {
             StringBuilder args = new StringBuilder( "submodule update " );
             if( init )
@@ -143,7 +143,7 @@ namespace TabbedTortoiseGit
             p.StartInfo.FileName = "git.exe";
             p.StartInfo.Arguments = args.ToString();
             p.StartInfo.WorkingDirectory = repoPath;
-            return p;
+            return new ProcessProgressTask( p );
         }
     }
 }
