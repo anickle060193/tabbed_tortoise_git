@@ -312,7 +312,7 @@ namespace TabbedTortoiseGit
                 int maxProcesses = (int)MaxProcessCountNumeric.Value;
 
                 List<String> checkedSubmodules = SubmoduleCheckList.CheckedItems.Cast<String>().ToList();
-                IEnumerable<Process> processes = checkedSubmodules.Select( submodule => CreateUpdateSubmoduleProcess( Repo, submodule, init, recursive, force ) );
+                IEnumerable<Process> processes = checkedSubmodules.Select( submodule => Git.CreateSubmoduleUpdateProcess( Repo, submodule, init, recursive, force ) );
 
                 ProcessProgressDialog dialog = new ProcessProgressDialog()
                 {
@@ -334,33 +334,6 @@ namespace TabbedTortoiseGit
                 LOG.DebugFormat( "UpdateSubmodules - No Submodules Selected" );
                 MessageBox.Show( "No submodules selected" );
             }
-        }
-
-        public Process CreateUpdateSubmoduleProcess( String repoPath, String submodulePath, bool init, bool recursive, bool force )
-        {
-            StringBuilder args = new StringBuilder( "submodule update " );
-            if( init )
-            {
-                args.Append( "--init " );
-            }
-            if( recursive )
-            {
-                args.Append( "--recursive " );
-            }
-            if( force )
-            {
-                args.Append( "--force " );
-            }
-            args.AppendFormat( "-- \"{0}\"", submodulePath );
-
-            Process p = new Process();
-            p.StartInfo.FileName = "git.exe";
-            p.StartInfo.Arguments = args.ToString();
-            p.StartInfo.WorkingDirectory = repoPath;
-
-            LOG.DebugFormat( "UpdateSubmodule - Filename: {0} - Arguments: {1} - Working Directory: {2}", p.StartInfo.FileName, p.StartInfo.Arguments, p.StartInfo.WorkingDirectory );
-
-            return p;
         }
     }
 }

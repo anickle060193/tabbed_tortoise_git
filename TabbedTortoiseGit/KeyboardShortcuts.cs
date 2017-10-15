@@ -30,6 +30,8 @@ namespace TabbedTortoiseGit
         FasterFetch,
         [Description( "Fast Submodule Update" )]
         FastSubmoduleUpdate,
+        [Description( "Faster Submodule Update" )]
+        FasterSubmoduleUpdate,
         [Description( "Fetch" )]
         Fetch,
         [Description( "Pull" )]

@@ -21,17 +21,18 @@ namespace TabbedTortoiseGit
 
         public static readonly ImmutableDictionary<String, GitAction> ACTIONS = new[]
         {
-            new GitAction( "Fetch",                 GitAction.Fetch,                Resources.Fetch             ),
-            new GitAction( "Fast Fetch",            GitAction.FastFetch,            Resources.Fetch             ),
-            new GitAction( "Faster Fetch",          GitAction.FasterFetch,          Resources.Fetch             ),
-            new GitAction( "Commit",                GitAction.Commit,               Resources.Commit            ),
-            new GitAction( "Switch/Checkout",       GitAction.Switch,               Resources.Switch            ),
-            new GitAction( "Pull",                  GitAction.Pull,                 Resources.Pull              ),
-            new GitAction( "Push",                  GitAction.Push,                 Resources.Push              ),
-            new GitAction( "Rebase",                GitAction.Rebase,               Resources.Rebase            ),
-            new GitAction( "Sync",                  GitAction.Sync,                 Resources.Sync              ),
-            new GitAction( "Submodule Update",      GitAction.SubmoduleUpdate,      Resources.SubmoduleUpdate   ),
-            new GitAction( "Fast Submodule Update", GitAction.FastSubmoduleUpdate,  Resources.SubmoduleUpdate   )
+            new GitAction( "Fetch",                     GitAction.Fetch,                    Resources.Fetch             ),
+            new GitAction( "Fast Fetch",                GitAction.FastFetch,                Resources.Fetch             ),
+            new GitAction( "Faster Fetch",              GitAction.FasterFetch,              Resources.Fetch             ),
+            new GitAction( "Commit",                    GitAction.Commit,                   Resources.Commit            ),
+            new GitAction( "Switch/Checkout",           GitAction.Switch,                   Resources.Switch            ),
+            new GitAction( "Pull",                      GitAction.Pull,                     Resources.Pull              ),
+            new GitAction( "Push",                      GitAction.Push,                     Resources.Push              ),
+            new GitAction( "Rebase",                    GitAction.Rebase,                   Resources.Rebase            ),
+            new GitAction( "Sync",                      GitAction.Sync,                     Resources.Sync              ),
+            new GitAction( "Submodule Update",          GitAction.SubmoduleUpdate,          Resources.SubmoduleUpdate   ),
+            new GitAction( "Fast Submodule Update",     GitAction.FastSubmoduleUpdate,      Resources.SubmoduleUpdate   ),
+            new GitAction( "Faster Submodule Update",   GitAction.FasterSubmoduleUpdate,    Resources.SubmoduleUpdate   ),
         }.ToImmutableDictionary( command => command.Name );
 
         private static readonly String TORTOISE_GIT_EXE = "TortoiseGitProc.exe";
@@ -142,6 +143,27 @@ namespace TabbedTortoiseGit
         {
             Process p = await TortoiseGitCommand( "/command:subupdate /path:\"{0}\" /bkpath:\"{0}\"".XFormat( path ), path );
             return p.ExitCode == 0;
+        }
+
+        public static async Task<bool> FasterSubmoduleUpdate( String path )
+        {
+            List<String> submodules = await Git.GetSubmodules( path );
+            List<String> modifiedSubmodules = await Git.GetModifiedSubmodules( path, submodules );
+
+            IEnumerable<Process> processes = modifiedSubmodules.Select( submodule => Git.CreateSubmoduleUpdateProcess( path, submodule, true, true, false ) );
+
+            ProcessProgressDialog dialog = new ProcessProgressDialog()
+            {
+                Title = "Faster Submodule Update",
+                CompletedText = "Faster Submodule Update Completed",
+                MaxProcesses = 6
+            };
+            dialog.AddProcesses( processes );
+            dialog.Show();
+            dialog.DoProgress();
+
+            await dialog.WaitForClose();
+            return true;
         }
 
         public static async Task<bool> FastSubmoduleUpdate( String path )
