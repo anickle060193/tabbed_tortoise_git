@@ -187,39 +187,44 @@ namespace TabbedTortoiseGit
         {
             LOG.DebugFormat( "RunTasks - Task Count: {0}", _tasks.Count );
 
-            while( !_cancel && !_tasks.IsEmpty )
+            while( !_cancel && ( !_tasks.IsEmpty || !_runningTasks.IsEmpty ) )
             {
-                while( !_cancel && _runningTasks.Count >= MaxTasks )
+                if( _runningTasks.Count < this.MaxTasks && !_tasks.IsEmpty )
                 {
-                    Thread.Sleep( 50 );
-                }
-                if( _cancel )
-                {
-                    break;
-                }
-                ProgressTask t;
-                if( _tasks.TryDequeue( out t ) )
-                {
-                    LOG.DebugFormat( "RunTasks - {0}", t.Description );
-                    Output.UiBeginInvoke( (Action<String, Color>)LogOutput, t.InitialOutput, CommandTextColor );
-                    _runningTasks[ t ] = 0;
-                    t.StartProgress();
+                    ProgressTask t;
+                    if( _tasks.TryDequeue( out t ) )
+                    {
+                        LOG.DebugFormat( "RunTasks - {0}", t.Description );
+                        String initialOutput = t.InitialOutput;
+                        if( !String.IsNullOrWhiteSpace( initialOutput ) )
+                        {
+                            Output.UiBeginInvoke( (Action<String, Color>)LogOutput, initialOutput, CommandTextColor );
+                        }
+                        _runningTasks[ t ] = 0;
+                        t.StartProgress();
+                    }
+                    else
+                    {
+                        LOG.ErrorFormat( "RunTasks - Failed to dequeue task - Count: {0}", _tasks.Count );
+                    }
                 }
                 else
                 {
-                    LOG.ErrorFormat( "RunTasks - Failed to dequeue task - Count: {0}", _tasks.Count );
-                }
-
-                if( _tasks.IsEmpty )
-                {
-                    LOG.Debug( "RunTasks - Start Wait for All HasExited" );
-                    while( !_runningTasks.IsEmpty && _tasks.IsEmpty )
-                    {
-                        Thread.Sleep( 20 );
-                    }
-                    LOG.Debug( "RunTasks - End Wait for All HasExited" );
+                    Thread.Sleep( 20 );
                 }
             }
+
+            if( _cancel )
+            {
+                LOG.Debug( "RunTasks - Waiting for cancelled tasks to complete" );
+                while( !_runningTasks.IsEmpty )
+                {
+                    Thread.Sleep( 20 );
+                }
+                LOG.Debug( "RunTasks - Cancelled tasks completed" );
+            }
+
+            LOG.Debug( "RunTasks - Completed" );
         }
 
         private void LogOutput( String output, Color color )
@@ -306,9 +311,19 @@ namespace TabbedTortoiseGit
             OutputReceived?.Invoke( this, e );
         }
 
+        protected void Output( String output )
+        {
+            OnOutputReceived( new OutputEventArgs( output ) );
+        }
+
         protected void OnErrorReceived( OutputEventArgs e )
         {
             ErrorOutputReceived?.Invoke( this, e );
+        }
+
+        protected void Error( String output )
+        {
+            OnErrorReceived( new OutputEventArgs( output ) );
         }
 
         protected void OnProgressCompleted( ProgressCompletedEventArgs e )
@@ -350,12 +365,12 @@ namespace TabbedTortoiseGit
 
         private void Process_OutputDataReceived( object sender, DataReceivedEventArgs e )
         {
-            OnOutputReceived( new OutputEventArgs( e.Data ) );
+            Output( e.Data );
         }
 
         private void Process_ErrorDataReceived( object sender, DataReceivedEventArgs e )
         {
-            OnErrorReceived( new OutputEventArgs( e.Data ) );
+            Error( e.Data );
         }
 
         private void Process_Exited( object sender, EventArgs e )

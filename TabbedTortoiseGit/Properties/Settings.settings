@@ -33,7 +33,7 @@
       <Value Profile="(Default)">True</Value>
     </Setting>
     <Setting Name="FastSubmoduleUpdateForceChecked" Type="System.Boolean" Scope="User">
-      <Value Profile="(Default)">True</Value>
+      <Value Profile="(Default)">False</Value>
     </Setting>
     <Setting Name="FastSubmoduleUpdateMaxProcesses" Type="System.Int32" Scope="User">
       <Value Profile="(Default)">6</Value>
@@ -96,9 +96,24 @@
       <Value Profile="(Default)" />
     </Setting>
     <Setting Name="KeyboardShortcutsString" Type="System.String" Scope="User">
-      <Value Profile="(Default)" />
+      <Value Profile="(Default)">True</Value>
     </Setting>
     <Setting Name="ConfirmFasterFetch" Type="System.Boolean" Scope="User">
+      <Value Profile="(Default)">True</Value>
+    </Setting>
+    <Setting Name="FasterSubmoduleUpdateInitChecked" Type="System.Boolean" Scope="User">
+      <Value Profile="(Default)">True</Value>
+    </Setting>
+    <Setting Name="FasterSubmoduleUpdateRecursiveChecked" Type="System.Boolean" Scope="User">
+      <Value Profile="(Default)">True</Value>
+    </Setting>
+    <Setting Name="FasterSubmoduleUpdateForceChecked" Type="System.Boolean" Scope="User">
+      <Value Profile="(Default)">False</Value>
+    </Setting>
+    <Setting Name="FasterSubmoduleUpdateMaxProcesses" Type="System.Int32" Scope="User">
+      <Value Profile="(Default)">6</Value>
+    </Setting>
+    <Setting Name="FasterSubmoduleUpdateAllSubmodules" Type="System.Boolean" Scope="User">
       <Value Profile="(Default)">True</Value>
     </Setting>
   </Settings>

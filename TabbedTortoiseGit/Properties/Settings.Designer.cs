@@ -142,7 +142,7 @@ namespace TabbedTortoiseGit.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("True")]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
         public bool FastSubmoduleUpdateForceChecked {
             get {
                 return ((bool)(this["FastSubmoduleUpdateForceChecked"]));
@@ -390,7 +390,7 @@ namespace TabbedTortoiseGit.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        [global::System.Configuration.DefaultSettingValueAttribute("True")]
         public string KeyboardShortcutsString {
             get {
                 return ((string)(this["KeyboardShortcutsString"]));
@@ -409,6 +409,66 @@ namespace TabbedTortoiseGit.Properties {
             }
             set {
                 this["ConfirmFasterFetch"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("True")]
+        public bool FasterSubmoduleUpdateInitChecked {
+            get {
+                return ((bool)(this["FasterSubmoduleUpdateInitChecked"]));
+            }
+            set {
+                this["FasterSubmoduleUpdateInitChecked"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("True")]
+        public bool FasterSubmoduleUpdateRecursiveChecked {
+            get {
+                return ((bool)(this["FasterSubmoduleUpdateRecursiveChecked"]));
+            }
+            set {
+                this["FasterSubmoduleUpdateRecursiveChecked"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public bool FasterSubmoduleUpdateForceChecked {
+            get {
+                return ((bool)(this["FasterSubmoduleUpdateForceChecked"]));
+            }
+            set {
+                this["FasterSubmoduleUpdateForceChecked"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("6")]
+        public int FasterSubmoduleUpdateMaxProcesses {
+            get {
+                return ((int)(this["FasterSubmoduleUpdateMaxProcesses"]));
+            }
+            set {
+                this["FasterSubmoduleUpdateMaxProcesses"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("True")]
+        public bool FasterSubmoduleUpdateAllSubmodules {
+            get {
+                return ((bool)(this["FasterSubmoduleUpdateAllSubmodules"]));
+            }
+            set {
+                this["FasterSubmoduleUpdateAllSubmodules"] = value;
             }
         }
     }
