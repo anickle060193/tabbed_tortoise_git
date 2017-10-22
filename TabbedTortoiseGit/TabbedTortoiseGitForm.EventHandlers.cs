@@ -52,6 +52,7 @@ namespace TabbedTortoiseGit
             OpenRepoMenuItem.Click += OpenRepoMenuItem_Click;
             FavoritesManagerMenuItem.Click += ShowFavoritesManagerMenuItem_Click;
             SettingsMenuItem.Click += SettingsMenuItem_Click;
+            ShowDebugLogMenuItem.Click += ShowDebugLogMenuItem_Click;
             AboutMenuItem.Click += AboutMenuItem_Click;
             ExitMenuItem.Click += ExitMenuItem_Click;
 
@@ -343,6 +344,15 @@ namespace TabbedTortoiseGit
             if( SettingsForm.ShowSettingsDialog() )
             {
                 UpdateFromSettings( false );
+            }
+        }
+
+        private void ShowDebugLogMenuItem_Click( object sender, EventArgs e )
+        {
+            FileAppender rootAppender = ( (Hierarchy)LogManager.GetRepository() ).Root.Appenders.OfType<FileAppender>().FirstOrDefault();
+            if( rootAppender != null )
+            {
+                Util.OpenInExplorer( rootAppender.File );
             }
         }
 

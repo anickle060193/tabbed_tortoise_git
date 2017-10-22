@@ -41,7 +41,6 @@ namespace TabbedTortoiseGit
 
             UpdateButton.Click += UpdateButton_Click;
             ViewGithub.Click += ViewGithub_Click;
-            OpenDebugLog.Click += OpenDebugLog_Click;
         }
 
         private async void AboutBox_Load( object sender, EventArgs e )
@@ -83,15 +82,6 @@ namespace TabbedTortoiseGit
         private void ViewGithub_Click( object sender, EventArgs e )
         {
             Process.Start( "https://github.com/anickle060193/tabbed_tortoise_git" );
-        }
-
-        private void OpenDebugLog_Click( object sender, EventArgs e )
-        {
-            FileAppender rootAppender = ( (Hierarchy)LogManager.GetRepository() ).Root.Appenders.OfType<FileAppender>().FirstOrDefault();
-            if( rootAppender != null )
-            {
-                Util.OpenInExplorer( rootAppender.File );
-            }
         }
 
         #region Assembly Attribute Accessors

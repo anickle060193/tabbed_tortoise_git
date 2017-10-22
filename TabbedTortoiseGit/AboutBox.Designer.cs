@@ -35,7 +35,6 @@
             this.label2 = new System.Windows.Forms.Label();
             this.label1 = new System.Windows.Forms.Label();
             this.ButtonLayout = new System.Windows.Forms.TableLayoutPanel();
-            this.OpenDebugLog = new System.Windows.Forms.Button();
             this.ViewGithub = new System.Windows.Forms.Button();
             this.OK = new System.Windows.Forms.Button();
             this.VersionTableLayout = new System.Windows.Forms.TableLayoutPanel();
@@ -152,14 +151,12 @@
             // 
             this.ButtonLayout.AutoSize = true;
             this.ButtonLayout.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
-            this.ButtonLayout.ColumnCount = 3;
-            this.ButtonLayout.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
+            this.ButtonLayout.ColumnCount = 2;
             this.ButtonLayout.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
             this.ButtonLayout.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
             this.ButtonLayout.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 20F));
-            this.ButtonLayout.Controls.Add(this.OpenDebugLog, 1, 0);
             this.ButtonLayout.Controls.Add(this.ViewGithub, 0, 0);
-            this.ButtonLayout.Controls.Add(this.OK, 2, 0);
+            this.ButtonLayout.Controls.Add(this.OK, 1, 0);
             this.ButtonLayout.Dock = System.Windows.Forms.DockStyle.Fill;
             this.ButtonLayout.Location = new System.Drawing.Point(255, 235);
             this.ButtonLayout.Margin = new System.Windows.Forms.Padding(0);
@@ -168,16 +165,6 @@
             this.ButtonLayout.RowStyles.Add(new System.Windows.Forms.RowStyle());
             this.ButtonLayout.Size = new System.Drawing.Size(384, 30);
             this.ButtonLayout.TabIndex = 28;
-            // 
-            // OpenDebugLog
-            // 
-            this.OpenDebugLog.AutoSize = true;
-            this.OpenDebugLog.Location = new System.Drawing.Point(84, 3);
-            this.OpenDebugLog.Name = "OpenDebugLog";
-            this.OpenDebugLog.Size = new System.Drawing.Size(99, 23);
-            this.OpenDebugLog.TabIndex = 26;
-            this.OpenDebugLog.Text = "Open Debug Log";
-            this.OpenDebugLog.UseVisualStyleBackColor = true;
             // 
             // ViewGithub
             // 
@@ -293,7 +280,6 @@
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.TableLayoutPanel ButtonLayout;
-        private System.Windows.Forms.Button OpenDebugLog;
         private System.Windows.Forms.Button ViewGithub;
         private System.Windows.Forms.TableLayoutPanel VersionTableLayout;
         private System.Windows.Forms.Button UpdateButton;

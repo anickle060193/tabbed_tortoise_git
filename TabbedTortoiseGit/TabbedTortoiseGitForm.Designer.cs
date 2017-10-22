@@ -52,6 +52,7 @@
             this.FavoritesFolderContextMenu = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.RemoveFavoriteFolderContextMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.ModifiedRepoCheckBackgroundWorker = new System.ComponentModel.BackgroundWorker();
+            this.ShowDebugLogMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.TabContextMenu.SuspendLayout();
             this.FavoriteRepoContextMenu.SuspendLayout();
             this.OptionsContextMenu.SuspendLayout();
@@ -131,10 +132,11 @@
             this.OptionsMenuSeparator,
             this.FavoritesManagerMenuItem,
             this.SettingsMenuItem,
+            this.ShowDebugLogMenuItem,
             this.AboutMenuItem,
             this.ExitMenuItem});
             this.OptionsContextMenu.Name = "OptionsContextMenu";
-            this.OptionsContextMenu.Size = new System.Drawing.Size(172, 142);
+            this.OptionsContextMenu.Size = new System.Drawing.Size(172, 186);
             // 
             // OpenRepoMenuItem
             // 
@@ -215,6 +217,12 @@
             this.RemoveFavoriteFolderContextMenuItem.Size = new System.Drawing.Size(198, 22);
             this.RemoveFavoriteFolderContextMenuItem.Text = "Remove Favorite Folder";
             // 
+            // ShowDebugLogMenuItem
+            // 
+            this.ShowDebugLogMenuItem.Name = "ShowDebugLogMenuItem";
+            this.ShowDebugLogMenuItem.Size = new System.Drawing.Size(171, 22);
+            this.ShowDebugLogMenuItem.Text = "Show Debug Log";
+            // 
             // TabbedTortoiseGitForm
             // 
             this.AllowDrop = true;
@@ -262,6 +270,7 @@
         private System.Windows.Forms.ToolStripMenuItem RemoveFavoriteFolderContextMenuItem;
         private System.Windows.Forms.ToolStripMenuItem OpenFavoriteRepoLocationContextMenuItem;
         private System.ComponentModel.BackgroundWorker ModifiedRepoCheckBackgroundWorker;
+        private System.Windows.Forms.ToolStripMenuItem ShowDebugLogMenuItem;
     }
 }
 
