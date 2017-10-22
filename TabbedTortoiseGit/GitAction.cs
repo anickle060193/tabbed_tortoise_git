@@ -147,10 +147,7 @@ namespace TabbedTortoiseGit
 
         public static async Task<bool> FasterSubmoduleUpdate( String path )
         {
-            List<String> submodules = await Git.GetSubmodules( path );
-            List<String> modifiedSubmodules = await Git.GetModifiedSubmodules( path, submodules );
-
-            IEnumerable<ProcessProgressTask> tasks = modifiedSubmodules.Select( submodule => Git.CreateSubmoduleUpdateTask( path, submodule, true, true, false ) );
+            RetrieveModifiedSubmodulesProgressTask task = new RetrieveModifiedSubmodulesProgressTask( path, false );
 
             ProgressDialog dialog = new ProgressDialog()
             {
@@ -158,7 +155,7 @@ namespace TabbedTortoiseGit
                 CompletedText = "Faster Submodule Update Completed",
                 MaxTasks = 6
             };
-            dialog.AddTasks( tasks );
+            dialog.AddTask( task );
             dialog.Show();
             dialog.DoProgress();
 
@@ -172,6 +169,48 @@ namespace TabbedTortoiseGit
             dialog.Show();
             await dialog.WaitForClose();
             return dialog.DialogResult == DialogResult.OK;
+        }
+    }
+
+    class RetrieveModifiedSubmodulesProgressTask : ProgressTask
+    {
+        public String Repo { get; private set; }
+        public bool Force { get; private set; }
+
+        public RetrieveModifiedSubmodulesProgressTask( String repo, bool force )
+        {
+            this.Repo = repo;
+            this.Force = force;
+        }
+
+        public override string Description
+        {
+            get
+            {
+                return "Retrieve Modified Submodules";
+            }
+        }
+
+        public override string InitialOutput
+        {
+            get
+            {
+                return "Retrieving modified submodules";
+            }
+        }
+
+        public override void Cancel()
+        {
+        }
+
+        public override async void StartProgress()
+        {
+            List<String> submodules = await Git.GetSubmodules( this.Repo );
+            List<String> modifiedSubmodules = await Git.GetModifiedSubmodules( this.Repo, submodules );
+
+            IEnumerable<ProcessProgressTask> tasks = submodules.Select( submodule => Git.CreateSubmoduleUpdateTask( this.Repo, submodule, true, true, this.Force ) );
+
+            OnProgressCompleted( new ProgressCompletedEventArgs( tasks ) );
         }
     }
 }

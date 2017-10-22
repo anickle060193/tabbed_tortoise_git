@@ -79,11 +79,6 @@ namespace TabbedTortoiseGit
 
         public void AddTasks( IEnumerable<ProgressTask> tasks )
         {
-            if( _started )
-            {
-                throw new InvalidOperationException( "Cannot add tasks once progress has started." );
-            }
-
             foreach( ProgressTask t in tasks )
             {
                 AddTask( t );
@@ -92,11 +87,6 @@ namespace TabbedTortoiseGit
 
         public void AddTask( ProgressTask task )
         {
-            if( _started )
-            {
-                throw new InvalidOperationException( "Cannot add task once progress has started." );
-            }
-
             LOG.DebugFormat( "AddTask - {0}", task.Description );
             _tasks.Enqueue( task );
 
@@ -104,7 +94,7 @@ namespace TabbedTortoiseGit
             task.ErrorOutputReceived += Task_ErrorOutputReceived;
             task.ProgressCompleted += Task_ProgressCompleted;
 
-            ProgressBar.Maximum++;
+            ProgressBar.UiBeginInvoke( (Action)( () => ProgressBar.Maximum++ ) );
         }
 
         public void DoProgress()
@@ -219,14 +209,17 @@ namespace TabbedTortoiseGit
                 {
                     LOG.ErrorFormat( "RunTasks - Failed to dequeue task - Count: {0}", _tasks.Count );
                 }
-            }
 
-            LOG.Debug( "RunTasks - Start Wait for All HasExited" );
-            while( !_runningTasks.IsEmpty )
-            {
-                Thread.Sleep( 20 );
+                if( _tasks.IsEmpty )
+                {
+                    LOG.Debug( "RunTasks - Start Wait for All HasExited" );
+                    while( !_runningTasks.IsEmpty && _tasks.IsEmpty )
+                    {
+                        Thread.Sleep( 20 );
+                    }
+                    LOG.Debug( "RunTasks - End Wait for All HasExited" );
+                }
             }
-            LOG.Debug( "RunTasks - End Wait for All HasExited" );
         }
 
         private void LogOutput( String output, Color color )
@@ -258,6 +251,9 @@ namespace TabbedTortoiseGit
         private void Task_ProgressCompleted( object sender, ProgressCompletedEventArgs e )
         {
             ProgressTask t = (ProgressTask)sender;
+
+            this.AddTasks( e.AdditionalTasks );
+
             byte removed;
             if( !_runningTasks.TryRemove( t, out removed ) )
             {
