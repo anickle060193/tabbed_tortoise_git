@@ -21,11 +21,26 @@ namespace TabbedTortoiseGit
 
         private static readonly ILog LOG = LogManager.GetLogger( typeof( ProgramForm ) );
 
+        private static readonly String TORTOISE_GIT_EVENT_QUERY = @"TargetInstance ISA 'Win32_Process' 
+                                                                AND TargetInstance.Name = 'TortoiseGitProc.exe'
+                                                                AND ( TargetInstance.CommandLine LIKE '%/command:log%'
+                                                                   OR TargetInstance.CommandLine LIKE '%/command log%'
+                                                                   OR TargetInstance.CommandLine LIKE '%-command:log%'
+                                                                   OR TargetInstance.CommandLine LIKE '%-command log%' )";
+        private static readonly String TORTOISE_GIT_QUERY = @"SELECT *
+                                                              FROM Win32_Process
+                                                              WHERE Name = 'TortoiseGitProc.exe'
+                                                                AND ( CommandLine LIKE '%/command:log%'
+                                                                   OR CommandLine LIKE '%/command log%'
+                                                                   OR CommandLine LIKE '%-command:log%'
+                                                                   OR CommandLine LIKE '%-command log%' )";
         private static readonly Regex TORTOISE_GIT_COMMAND_LINE_REGEX = new Regex( @"(/|-)path:?\s*""?(?<path>.+?)""? *( /|$)", RegexOptions.IgnoreCase );
 
         private readonly List<TabbedTortoiseGitForm> _forms = new List<TabbedTortoiseGitForm>();
+        private readonly HashSet<int> _capturedLogs = new HashSet<int>();
         private readonly ManagementEventWatcher _watcher;
         private readonly NotifyIcon _notifyIcon;
+        private readonly Timer _watcherTimer;
         private readonly bool _startup;
 
         private TabbedTortoiseGitForm _activeForm;
@@ -45,13 +60,7 @@ namespace TabbedTortoiseGit
         {
             _startup = startup;
 
-            String condition = @"TargetInstance ISA 'Win32_Process' 
-                             AND TargetInstance.Name = 'TortoiseGitProc.exe'
-                             AND ( TargetInstance.CommandLine LIKE '%/command:log%'
-                                OR TargetInstance.CommandLine LIKE '%/command log%'
-                                OR TargetInstance.CommandLine LIKE '%-command:log%'
-                                OR TargetInstance.CommandLine LIKE '%-command log%' )";
-            _watcher = new ManagementEventWatcher( new WqlEventQuery( "__InstanceCreationEvent", new TimeSpan( 10 ), condition ) );
+            _watcher = new ManagementEventWatcher( new WqlEventQuery( "__InstanceCreationEvent", new TimeSpan( 10 ), TORTOISE_GIT_EVENT_QUERY ) );
             _watcher.Options.Timeout = new TimeSpan( 0, 1, 0 );
             _watcher.EventArrived += Watcher_EventArrived;
             _watcher.Start();
@@ -67,6 +76,11 @@ namespace TabbedTortoiseGit
             openItem.Click += OpenNotifyIconMenuItem_Click;
             ToolStripItem exitItem = _notifyIcon.ContextMenuStrip.Items.Add( "Exit" );
             exitItem.Click += ExitNotifyIconMenuItem_Click;
+
+            _watcherTimer = new Timer();
+            _watcherTimer.Interval = 1000;
+            _watcherTimer.Tick += WatcherTimer_Tick;
+            _watcherTimer.Start();
 
             this.FormClosing += ProgramForm_FormClosing;
 
@@ -121,6 +135,9 @@ namespace TabbedTortoiseGit
                 _notifyIcon.Dispose();
 
                 _watcher.Dispose();
+
+                _watcherTimer.Stop();
+                _watcherTimer.Dispose();
             }
         }
 
@@ -162,6 +179,47 @@ namespace TabbedTortoiseGit
             await _activeForm.AddNewLogProcess( p, repo );
         }
 
+        private bool CheckTortoiseGitProcessObject( ManagementBaseObject o )
+        {
+            String commandLine = (String)o[ "CommandLine" ];
+            Match m = TORTOISE_GIT_COMMAND_LINE_REGEX.Match( commandLine );
+            String path = m.Groups[ "path" ].Value;
+            int pid = (int)(UInt32)o[ "ProcessId" ];
+            Process p = Process.GetProcessById( pid );
+
+            lock( _capturedLogs )
+            {
+                if( _capturedLogs.Contains( pid ) )
+                {
+                    return false;
+                }
+
+                _capturedLogs.Add( pid );
+
+                p.Exited += LogProcess_Exited;
+            }
+
+            if( _forms.Any( form => form.OwnsLogProcess( p ) ) )
+            {
+                return false;
+            }
+
+            LOG.DebugFormat( "CheckObject - New Process found - PID: {0}", p.Id );
+
+            this.UiBeginInvoke( (Func<Process, String, Task>)CaptureNewLog, p, path );
+
+            return true;
+        }
+
+        private void LogProcess_Exited( object sender, EventArgs e )
+        {
+            lock( _capturedLogs )
+            {
+                Process p = sender as Process;
+                _capturedLogs.Remove( p.Id );
+            }
+        }
+
         private void KeyboardShortcutsManager_KeyboardShortcutPressed( object sender, KeyboardShortcutPressedEventArgs e )
         {
             LOG.DebugFormat( "KeyboardShortcutPressed - KeyboardShortcut: {0}", e.KeyboardShortcut );
@@ -180,6 +238,7 @@ namespace TabbedTortoiseGit
             LOG.DebugFormat( "ProgramForm_FormClosing - Close Reason: {0}", e.CloseReason );
 
             _watcher.Stop();
+            _watcherTimer.Stop();
 
             KeyboardShortcutsManager.Instance.Dispose();
         }
@@ -187,20 +246,24 @@ namespace TabbedTortoiseGit
         private void Watcher_EventArrived( object sender, EventArrivedEventArgs e )
         {
             ManagementBaseObject o = (ManagementBaseObject)e.NewEvent[ "TargetInstance" ];
-            String commandLine = (String)o[ "CommandLine" ];
-            Match m = TORTOISE_GIT_COMMAND_LINE_REGEX.Match( commandLine );
-            String path = m.Groups[ "path" ].Value;
-            int pid = (int)(UInt32)o[ "ProcessId" ];
-            LOG.DebugFormat( "Watcher_EventArrived - CommandLine: {0} - Repo: {1} - PID: {2}", commandLine, path, pid );
-            Process p = Process.GetProcessById( pid );
+            LOG.DebugFormat( "Watcher_EventArrived - Object: {0}", o.GetText( TextFormat.Mof ) );
 
-            if( _forms.Any( form => form.OwnsLogProcess( p ) ) )
+            CheckTortoiseGitProcessObject( o );
+        }
+
+        private void WatcherTimer_Tick( object sender, EventArgs e )
+        {
+            var searcher = new ManagementObjectSearcher( TORTOISE_GIT_QUERY );
+            foreach( ManagementBaseObject o in searcher.Get() )
             {
-                LOG.DebugFormat( "Watcher_EventArrived - Log opened by child - PID: {0}", p.Id );
-                return;
-            }
+                if( CheckTortoiseGitProcessObject( o ) )
+                {
+                    LOG.DebugFormat( "WatcherTimer_Tick - Process found by WatcherTimer - PID: {0}", o[ "ProcessId" ] );
 
-            this.UiBeginInvoke( (Func<Process, String, Task>)CaptureNewLog, p, path );
+                    _watcher.Stop();
+                    _watcher.Start();
+                }
+            }
         }
 
         private void NotifyIcon_DoubleClick( object sender, EventArgs e )
