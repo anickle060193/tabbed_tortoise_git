@@ -49,6 +49,13 @@ namespace TabbedTortoiseGit
             this.KeyBoardShortcutsTableLayout = new System.Windows.Forms.TableLayoutPanel();
             this.StartupReposTab = new System.Windows.Forms.TabPage();
             this.GitActionsTab = new System.Windows.Forms.TabPage();
+            this.GitActionsOptionsGroup = new System.Windows.Forms.GroupBox();
+            this.ConfirmFasterFetchCheck = new System.Windows.Forms.CheckBox();
+            this.CustomActionsTab = new System.Windows.Forms.TabPage();
+            this.EditCustomAction = new System.Windows.Forms.Button();
+            this.RemoveCustomAction = new System.Windows.Forms.Button();
+            this.CreateCustomAction = new System.Windows.Forms.Button();
+            this.CustomActionsDataGridView = new System.Windows.Forms.DataGridView();
             this.DisplaySettingsTab = new System.Windows.Forms.TabPage();
             this.ResetNormalTabFontButton = new System.Windows.Forms.Button();
             this.ChangeNormalTabFontButton = new System.Windows.Forms.Button();
@@ -68,20 +75,23 @@ namespace TabbedTortoiseGit
             this.ShowHitTestCheck = new System.Windows.Forms.CheckBox();
             this.ModifiedTabFontDialog = new System.Windows.Forms.FontDialog();
             this.NormalTabFontDialog = new System.Windows.Forms.FontDialog();
-            this.ConfirmFasterFetchCheck = new System.Windows.Forms.CheckBox();
-            this.GitActionsOptionsGroup = new System.Windows.Forms.GroupBox();
+            this.CustomActionNameColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.CustomActionProgramColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.CustomActionArgumentsColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
             ((System.ComponentModel.ISupportInitialize)(this.MaxRecentReposNumeric)).BeginInit();
             this.SettingsTabs.SuspendLayout();
             this.KeyboardShortcutsPage.SuspendLayout();
             this.StartupReposTab.SuspendLayout();
             this.GitActionsTab.SuspendLayout();
+            this.GitActionsOptionsGroup.SuspendLayout();
+            this.CustomActionsTab.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.CustomActionsDataGridView)).BeginInit();
             this.DisplaySettingsTab.SuspendLayout();
             this.NormalTabFontGroup.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.CheckForModifiedTabsIntervalNumeric)).BeginInit();
             this.ModifiedTabFontGroup.SuspendLayout();
             this.OtherSettingsTab.SuspendLayout();
             this.DeveloperSettingsPage.SuspendLayout();
-            this.GitActionsOptionsGroup.SuspendLayout();
             this.SuspendLayout();
             // 
             // StartupReposList
@@ -230,6 +240,7 @@ namespace TabbedTortoiseGit
             this.SettingsTabs.Controls.Add(this.KeyboardShortcutsPage);
             this.SettingsTabs.Controls.Add(this.StartupReposTab);
             this.SettingsTabs.Controls.Add(this.GitActionsTab);
+            this.SettingsTabs.Controls.Add(this.CustomActionsTab);
             this.SettingsTabs.Controls.Add(this.DisplaySettingsTab);
             this.SettingsTabs.Controls.Add(this.OtherSettingsTab);
             this.SettingsTabs.Controls.Add(this.DeveloperSettingsPage);
@@ -297,6 +308,103 @@ namespace TabbedTortoiseGit
             this.GitActionsTab.TabIndex = 1;
             this.GitActionsTab.Text = "Git Actions";
             this.GitActionsTab.UseVisualStyleBackColor = true;
+            // 
+            // GitActionsOptionsGroup
+            // 
+            this.GitActionsOptionsGroup.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.GitActionsOptionsGroup.Controls.Add(this.ConfirmFasterFetchCheck);
+            this.GitActionsOptionsGroup.Location = new System.Drawing.Point(6, 233);
+            this.GitActionsOptionsGroup.Name = "GitActionsOptionsGroup";
+            this.GitActionsOptionsGroup.Size = new System.Drawing.Size(440, 43);
+            this.GitActionsOptionsGroup.TabIndex = 3;
+            this.GitActionsOptionsGroup.TabStop = false;
+            this.GitActionsOptionsGroup.Text = "Git Actions Options";
+            // 
+            // ConfirmFasterFetchCheck
+            // 
+            this.ConfirmFasterFetchCheck.AutoSize = true;
+            this.ConfirmFasterFetchCheck.Location = new System.Drawing.Point(6, 20);
+            this.ConfirmFasterFetchCheck.Name = "ConfirmFasterFetchCheck";
+            this.ConfirmFasterFetchCheck.Size = new System.Drawing.Size(156, 17);
+            this.ConfirmFasterFetchCheck.TabIndex = 2;
+            this.ConfirmFasterFetchCheck.Text = "Confirm before Faster Fetch";
+            this.ConfirmFasterFetchCheck.UseVisualStyleBackColor = true;
+            // 
+            // CustomActionsTab
+            // 
+            this.CustomActionsTab.Controls.Add(this.EditCustomAction);
+            this.CustomActionsTab.Controls.Add(this.RemoveCustomAction);
+            this.CustomActionsTab.Controls.Add(this.CreateCustomAction);
+            this.CustomActionsTab.Controls.Add(this.CustomActionsDataGridView);
+            this.CustomActionsTab.Location = new System.Drawing.Point(4, 22);
+            this.CustomActionsTab.Name = "CustomActionsTab";
+            this.CustomActionsTab.Padding = new System.Windows.Forms.Padding(3);
+            this.CustomActionsTab.Size = new System.Drawing.Size(452, 282);
+            this.CustomActionsTab.TabIndex = 6;
+            this.CustomActionsTab.Text = "Custom Actions";
+            this.CustomActionsTab.UseVisualStyleBackColor = true;
+            // 
+            // EditCustomAction
+            // 
+            this.EditCustomAction.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.EditCustomAction.Enabled = false;
+            this.EditCustomAction.Location = new System.Drawing.Point(107, 253);
+            this.EditCustomAction.Name = "EditCustomAction";
+            this.EditCustomAction.Size = new System.Drawing.Size(95, 23);
+            this.EditCustomAction.TabIndex = 3;
+            this.EditCustomAction.Text = "Edit Action";
+            this.EditCustomAction.UseVisualStyleBackColor = true;
+            this.EditCustomAction.Click += new System.EventHandler(this.EditCustomAction_Click);
+            // 
+            // RemoveCustomAction
+            // 
+            this.RemoveCustomAction.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.RemoveCustomAction.Enabled = false;
+            this.RemoveCustomAction.Location = new System.Drawing.Point(208, 253);
+            this.RemoveCustomAction.Name = "RemoveCustomAction";
+            this.RemoveCustomAction.Size = new System.Drawing.Size(95, 23);
+            this.RemoveCustomAction.TabIndex = 2;
+            this.RemoveCustomAction.Text = "Remove Action";
+            this.RemoveCustomAction.UseVisualStyleBackColor = true;
+            this.RemoveCustomAction.Click += new System.EventHandler(this.RemoveCustomAction_Click);
+            // 
+            // CreateCustomAction
+            // 
+            this.CreateCustomAction.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.CreateCustomAction.Location = new System.Drawing.Point(6, 253);
+            this.CreateCustomAction.Name = "CreateCustomAction";
+            this.CreateCustomAction.Size = new System.Drawing.Size(95, 23);
+            this.CreateCustomAction.TabIndex = 1;
+            this.CreateCustomAction.Text = "Create Action";
+            this.CreateCustomAction.UseVisualStyleBackColor = true;
+            this.CreateCustomAction.Click += new System.EventHandler(this.CreateCustomAction_Click);
+            // 
+            // CustomActionsDataGridView
+            // 
+            this.CustomActionsDataGridView.AllowUserToAddRows = false;
+            this.CustomActionsDataGridView.AllowUserToDeleteRows = false;
+            this.CustomActionsDataGridView.AllowUserToResizeRows = false;
+            this.CustomActionsDataGridView.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.CustomActionsDataGridView.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.AllCells;
+            this.CustomActionsDataGridView.AutoSizeRowsMode = System.Windows.Forms.DataGridViewAutoSizeRowsMode.AllCells;
+            this.CustomActionsDataGridView.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.CustomActionsDataGridView.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
+            this.CustomActionNameColumn,
+            this.CustomActionProgramColumn,
+            this.CustomActionArgumentsColumn});
+            this.CustomActionsDataGridView.Location = new System.Drawing.Point(6, 6);
+            this.CustomActionsDataGridView.MultiSelect = false;
+            this.CustomActionsDataGridView.Name = "CustomActionsDataGridView";
+            this.CustomActionsDataGridView.ReadOnly = true;
+            this.CustomActionsDataGridView.RowHeadersVisible = false;
+            this.CustomActionsDataGridView.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
+            this.CustomActionsDataGridView.Size = new System.Drawing.Size(440, 241);
+            this.CustomActionsDataGridView.TabIndex = 0;
+            this.CustomActionsDataGridView.SelectionChanged += new System.EventHandler(this.CustomActionsDataGridView_SelectionChanged);
             // 
             // DisplaySettingsTab
             // 
@@ -521,28 +629,31 @@ namespace TabbedTortoiseGit
             this.NormalTabFontDialog.FontMustExist = true;
             this.NormalTabFontDialog.ShowColor = true;
             // 
-            // ConfirmFasterFetchCheck
+            // CustomActionNameColumn
             // 
-            this.ConfirmFasterFetchCheck.AutoSize = true;
-            this.ConfirmFasterFetchCheck.Location = new System.Drawing.Point(6, 20);
-            this.ConfirmFasterFetchCheck.Name = "ConfirmFasterFetchCheck";
-            this.ConfirmFasterFetchCheck.Size = new System.Drawing.Size(156, 17);
-            this.ConfirmFasterFetchCheck.TabIndex = 2;
-            this.ConfirmFasterFetchCheck.Text = "Confirm before Faster Fetch";
-            this.ConfirmFasterFetchCheck.UseVisualStyleBackColor = true;
+            this.CustomActionNameColumn.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
+            this.CustomActionNameColumn.DataPropertyName = "Name";
+            this.CustomActionNameColumn.HeaderText = "Name";
+            this.CustomActionNameColumn.Name = "CustomActionNameColumn";
+            this.CustomActionNameColumn.ReadOnly = true;
+            this.CustomActionNameColumn.Width = 60;
             // 
-            // GitActionsOptionsGroup
+            // CustomActionProgramColumn
             // 
-            this.GitActionsOptionsGroup.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.GitActionsOptionsGroup.Controls.Add(this.ConfirmFasterFetchCheck);
-            this.GitActionsOptionsGroup.Location = new System.Drawing.Point(6, 233);
-            this.GitActionsOptionsGroup.Name = "GitActionsOptionsGroup";
-            this.GitActionsOptionsGroup.Size = new System.Drawing.Size(440, 43);
-            this.GitActionsOptionsGroup.TabIndex = 3;
-            this.GitActionsOptionsGroup.TabStop = false;
-            this.GitActionsOptionsGroup.Text = "Git Actions Options";
+            this.CustomActionProgramColumn.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
+            this.CustomActionProgramColumn.DataPropertyName = "Program";
+            this.CustomActionProgramColumn.HeaderText = "Program";
+            this.CustomActionProgramColumn.Name = "CustomActionProgramColumn";
+            this.CustomActionProgramColumn.ReadOnly = true;
+            this.CustomActionProgramColumn.Width = 71;
+            // 
+            // CustomActionArgumentsColumn
+            // 
+            this.CustomActionArgumentsColumn.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
+            this.CustomActionArgumentsColumn.DataPropertyName = "Arguments";
+            this.CustomActionArgumentsColumn.HeaderText = "Arguments";
+            this.CustomActionArgumentsColumn.Name = "CustomActionArgumentsColumn";
+            this.CustomActionArgumentsColumn.ReadOnly = true;
             // 
             // SettingsForm
             // 
@@ -571,6 +682,10 @@ namespace TabbedTortoiseGit
             this.StartupReposTab.PerformLayout();
             this.GitActionsTab.ResumeLayout(false);
             this.GitActionsTab.PerformLayout();
+            this.GitActionsOptionsGroup.ResumeLayout(false);
+            this.GitActionsOptionsGroup.PerformLayout();
+            this.CustomActionsTab.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.CustomActionsDataGridView)).EndInit();
             this.DisplaySettingsTab.ResumeLayout(false);
             this.DisplaySettingsTab.PerformLayout();
             this.NormalTabFontGroup.ResumeLayout(false);
@@ -580,8 +695,6 @@ namespace TabbedTortoiseGit
             this.OtherSettingsTab.PerformLayout();
             this.DeveloperSettingsPage.ResumeLayout(false);
             this.DeveloperSettingsPage.PerformLayout();
-            this.GitActionsOptionsGroup.ResumeLayout(false);
-            this.GitActionsOptionsGroup.PerformLayout();
             this.ResumeLayout(false);
 
         }
@@ -626,5 +739,13 @@ namespace TabbedTortoiseGit
         private FontDialog NormalTabFontDialog;
         private GroupBox GitActionsOptionsGroup;
         private CheckBox ConfirmFasterFetchCheck;
+        private TabPage CustomActionsTab;
+        private DataGridView CustomActionsDataGridView;
+        private Button EditCustomAction;
+        private Button RemoveCustomAction;
+        private Button CreateCustomAction;
+        private DataGridViewTextBoxColumn CustomActionNameColumn;
+        private DataGridViewTextBoxColumn CustomActionProgramColumn;
+        private DataGridViewTextBoxColumn CustomActionArgumentsColumn;
     }
 }

@@ -181,6 +181,37 @@ namespace TabbedTortoiseGit.Properties
             }
         }
 
+        public List<CustomAction> CustomActions
+        {
+            get
+            {
+                List<CustomAction> customActions = null;
+                try
+                {
+                    String customActionsString = Settings.Default.CustomActionsString;
+                    customActions = JsonConvert.DeserializeObject<List<CustomAction>>( customActionsString );
+                }
+                catch( JsonException e )
+                {
+                    LOG.ErrorFormat( "Failed to deserialize CustomActions setting - CustomActions: {0}", Settings.Default.CustomActionsString );
+                    LOG.Error( e );
+                }
+                return customActions ?? new List<CustomAction>();
+            }
+
+            set
+            {
+                try
+                {
+                    Settings.Default.CustomActionsString = JsonConvert.SerializeObject( value, Formatting.Indented );
+                }
+                catch( JsonException e )
+                {
+                    LOG.Error( "Failed to serialize CustomActions.", e );
+                }
+            }
+        }
+
         public TreeNode<FavoriteRepo> DefaultFavoriteRepos
         {
             get
@@ -435,6 +466,14 @@ namespace TabbedTortoiseGit.Properties
             if( Settings.Default.KeyboardShortcutsString == null )
             {
                 Settings.Default.KeyboardShortcutsString = "";
+            }
+
+            if( String.IsNullOrEmpty( Settings.Default.CustomActionsString ) )
+            {
+                Settings.Default.CustomActions = new List<CustomAction>()
+                {
+                    new CustomAction( "Open Console Here", "cmd.exe", "/K \"cd /d \"%d\"\"" )
+                };
             }
 
             Settings.Default.Save();

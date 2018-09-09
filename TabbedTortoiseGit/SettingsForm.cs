@@ -28,6 +28,8 @@ namespace TabbedTortoiseGit
             f.TabContextMenuGitActions = Settings.Default.TabContextMenuGitActions;
             f.ConfirmFasterFetch = Settings.Default.ConfirmFasterFetch;
 
+            f.CustomActions = Settings.Default.CustomActions;
+
             f.NormalTabFont = Settings.Default.NormalTabFont;
             f.NormalTabFontColor = Settings.Default.NormalTabFontColor;
             f.IndicateModifiedTabs = Settings.Default.IndicateModifiedTabs;
@@ -53,6 +55,8 @@ namespace TabbedTortoiseGit
 
                 Settings.Default.TabContextMenuGitActions = f.TabContextMenuGitActions;
                 Settings.Default.ConfirmFasterFetch = f.ConfirmFasterFetch;
+
+                Settings.Default.CustomActions = f.CustomActions;
 
                 Settings.Default.NormalTabFont = f.NormalTabFont;
                 Settings.Default.NormalTabFontColor = f.NormalTabFontColor;
@@ -164,6 +168,27 @@ namespace TabbedTortoiseGit
             set
             {
                 ConfirmFasterFetchCheck.Checked = value;
+            }
+        }
+
+        public List<CustomAction> CustomActions
+        {
+            get
+            {
+                return new List<CustomAction>( _customActions );
+            }
+
+            set
+            {
+                _customActions.Clear();
+
+                if( value != null )
+                {
+                    foreach( CustomAction action in value )
+                    {
+                        _customActions.Add( action );
+                    }
+                }
             }
         }
 
@@ -352,6 +377,7 @@ namespace TabbedTortoiseGit
         private readonly CommonOpenFileDialog _folderDialog;
         private readonly CheckListDragDrophelper _dragDropHelper;
         private readonly Dictionary<KeyboardShortcuts, TextBox> _shortcutTextboxes = new Dictionary<KeyboardShortcuts, TextBox>();
+        private readonly BindingList<CustomAction> _customActions = new BindingList<CustomAction>();
 
         public SettingsForm()
         {
@@ -414,6 +440,9 @@ namespace TabbedTortoiseGit
 
             KeyBoardShortcutsTableLayout.RowStyles.Add( new RowStyle( SizeType.Percent, 1.0f ) );
             KeyBoardShortcutsTableLayout.RowCount++;
+
+            CustomActionsDataGridView.AutoGenerateColumns = false;
+            CustomActionsDataGridView.DataSource = _customActions;
         }
 
         protected override bool ProcessTabKey( bool forward )
@@ -588,6 +617,62 @@ namespace TabbedTortoiseGit
                 pointedParent.Items[ pointedItemIndex ] = dragItem;
                 pointedParent.SetItemChecked( pointedItemIndex, dragItemChecked );
                 pointedParent.SetSelected( pointedItemIndex, true );
+            }
+        }
+
+        private void CustomActionsDataGridView_SelectionChanged( object sender, EventArgs e )
+        {
+            if( CustomActionsDataGridView.SelectedRows.Count > 0 )
+            {
+                EditCustomAction.Enabled = true;
+                RemoveCustomAction.Enabled = true;
+            }
+            else
+            {
+                EditCustomAction.Enabled = false;
+                RemoveCustomAction.Enabled = false;
+            }
+        }
+
+        private void CreateCustomAction_Click( object sender, EventArgs e )
+        {
+            CustomActionDialog dialog = new CustomActionDialog();
+            if( dialog.ShowDialog() == DialogResult.OK )
+            {
+                CustomAction action = dialog.CustomAction;
+                if( action != null )
+                {
+                    _customActions.Add( action );
+                }
+            }
+        }
+
+        private void EditCustomAction_Click( object sender, EventArgs e )
+        {
+            if( CustomActionsDataGridView.SelectedRows.Count > 0 )
+            {
+                DataGridViewRow row = CustomActionsDataGridView.SelectedRows[ 0 ];
+
+                CustomActionDialog dialog = new CustomActionDialog();
+                dialog.CustomAction = row.DataBoundItem as CustomAction;
+                if( dialog.ShowDialog() == DialogResult.OK )
+                {
+                    CustomAction action = dialog.CustomAction;
+                    if( action != null )
+                    {
+                        _customActions[ row.Index ] = action;
+                    }
+                }
+            }
+        }
+
+        private void RemoveCustomAction_Click( object sender, EventArgs e )
+        {
+            if( CustomActionsDataGridView.SelectedRows.Count > 0 )
+            {
+                DataGridViewRow row = CustomActionsDataGridView.SelectedRows[ 0 ];
+
+                _customActions.RemoveAt( row.Index );
             }
         }
     }

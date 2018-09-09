@@ -219,6 +219,25 @@ namespace TabbedTortoiseGit
                 }
             }
 
+            List<CustomAction> customActions = Settings.Default.CustomActions;
+            if( customActions.Count > 0 )
+            {
+                TabContextMenu.Items.Add( "-" );
+
+                FavoriteRepoContextMenu.Items.Add( "-" );
+
+                foreach( CustomAction customAction in customActions )
+                {
+                    ToolStripItem tabMenuItem = TabContextMenu.Items.Add( customAction.Name );
+                    tabMenuItem.Click += CustomActionTabMenuItem_Click;
+                    tabMenuItem.Tag = customAction;
+
+                    ToolStripItem favoriteMenuItem = FavoriteRepoContextMenu.Items.Add( customAction.Name );
+                    favoriteMenuItem.Click += CustomActionFavoriteContextMenuItem_Click;
+                    favoriteMenuItem.Tag = customAction;
+                }
+            }
+
             TabContextMenu.Items.Add( "-" );
             TabContextMenu.Items.Add( CloseRepoTabMenuItem );
 
@@ -691,6 +710,37 @@ namespace TabbedTortoiseGit
                 {
                     Native.SendKeyDown( tag.Process.MainWindowHandle, Keys.F5 );
                 }
+            }
+        }
+
+        private void RunCustomAction( CustomAction customAction, String repoItem )
+        {
+            LOG.Debug( $"{nameof( RunCustomAction )} - Action: {customAction} - Repo: {repoItem}" );
+
+            String filename = repoItem;
+            String directory;
+            if( Directory.Exists( repoItem ) )
+            {
+                directory = repoItem;
+            }
+            else
+            {
+                directory = Path.GetDirectoryName( filename );
+            }
+            String repo = Git.GetBaseRepoDirectory( repoItem );
+
+            String program = customAction.Program;
+            String arguments = customAction.Arguments.Replace( "%f", filename ).Replace( "%d", directory ).Replace( "%r", repo );
+
+            LOG.Debug( $"{nameof( RunCustomAction )} - Running: {program} - {arguments}" );
+            try
+            {
+                Process.Start( program, arguments );
+            }
+            catch( Exception e )
+            {
+                LOG.Error( "Failed to run Custom Action: {program} {arguments}", e );
+                MessageBox.Show( $"The following error occurred while attempting to run Custom Action: {program} {arguments}\n{e}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error );
             }
         }
     }

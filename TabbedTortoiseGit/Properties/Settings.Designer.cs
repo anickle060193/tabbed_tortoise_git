@@ -471,5 +471,17 @@ namespace TabbedTortoiseGit.Properties {
                 this["FasterSubmoduleUpdateAllSubmodules"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        public string CustomActionsString {
+            get {
+                return ((string)(this["CustomActionsString"]));
+            }
+            set {
+                this["CustomActionsString"] = value;
+            }
+        }
     }
 }

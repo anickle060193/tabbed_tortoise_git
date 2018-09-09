@@ -317,6 +317,17 @@ namespace TabbedTortoiseGit
             await gitActionFunc.Invoke( favorite.Value.Repo );
         }
 
+        private void CustomActionFavoriteContextMenuItem_Click( object sender, EventArgs e )
+        {
+            ToolStripMenuItem contextMenuItem = (ToolStripMenuItem)sender;
+            ToolStrip contextMenu = contextMenuItem.Owner;
+
+            TreeNode<FavoriteRepo> favorite = (TreeNode<FavoriteRepo>)contextMenu.Tag;
+            CustomAction customAction = (CustomAction)contextMenuItem.Tag;
+
+            RunCustomAction( customAction, favorite.Value.Repo );
+        }
+
         private void RemoveFavoriteItemContextMenuItem_Click( object sender, EventArgs e )
         {
             ToolStripMenuItem contextMenuItem = (ToolStripMenuItem)sender;
@@ -397,6 +408,16 @@ namespace TabbedTortoiseGit
 
             TabControllerTag tag = LogTabs.SelectedTab.Controller();
             await RunGitAction( tag, gitActionFunc );
+        }
+
+        private void CustomActionTabMenuItem_Click( object sender, EventArgs e )
+        {
+            ToolStripItem c = (ToolStripItem)sender;
+            CustomAction customAction = (CustomAction)c.Tag;
+
+            TabControllerTag tag = LogTabs.SelectedTab.Controller();
+
+            RunCustomAction( customAction, tag.RepoItem );
         }
 
         private async void ModifiedRepoCheckBackgroundWorker_DoWork( object sender, DoWorkEventArgs e )
