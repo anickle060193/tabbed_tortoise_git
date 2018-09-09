@@ -76,6 +76,8 @@ namespace TabbedTortoiseGit
         {
             try
             {
+                ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12;
+
                 HttpWebRequest request = (HttpWebRequest)WebRequest.Create( "https://api.github.com/repos/anickle060193/tabbed_tortoise_git/git/refs/tags" );
                 request.ContentType = "text/json";
                 request.Method = "GET";
