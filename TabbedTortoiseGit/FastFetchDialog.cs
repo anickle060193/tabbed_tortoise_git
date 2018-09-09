@@ -28,7 +28,7 @@ namespace TabbedTortoiseGit
             this.Icon = Resources.TortoiseIcon;
 
             Repo = repo;
-            this.Text = "{0} - {1}".XFormat( repo, this.Text );
+            this.Text = $"{repo} - {this.Text}";
 
             TagsCheck.CheckedChanged += TagsCheck_CheckedChanged;
             PruneCheck.CheckedChanged += PruneCheck_CheckedChanged;

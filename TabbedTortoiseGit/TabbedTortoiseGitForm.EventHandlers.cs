@@ -73,24 +73,19 @@ namespace TabbedTortoiseGit
 
         private async void TabbedTortoiseGitForm_VisibleChanged( object sender, EventArgs e )
         {
-            LOG.DebugFormat( "Visible Changed - Visible: {0}", this.Visible );
+            LOG.Debug( $"{nameof( TabbedTortoiseGitForm_VisibleChanged )} - Visible: {this.Visible}" );
             if( this.Visible )
             {
                 DateTime lastUpdatePromptTime = Settings.Default.LastUpdatePromptTime;
                 DateTime now = DateTime.Now;
                 TimeSpan difference = now - lastUpdatePromptTime;
-                var inject = new {
-                    lastUpdatePromptTime = lastUpdatePromptTime,
-                    now = now,
-                    difference = difference
-                };
-                LOG.DebugInject( "Visible Changed - Last Update Prompt Time: {lastUpdatePromptTime} - Now: {now} - Difference: {difference}", inject );
+                LOG.Debug( $"{nameof( TabbedTortoiseGitForm_VisibleChanged )} - Last Update Prompt Time: {lastUpdatePromptTime} - Now: {now} - Difference: {difference}" );
                 if( difference >= TimeSpan.FromDays( 1 ) )
                 {
                     Version newestVersion = await TTG.IsUpToDate();
                     if( newestVersion != null )
                     {
-                        LOG.DebugFormat( "Newest Version: {0}", newestVersion );
+                        LOG.Debug( $"Newest Version: {newestVersion}" );
 
                         if( DialogResult.Yes == MessageBox.Show( "A new version of Tabbed TortoiseGit is available. Update now?\n\nNote: This will exit Tabbed TortoiseGit.", "New Update", MessageBoxButtons.YesNo ) )
                         {
@@ -166,13 +161,13 @@ namespace TabbedTortoiseGit
 
         private void TabbedTortoiseGitForm_FormClosing( object sender, FormClosingEventArgs e )
         {
-            LOG.DebugFormat( "FormClosing - Reason: {0}", e.CloseReason );
+            LOG.Debug( $"{nameof( TabbedTortoiseGitForm_FormClosing )} - Reason: {e.CloseReason}" );
 
             if( e.CloseReason == CloseReason.UserClosing )
             {
                 if( !this.ConfirmClose() )
                 {
-                    LOG.Debug( "FormClosing - Cancelled on confirm close" );
+                    LOG.Debug( $"{nameof( TabbedTortoiseGitForm_FormClosing )} - Cancelled on confirm close" );
                     e.Cancel = true;
                     return;
                 }
@@ -192,14 +187,14 @@ namespace TabbedTortoiseGit
 
         private void LogTabs_TabAdded( object sender, TabAddedEventArgs e )
         {
-            LOG.DebugFormat( "TabAdded - Tab: {0}", e.Tab );
+            LOG.Debug( $"{nameof( LogTabs_TabAdded )} - Tab: {e.Tab}" );
 
             RegisterExistingTab( e.Tab );
         }
 
         private void LogTabs_TabRemoved( object sender, TabRemovedEventArgs e )
         {
-            LOG.DebugFormat( "TabRemoved - Tab: {0}", e.Tab );
+            LOG.Debug( $"{nameof( LogTabs_TabRemoved )} - Tab: {e.Tab}" );
 
             this.RemoveLogProcess( e.Tab.Controller().Process, false );
 
@@ -208,7 +203,7 @@ namespace TabbedTortoiseGit
 
         private void LogTabs_TabClosed( object sender, TabClosedEventArgs e )
         {
-            LOG.Debug( "Tab Closed" );
+            LOG.Debug( nameof( LogTabs_TabClosed ) );
 
             CloseTab( e.Tab );
         }
@@ -397,7 +392,7 @@ namespace TabbedTortoiseGit
 
         private void CloseRepoTabMenuItem_Click( object sender, EventArgs e )
         {
-            LOG.Debug( "Tab Menu Item - Close Repo Click" );
+            LOG.Debug( nameof( CloseRepoTabMenuItem_Click ) );
             CloseTab( LogTabs.SelectedTab );
         }
 

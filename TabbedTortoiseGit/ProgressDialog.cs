@@ -87,7 +87,7 @@ namespace TabbedTortoiseGit
 
         public void AddTask( ProgressTask task )
         {
-            LOG.DebugFormat( "AddTask - {0}", task.Description );
+            LOG.Debug( $"{nameof( AddTask )} - {task.Description}" );
             _tasks.Enqueue( task );
 
             task.OutputReceived += Task_OutputReceived;
@@ -121,12 +121,12 @@ namespace TabbedTortoiseGit
 
         private void ProgressDialog_FormClosing( object sender, FormClosingEventArgs e )
         {
-            LOG.Debug( "Form Closing" );
+            LOG.Debug( nameof( ProgressDialog_FormClosing ) );
 
             if( _started
              && !_completed )
             {
-                LOG.Debug( "Form Closing - Not Completed, Cancelling Tasks" );
+                LOG.Debug( $"{nameof( ProgressDialog_FormClosing )} - Not Completed, Cancelling Tasks" );
                 this.CancelTasks();
                 e.Cancel = true;
             }
@@ -143,13 +143,13 @@ namespace TabbedTortoiseGit
 
         private void Worker_DoWork( object sender, DoWorkEventArgs e )
         {
-            LOG.Debug( "Worker - Do Work" );
+            LOG.Debug( nameof( Worker_DoWork ) );
             RunTasks();
         }
 
         private void Worker_RunWorkerCompleted( object sender, RunWorkerCompletedEventArgs e )
         {
-            LOG.DebugFormat( "Worker - Work Completed - Elapsed Time: {0}", DateTime.Now - _start );
+            LOG.Debug( $"{nameof( Worker_RunWorkerCompleted )} - Elapsed Time: {DateTime.Now - _start}" );
 
             _completed = true;
 
@@ -185,7 +185,7 @@ namespace TabbedTortoiseGit
 
         private void RunTasks()
         {
-            LOG.DebugFormat( "RunTasks - Task Count: {0}", _tasks.Count );
+            LOG.Debug( $"{nameof( RunTasks )} - Task Count: {_tasks.Count}" );
 
             while( !_cancel && ( !_tasks.IsEmpty || !_runningTasks.IsEmpty ) )
             {
@@ -194,7 +194,7 @@ namespace TabbedTortoiseGit
                     ProgressTask t;
                     if( _tasks.TryDequeue( out t ) )
                     {
-                        LOG.DebugFormat( "RunTasks - {0}", t.Description );
+                        LOG.Debug( $"{nameof( RunTasks )} - {t.Description}" );
                         String initialOutput = t.InitialOutput;
                         if( !String.IsNullOrWhiteSpace( initialOutput ) )
                         {
@@ -205,7 +205,7 @@ namespace TabbedTortoiseGit
                     }
                     else
                     {
-                        LOG.ErrorFormat( "RunTasks - Failed to dequeue task - Count: {0}", _tasks.Count );
+                        LOG.Error( $"{nameof( RunTasks )} - Failed to dequeue task - Count: {_tasks.Count}" );
                     }
                 }
                 else
@@ -216,15 +216,15 @@ namespace TabbedTortoiseGit
 
             if( _cancel )
             {
-                LOG.Debug( "RunTasks - Waiting for cancelled tasks to complete" );
+                LOG.Debug( $"{nameof( RunTasks )} - Waiting for cancelled tasks to complete" );
                 while( !_runningTasks.IsEmpty )
                 {
                     Thread.Sleep( 20 );
                 }
-                LOG.Debug( "RunTasks - Cancelled tasks completed" );
+                LOG.Debug( $"{nameof( RunTasks )} - Cancelled tasks completed" );
             }
 
-            LOG.Debug( "RunTasks - Completed" );
+            LOG.Debug( $"{nameof( RunTasks )} - Completed" );
         }
 
         private void LogOutput( String output, Color color )
@@ -262,7 +262,7 @@ namespace TabbedTortoiseGit
             byte removed;
             if( !_runningTasks.TryRemove( t, out removed ) )
             {
-                LOG.ErrorFormat( "Task_ProgressCompleted - Failed to remove running task - {0}", t.Description );
+                LOG.Error( $"{nameof( Task_ProgressCompleted )} - Failed to remove running task - {t.Description}" );
             }
             ProgressBar.UiBeginInvoke( (Action)ProgressBar.PerformStep );
         }
@@ -343,7 +343,7 @@ namespace TabbedTortoiseGit
         {
             get
             {
-                return "{0} {1}".XFormat( this.Process.StartInfo.FileName, this.Process.StartInfo.Arguments );
+                return $"{this.Process.StartInfo.FileName} {this.Process.StartInfo.Arguments}";
             }
         }
 
@@ -354,7 +354,7 @@ namespace TabbedTortoiseGit
                 String fileName = this.Process.StartInfo.FileName;
                 String arguments = this.Process.StartInfo.Arguments;
                 String workingDirectory = this.Process.StartInfo.WorkingDirectory;
-                return "Filename: {0} - Arguments: {1} - Working Directory: {2}".XFormat( fileName, arguments, workingDirectory );
+                return $"Filename: {fileName} - Arguments: {arguments} - Working Directory: {workingDirectory}";
             }
         }
 

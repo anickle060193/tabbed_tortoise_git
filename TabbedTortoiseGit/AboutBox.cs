@@ -32,9 +32,9 @@ namespace TabbedTortoiseGit
 
             this.Icon = Resources.TortoiseIcon;
 
-            this.Text = "About {0}".XFormat( AssemblyTitle );
+            this.Text = $"About {AssemblyTitle}";
             this.ProductNameLabel.Text = AssemblyProduct;
-            this.VersionLabel.Text = "Version {0}".XFormat( AssemblyVersion );
+            this.VersionLabel.Text = $"Version {AssemblyVersion}";
             this.DescriptionText.Text = AssemblyDescription;
 
             this.Load += AboutBox_Load;
@@ -48,21 +48,21 @@ namespace TabbedTortoiseGit
             _newestVersion = await TTG.IsUpToDate();
             if( _newestVersion != null )
             {
-                LOG.DebugFormat( "Newer Version Available - New: {0} - Current: {1}", _newestVersion, AssemblyVersion );
+                LOG.Debug( $"Newer Version Available - New: {_newestVersion} - Current: {AssemblyVersion}" );
 
-                UpdateCheckLabel.Text = "Version {0} is available.".XFormat( _newestVersion.ToString( 3 ) );
+                UpdateCheckLabel.Text = $"Version {_newestVersion.ToString( 3 )} is available.";
                 UpdateButton.Enabled = true;
             }
             else
             {
                 UpdateCheckLabel.Text = AssemblyTitle + " is up to date.";
-                LOG.DebugFormat( "Update to Date - Version: {0}", AssemblyVersion );
+                LOG.Debug( $"Update to Date - Version: {AssemblyVersion}" );
             }
         }
 
         private async void UpdateButton_Click( object sender, EventArgs e )
         {
-            LOG.DebugFormat( "Update Click - Newest Version: {0}", _newestVersion.ToString( 3 ) );
+            LOG.Debug( $"{nameof( UpdateButton_Click )} - Newest Version: {_newestVersion.ToString( 3 )}" );
             if( DialogResult.Yes == MessageBox.Show( "This will exit Tabbed TortoiseGit. Continue?", "New Update", MessageBoxButtons.YesNo ) )
             {
                 LOG.Debug( "Update Prompt - OK" );

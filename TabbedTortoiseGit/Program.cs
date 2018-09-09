@@ -22,8 +22,8 @@ namespace TabbedTortoiseGit
         [STAThread]
         static void Main( String[] args )
         {
-            LOG.DebugFormat( "Application Startup - Args: {0}", String.Join( ", ", args ) );
-            LOG.DebugFormat( "Version: {0}", Assembly.GetExecutingAssembly().GetName().Version );
+            LOG.Debug( $"Application Startup - Args: {String.Join( ", ", args )}" );
+            LOG.Debug( $"Version: {Assembly.GetExecutingAssembly().GetName().Version}" );
 
             Application.ThreadException += Application_ThreadException;
             AppDomain.CurrentDomain.UnhandledException += CurrentDomain_UnhandledException;

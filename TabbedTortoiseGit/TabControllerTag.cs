@@ -71,12 +71,12 @@ namespace TabbedTortoiseGit
 
         public async Task WaitForStartup()
         {
-            LOG.DebugFormat( "WaitForStartup - Start Wait for MainWindowHandle - Repo: {0} - PID: {1}", this.RepoItem, this.Process.Id );
+            LOG.Debug( $"{nameof( WaitForStartup )} - Start Wait for MainWindowHandle - Repo: {this.RepoItem} - PID: {this.Process.Id}" );
             while( !this.Process.HasExited && this.Process.MainWindowHandle == IntPtr.Zero )
             {
                 await Task.Delay( 10 );
             }
-            LOG.DebugFormat( "WaitForStartup - End Wait for MainWindowHandle - Repo: {0} - PID: {1}", this.RepoItem, this.Process.Id );
+            LOG.Debug( $"{nameof( WaitForStartup )} - End Wait for MainWindowHandle - Repo: {this.RepoItem} - PID: {this.Process.Id}" );
 
             Native.RemoveBorder( this.Process.MainWindowHandle );
             Native.SetWindowParent( this.Process.MainWindowHandle, this.Tab );

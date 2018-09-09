@@ -173,7 +173,7 @@ namespace TabbedTortoiseGit
 
             if( Shortcut?.IsValid != true )
             {
-                LOG.ErrorFormat( "Register - Invalid shortcut - {0}", Shortcut );
+                LOG.Error( $"{nameof( Register )} - Invalid shortcut - {Shortcut}" );
                 return;
             }
 
@@ -191,7 +191,7 @@ namespace TabbedTortoiseGit
                 }
                 else
                 {
-                    LOG.ErrorFormat( "Register - Failed to Register HotKey - Id: {0} - HotKey: {1}", this.Id, this );
+                    LOG.Error( $"{nameof( Register )} - Failed to Register HotKey - Id: {this.Id} - HotKey: {this}" );
                 }
             }
             else
@@ -222,7 +222,7 @@ namespace TabbedTortoiseGit
 
         public override string ToString()
         {
-            return "{{ {0}, {1} }}".XFormat( Modifiers, Key );
+            return $"{{ {Modifiers}, {Key} }}";
         }
 
         #region IDisposable Support
@@ -305,18 +305,18 @@ namespace TabbedTortoiseGit
                         hotkey.OnHotKeyPressed( e );
                         if( !e.Handled )
                         {
-                            LOG.DebugFormat( "Fowarding unhandled HotKey: {0}", hotkey.Shortcut.Text );
+                            LOG.Debug( $"Fowarding unhandled HotKey: {hotkey.Shortcut.Text}" );
 
                             hotkey.Unregister();
 
-                            LOG.DebugFormat( "InputSimulator - KeyPress: {0}", (VirtualKeyCode)hotkey.Key );
+                            LOG.Debug( $"InputSimulator - KeyPress: {(VirtualKeyCode)hotkey.Key}" );
                             INPUT_SIMULATOR.Keyboard.KeyPress( (VirtualKeyCode)hotkey.Key );
 
                             hotkey.Register();
                         }
                         else
                         {
-                            LOG.DebugFormat( "Handled HotKey: {0}", hotkey );
+                            LOG.Debug( $"Handled HotKey: {hotkey}" );
                         }
                         return true;
                     }

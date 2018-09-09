@@ -49,7 +49,7 @@ namespace TabbedTortoiseGit
                         if( value )
                         {
                             String exe = new Uri( Assembly.GetExecutingAssembly().CodeBase ).LocalPath;
-                            run.SetValue( RUN_ON_STARTUP_KEY_NAME, "\"{0}\" --startup".XFormat( exe ) );
+                            run.SetValue( RUN_ON_STARTUP_KEY_NAME, $"\"{exe}\" --startup" );
                         }
                         else
                         {
@@ -84,7 +84,7 @@ namespace TabbedTortoiseGit
                 request.Accept = "application/vnd.github.v3+json";
                 AssemblyName a = Assembly.GetExecutingAssembly().GetName();
                 Version currentVersion = a.Version;
-                request.UserAgent = "{0} {1}".XFormat( a.Name, currentVersion );
+                request.UserAgent = $"{a.Name} {currentVersion}";
                 using( WebResponse response = await request.GetResponseAsync() )
                 using( StreamReader reader = new StreamReader( response.GetResponseStream() ) )
                 {
@@ -114,9 +114,9 @@ namespace TabbedTortoiseGit
         {
             try
             {
-                String updateUrl = "https://github.com/anickle060193/tabbed_tortoise_git/raw/{0}/Setup/Output/Setup.msi".XFormat( newestVersion.ToString( 3 ) );
+                String updateUrl = $"https://github.com/anickle060193/tabbed_tortoise_git/raw/{newestVersion.ToString( 3 )}/Setup/Output/Setup.msi";
                 String path = Path.GetTempPath();
-                String downloadLocation = Path.Combine( path, "tabbed_tortoisegit_setup-{0}.msi".XFormat( newestVersion.ToString( 3 ) ) );
+                String downloadLocation = Path.Combine( path, $"tabbed_tortoisegit_setup-{newestVersion.ToString( 3 )}.msi" );
 
                 using( WebClient client = new WebClient() )
                 {
@@ -145,20 +145,17 @@ namespace TabbedTortoiseGit
 
             if( !match )
             {
-                var versions = new
-                {
-                    ttg = ttgVersion.ToString( 3 ),
-                    tabs = tabsVersion.ToString( 3 ),
-                    common = commonVersion.ToString( 3 )
-                };
-                LOG.FatalInject( "Assembly version mismatch - TTG: {ttg} - Tabs: {tabs} - Common: {common}", versions );
+                String ttg = ttgVersion.ToString( 3 );
+                String tabs = tabsVersion.ToString( 3 );
+                String common = commonVersion.ToString( 3 );
+                LOG.Fatal( $"Assembly version mismatch - TTG: {ttg} - Tabs: {tabs} - Common: {common}" );
 
-                String versionMismatchMessage = ( "The current assembly versions do not match:\n" +
-                                                  "    Tabbed TortoiseGit: {ttg}\n" +
-                                                  "    Tabs: {tabs}\n" +
-                                                  "    Common: {common}\n\n" +
-                                                  "Update Tagged TortoiseGit to resolve issue.\n" +
-                                                  "If issue persists, uninstall and re-install Tabbed TortoiseGit." ).Inject( versions );
+                String versionMismatchMessage = ( $"The current assembly versions do not match:\n" +
+                                                  $"    Tabbed TortoiseGit: {ttg}\n" +
+                                                  $"    Tabs: {tabs}\n" +
+                                                  $"    Common: {common}\n\n" +
+                                                  $"Update Tagged TortoiseGit to resolve issue.\n" +
+                                                  $"If issue persists, uninstall and re-install Tabbed TortoiseGit." );
                 MessageBox.Show( versionMismatchMessage, "Assembly Version Mismatch", MessageBoxButtons.OK, MessageBoxIcon.Error );
             }
             return match;

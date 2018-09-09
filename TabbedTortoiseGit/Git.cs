@@ -115,7 +115,7 @@ namespace TabbedTortoiseGit
                 return false;
             }
 
-            ProcessStartInfo info = CreateGitProcessStartInfo( repo, "diff-index --quiet HEAD -- \"{0}\"".XFormat( path ) );
+            ProcessStartInfo info = CreateGitProcessStartInfo( repo, $"diff-index --quiet HEAD -- \"{path}\"" );
             Process p = Process.Start( info );
             await Task.Run( () => p.WaitForExit() );
 

@@ -24,21 +24,21 @@ namespace Common
         {
             if( Directory.Exists( path ) )
             {
-                LOG.DebugFormat( "OpenInExplorer - Directroy: {0}", path );
+                LOG.Debug( $"{nameof( OpenInExplorer )} - Directroy: {path}" );
 
-                Process.Start( "explorer.exe", "\"{0}\"".XFormat( path ) );
+                Process.Start( "explorer.exe", $"\"{path}\"" );
                 return true;
             }
             else if( File.Exists( path ) )
             {
-                LOG.DebugFormat( "OpenInExplorer - File: {0}", path );
+                LOG.Debug( $"{nameof( OpenInExplorer )} - File: {path}" );
 
-                Process.Start( "explorer.exe", "/select, \"{0}\"".XFormat( path ) );
+                Process.Start( "explorer.exe", $"/select, \"{path}\"" );
                 return true;
             }
             else
             {
-                LOG.ErrorFormat( "OpenInExplorer - Not a file or directroy - Path: {0}", path );
+                LOG.Error( $"{nameof( OpenInExplorer )} - Not a file or directroy - Path: {path}" );
 
                 return false;
             }

@@ -37,7 +37,7 @@ namespace TabbedTortoiseGit
 
             Repo = repo;
 
-            this.Text = "{0} - {1}".XFormat( Repo, this.Text );
+            this.Text = $"{Repo} - {this.Text}";
 
             this.Shown += FastSubmoduleUpdateForm_Shown;
 
@@ -88,21 +88,21 @@ namespace TabbedTortoiseGit
 
         private async void FastSubmoduleUpdateForm_Shown( object sender, EventArgs e )
         {
-            LOG.Debug( "Shown" );
+            LOG.Debug( nameof( FastSubmoduleUpdateForm_Shown ) );
 
-            LOG.Debug( "Shown - Get Submodules - Start" );
+            LOG.Debug( $"{nameof( FastSubmoduleUpdateForm_Shown )} - Get Submodules - Start" );
             foreach( String submodule in await Git.GetSubmodules( Repo ) )
             {
-                LOG.DebugFormat( "Submodule - {0}", submodule );
+                LOG.Debug( $"Submodule - {submodule}" );
                 _submodules.Add( submodule );
                 _checkedSubmodules[ submodule ] = true;
                 SubmoduleCheckList.Items.Add( submodule );
             }
-            LOG.Debug( "Shown - Get Submodules - End" );
+            LOG.Debug( $"{nameof( FastSubmoduleUpdateForm_Shown )} - Get Submodules - End" );
 
             UpdateChecked();
 
-            LOG.Debug( "Shown - Get Modified Submodules - Start" );
+            LOG.Debug( $"{nameof( FastSubmoduleUpdateForm_Shown )} - Get Modified Submodules - Start" );
             try
             {
                 _modifiedSubmodules = await Git.GetModifiedSubmodules( Repo, _submodules );
@@ -111,7 +111,7 @@ namespace TabbedTortoiseGit
             {
                 LOG.Error( "An error occured while retrieving modified submodules.", ex );
             }
-            LOG.Debug( "Shown - Get Modified Submodules - End" );
+            LOG.Debug( $"{nameof( FastSubmoduleUpdateForm_Shown )} - Get Modified Submodules - End" );
 
             SelectModifiedSubmodules.Text = "Select Modified Submodules";
             SelectModifiedSubmodules.Enabled = true;
@@ -242,18 +242,18 @@ namespace TabbedTortoiseGit
                     int index = SubmoduleCheckList.Items.IndexOf( submodule );
                     if( index != ListBox.NoMatches )
                     {
-                        LOG.DebugFormat( "Set Modified Submodules Checked - Modified Submodule: {0}", submodule );
+                        LOG.Debug( $"{nameof( SetModifiedSubmodulesChecked )} - Modified Submodule: {submodule}" );
                         SubmoduleCheckList.SetItemChecked( index, true );
                     }
                     else
                     {
-                        LOG.ErrorFormat( "Set Modified Submodules Checked - Modified Submodule: {0} - Could not find", submodule );
+                        LOG.Error( $"{nameof( SetModifiedSubmodulesChecked )} - Modified Submodule: {submodule} - Could not find" );
                     }
                 }
             }
             else
             {
-                LOG.Error( "Set Modified Submodules Checked - Modified Submodules == null" );
+                LOG.Error( $"{nameof( SetModifiedSubmodulesChecked )} - Modified Submodules == null" );
             }
         }
 
@@ -302,7 +302,7 @@ namespace TabbedTortoiseGit
         {
             if( SubmoduleCheckList.CheckedItems.Count > 0 )
             {
-                LOG.DebugFormat( "UpdateSubmodules" );
+                LOG.Debug( nameof( UpdateSubmodules ) );
 
                 this.Hide();
 
@@ -331,7 +331,7 @@ namespace TabbedTortoiseGit
             }
             else
             {
-                LOG.DebugFormat( "UpdateSubmodules - No Submodules Selected" );
+                LOG.Debug( $"{nameof( UpdateSubmodules )} - No Submodules Selected" );
                 MessageBox.Show( "No submodules selected" );
             }
         }

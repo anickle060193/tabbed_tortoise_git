@@ -123,8 +123,7 @@ namespace TabbedTortoiseGit.Properties
                 }
                 catch( JsonException e )
                 {
-                    LOG.ErrorFormat( "Failed to deserialize Favorite Repos setting - Favorited Repos:\n{0}", Settings.Default.FavoriteReposJsonString );
-                    LOG.Error( e );
+                    LOG.Error( $"Failed to deserialize Favorite Repos setting - Favorited Repos:\n{Settings.Default.FavoriteReposJsonString}", e );
                 }
 
                 if( favoriteRepos == null || favoriteRepos.Value != Settings.Default.DefaultFavoriteRepos.Value )
@@ -162,8 +161,7 @@ namespace TabbedTortoiseGit.Properties
                 }
                 catch( JsonException e )
                 {
-                    LOG.ErrorFormat( "Failed to deserialize KeyboardShortcuts setting - KeyboardShortcuts: {0}", Settings.Default.KeyboardShortcutsString );
-                    LOG.Error( e );
+                    LOG.Error( $"Failed to deserialize KeyboardShortcuts setting - KeyboardShortcuts: {Settings.Default.KeyboardShortcutsString}", e );
                 }
                 return keyboardShortcuts ?? new Dictionary<KeyboardShortcuts, Shortcut>();
             }
@@ -193,8 +191,7 @@ namespace TabbedTortoiseGit.Properties
                 }
                 catch( JsonException e )
                 {
-                    LOG.ErrorFormat( "Failed to deserialize CustomActions setting - CustomActions: {0}", Settings.Default.CustomActionsString );
-                    LOG.Error( e );
+                    LOG.Error( $"Failed to deserialize CustomActions setting - CustomActions: {Settings.Default.CustomActionsString}", e );
                 }
                 return customActions ?? new List<CustomAction>();
             }
@@ -249,7 +246,7 @@ namespace TabbedTortoiseGit.Properties
                 int maxRecentRepos = (int)e.NewValue;
                 if( maxRecentRepos <= 0 )
                 {
-                    LOG.DebugFormat( "Settings Changing - Invalid Max Recent Repos: {0}", maxRecentRepos );
+                    LOG.Debug( $"{nameof( Settings_SettingChanging )} - Invalid Max Recent Repos: {maxRecentRepos}" );
                     e.Cancel = true;
                 }
             }
@@ -258,7 +255,7 @@ namespace TabbedTortoiseGit.Properties
                 int maxProcesses = (int)e.NewValue;
                 if( maxProcesses <= 0 )
                 {
-                    LOG.DebugFormat( "Settings Changing - Invalid Max Fast Submodule Update Processes: {0}", maxProcesses );
+                    LOG.Debug( $"{nameof( Settings_SettingChanging )} - Invalid Max Fast Submodule Update Processes: {maxProcesses}" );
                     e.Cancel = true;
                 }
             }
@@ -267,7 +264,7 @@ namespace TabbedTortoiseGit.Properties
                 int maxProcesses = (int)e.NewValue;
                 if( maxProcesses <= 0 )
                 {
-                    LOG.DebugFormat( "Settings Changing - Invalid Max Fast Fetch Processes: {0}", maxProcesses );
+                    LOG.Debug( $"{nameof( Settings_SettingChanging )} - Invalid Max Fast Fetch Processes: {maxProcesses}" );
                     e.Cancel = true;
                 }
             }
@@ -276,7 +273,7 @@ namespace TabbedTortoiseGit.Properties
                 int interval = (int)e.NewValue;
                 if( interval < 1000 )
                 {
-                    LOG.DebugFormat( "Settings Changing - Invalid Check for Modified Tabs Interval: {0}", interval );
+                    LOG.Debug( $"{nameof( Settings_SettingChanging )} - Invalid Check for Modified Tabs Interval: {interval}" );
                     e.Cancel = true;
                 }
             }
@@ -391,7 +388,7 @@ namespace TabbedTortoiseGit.Properties
                         }
                         catch( SettingsPropertyNotFoundException ex )
                         {
-                            LOG.Error( "Failed to upgrade {0}.".XFormat( pair.Key ), ex );
+                            LOG.Error( $"Failed to upgrade {pair.Key}.", ex );
                         }
                     }
 
@@ -421,19 +418,19 @@ namespace TabbedTortoiseGit.Properties
 
             if( Settings.Default.MaxRecentRepos <= 0 )
             {
-                LOG.DebugFormat( "Settings Load - Invalid Max Recent Repos: {0}", Settings.Default.MaxRecentRepos );
+                LOG.Debug( $"{nameof( Settings_SettingsLoaded )} - Invalid Max Recent Repos: {Settings.Default.MaxRecentRepos}" );
                 Settings.Default.MaxRecentRepos = 10;
             }
 
             if( Settings.Default.FastSubmoduleUpdateMaxProcesses <= 0 )
             {
-                LOG.DebugFormat( "Settings Load - Invalid Max Fast Submodule Update Processes: {0}", Settings.Default.FastSubmoduleUpdateMaxProcesses );
+                LOG.Debug( $"{nameof( Settings_SettingsLoaded )} - Invalid Max Fast Submodule Update Processes: {Settings.Default.FastSubmoduleUpdateMaxProcesses}" );
                 Settings.Default.FastSubmoduleUpdateMaxProcesses = 6;
             }
 
             if( Settings.Default.FastFetchMaxProcesses <= 0 )
             {
-                LOG.DebugFormat( "Settings Load - Invalid Max Fast Fetch Processes: {0}", Settings.Default.FastFetchMaxProcesses );
+                LOG.Debug( $"{nameof( Settings_SettingsLoaded )} - Invalid Max Fast Fetch Processes: {Settings.Default.FastFetchMaxProcesses}" );
                 Settings.Default.FastFetchMaxProcesses = 6;
             }
 
@@ -449,7 +446,7 @@ namespace TabbedTortoiseGit.Properties
 
             if( Settings.Default.CheckForModifiedTabsInterval < 1000 )
             {
-                LOG.DebugFormat( "Settings Load - Invalid Check for Modified Tabs Interval: {0}", Settings.Default.CheckForModifiedTabsInterval );
+                LOG.Debug( $"{nameof( Settings_SettingsLoaded )} - Invalid Check for Modified Tabs Interval: {Settings.Default.CheckForModifiedTabsInterval}" );
                 Settings.Default.CheckForModifiedTabsInterval = 1000;
             }
 

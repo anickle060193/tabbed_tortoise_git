@@ -68,8 +68,8 @@ namespace TabbedTortoiseGit
             {
                 if( _instance == null )
                 {
-                    LOG.Fatal( "Instance - Attempted to retrieve instance before calling Create()." );
-                    throw new InvalidOperationException( "KeyboardShortcutsManager.Instance cannot be accessed before calling KeyboardShortcutsManager.Create()." );
+                    LOG.Fatal( $"{nameof( Instance )} - Attempted to retrieve instance before calling Create()." );
+                    throw new InvalidOperationException( $"{nameof( Instance )} cannot be accessed before calling KeyboardShortcutsManager.Create()." );
                 }
 
                 return _instance;
@@ -78,11 +78,11 @@ namespace TabbedTortoiseGit
 
         public static KeyboardShortcutsManager Create( IntPtr windowHandle )
         {
-            LOG.DebugFormat( "Create - Window Handle: {0}", windowHandle );
+            LOG.Debug( $"{nameof( Create )} - Window Handle: {windowHandle}" );
 
             if( _instance != null )
             {
-                LOG.Fatal( "Create - Attempted to re-call Create()." );
+                LOG.Fatal( $"{nameof( Create )} - Attempted to re-call Create()." );
                 throw new InvalidOperationException( "KeyboardShortcutsManager.Create() can only be called once." );
             }
 
@@ -98,7 +98,7 @@ namespace TabbedTortoiseGit
 
         private KeyboardShortcutsManager( IntPtr windowHandle )
         {
-            LOG.DebugFormat( "Constructor - Window Handle: {0}", windowHandle );
+            LOG.Debug( $"Constructor - Window Handle: {windowHandle}" );
 
             _windowHandle = windowHandle;
 
@@ -135,7 +135,7 @@ namespace TabbedTortoiseGit
 
         public void UpdateShortcuts()
         {
-            LOG.Debug( "UpdateShortcuts" );
+            LOG.Debug( nameof( UpdateShortcuts ) );
 
             this.ThrowIfDisposed();
 
@@ -146,12 +146,12 @@ namespace TabbedTortoiseGit
                 Shortcut shortcut;
                 if( shortcuts.TryGetValue( keyboardShortcut, out shortcut ) )
                 {
-                    LOG.DebugFormat( "UpdateShortcuts - KeyboardShortuct: {0} - Shortcut: {1}", keyboardShortcut, shortcut );
+                    LOG.Debug( $"{nameof( UpdateShortcuts )} - KeyboardShortuct: {keyboardShortcut} - Shortcut: {shortcut}" );
                     _hotkeys[ keyboardShortcut ].SetShortcut( shortcut );
                 }
                 else
                 {
-                    LOG.DebugFormat( "UpdateShortcuts - KeyboardShortuct: {0} - No shortcut", keyboardShortcut );
+                    LOG.Debug( $"{nameof( UpdateShortcuts )} - KeyboardShortuct: {keyboardShortcut} - No shortcut" );
                     _hotkeys[ keyboardShortcut ].SetShortcut( Shortcut.Empty );
                 }
             }
@@ -159,7 +159,7 @@ namespace TabbedTortoiseGit
 
         public void AddHandle( IntPtr handle )
         {
-            LOG.DebugFormat( "AddHandle - Handle: {0}", handle );
+            LOG.Debug( $"{nameof( AddHandle )} - Handle: {handle}" );
 
             this.ThrowIfDisposed();
 
@@ -171,7 +171,7 @@ namespace TabbedTortoiseGit
 
         public void RemoveHandle( IntPtr handle )
         {
-            LOG.DebugFormat( "RemoveHandle - Handle: {0}", handle );
+            LOG.Debug( $"{nameof( RemoveHandle )} - Handle: {handle}" );
 
             this.ThrowIfDisposed();
 

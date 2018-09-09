@@ -62,7 +62,7 @@ namespace TabbedTortoiseGit
 
         public TabbedTortoiseGitForm( bool showStartUpRepos, Point createdAtPoint )
         {
-            LOG.DebugFormat( "Constructor - Show Start-up Repos: {0}", showStartUpRepos );
+            LOG.Debug( $"Constructor - Show Start-up Repos: {showStartUpRepos}" );
 
             InitializeComponent();
             InitializeEventHandlers();
@@ -305,7 +305,7 @@ namespace TabbedTortoiseGit
             String repo = Git.GetBaseRepoDirectory( path );
             if( repo == null )
             {
-                LOG.ErrorFormat( "Failed to add recent repo - Path: {0}", path );
+                LOG.Error( $"Failed to add recent repo - Path: {path}" );
                 return;
             }
 
@@ -341,7 +341,7 @@ namespace TabbedTortoiseGit
         {
             if( !Git.IsInRepo( path ) )
             {
-                LOG.ErrorFormat( "Failed to add favorite repo: {0}", path );
+                LOG.Error( $"Failed to add favorite repo: {path}" );
                 return;
             }
 
@@ -379,7 +379,7 @@ namespace TabbedTortoiseGit
 
         internal async void HandleKeyboardShortcut( KeyboardShortcuts keyboardShortcut )
         {
-            LOG.DebugFormat( "HandleKeyboardShortcut - KeyboardShortcut: {0}", keyboardShortcut );
+            LOG.Debug( $"{nameof( HandleKeyboardShortcut )} - KeyboardShortcut: {keyboardShortcut}" );
 
             if( keyboardShortcut == KeyboardShortcuts.NewTab )
             {
@@ -403,7 +403,7 @@ namespace TabbedTortoiseGit
                 {
                     String repo = _closedRepos.Pop();
 
-                    LOG.DebugFormat( "HotKey - Reopen Closed Tab - Reopening: {0}", repo );
+                    LOG.Debug( $"HotKey - Reopen Closed Tab - Reopening: {repo}" );
 
                     await OpenLog( repo );
                 }
@@ -417,19 +417,19 @@ namespace TabbedTortoiseGit
             }
             else
             {
-                LOG.ErrorFormat( "Unhandled keyboard shortcut - KeyboardShortcut: {0}", keyboardShortcut );
+                LOG.Error( $"Unhandled keyboard shortcut - KeyboardShortcut: {keyboardShortcut}" );
             }
         }
 
         internal void AddExistingTab( Tab tab )
         {
-            LOG.DebugFormat( "AddExistingTab - Tab: {0}", tab );
+            LOG.Debug( $"{nameof( AddExistingTab )} - Tab: {tab}" );
 
             TabControllerTag tag = tab.Controller();
 
             if( this.OwnsLogProcess( tag.Process ) )
             {
-                LOG.ErrorFormat( "AddExistingTab - Already own process - PID: {0}", tag.Process.Id );
+                LOG.Error( $"{nameof( AddExistingTab )} - Already own process - PID: {tag.Process.Id}" );
                 return;
             }
 
@@ -442,10 +442,10 @@ namespace TabbedTortoiseGit
             TabControllerTag tag;
             lock( _tags )
             {
-                LOG.DebugFormat( "AddNewLogProcess - Path: {0} - PID: {1}", path, p.Id );
+                LOG.Debug( $"{nameof( AddNewLogProcess )} - Path: {path} - PID: {p.Id}" );
                 if( this.OwnsLogProcess( p ) )
                 {
-                    LOG.DebugFormat( "AddNewLogProcess - Process already under control - Path: {0} - PID: {1}", path, p.Id );
+                    LOG.Debug( $"{nameof( AddNewLogProcess )} - Process already under control - Path: {path} - PID: {p.Id}" );
                     return;
                 }
 
@@ -465,13 +465,13 @@ namespace TabbedTortoiseGit
 
         private void RegisterExistingTab( Tab tab )
         {
-            LOG.DebugFormat( "RegisterExistingTab - Tab: {0}", tab );
+            LOG.Debug( $"{nameof( RegisterExistingTab )} - Tab: {tab}" );
 
             TabControllerTag tag = tab.Controller();
 
             if( this.OwnsLogProcess( tag.Process ) )
             {
-                LOG.ErrorFormat( "RegisterExistingTab - Already own process - PID: {0}", tag.Process.Id );
+                LOG.Error( $"{nameof( RegisterExistingTab )} - Already own process - PID: {tag.Process.Id}" );
                 return;
             }
 
@@ -485,13 +485,13 @@ namespace TabbedTortoiseGit
 
         private void RemoveLogProcess( Process p, bool killProcess )
         {
-            LOG.DebugFormat( "RemoveLogProcess - PID: {0} - Kill Process: {1}", p.Id, killProcess );
+            LOG.Debug( $"{nameof( RemoveLogProcess )} - PID: {p.Id} - Kill Process: {killProcess}" );
 
             lock( _tags )
             {
                 if( !this.OwnsLogProcess( p ) )
                 {
-                    LOG.ErrorFormat( "Attempting to remove log not under control - Process ID: {0}", p.Id );
+                    LOG.Error( $"Attempting to remove log not under control - Process ID: {p.Id}" );
                     return;
                 }
 
@@ -516,7 +516,7 @@ namespace TabbedTortoiseGit
         {
             lock( _tags )
             {
-                LOG.DebugFormat( "RemoveAllLogs - Count: {0}", _tags.Count );
+                LOG.Debug( $"{nameof( RemoveAllLogs )} - Count: {_tags.Count}" );
 
                 while( _tags.Count > 0 )
                 {
@@ -529,7 +529,7 @@ namespace TabbedTortoiseGit
         {
             TabControllerTag t = tab.Controller();
 
-            LOG.DebugFormat( "Close Tab - Repo: {0} - ID: {1}", t.RepoItem, t.Process.Id );
+            LOG.Debug( $"{nameof( CloseTab )} - Repo: {t.RepoItem} - ID: {t.Process.Id}" );
 
             RemoveLogProcess( t.Process, true );
 
@@ -541,7 +541,7 @@ namespace TabbedTortoiseGit
             if( LogTabs.TabCount == 0
              && Settings.Default.CloseWindowOnLastTabClosed )
             {
-                LOG.Debug( "CheckIfLastTab - Closing window after last tab closed" );
+                LOG.Debug( $"{nameof( CheckIfLastTab )} - Closing window after last tab closed" );
                 this.Close();
             }
         }
@@ -556,19 +556,19 @@ namespace TabbedTortoiseGit
 
         private async Task FindRepo()
         {
-            LOG.Debug( "FindRepo" );
+            LOG.Debug( nameof( FindRepo ) );
 
             if( _folderDialog.ShowDialog() == CommonFileDialogResult.Ok )
             {
                 String path = _folderDialog.FileName;
                 if( !Git.IsInRepo( path ) )
                 {
-                    LOG.DebugFormat( "FindRepo - Invalid repo: {0}", path );
+                    LOG.Debug( $"{nameof( FindRepo )} - Invalid repo: {path}" );
                     MessageBox.Show( "Directory is not a git repo!", "Invalid Directory", MessageBoxButtons.OK, MessageBoxIcon.Error );
                 }
                 else
                 {
-                    LOG.DebugFormat( "FindRepo - Opening repo: {0}", path );
+                    LOG.Debug( $"{nameof( FindRepo )} - Opening repo: {path}" );
                     await OpenLog( path );
                 }
             }

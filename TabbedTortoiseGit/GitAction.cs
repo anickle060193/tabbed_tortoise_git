@@ -50,7 +50,7 @@ namespace TabbedTortoiseGit
 
         private static async Task<Process> TortoiseGitCommand( String command, String workingDirectory, bool waitForExit = true )
         {
-            LOG.DebugFormat( "TortoiseGitCommand - Command: {0} - Working Directory: {1} - Wait for Exit: {2}", command, workingDirectory, waitForExit );
+            LOG.Debug( $"{nameof( TortoiseGitCommand )} - Command: {command} - Working Directory: {workingDirectory} - Wait for Exit: {waitForExit}" );
             Process p = Process.Start( new ProcessStartInfo()
             {
                 FileName = TORTOISE_GIT_EXE,
@@ -60,25 +60,25 @@ namespace TabbedTortoiseGit
             if( waitForExit )
             {
                 await Task.Run( () => p.WaitForExit() );
-                LOG.DebugFormat( "TortoiseGitCommand - Command: {0} - Working Directory: {1} - Exit Code: {2}", command, workingDirectory, p.ExitCode );
+                LOG.Debug( $"{nameof( TortoiseGitCommand )} - Command: {command} - Working Directory: {workingDirectory} - Exit Code: {p.ExitCode}" );
             }
             return p;
         }
 
         private static async Task<Process> PathCommand( String command, String path, bool waitForExit = true )
         {
-            return await TortoiseGitCommand( "/command:{0} /path:\"{1}\"".XFormat( command, path ), path, waitForExit );
+            return await TortoiseGitCommand( $"/command:{command} /path:\"{path}\"", path, waitForExit );
         }
 
         public static Process Log( String path, IEnumerable<String> references = null )
         {
-            String command = "/command:log /path:\"{0}\"".XFormat( path );
+            String command = $"/command:log /path:\"{path}\"";
             if( references != null )
             {
                 String[] refs = references.ToArray();
                 if( refs.Length > 0 )
                 {
-                    command += " /range:\"{0}\"".XFormat( String.Join( " ", refs ) );
+                    command += $" /range:\"{String.Join( " ", refs )}\"";
                 }
             }
             return TortoiseGitCommand( command, path, false ).Result;
@@ -141,7 +141,7 @@ namespace TabbedTortoiseGit
 
         public static async Task<bool> SubmoduleUpdate( String path )
         {
-            Process p = await TortoiseGitCommand( "/command:subupdate /path:\"{0}\" /bkpath:\"{0}\"".XFormat( path ), path );
+            Process p = await TortoiseGitCommand( $"/command:subupdate /path:\"{path}\" /bkpath:\"{path}\"", path );
             return p.ExitCode == 0;
         }
 

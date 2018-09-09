@@ -185,7 +185,7 @@ namespace TabbedTortoiseGit
 
         public override string ToString()
         {
-            return "{0} - Count: {1}".XFormat( Value, Children.Count );
+            return $"{Value} - Count: {Children.Count}";
         }
 
         public class TreeNodeCollection<S> : IList<TreeNode<S>>

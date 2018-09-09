@@ -115,7 +115,7 @@ namespace Common
             }
             catch( Exception ex )
             {
-                LOG.Error( "MoveItemInternal - An error occurred while moving item", ex );
+                LOG.Error( $"{nameof( MoveItemInternal )} - An error occurred while moving item", ex );
             }
 
             e.Effect = DragDropEffects.None;
@@ -146,7 +146,7 @@ namespace Common
             }
             catch( Exception ex )
             {
-                LOG.Error( "Control_MouseDown - An error occurred while mousing down", ex );
+                LOG.Error( $"{nameof( Control_MouseDown )} - An error occurred while mousing down", ex );
             }
         }
 
@@ -194,7 +194,7 @@ namespace Common
             }
             catch( Exception ex )
             {
-                LOG.Error( "Control_MouseMove - An error occurred while mousing moving", ex );
+                LOG.Error( $"{nameof( Control_MouseMove )} - An error occurred while mousing moving", ex );
             }
         }
 
@@ -215,7 +215,7 @@ namespace Common
             }
             catch( Exception ex )
             {
-                LOG.Error( "Control_DragOver - An error occurred while dragging over", ex );
+                LOG.Error( $"{nameof( Control_DragOver )} - An error occurred while dragging over", ex );
             }
         }
 
@@ -234,7 +234,7 @@ namespace Common
             }
             catch( Exception ex )
             {
-                LOG.Error( "Control_DragDrop - An error occurred while drag dropping", ex );
+                LOG.Error( $"{nameof( Control_DragDrop )} - An error occurred while drag dropping", ex );
             }
         }
     }

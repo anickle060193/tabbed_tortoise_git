@@ -173,7 +173,7 @@ namespace TabbedTortoiseGit
         {
             if( _activeForm == null )
             {
-                LOG.Debug( "CaptureNewLog - No active form" );
+                LOG.Debug( $"{nameof( CaptureNewLog )} - No active form" );
                 CreateNewTabbedTortoiseGit( false, Point.Empty );
             }
             await _activeForm.AddNewLogProcess( p, repo );
@@ -204,7 +204,7 @@ namespace TabbedTortoiseGit
                 return false;
             }
 
-            LOG.DebugFormat( "CheckObject - New Process found - PID: {0}", p.Id );
+            LOG.Debug( $"{nameof( CheckTortoiseGitProcessObject )} - New Process found - PID: {p.Id}" );
 
             this.UiBeginInvoke( (Func<Process, String, Task>)CaptureNewLog, p, path );
 
@@ -222,7 +222,7 @@ namespace TabbedTortoiseGit
 
         private void KeyboardShortcutsManager_KeyboardShortcutPressed( object sender, KeyboardShortcutPressedEventArgs e )
         {
-            LOG.DebugFormat( "KeyboardShortcutPressed - KeyboardShortcut: {0}", e.KeyboardShortcut );
+            LOG.Debug( $"{nameof( KeyboardShortcutsManager_KeyboardShortcutPressed )} - KeyboardShortcut: {e.KeyboardShortcut}" );
             
             if( _activeForm == null )
             {
@@ -235,7 +235,7 @@ namespace TabbedTortoiseGit
 
         private void ProgramForm_FormClosing( object sender, FormClosingEventArgs e )
         {
-            LOG.DebugFormat( "ProgramForm_FormClosing - Close Reason: {0}", e.CloseReason );
+            LOG.Debug( $"{nameof( ProgramForm_FormClosing )} - Close Reason: {e.CloseReason}" );
 
             _watcher.Stop();
             _watcherTimer.Stop();
@@ -246,7 +246,7 @@ namespace TabbedTortoiseGit
         private void Watcher_EventArrived( object sender, EventArrivedEventArgs e )
         {
             ManagementBaseObject o = (ManagementBaseObject)e.NewEvent[ "TargetInstance" ];
-            LOG.DebugFormat( "Watcher_EventArrived - Object: {0}", o.GetText( TextFormat.Mof ) );
+            LOG.Debug( $"{nameof( Watcher_EventArrived )} - Object: {o.GetText( TextFormat.Mof )}" );
 
             CheckTortoiseGitProcessObject( o );
         }
@@ -258,7 +258,7 @@ namespace TabbedTortoiseGit
             {
                 if( CheckTortoiseGitProcessObject( o ) )
                 {
-                    LOG.DebugFormat( "WatcherTimer_Tick - Process found by WatcherTimer - PID: {0}", o[ "ProcessId" ] );
+                    LOG.Debug( $"{nameof( WatcherTimer_Tick )} - Process found by WatcherTimer - PID: {o[ "ProcessId" ]}" );
 
                     _watcher.Stop();
                     _watcher.Start();

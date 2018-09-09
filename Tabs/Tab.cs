@@ -163,7 +163,7 @@ namespace Tabs
 
         public override string ToString()
         {
-            return "Tab( Text=\"{0}\" )".XFormat( Text );
+            return $"Tab( Text=\"{Text}\" )";
         }
 
         protected override void SetBoundsCore( int x, int y, int width, int height, BoundsSpecified specified )

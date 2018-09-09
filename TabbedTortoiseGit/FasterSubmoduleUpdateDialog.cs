@@ -28,7 +28,7 @@ namespace TabbedTortoiseGit
 
             this.Repo = repo;
 
-            this.Text = "{0} - {1}".XFormat( Repo, this.Text );
+            this.Text = $"{Repo} - {this.Text}";
 
             SubmodulesAll.CheckedChanged += FasterSubmoduleUpdateDialog_SettingChanged;
             InitCheck.CheckedChanged += FasterSubmoduleUpdateDialog_SettingChanged;
@@ -80,7 +80,7 @@ namespace TabbedTortoiseGit
 
         private async Task UpdateSubmodules()
         {
-            LOG.DebugFormat( "UpdateSubmodules" );
+            LOG.Debug( nameof( UpdateSubmodules ) );
 
             this.Hide();
 
@@ -151,13 +151,13 @@ namespace TabbedTortoiseGit
         {
             Output( "Retrieving submodules" );
             List<String> submodules = await Git.GetSubmodules( this.Repo );
-            Output( "{0} submodules found".XFormat( submodules.Count ) );
+            Output( $"{submodules.Count} submodules found" );
 
             if( !this.AllSubmodules )
             {
                 Output( "Retrieving modified submodules" );
                 submodules = await Git.GetModifiedSubmodules( this.Repo, submodules );
-                Output( "{0} modified submodules found".XFormat( submodules.Count ) );
+                Output( $"{submodules.Count} modified submodules found" );
             }
 
             IEnumerable<ProcessProgressTask> tasks = submodules.Select( submodule => Git.CreateSubmoduleUpdateTask( this.Repo, submodule, this.Init, this.Recursive, this.Force ) );

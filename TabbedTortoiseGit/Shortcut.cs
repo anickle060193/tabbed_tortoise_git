@@ -87,7 +87,7 @@ namespace TabbedTortoiseGit
 
         public override string ToString()
         {
-            return "Shortcut( {0} )".XFormat( this.Text );
+            return $"Shortcut( {this.Text} )";
         }
     }
 
