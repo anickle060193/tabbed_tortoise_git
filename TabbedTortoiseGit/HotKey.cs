@@ -166,7 +166,12 @@ namespace TabbedTortoiseGit
                 throw new ObjectDisposedException( nameof( HotKey ) );
             }
 
-            if( !( Shortcut?.IsValid ?? false ) )
+            if( Shortcut == null )
+            {
+                return;
+            }
+
+            if( Shortcut?.IsValid != true )
             {
                 LOG.ErrorFormat( "Register - Invalid shortcut - {0}", Shortcut );
                 return;
