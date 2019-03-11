@@ -50,6 +50,8 @@ namespace TabbedTortoiseGit
 
         private readonly String _repo;
 
+        private String _currentBranch;
+
         public String[] SelectedReferences
         {
             get
@@ -89,6 +91,8 @@ namespace TabbedTortoiseGit
             SelectedReferencesListBox.KeyUp += SelectedReferencesListBox_KeyUp;
 
             RemoveSelectedReferencesButton.Click += RemoveSelectedReferencesButton_Click;
+
+            AddCurrentBranchButton.Click += AddCurrentBranchButton_Click;
 
             Ok.Click += Ok_Click;
 
@@ -141,6 +145,15 @@ namespace TabbedTortoiseGit
             RemoveFromSelectedReferences();
         }
 
+        private void AddCurrentBranchButton_Click( object sender, EventArgs e )
+        {
+            if( _currentBranch != null )
+            {
+                _selectedReferences.Add( new DisplayReference( _currentBranch, _currentBranch ) );
+                SelectedReferencesListBox.DataSource = SelectedReferencesList;
+            }
+        }
+
         private void Ok_Click( object sender, EventArgs e )
         {
             this.DialogResult = DialogResult.OK;
@@ -151,6 +164,22 @@ namespace TabbedTortoiseGit
         {
             using( Repository repository = new Repository( Git.GetBaseRepoDirectory( _repo ) ) )
             {
+                Branch currentBranch = repository.Head;
+                if( currentBranch != null )
+                {
+                    _currentBranch = repository.Head.CanonicalName;
+                    if( _currentBranch == "(no branch)" )
+                    {
+                        _currentBranch = null;
+                    }
+                }
+                else
+                {
+                    _currentBranch = null;
+                }
+
+                AddCurrentBranchButton.Enabled = ( _currentBranch != null );
+
                 foreach( Reference r in repository.Refs )
                 {
                     String[] splitRef = r.CanonicalName.Split( '/' );

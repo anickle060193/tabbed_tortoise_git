@@ -34,6 +34,8 @@
             this.TabContextMenu = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.OpenRepoLocationTabMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.AddToFavoritesRepoTabMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.OpenWithReferencesRepoTabMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.DuplicateRepoTabMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.CloseRepoTabMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.FavoriteRepoContextMenu = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.OpenFavoriteRepoLocationContextMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -53,7 +55,7 @@
             this.FavoritesFolderContextMenu = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.RemoveFavoriteFolderContextMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.ModifiedRepoCheckBackgroundWorker = new System.ComponentModel.BackgroundWorker();
-            this.DuplicateRepoTabMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.OpenFavoriteWithReferencesContextMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.TabContextMenu.SuspendLayout();
             this.FavoriteRepoContextMenu.SuspendLayout();
             this.OptionsContextMenu.SuspendLayout();
@@ -80,50 +82,64 @@
             this.TabContextMenu.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.OpenRepoLocationTabMenuItem,
             this.AddToFavoritesRepoTabMenuItem,
+            this.OpenWithReferencesRepoTabMenuItem,
             this.DuplicateRepoTabMenuItem,
             this.CloseRepoTabMenuItem});
             this.TabContextMenu.Name = "TabContextMenu";
             this.TabContextMenu.RenderMode = System.Windows.Forms.ToolStripRenderMode.Professional;
-            this.TabContextMenu.Size = new System.Drawing.Size(183, 114);
+            this.TabContextMenu.Size = new System.Drawing.Size(190, 114);
             // 
             // OpenRepoLocationTabMenuItem
             // 
             this.OpenRepoLocationTabMenuItem.Image = global::TabbedTortoiseGit.Properties.Resources.OpenLocation;
             this.OpenRepoLocationTabMenuItem.Name = "OpenRepoLocationTabMenuItem";
-            this.OpenRepoLocationTabMenuItem.Size = new System.Drawing.Size(182, 22);
+            this.OpenRepoLocationTabMenuItem.Size = new System.Drawing.Size(189, 22);
             this.OpenRepoLocationTabMenuItem.Text = "Open Repo Location";
             // 
             // AddToFavoritesRepoTabMenuItem
             // 
             this.AddToFavoritesRepoTabMenuItem.Name = "AddToFavoritesRepoTabMenuItem";
-            this.AddToFavoritesRepoTabMenuItem.Size = new System.Drawing.Size(182, 22);
+            this.AddToFavoritesRepoTabMenuItem.Size = new System.Drawing.Size(189, 22);
             this.AddToFavoritesRepoTabMenuItem.Text = "Add to Favorites";
+            // 
+            // OpenWithReferencesRepoTabMenuItem
+            // 
+            this.OpenWithReferencesRepoTabMenuItem.Name = "OpenWithReferencesRepoTabMenuItem";
+            this.OpenWithReferencesRepoTabMenuItem.Size = new System.Drawing.Size(189, 22);
+            this.OpenWithReferencesRepoTabMenuItem.Text = "Open with References";
+            // 
+            // DuplicateRepoTabMenuItem
+            // 
+            this.DuplicateRepoTabMenuItem.Name = "DuplicateRepoTabMenuItem";
+            this.DuplicateRepoTabMenuItem.Size = new System.Drawing.Size(189, 22);
+            this.DuplicateRepoTabMenuItem.Text = "Duplicate";
             // 
             // CloseRepoTabMenuItem
             // 
             this.CloseRepoTabMenuItem.Name = "CloseRepoTabMenuItem";
-            this.CloseRepoTabMenuItem.Size = new System.Drawing.Size(182, 22);
+            this.CloseRepoTabMenuItem.Size = new System.Drawing.Size(189, 22);
             this.CloseRepoTabMenuItem.Text = "Close";
             // 
             // FavoriteRepoContextMenu
             // 
             this.FavoriteRepoContextMenu.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.OpenFavoriteRepoLocationContextMenuItem,
+            this.OpenFavoriteWithReferencesContextMenuItem,
             this.RemoveFavoriteContextMenuItem});
             this.FavoriteRepoContextMenu.Name = "FavoriteRepoContextMenu";
-            this.FavoriteRepoContextMenu.Size = new System.Drawing.Size(183, 48);
+            this.FavoriteRepoContextMenu.Size = new System.Drawing.Size(190, 92);
             // 
             // OpenFavoriteRepoLocationContextMenuItem
             // 
             this.OpenFavoriteRepoLocationContextMenuItem.Image = global::TabbedTortoiseGit.Properties.Resources.OpenLocation;
             this.OpenFavoriteRepoLocationContextMenuItem.Name = "OpenFavoriteRepoLocationContextMenuItem";
-            this.OpenFavoriteRepoLocationContextMenuItem.Size = new System.Drawing.Size(182, 22);
+            this.OpenFavoriteRepoLocationContextMenuItem.Size = new System.Drawing.Size(189, 22);
             this.OpenFavoriteRepoLocationContextMenuItem.Text = "Open Repo Location";
             // 
             // RemoveFavoriteContextMenuItem
             // 
             this.RemoveFavoriteContextMenuItem.Name = "RemoveFavoriteContextMenuItem";
-            this.RemoveFavoriteContextMenuItem.Size = new System.Drawing.Size(182, 22);
+            this.RemoveFavoriteContextMenuItem.Size = new System.Drawing.Size(189, 22);
             this.RemoveFavoriteContextMenuItem.Text = "Remove Favorite";
             // 
             // OptionsContextMenu
@@ -225,11 +241,11 @@
             this.RemoveFavoriteFolderContextMenuItem.Size = new System.Drawing.Size(198, 22);
             this.RemoveFavoriteFolderContextMenuItem.Text = "Remove Favorite Folder";
             // 
-            // DuplicateRepoTabMenuItem
+            // OpenFavoriteWithReferencesContextMenuItem
             // 
-            this.DuplicateRepoTabMenuItem.Name = "DuplicateRepoTabMenuItem";
-            this.DuplicateRepoTabMenuItem.Size = new System.Drawing.Size(182, 22);
-            this.DuplicateRepoTabMenuItem.Text = "Duplicate";
+            this.OpenFavoriteWithReferencesContextMenuItem.Name = "OpenFavoriteWithReferencesContextMenuItem";
+            this.OpenFavoriteWithReferencesContextMenuItem.Size = new System.Drawing.Size(189, 22);
+            this.OpenFavoriteWithReferencesContextMenuItem.Text = "Open with References";
             // 
             // TabbedTortoiseGitForm
             // 
@@ -280,6 +296,8 @@
         private System.ComponentModel.BackgroundWorker ModifiedRepoCheckBackgroundWorker;
         private System.Windows.Forms.ToolStripMenuItem ShowDebugLogMenuItem;
         private System.Windows.Forms.ToolStripMenuItem DuplicateRepoTabMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem OpenWithReferencesRepoTabMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem OpenFavoriteWithReferencesContextMenuItem;
     }
 }
 

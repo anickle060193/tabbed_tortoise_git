@@ -44,6 +44,7 @@ namespace TabbedTortoiseGit
             FavoritesFolderContextMenu.Closed += FavoriteItemContextMenu_Closed;
             FavoriteRepoContextMenu.Closed += FavoriteItemContextMenu_Closed;
             OpenFavoriteRepoLocationContextMenuItem.Click += OpenFavoriteRepoLocationContextMenuItem_Click;
+            OpenFavoriteWithReferencesContextMenuItem.Click += OpenFavoriteWithReferencesContextMenuItem_Click;
             RemoveFavoriteContextMenuItem.Click += RemoveFavoriteItemContextMenuItem_Click;
             RemoveFavoriteFolderContextMenuItem.Click += RemoveFavoriteItemContextMenuItem_Click;
 
@@ -58,6 +59,7 @@ namespace TabbedTortoiseGit
 
             OpenRepoLocationTabMenuItem.Click += OpenRepoLocationTabMenuItem_Click;
             AddToFavoritesRepoTabMenuItem.Click += AddToFavoritesRepoTabMenuItem_Click;
+            OpenWithReferencesRepoTabMenuItem.Click += OpenWithReferencesRepoTabMenuItem_Click;
             DuplicateRepoTabMenuItem.Click += DuplicateRepoTabMenuItem_Click;
             CloseRepoTabMenuItem.Click += CloseRepoTabMenuItem_Click;
 
@@ -302,6 +304,21 @@ namespace TabbedTortoiseGit
             Util.OpenInExplorer( favorite.Value.Repo );
         }
 
+        private async void OpenFavoriteWithReferencesContextMenuItem_Click( object sender, EventArgs e )
+        {
+            ToolStripMenuItem contextMenuItem = (ToolStripMenuItem)sender;
+            ToolStrip contextMenu = contextMenuItem.Owner;
+
+            TreeNode<FavoriteRepo> favorite = (TreeNode<FavoriteRepo>)contextMenu.Tag;
+            String repo = Git.GetBaseRepoDirectory( favorite.Value.Repo );
+
+            ReferencesDialog dialog = new ReferencesDialog( repo );
+            if( dialog.ShowDialog() == DialogResult.OK )
+            {
+                await OpenLog( favorite.Value.Repo, dialog.SelectedReferences );
+            }
+        }
+
         private async void GitCommandFavoriteContextMenuItem_Click( object sender, EventArgs e )
         {
             ToolStripMenuItem contextMenuItem = (ToolStripMenuItem)sender;
@@ -389,6 +406,18 @@ namespace TabbedTortoiseGit
             TabControllerTag tag = LogTabs.SelectedTab.Controller();
 
             AddFavoriteRepo( tag.RepoItem );
+        }
+
+        private async void OpenWithReferencesRepoTabMenuItem_Click( object sender, EventArgs e )
+        {
+            TabControllerTag tag = LogTabs.SelectedTab.Controller();
+            String repo = Git.GetBaseRepoDirectory( tag.RepoItem );
+
+            ReferencesDialog dialog = new ReferencesDialog( repo );
+            if( dialog.ShowDialog() == DialogResult.OK )
+            {
+                await OpenLog( tag.RepoItem, dialog.SelectedReferences );
+            }
         }
 
         private async void DuplicateRepoTabMenuItem_Click( object sender, EventArgs e )

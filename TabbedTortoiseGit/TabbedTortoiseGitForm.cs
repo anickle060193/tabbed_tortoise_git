@@ -195,10 +195,12 @@ namespace TabbedTortoiseGit
             TabContextMenu.Items.Clear();
             TabContextMenu.Items.Add( OpenRepoLocationTabMenuItem );
             TabContextMenu.Items.Add( AddToFavoritesRepoTabMenuItem );
+            TabContextMenu.Items.Add( OpenWithReferencesRepoTabMenuItem );
             TabContextMenu.Items.Add( DuplicateRepoTabMenuItem );
 
             FavoriteRepoContextMenu.Items.Clear();
             FavoriteRepoContextMenu.Items.Add( OpenFavoriteRepoLocationContextMenuItem );
+            FavoriteRepoContextMenu.Items.Add( OpenFavoriteWithReferencesContextMenuItem );
 
             List<GitAction> actions = Settings.Default.TabContextMenuGitActions
                                                     .Where( action => GitAction.ACTIONS.ContainsKey( action ) )

@@ -44,6 +44,7 @@
             this.RemoveSelectedReferencesButton = new System.Windows.Forms.Button();
             this.Cancel = new System.Windows.Forms.Button();
             this.Ok = new System.Windows.Forms.Button();
+            this.AddCurrentBranchButton = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.OuterSplitContainer)).BeginInit();
             this.OuterSplitContainer.Panel1.SuspendLayout();
             this.OuterSplitContainer.Panel2.SuspendLayout();
@@ -259,6 +260,16 @@
             this.Ok.Text = "OK";
             this.Ok.UseVisualStyleBackColor = true;
             // 
+            // AddCurrentBranchButton
+            // 
+            this.AddCurrentBranchButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.AddCurrentBranchButton.Location = new System.Drawing.Point(15, 426);
+            this.AddCurrentBranchButton.Name = "AddCurrentBranchButton";
+            this.AddCurrentBranchButton.Size = new System.Drawing.Size(175, 23);
+            this.AddCurrentBranchButton.TabIndex = 8;
+            this.AddCurrentBranchButton.Text = "Add Current Branch";
+            this.AddCurrentBranchButton.UseVisualStyleBackColor = true;
+            // 
             // ReferencesDialog
             // 
             this.AcceptButton = this.Ok;
@@ -266,6 +277,7 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.CancelButton = this.Cancel;
             this.ClientSize = new System.Drawing.Size(984, 461);
+            this.Controls.Add(this.AddCurrentBranchButton);
             this.Controls.Add(this.Ok);
             this.Controls.Add(this.Cancel);
             this.Controls.Add(this.OuterSplitContainer);
@@ -309,5 +321,6 @@
         private System.Windows.Forms.TableLayoutPanel SelectedReferencesTableLayout;
         private System.Windows.Forms.Button AddSelectedReferencesButton;
         private System.Windows.Forms.Button RemoveSelectedReferencesButton;
+        private System.Windows.Forms.Button AddCurrentBranchButton;
     }
 }
