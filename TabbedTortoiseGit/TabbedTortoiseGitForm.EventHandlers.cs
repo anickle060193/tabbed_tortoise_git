@@ -320,7 +320,7 @@ namespace TabbedTortoiseGit
             TreeNode<FavoriteRepo> favorite = (TreeNode<FavoriteRepo>)contextMenu.Tag;
             CustomAction customAction = (CustomAction)contextMenuItem.Tag;
 
-            RunCustomAction( customAction, favorite.Value.Repo );
+            RunCustomAction( null, customAction, favorite.Value.Repo );
         }
 
         private void RemoveFavoriteItemContextMenuItem_Click( object sender, EventArgs e )
@@ -412,7 +412,7 @@ namespace TabbedTortoiseGit
 
             TabControllerTag tag = LogTabs.SelectedTab.Controller();
 
-            RunCustomAction( customAction, tag.RepoItem );
+            RunCustomAction( tag, customAction, tag.RepoItem );
         }
 
         private async void ModifiedRepoCheckBackgroundWorker_DoWork( object sender, DoWorkEventArgs e )

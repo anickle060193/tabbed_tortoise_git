@@ -469,7 +469,7 @@ namespace TabbedTortoiseGit.Properties
             {
                 Settings.Default.CustomActions = new List<CustomAction>()
                 {
-                    new CustomAction( "Open Console Here", "cmd.exe", "/K \"cd /d \"%d\"\"" )
+                    new CustomAction( "Open Console Here", "cmd.exe", "", "%r", false, false, false )
                 };
             }
 

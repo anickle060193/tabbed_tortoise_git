@@ -19,54 +19,33 @@ namespace TabbedTortoiseGit
         public String Program { get; private set; }
         public String Arguments { get; private set; }
 
+        [DefaultValue( "%r" )]
+        public String WorkingDirectory { get; private set; }
+
+        [DefaultValue( false )]
+        public bool RefreshLogAfter { get; private set; }
+
+        [DefaultValue( false )]
+        public bool ShowProgressDialog { get; private set; }
+
+        [DefaultValue( false )]
+        public bool CreateNoWindow { get; private set; }
+
         [JsonConstructor]
-        public CustomAction( String name, String program, String arguments )
+        public CustomAction( String name, String program, String arguments, String workingDirectory, bool refreshLogAfter, bool showProgressDialog, bool createNoWindow )
         {
             Name = name;
             Program = program;
             Arguments = arguments;
+            WorkingDirectory = workingDirectory;
+            RefreshLogAfter = refreshLogAfter;
+            ShowProgressDialog = showProgressDialog;
+            CreateNoWindow = createNoWindow;
         }
 
         public override string ToString()
         {
-            return $"{nameof( CustomAction )}( {nameof( Name )}={Name}, {nameof( Program )}=\"{Program}\", {nameof( Arguments )}=\"{Arguments}\" )";
-        }
-    }
-
-    class CustomActionConverter : TypeConverter
-    {
-        public override bool CanConvertFrom( ITypeDescriptorContext context, Type sourceType )
-        {
-            return sourceType == typeof( String );
-        }
-
-        public override object ConvertFrom( ITypeDescriptorContext context, CultureInfo culture, object value )
-        {
-            if( value is String )
-            {
-                return JsonConvert.DeserializeObject<Shortcut>( (String)value );
-            }
-            else
-            {
-                return base.ConvertFrom( context, culture, value );
-            }
-        }
-
-        public override bool CanConvertTo( ITypeDescriptorContext context, Type destinationType )
-        {
-            return destinationType == typeof( String );
-        }
-
-        public override object ConvertTo( ITypeDescriptorContext context, CultureInfo culture, object value, Type destinationType )
-        {
-            if( destinationType == typeof( String ) )
-            {
-                return JsonConvert.SerializeObject( value );
-            }
-            else
-            {
-                return base.ConvertTo( context, culture, value, destinationType );
-            }
+            return $"{nameof( CustomAction )}( {nameof( Name )}={Name}, {nameof( Program )}=\"{Program}\", {nameof( Arguments )}=\"{Arguments}\", {nameof( WorkingDirectory )}=\"{WorkingDirectory}\", {nameof( RefreshLogAfter )}={RefreshLogAfter}, {nameof( ShowProgressDialog )}={ShowProgressDialog}, {nameof( CreateNoWindow )}={CreateNoWindow} )";
         }
     }
 }

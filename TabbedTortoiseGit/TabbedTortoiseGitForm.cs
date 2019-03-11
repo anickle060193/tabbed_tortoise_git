@@ -713,7 +713,7 @@ namespace TabbedTortoiseGit
             }
         }
 
-        private void RunCustomAction( CustomAction customAction, String repoItem )
+        private void RunCustomAction( TabControllerTag tag, CustomAction customAction, String repoItem )
         {
             LOG.Debug( $"{nameof( RunCustomAction )} - Action: {customAction} - Repo: {repoItem}" );
 
@@ -731,11 +731,71 @@ namespace TabbedTortoiseGit
 
             String program = customAction.Program;
             String arguments = customAction.Arguments.Replace( "%f", filename ).Replace( "%d", directory ).Replace( "%r", repo );
+            String workingDirectory = customAction.WorkingDirectory.Replace( "%f", filename ).Replace( "%d", directory ).Replace( "%r", repo );
 
-            LOG.Debug( $"{nameof( RunCustomAction )} - Running: {program} - {arguments}" );
+            if( Path.IsPathRooted( program )
+             && !File.Exists( program ) )
+            {
+                MessageBox.Show( $"Program file does not exist: \"{program}\"", "Invalid Program", MessageBoxButtons.OK, MessageBoxIcon.Error );
+                return;
+            }
+            else if( !Directory.Exists( workingDirectory ) )
+            {
+                MessageBox.Show( $"Working directory does not exist: \"{workingDirectory}\"", "Invalid Working Directory", MessageBoxButtons.OK, MessageBoxIcon.Error );
+                return;
+            }
+
+
+            LOG.Debug( $"{nameof( RunCustomAction )} - Running - Program: {program} - Arguments: {arguments} - Working Directory: {workingDirectory} - Refresh Log After: {customAction.RefreshLogAfter} - Show Progress Dialog: {customAction.ShowProgressDialog} - Create No Window: {customAction.CreateNoWindow}" );
             try
             {
-                Process.Start( program, arguments );
+                Process p = new Process();
+                p.StartInfo.FileName = program;
+                p.StartInfo.Arguments = arguments;
+                p.StartInfo.WorkingDirectory = workingDirectory;
+
+                if( customAction.CreateNoWindow )
+                {
+                    p.StartInfo.UseShellExecute = false;
+                    p.StartInfo.WindowStyle = ProcessWindowStyle.Hidden;
+                    p.StartInfo.CreateNoWindow = true;
+                }
+
+                if( customAction.ShowProgressDialog )
+                {
+                    ProgressDialog dialog = new ProgressDialog();
+                    dialog.AddTask( new ProcessProgressTask( p ) );
+
+                    if( tag != null
+                     && customAction.RefreshLogAfter )
+                    {
+                        dialog.FormClosed += delegate ( Object sender, FormClosedEventArgs e )
+                        {
+                            if( !tag.Process.HasExited )
+                            {
+                                Native.SendKeyDown( tag.Process.MainWindowHandle, Keys.F5 );
+                            }
+                        };
+                    }
+
+                    dialog.DoProgress();
+                }
+                else
+                {
+                    if( tag != null
+                     && customAction.RefreshLogAfter )
+                    {
+                        p.Exited += delegate ( Object sender, EventArgs e )
+                        {
+                            if( !tag.Process.HasExited )
+                            {
+                                Native.SendKeyDown( tag.Process.MainWindowHandle, Keys.F5 );
+                            }
+                        };
+                    }
+
+                    p.Start();
+                }
             }
             catch( Exception e )
             {

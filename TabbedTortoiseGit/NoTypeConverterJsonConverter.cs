@@ -17,7 +17,10 @@ namespace TabbedTortoiseGit
 
         private JsonSerializer CreateNoTypeSerializer()
         {
-            JsonSerializerSettings settings = new JsonSerializerSettings();
+            JsonSerializerSettings settings = new JsonSerializerSettings()
+            {
+                DefaultValueHandling = DefaultValueHandling.Populate,
+            };
             settings.ContractResolver = new ForceContractResolver();
             return JsonSerializer.CreateDefault( settings );
         }

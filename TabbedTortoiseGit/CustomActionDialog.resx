@@ -118,7 +118,7 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="MacroLabel.Text" xml:space="preserve">
-    <value>The following macros can be used in the Arguments field:
+    <value>The following macros can be used in the Arguments and Working Directory field:
 %f: The file or folder of the selected log.
 %d: The directory of the file of the selected log
         (if the selected log is for a folder, this will evalute to the same folder).

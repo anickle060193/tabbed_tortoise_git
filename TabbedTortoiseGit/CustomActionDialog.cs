@@ -18,7 +18,15 @@ namespace TabbedTortoiseGit
             {
                 if( this.IsValidAction() )
                 {
-                    return new CustomAction( ActionName.Text, Program.Text, Arguments.Text );
+                    return new CustomAction(
+                        ActionName.Text,
+                        Program.Text,
+                        Arguments.Text,
+                        WorkingDirectory.Text,
+                        RefreshLogAfter.Checked,
+                        ShowProgressDialog.Checked,
+                        CreateNoWindow.Checked
+                    );
                 }
                 else
                 {
@@ -33,12 +41,20 @@ namespace TabbedTortoiseGit
                     ActionName.Text = null;
                     Program.Text = null;
                     Arguments.Text = null;
+                    WorkingDirectory.Text = null;
+                    RefreshLogAfter.Checked = false;
+                    ShowProgressDialog.Checked = false;
+                    CreateNoWindow.Checked = false;
                 }
                 else
                 {
                     ActionName.Text = value.Name;
                     Program.Text = value.Program;
                     Arguments.Text = value.Arguments;
+                    WorkingDirectory.Text = value.WorkingDirectory;
+                    RefreshLogAfter.Checked = value.RefreshLogAfter;
+                    ShowProgressDialog.Checked = value.ShowProgressDialog;
+                    CreateNoWindow.Checked = value.CreateNoWindow;
                 }
             }
         }
@@ -48,6 +64,12 @@ namespace TabbedTortoiseGit
             InitializeComponent();
 
             this.DialogResult = DialogResult.Cancel;
+
+            ActionName.TextChanged += ActionValue_TextChanged;
+            Program.TextChanged += ActionValue_TextChanged;
+            WorkingDirectory.TextChanged += ActionValue_TextChanged;
+
+            this.UpdateOk();
         }
 
         private void ProgramBrowse_Click( object sender, EventArgs e )
@@ -61,7 +83,8 @@ namespace TabbedTortoiseGit
         private bool IsValidAction()
         {
             return ( !String.IsNullOrWhiteSpace( ActionName.Text )
-                  && !String.IsNullOrWhiteSpace( Program.Text ) );
+                  && !String.IsNullOrWhiteSpace( Program.Text )
+                  && !String.IsNullOrWhiteSpace( WorkingDirectory.Text ) );
         }
 
         private void UpdateOk()
@@ -69,12 +92,7 @@ namespace TabbedTortoiseGit
             Ok.Enabled = this.IsValidAction();
         }
 
-        private void ActionName_TextChanged( object sender, EventArgs e )
-        {
-            this.UpdateOk();
-        }
-
-        private void Program_TextChanged( object sender, EventArgs e )
+        private void ActionValue_TextChanged( object sender, EventArgs e )
         {
             this.UpdateOk();
         }
