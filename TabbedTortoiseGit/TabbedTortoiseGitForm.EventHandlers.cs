@@ -58,6 +58,7 @@ namespace TabbedTortoiseGit
 
             OpenRepoLocationTabMenuItem.Click += OpenRepoLocationTabMenuItem_Click;
             AddToFavoritesRepoTabMenuItem.Click += AddToFavoritesRepoTabMenuItem_Click;
+            DuplicateRepoTabMenuItem.Click += DuplicateRepoTabMenuItem_Click;
             CloseRepoTabMenuItem.Click += CloseRepoTabMenuItem_Click;
 
             ModifiedRepoCheckBackgroundWorker.DoWork += ModifiedRepoCheckBackgroundWorker_DoWork;
@@ -388,6 +389,11 @@ namespace TabbedTortoiseGit
             TabControllerTag tag = LogTabs.SelectedTab.Controller();
 
             AddFavoriteRepo( tag.RepoItem );
+        }
+
+        private async void DuplicateRepoTabMenuItem_Click( object sender, EventArgs e )
+        {
+            await DuplicateTab( LogTabs.SelectedTab );
         }
 
         private void CloseRepoTabMenuItem_Click( object sender, EventArgs e )

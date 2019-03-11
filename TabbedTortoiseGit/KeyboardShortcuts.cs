@@ -17,6 +17,8 @@ namespace TabbedTortoiseGit
         NextTab,
         [Description( "Previous Tab" )]
         PreviousTab,
+        [Description( "Duplicate Tab" )]
+        DuplicateTab,
         [Description( "Close Tab" )]
         CloseTab,
         [Description( "Reopen Closed Tab" )]

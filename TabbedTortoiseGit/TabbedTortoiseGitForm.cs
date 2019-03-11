@@ -194,6 +194,7 @@ namespace TabbedTortoiseGit
             TabContextMenu.Items.Clear();
             TabContextMenu.Items.Add( OpenRepoLocationTabMenuItem );
             TabContextMenu.Items.Add( AddToFavoritesRepoTabMenuItem );
+            TabContextMenu.Items.Add( DuplicateRepoTabMenuItem );
 
             FavoriteRepoContextMenu.Items.Clear();
             FavoriteRepoContextMenu.Items.Add( OpenFavoriteRepoLocationContextMenuItem );
@@ -393,6 +394,10 @@ namespace TabbedTortoiseGit
             {
                 LogTabs.PreviousTab();
             }
+            else if( keyboardShortcut == KeyboardShortcuts.DuplicateTab )
+            {
+                await DuplicateTab( LogTabs.SelectedTab );
+            }
             else if( keyboardShortcut == KeyboardShortcuts.CloseTab )
             {
                 CloseTab( LogTabs.SelectedTab );
@@ -523,6 +528,13 @@ namespace TabbedTortoiseGit
                     RemoveLogProcess( _tags.Values.First().Process, true );
                 }
             }
+        }
+
+        private async Task DuplicateTab( Tab tab )
+        {
+            TabControllerTag tag = tab.Controller();
+
+            await OpenLog( tag.RepoItem );
         }
 
         private void CloseTab( Tab tab )
