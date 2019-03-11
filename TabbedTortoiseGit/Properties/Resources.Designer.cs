@@ -73,6 +73,16 @@ namespace TabbedTortoiseGit.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
+        internal static System.Drawing.Bitmap Diff {
+            get {
+                object obj = ResourceManager.GetObject("Diff", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
         internal static System.Drawing.Bitmap Fetch {
             get {
                 object obj = ResourceManager.GetObject("Fetch", resourceCulture);

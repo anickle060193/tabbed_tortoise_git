@@ -40,7 +40,8 @@ namespace TabbedTortoiseGit
             { KeyboardShortcuts.Push,                   GitAction.Push                  },
             { KeyboardShortcuts.Rebase,                 GitAction.Rebase                },
             { KeyboardShortcuts.SubmoduleUpdate,        GitAction.SubmoduleUpdate       },
-            { KeyboardShortcuts.SwitchCheckout,         GitAction.Switch                }
+            { KeyboardShortcuts.SwitchCheckout,         GitAction.Switch                },
+            { KeyboardShortcuts.Diff,                   GitAction.Diff                  },
         }.ToImmutableDictionary();
 
         private static readonly Keys[] FORWARD_KEYS = new[]

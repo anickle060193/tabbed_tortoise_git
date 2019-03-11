@@ -33,6 +33,7 @@ namespace TabbedTortoiseGit
             new GitAction( "Submodule Update",          GitAction.SubmoduleUpdate,          Resources.SubmoduleUpdate   ),
             new GitAction( "Fast Submodule Update",     GitAction.FastSubmoduleUpdate,      Resources.SubmoduleUpdate   ),
             new GitAction( "Faster Submodule Update",   GitAction.FasterSubmoduleUpdate,    Resources.SubmoduleUpdate   ),
+            new GitAction( "Diff",                      GitAction.Diff,                     Resources.Diff              ),
         }.ToImmutableDictionary( command => command.Name );
 
         private static readonly String TORTOISE_GIT_EXE = "TortoiseGitProc.exe";
@@ -170,6 +171,12 @@ namespace TabbedTortoiseGit
             dialog.Show();
             await dialog.WaitForClose();
             return dialog.DialogResult == DialogResult.OK;
+        }
+
+        public static async Task<bool> Diff( String path )
+        {
+            Process p = await TortoiseGitCommand( $"/command:diff /path:\"{path}\"", path );
+            return false;
         }
     }
 }

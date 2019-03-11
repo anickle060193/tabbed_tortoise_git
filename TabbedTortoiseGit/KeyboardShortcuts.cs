@@ -45,7 +45,9 @@ namespace TabbedTortoiseGit
         [Description( "Submodule Update" )]
         SubmoduleUpdate,
         [Description( "Switch/Checkout" )]
-        SwitchCheckout
+        SwitchCheckout,
+        [Description( "Diff" )]
+        Diff,
     }
 
     class KeyboardShortcutPressedEventArgs : EventArgs
