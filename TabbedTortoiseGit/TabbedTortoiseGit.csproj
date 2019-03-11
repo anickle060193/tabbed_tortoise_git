@@ -136,6 +136,7 @@
     <Compile Include="KeyboardShortcuts.cs" />
     <Compile Include="Native.cs" />
     <Compile Include="NoTypeConverterJsonConverter.cs" />
+    <Compile Include="ProcessHelper.cs" />
     <Compile Include="ProgressDialog.cs">
       <SubType>Form</SubType>
     </Compile>

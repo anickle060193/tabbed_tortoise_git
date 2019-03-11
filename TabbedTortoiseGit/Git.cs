@@ -143,7 +143,7 @@ namespace TabbedTortoiseGit
             p.StartInfo.FileName = "git.exe";
             p.StartInfo.Arguments = args.ToString();
             p.StartInfo.WorkingDirectory = repoPath;
-            return new ProcessProgressTask( p );
+            return new ProcessProgressTask( p, true );
         }
     }
 }

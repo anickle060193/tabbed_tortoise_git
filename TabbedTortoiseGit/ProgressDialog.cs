@@ -338,6 +338,7 @@ namespace TabbedTortoiseGit
     public class ProcessProgressTask : ProgressTask
     {
         public Process Process { get; private set; }
+        public bool KillOnCancel { get; private set; }
 
         public override string InitialOutput
         {
@@ -358,9 +359,10 @@ namespace TabbedTortoiseGit
             }
         }
 
-        public ProcessProgressTask( Process p )
+        public ProcessProgressTask( Process p, bool killOnCancel )
         {
             Process = p;
+            KillOnCancel = killOnCancel;
         }
 
         private void Process_OutputDataReceived( object sender, DataReceivedEventArgs e )
@@ -397,6 +399,13 @@ namespace TabbedTortoiseGit
 
         public override void Cancel()
         {
+            if( this.KillOnCancel )
+            {
+                if( !this.Process.HasExited )
+                {
+                    ProcessHelper.KillProcessTree( this.Process );
+                }
+            }
         }
     }
 }

@@ -776,7 +776,7 @@ namespace TabbedTortoiseGit
                 if( customAction.ShowProgressDialog )
                 {
                     ProgressDialog dialog = new ProgressDialog();
-                    dialog.AddTask( new ProcessProgressTask( p ) );
+                    dialog.AddTask( new ProcessProgressTask( p, true ) );
 
                     if( tag != null
                      && customAction.RefreshLogAfter )
