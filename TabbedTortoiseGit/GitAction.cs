@@ -86,13 +86,15 @@ namespace TabbedTortoiseGit
 
         public static async Task<bool> Fetch( String path )
         {
-            Process p = await PathCommand( "fetch", path );
+            String repo = Git.GetBaseRepoDirectory( path );
+            Process p = await PathCommand( "fetch", repo );
             return p.ExitCode == 0;
         }
 
         public static async Task<bool> FastFetch( String path )
         {
-            FastFetchDialog dialog = new FastFetchDialog( path );
+            String repo = Git.GetBaseRepoDirectory( path );
+            FastFetchDialog dialog = new FastFetchDialog( repo );
             dialog.Show();
             await dialog.WaitForClose();
             return dialog.DialogResult == DialogResult.OK;
@@ -100,7 +102,8 @@ namespace TabbedTortoiseGit
 
         public static Task<bool> FasterFetch( String path )
         {
-            return FastFetchDialog.FasterFetch( path );
+            String repo = Git.GetBaseRepoDirectory( path );
+            return FastFetchDialog.FasterFetch( repo );
         }
 
         public static async Task<bool> Commit( String path )
@@ -111,43 +114,50 @@ namespace TabbedTortoiseGit
 
         public static async Task<bool> Switch( String path )
         {
-            Process p = await PathCommand( "switch", path );
+            String repo = Git.GetBaseRepoDirectory( path );
+            Process p = await PathCommand( "switch", repo );
             return p.ExitCode == 0;
         }
 
         public static async Task<bool> Pull( String path )
         {
-            Process p = await PathCommand( "pull", path );
+            String repo = Git.GetBaseRepoDirectory( path );
+            Process p = await PathCommand( "pull", repo );
             return p.ExitCode == 0;
         }
 
         public static async Task<bool> Push( String path )
         {
-            Process p = await PathCommand( "push", path );
+            String repo = Git.GetBaseRepoDirectory( path );
+            Process p = await PathCommand( "push", repo );
             return p.ExitCode == 0;
         }
 
         public static async Task<bool> Rebase( String path )
         {
-            Process p = await PathCommand( "rebase", path );
+            String repo = Git.GetBaseRepoDirectory( path );
+            Process p = await PathCommand( "rebase", repo );
             return p.ExitCode == 0;
         }
 
         public static async Task<bool> Sync( String path )
         {
-            Process p = await PathCommand( "sync", path );
+            String repo = Git.GetBaseRepoDirectory( path );
+            Process p = await PathCommand( "sync", repo );
             return p.ExitCode == 0;
         }
 
         public static async Task<bool> SubmoduleUpdate( String path )
         {
-            Process p = await TortoiseGitCommand( $"/command:subupdate /path:\"{path}\" /bkpath:\"{path}\"", path );
+            String repo = Git.GetBaseRepoDirectory( path );
+            Process p = await TortoiseGitCommand( $"/command:subupdate /path:\"{repo}\" /bkpath:\"{repo}\"", repo );
             return p.ExitCode == 0;
         }
 
         public static async Task<bool> FasterSubmoduleUpdate( String path )
         {
-            FasterSubmoduleUpdateDialog dialog = new FasterSubmoduleUpdateDialog( path );
+            String repo = Git.GetBaseRepoDirectory( path );
+            FasterSubmoduleUpdateDialog dialog = new FasterSubmoduleUpdateDialog( repo );
             dialog.Show();
             await dialog.WaitForClose();
             return dialog.DialogResult == DialogResult.OK;
@@ -155,7 +165,8 @@ namespace TabbedTortoiseGit
 
         public static async Task<bool> FastSubmoduleUpdate( String path )
         {
-            FastSubmoduleUpdateDialog dialog = new FastSubmoduleUpdateDialog( path );
+            String repo = Git.GetBaseRepoDirectory( path );
+            FastSubmoduleUpdateDialog dialog = new FastSubmoduleUpdateDialog( repo );
             dialog.Show();
             await dialog.WaitForClose();
             return dialog.DialogResult == DialogResult.OK;
