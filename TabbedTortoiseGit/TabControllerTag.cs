@@ -24,6 +24,8 @@ namespace TabbedTortoiseGit
         public Tab Tab { get; private set; }
         public Process Process { get; private set; }
         public String RepoItem { get; private set; }
+        public bool LoadingSubmodules { get; private set; }
+        public List<String> Submodules { get; private set; }
 
         public bool Modified
         {
@@ -81,6 +83,23 @@ namespace TabbedTortoiseGit
             Native.RemoveBorder( this.Process.MainWindowHandle );
             Native.SetWindowParent( this.Process.MainWindowHandle, this.Tab );
             this.ResizeTab();
+        }
+
+        public async Task LoadSubmodules()
+        {
+            if( this.Submodules != null
+             || this.LoadingSubmodules )
+            {
+                return;
+            }
+
+            this.LoadingSubmodules = true;
+
+            LOG.Debug( $"{nameof( LoadSubmodules )} - Retrieving Submodules Started" );
+            this.Submodules = await Task.Run( () => Git.GetSubmodules( this.RepoItem ) );
+            LOG.Debug( $"{nameof( LoadSubmodules )} - Retrieving Submodules Done - {this.Submodules.Count} Submodules" );
+
+            this.LoadingSubmodules = false;
         }
 
         public void UpdateTabDisplay()

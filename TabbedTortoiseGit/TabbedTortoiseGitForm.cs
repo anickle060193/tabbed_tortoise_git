@@ -717,6 +717,54 @@ namespace TabbedTortoiseGit
             }
         }
 
+        private async Task UpdateToolStrip()
+        {
+            TabControllerTag currentTab = LogTabs.SelectedTab?.Controller();
+            String repo = currentTab?.RepoItem;
+
+            if( repo == null )
+            {
+                SubmodulesToolStripDropDown.Enabled = false;
+                SubmodulesToolStripDropDown.DropDownItems.Clear();
+                BackgroundFasterFetch.Enabled = false;
+                BackgroundFasterFetchProgress.Enabled = false;
+                BackgroundFasterFetchProgress.Value = 0;
+            }
+            else
+            {
+                SubmodulesToolStripDropDown.Enabled = false;
+                SubmodulesToolStripDropDown.DropDownItems.Clear();
+                BackgroundFasterFetch.Enabled = true;
+                BackgroundFasterFetchProgress.Enabled = false;
+                BackgroundFasterFetchProgress.Value = 0;
+
+                if( currentTab.Submodules != null )
+                {
+                    if( currentTab.Submodules.Count > 0 )
+                    {
+                        SubmodulesToolStripDropDown.Enabled = true;
+
+                        foreach( String submodule in currentTab.Submodules )
+                        {
+                            SubmodulesToolStripDropDown.DropDownItems.Clear();
+                            ToolStripItem dropDownItem = SubmodulesToolStripDropDown.DropDownItems.Add( submodule );
+                            dropDownItem.Tag = Path.GetFullPath( Path.Combine( repo, submodule ) );
+                            dropDownItem.Click += SubmoduleToolStripDropDownItem_Click;
+                        }
+                    }
+                }
+                else if( !currentTab.LoadingSubmodules )
+                {
+                    await currentTab.LoadSubmodules();
+
+                    if( currentTab == LogTabs.SelectedTab?.Controller() )
+                    {
+                        await UpdateToolStrip();
+                    }
+                }
+            }
+        }
+
         private async Task RunGitAction( TabControllerTag tag, GitActionFunc gitActionFunc )
         {
             if( await gitActionFunc.Invoke( tag.RepoItem ) )

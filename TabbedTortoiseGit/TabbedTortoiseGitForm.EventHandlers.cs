@@ -216,7 +216,7 @@ namespace TabbedTortoiseGit
             ProgramForm.Instance.CreateNewFromTab( e.Tab, e.Location );
         }
 
-        private void LogTabs_SelectedTabChanged( object sender, EventArgs e )
+        private async void LogTabs_SelectedTabChanged( object sender, EventArgs e )
         {
             if( LogTabs.SelectedTab != null )
             {
@@ -228,6 +228,8 @@ namespace TabbedTortoiseGit
             }
 
             UpdateIcon();
+
+            await UpdateToolStrip();
         }
 
         private async void FavoriteRepoMenuItem_Click( object sender, EventArgs e )
@@ -473,6 +475,15 @@ namespace TabbedTortoiseGit
                 }
 
                 Thread.Sleep( Settings.Default.CheckForModifiedTabsInterval );
+            }
+        }
+
+        private async void SubmoduleToolStripDropDownItem_Click( object sender, EventArgs e )
+        {
+            String submodule = ( sender as ToolStripItem )?.Tag as String;
+            if( submodule != null )
+            {
+                await OpenLog( submodule );
             }
         }
     }

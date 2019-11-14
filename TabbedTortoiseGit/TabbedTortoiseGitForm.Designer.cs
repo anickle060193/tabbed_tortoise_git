@@ -29,6 +29,7 @@
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(TabbedTortoiseGitForm));
             this.FavoritesMenuStrip = new System.Windows.Forms.MenuStrip();
             this.NewTabContextMenu = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.TabContextMenu = new System.Windows.Forms.ContextMenuStrip(this.components);
@@ -39,6 +40,7 @@
             this.CloseRepoTabMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.FavoriteRepoContextMenu = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.OpenFavoriteRepoLocationContextMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.OpenFavoriteWithReferencesContextMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.RemoveFavoriteContextMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.OptionsContextMenu = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.OpenRepoMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -55,12 +57,17 @@
             this.FavoritesFolderContextMenu = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.RemoveFavoriteFolderContextMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.ModifiedRepoCheckBackgroundWorker = new System.ComponentModel.BackgroundWorker();
-            this.OpenFavoriteWithReferencesContextMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.StatusStrip = new System.Windows.Forms.StatusStrip();
+            this.SubmodulesToolStripDropDown = new System.Windows.Forms.ToolStripDropDownButton();
+            this.ToolStripSpacer = new System.Windows.Forms.ToolStripStatusLabel();
+            this.BackgroundFasterFetch = new System.Windows.Forms.ToolStripSplitButton();
+            this.BackgroundFasterFetchProgress = new System.Windows.Forms.ToolStripProgressBar();
             this.TabContextMenu.SuspendLayout();
             this.FavoriteRepoContextMenu.SuspendLayout();
             this.OptionsContextMenu.SuspendLayout();
             this.FavoritesMenuContextMenu.SuspendLayout();
             this.FavoritesFolderContextMenu.SuspendLayout();
+            this.StatusStrip.SuspendLayout();
             this.SuspendLayout();
             // 
             // FavoritesMenuStrip
@@ -127,7 +134,7 @@
             this.OpenFavoriteWithReferencesContextMenuItem,
             this.RemoveFavoriteContextMenuItem});
             this.FavoriteRepoContextMenu.Name = "FavoriteRepoContextMenu";
-            this.FavoriteRepoContextMenu.Size = new System.Drawing.Size(190, 92);
+            this.FavoriteRepoContextMenu.Size = new System.Drawing.Size(190, 70);
             // 
             // OpenFavoriteRepoLocationContextMenuItem
             // 
@@ -135,6 +142,12 @@
             this.OpenFavoriteRepoLocationContextMenuItem.Name = "OpenFavoriteRepoLocationContextMenuItem";
             this.OpenFavoriteRepoLocationContextMenuItem.Size = new System.Drawing.Size(189, 22);
             this.OpenFavoriteRepoLocationContextMenuItem.Text = "Open Repo Location";
+            // 
+            // OpenFavoriteWithReferencesContextMenuItem
+            // 
+            this.OpenFavoriteWithReferencesContextMenuItem.Name = "OpenFavoriteWithReferencesContextMenuItem";
+            this.OpenFavoriteWithReferencesContextMenuItem.Size = new System.Drawing.Size(189, 22);
+            this.OpenFavoriteWithReferencesContextMenuItem.Text = "Open with References";
             // 
             // RemoveFavoriteContextMenuItem
             // 
@@ -211,7 +224,7 @@
             this.LogTabs.Name = "LogTabs";
             this.LogTabs.NewTabContextMenu = this.NewTabContextMenu;
             this.LogTabs.OptionsMenu = this.OptionsContextMenu;
-            this.LogTabs.Size = new System.Drawing.Size(644, 462);
+            this.LogTabs.Size = new System.Drawing.Size(644, 440);
             this.LogTabs.TabContextMenu = this.TabContextMenu;
             this.LogTabs.TabIndex = 3;
             // 
@@ -241,11 +254,49 @@
             this.RemoveFavoriteFolderContextMenuItem.Size = new System.Drawing.Size(198, 22);
             this.RemoveFavoriteFolderContextMenuItem.Text = "Remove Favorite Folder";
             // 
-            // OpenFavoriteWithReferencesContextMenuItem
+            // StatusStrip
             // 
-            this.OpenFavoriteWithReferencesContextMenuItem.Name = "OpenFavoriteWithReferencesContextMenuItem";
-            this.OpenFavoriteWithReferencesContextMenuItem.Size = new System.Drawing.Size(189, 22);
-            this.OpenFavoriteWithReferencesContextMenuItem.Text = "Open with References";
+            this.StatusStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.SubmodulesToolStripDropDown,
+            this.ToolStripSpacer,
+            this.BackgroundFasterFetch,
+            this.BackgroundFasterFetchProgress});
+            this.StatusStrip.Location = new System.Drawing.Point(0, 464);
+            this.StatusStrip.Name = "StatusStrip";
+            this.StatusStrip.Size = new System.Drawing.Size(644, 22);
+            this.StatusStrip.TabIndex = 6;
+            this.StatusStrip.Text = "statusStrip1";
+            // 
+            // SubmodulesToolStripDropDown
+            // 
+            this.SubmodulesToolStripDropDown.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
+            this.SubmodulesToolStripDropDown.Enabled = false;
+            this.SubmodulesToolStripDropDown.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.SubmodulesToolStripDropDown.Name = "SubmodulesToolStripDropDown";
+            this.SubmodulesToolStripDropDown.Size = new System.Drawing.Size(86, 20);
+            this.SubmodulesToolStripDropDown.Text = "Submodules";
+            // 
+            // ToolStripSpacer
+            // 
+            this.ToolStripSpacer.Name = "ToolStripSpacer";
+            this.ToolStripSpacer.Size = new System.Drawing.Size(378, 17);
+            this.ToolStripSpacer.Spring = true;
+            // 
+            // BackgroundFasterFetch
+            // 
+            this.BackgroundFasterFetch.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.BackgroundFasterFetch.Enabled = false;
+            this.BackgroundFasterFetch.Image = ((System.Drawing.Image)(resources.GetObject("BackgroundFasterFetch.Image")));
+            this.BackgroundFasterFetch.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.BackgroundFasterFetch.Name = "BackgroundFasterFetch";
+            this.BackgroundFasterFetch.Size = new System.Drawing.Size(32, 20);
+            this.BackgroundFasterFetch.Text = "Background Faster Fetch";
+            // 
+            // BackgroundFasterFetchProgress
+            // 
+            this.BackgroundFasterFetchProgress.Enabled = false;
+            this.BackgroundFasterFetchProgress.Name = "BackgroundFasterFetchProgress";
+            this.BackgroundFasterFetchProgress.Size = new System.Drawing.Size(100, 16);
             // 
             // TabbedTortoiseGitForm
             // 
@@ -254,6 +305,7 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(644, 486);
             this.Controls.Add(this.LogTabs);
+            this.Controls.Add(this.StatusStrip);
             this.Controls.Add(this.FavoritesMenuStrip);
             this.MainMenuStrip = this.FavoritesMenuStrip;
             this.MinimumSize = new System.Drawing.Size(660, 525);
@@ -265,6 +317,8 @@
             this.OptionsContextMenu.ResumeLayout(false);
             this.FavoritesMenuContextMenu.ResumeLayout(false);
             this.FavoritesFolderContextMenu.ResumeLayout(false);
+            this.StatusStrip.ResumeLayout(false);
+            this.StatusStrip.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -298,6 +352,11 @@
         private System.Windows.Forms.ToolStripMenuItem DuplicateRepoTabMenuItem;
         private System.Windows.Forms.ToolStripMenuItem OpenWithReferencesRepoTabMenuItem;
         private System.Windows.Forms.ToolStripMenuItem OpenFavoriteWithReferencesContextMenuItem;
+        private System.Windows.Forms.StatusStrip StatusStrip;
+        private System.Windows.Forms.ToolStripDropDownButton SubmodulesToolStripDropDown;
+        private System.Windows.Forms.ToolStripStatusLabel ToolStripSpacer;
+        private System.Windows.Forms.ToolStripSplitButton BackgroundFasterFetch;
+        private System.Windows.Forms.ToolStripProgressBar BackgroundFasterFetchProgress;
     }
 }
 
