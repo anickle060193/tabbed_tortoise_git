@@ -27,6 +27,8 @@ namespace TabbedTortoiseGit
         public bool LoadingSubmodules { get; private set; }
         public List<String> Submodules { get; private set; }
 
+        public ProgressDialog BackgroundFasterFetchDialog { get; set; }
+
         public bool Modified
         {
             get

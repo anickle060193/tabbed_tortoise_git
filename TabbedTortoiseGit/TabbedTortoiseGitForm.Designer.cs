@@ -60,7 +60,7 @@
             this.StatusStrip = new System.Windows.Forms.StatusStrip();
             this.SubmodulesToolStripDropDown = new System.Windows.Forms.ToolStripDropDownButton();
             this.ToolStripSpacer = new System.Windows.Forms.ToolStripStatusLabel();
-            this.BackgroundFasterFetch = new System.Windows.Forms.ToolStripSplitButton();
+            this.BackgroundFasterFetch = new System.Windows.Forms.ToolStripButton();
             this.BackgroundFasterFetchProgress = new System.Windows.Forms.ToolStripProgressBar();
             this.TabContextMenu.SuspendLayout();
             this.FavoriteRepoContextMenu.SuspendLayout();
@@ -279,7 +279,7 @@
             // ToolStripSpacer
             // 
             this.ToolStripSpacer.Name = "ToolStripSpacer";
-            this.ToolStripSpacer.Size = new System.Drawing.Size(378, 17);
+            this.ToolStripSpacer.Size = new System.Drawing.Size(387, 17);
             this.ToolStripSpacer.Spring = true;
             // 
             // BackgroundFasterFetch
@@ -289,7 +289,7 @@
             this.BackgroundFasterFetch.Image = ((System.Drawing.Image)(resources.GetObject("BackgroundFasterFetch.Image")));
             this.BackgroundFasterFetch.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.BackgroundFasterFetch.Name = "BackgroundFasterFetch";
-            this.BackgroundFasterFetch.Size = new System.Drawing.Size(32, 20);
+            this.BackgroundFasterFetch.Size = new System.Drawing.Size(23, 20);
             this.BackgroundFasterFetch.Text = "Background Faster Fetch";
             // 
             // BackgroundFasterFetchProgress
@@ -355,7 +355,7 @@
         private System.Windows.Forms.StatusStrip StatusStrip;
         private System.Windows.Forms.ToolStripDropDownButton SubmodulesToolStripDropDown;
         private System.Windows.Forms.ToolStripStatusLabel ToolStripSpacer;
-        private System.Windows.Forms.ToolStripSplitButton BackgroundFasterFetch;
+        private System.Windows.Forms.ToolStripButton BackgroundFasterFetch;
         private System.Windows.Forms.ToolStripProgressBar BackgroundFasterFetchProgress;
     }
 }

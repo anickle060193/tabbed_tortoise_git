@@ -30,7 +30,45 @@ namespace TabbedTortoiseGit
         private bool _started;
         private DateTime _start;
         private bool _cancel;
-        private bool _completed;
+
+        private int _totalTaskCount;
+        private int _completedTaskCount;
+
+        public bool Completed { get; private set; }
+
+        public int TotalTaskCount
+        {
+            get { return _totalTaskCount; }
+
+            set
+            {
+                if( _totalTaskCount != value )
+                {
+                    _totalTaskCount = value;
+
+                    this.ProgressBar.Maximum = _totalTaskCount;
+
+                    OnProgressChanged( EventArgs.Empty );
+                }
+            }
+        }
+
+        public int CompletedTaskCount
+        {
+            get { return _completedTaskCount; }
+
+            set
+            {
+                if( _completedTaskCount != value )
+                {
+                    _completedTaskCount = value;
+
+                    this.ProgressBar.Value = _completedTaskCount;
+
+                    OnProgressChanged( EventArgs.Empty );
+                }
+            }
+        }
 
         public String Title
         {
@@ -51,6 +89,9 @@ namespace TabbedTortoiseGit
         public Color ErrorTextColor { get; set; }
         public Color CompletedTextColor { get; set; }
         public Color CancelledTextColor { get; set; }
+
+        public event EventHandler ProgressChanged;
+        public event EventHandler ProgressCompleted;
 
         public ProgressDialog()
         {
@@ -94,7 +135,7 @@ namespace TabbedTortoiseGit
             task.ErrorOutputReceived += Task_ErrorOutputReceived;
             task.ProgressCompleted += Task_ProgressCompleted;
 
-            ProgressBar.UiBeginInvoke( (Action)( () => ProgressBar.Maximum++ ) );
+            this.UiBeginInvoke( (Action)( () => this.TotalTaskCount++ ) );
         }
 
         public void DoProgress()
@@ -104,14 +145,28 @@ namespace TabbedTortoiseGit
                 throw new InvalidOperationException( "Progress has already been started" );
             }
 
+            if( !this.IsHandleCreated )
+            {
+                this.CreateHandle();
+            }
+
             if( !_cancel )
             {
-                this.Show();
                 _started = true;
                 _start = DateTime.Now;
                 ElapsedUpdateTimer.Start();
                 Worker.RunWorkerAsync();
             }
+        }
+
+        protected void OnProgressChanged( EventArgs e )
+        {
+            this.ProgressChanged?.Invoke( this, e );
+        }
+
+        protected void OnProgressCompleted( EventArgs e )
+        {
+            this.ProgressCompleted?.Invoke( this, e );
         }
 
         private void Cancel_Click( object sender, EventArgs e )
@@ -124,7 +179,7 @@ namespace TabbedTortoiseGit
             LOG.Debug( nameof( ProgressDialog_FormClosing ) );
 
             if( _started
-             && !_completed )
+             && !this.Completed )
             {
                 LOG.Debug( $"{nameof( ProgressDialog_FormClosing )} - Not Completed, Cancelling Tasks" );
                 this.CancelTasks();
@@ -151,8 +206,6 @@ namespace TabbedTortoiseGit
         {
             LOG.Debug( $"{nameof( Worker_RunWorkerCompleted )} - Elapsed Time: {DateTime.Now - _start}" );
 
-            _completed = true;
-
             ElapsedUpdateTimer.Stop();
 
             if( !_cancel )
@@ -165,6 +218,9 @@ namespace TabbedTortoiseGit
             }
             Cancel.Text = "Close";
             Cancel.Enabled = true;
+
+            this.Completed = true;
+            OnProgressCompleted( EventArgs.Empty );
         }
 
         private void CancelTasks()
@@ -264,7 +320,7 @@ namespace TabbedTortoiseGit
             {
                 LOG.Error( $"{nameof( Task_ProgressCompleted )} - Failed to remove running task - {t.Description}" );
             }
-            ProgressBar.UiBeginInvoke( (Action)ProgressBar.PerformStep );
+            this.UiBeginInvoke( (Action)( () => this.CompletedTaskCount++ ) );
         }
     }
 

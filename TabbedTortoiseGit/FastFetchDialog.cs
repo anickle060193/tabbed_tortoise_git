@@ -132,7 +132,7 @@ namespace TabbedTortoiseGit
             this.Close();
         }
 
-        private static Task Fetch( String title, String completedText, String repo, bool tags, bool prune, bool progress, int maxProcesses )
+        private static ProgressDialog PrepareFetch( String title, String completedText, String repo, bool tags, bool prune, bool progress, int maxProcesses )
         {
             ProgressDialog dialog = new ProgressDialog()
             {
@@ -141,7 +141,6 @@ namespace TabbedTortoiseGit
                 MaxTasks = maxProcesses,
                 ErrorTextColor = Color.Black
             };
-            dialog.Show();
 
             dialog.AddTask( CreateFetchTask( repo, tags, prune, progress, false ) );
 
@@ -155,6 +154,14 @@ namespace TabbedTortoiseGit
                 }
             }
 
+            return dialog;
+        }
+
+        private static Task Fetch( String title, String completedText, String repo, bool tags, bool prune, bool progress, int maxProcesses )
+        {
+            ProgressDialog dialog = FastFetchDialog.PrepareFetch( title, completedText, repo, tags, prune, progress, maxProcesses );
+
+            dialog.Show();
             dialog.DoProgress();
 
             return dialog.WaitForClose();
@@ -193,6 +200,16 @@ namespace TabbedTortoiseGit
 
             await FastFetchDialog.Fetch( repo + " - " + "Faster Fetch", "Faster Fetch Completed", repo, tags, prune, progress, maxProcesses );
             return true;
+        }
+
+        public static ProgressDialog PrepareBackgroundFasterFetch( String repo )
+        {
+            bool tags = Settings.Default.FastFetchTagsChecked;
+            bool prune = Settings.Default.FastFetchPruneChecked;
+            bool progress = Settings.Default.FastFetchShowProgress;
+            int maxProcesses = Settings.Default.FastFetchMaxProcesses;
+
+            return FastFetchDialog.PrepareFetch( repo + " - " + "Faster Fetch", "Faster Fetch Completed", repo, tags, prune, progress, maxProcesses );
         }
     }
 }

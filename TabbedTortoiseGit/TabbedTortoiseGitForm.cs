@@ -717,36 +717,31 @@ namespace TabbedTortoiseGit
             }
         }
 
-        private async Task UpdateToolStrip()
+        private async Task UpdateToolStripSubmodules()
         {
             TabControllerTag currentTab = LogTabs.SelectedTab?.Controller();
-            String repo = currentTab?.RepoItem;
 
-            if( repo == null )
+            if( currentTab == null )
             {
                 SubmodulesToolStripDropDown.Enabled = false;
                 SubmodulesToolStripDropDown.DropDownItems.Clear();
-                BackgroundFasterFetch.Enabled = false;
-                BackgroundFasterFetchProgress.Enabled = false;
-                BackgroundFasterFetchProgress.Value = 0;
             }
             else
             {
+                String repo = currentTab.RepoItem;
+
                 SubmodulesToolStripDropDown.Enabled = false;
                 SubmodulesToolStripDropDown.DropDownItems.Clear();
-                BackgroundFasterFetch.Enabled = true;
-                BackgroundFasterFetchProgress.Enabled = false;
-                BackgroundFasterFetchProgress.Value = 0;
 
                 if( currentTab.Submodules != null )
                 {
                     if( currentTab.Submodules.Count > 0 )
                     {
                         SubmodulesToolStripDropDown.Enabled = true;
+                        SubmodulesToolStripDropDown.DropDownItems.Clear();
 
                         foreach( String submodule in currentTab.Submodules )
                         {
-                            SubmodulesToolStripDropDown.DropDownItems.Clear();
                             ToolStripItem dropDownItem = SubmodulesToolStripDropDown.DropDownItems.Add( submodule );
                             dropDownItem.Tag = Path.GetFullPath( Path.Combine( repo, submodule ) );
                             dropDownItem.Click += SubmoduleToolStripDropDownItem_Click;
@@ -759,9 +754,31 @@ namespace TabbedTortoiseGit
 
                     if( currentTab == LogTabs.SelectedTab?.Controller() )
                     {
-                        await UpdateToolStrip();
+                        await UpdateToolStripSubmodules();
                     }
                 }
+            }
+        }
+
+        private void UpdateToolStripFasterFetch()
+        {
+            TabControllerTag currentTab = LogTabs.SelectedTab?.Controller();
+
+            if( currentTab == null )
+            {
+                BackgroundFasterFetch.Enabled = false;
+
+                BackgroundFasterFetchProgress.Enabled = false;
+                BackgroundFasterFetchProgress.Value = 0;
+            }
+            else
+            {
+                BackgroundFasterFetch.Enabled = ( currentTab.BackgroundFasterFetchDialog == null
+                                               || currentTab.BackgroundFasterFetchDialog.Completed );
+
+                BackgroundFasterFetchProgress.Enabled = ( currentTab.BackgroundFasterFetchDialog != null );
+                BackgroundFasterFetchProgress.Maximum = currentTab.BackgroundFasterFetchDialog?.TotalTaskCount ?? 0;
+                BackgroundFasterFetchProgress.Value = currentTab.BackgroundFasterFetchDialog?.CompletedTaskCount ?? 0;
             }
         }
 
@@ -841,6 +858,7 @@ namespace TabbedTortoiseGit
                         };
                     }
 
+                    dialog.Show();
                     dialog.DoProgress();
                 }
                 else

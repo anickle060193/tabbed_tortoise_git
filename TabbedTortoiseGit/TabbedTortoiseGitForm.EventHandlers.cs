@@ -63,6 +63,9 @@ namespace TabbedTortoiseGit
             DuplicateRepoTabMenuItem.Click += DuplicateRepoTabMenuItem_Click;
             CloseRepoTabMenuItem.Click += CloseRepoTabMenuItem_Click;
 
+            BackgroundFasterFetch.Click += BackgroundFasterFetch_Click;
+            BackgroundFasterFetchProgress.Click += BackgroundFasterFetchProgress_Click;
+
             ModifiedRepoCheckBackgroundWorker.DoWork += ModifiedRepoCheckBackgroundWorker_DoWork;
         }
 
@@ -229,7 +232,8 @@ namespace TabbedTortoiseGit
 
             UpdateIcon();
 
-            await UpdateToolStrip();
+            UpdateToolStripFasterFetch();
+            await UpdateToolStripSubmodules();
         }
 
         private async void FavoriteRepoMenuItem_Click( object sender, EventArgs e )
@@ -475,6 +479,75 @@ namespace TabbedTortoiseGit
                 }
 
                 Thread.Sleep( Settings.Default.CheckForModifiedTabsInterval );
+            }
+        }
+
+        private void BackgroundFasterFetch_Click( object sender, EventArgs e )
+        {
+            TabControllerTag controller = this.LogTabs.SelectedTab?.Controller();
+            if( controller != null )
+            {
+                if( controller.BackgroundFasterFetchDialog?.Completed == true )
+                {
+                    controller.BackgroundFasterFetchDialog.Close();
+                    controller.BackgroundFasterFetchDialog = null;
+                }
+
+                if( controller.BackgroundFasterFetchDialog != null )
+                {
+                    return;
+                }
+
+                String repo = Git.GetBaseRepoDirectory( controller.RepoItem );
+
+                ProgressDialog dialog = FastFetchDialog.PrepareBackgroundFasterFetch( repo );
+                controller.BackgroundFasterFetchDialog = dialog;
+
+                dialog.ProgressCompleted += delegate ( object sender2, EventArgs e2 )
+                {
+                    if( !controller.Process.HasExited )
+                    {
+                        Native.SendKeyDown( controller.Process.MainWindowHandle, Keys.F5 );
+                    }
+
+                    if( !dialog.Visible )
+                    {
+                        dialog.Close();
+                    }
+                };
+
+                dialog.FormClosed += delegate ( object sender2, FormClosedEventArgs e2 )
+                {
+                    controller.BackgroundFasterFetchDialog = null;
+
+                    UpdateToolStripFasterFetch();
+                };
+
+                dialog.ProgressChanged += BackgroundFasterFetchDialog_ProgressChanged;
+                dialog.ProgressCompleted += BackgroundFasterFetchDialog_ProgressChanged;
+
+                dialog.DoProgress();
+
+                UpdateToolStripFasterFetch();
+            }
+        }
+
+        private void BackgroundFasterFetchProgress_Click( object sender, EventArgs e )
+        {
+            this.LogTabs.SelectedTab?.Controller().BackgroundFasterFetchDialog?.Show();
+        }
+
+        private void BackgroundFasterFetchDialog_ProgressChanged( object sender, EventArgs e )
+        {
+            TabControllerTag controller = this.LogTabs.SelectedTab?.Controller();
+            if( controller != null )
+            {
+                ProgressDialog dialog = sender as ProgressDialog;
+
+                if( dialog == controller.BackgroundFasterFetchDialog )
+                {
+                    UpdateToolStripFasterFetch();
+                }
             }
         }
 
