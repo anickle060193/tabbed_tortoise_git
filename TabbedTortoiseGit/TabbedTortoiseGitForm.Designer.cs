@@ -279,7 +279,7 @@
             // ToolStripSpacer
             // 
             this.ToolStripSpacer.Name = "ToolStripSpacer";
-            this.ToolStripSpacer.Size = new System.Drawing.Size(387, 17);
+            this.ToolStripSpacer.Size = new System.Drawing.Size(418, 17);
             this.ToolStripSpacer.Spring = true;
             // 
             // BackgroundFasterFetch

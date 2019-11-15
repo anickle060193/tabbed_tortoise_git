@@ -740,9 +740,27 @@ namespace TabbedTortoiseGit
                         SubmodulesToolStripDropDown.Enabled = true;
                         SubmodulesToolStripDropDown.DropDownItems.Clear();
 
+                        var menus = new Dictionary<Tuple<int, String>, ToolStripMenuItem>();
+
                         foreach( String submodule in currentTab.Submodules )
                         {
-                            ToolStripItem dropDownItem = SubmodulesToolStripDropDown.DropDownItems.Add( submodule );
+                            String[] path = submodule.Split( new [] { Path.DirectorySeparatorChar, Path.AltDirectorySeparatorChar } );
+
+                            var parent = SubmodulesToolStripDropDown.DropDownItems;
+                            for( int i = 0; i < path.Length - 1; i++ )
+                            {
+                                var key = Tuple.Create( i, path[ i ] );
+                                ToolStripMenuItem item = null;
+                                if( !menus.TryGetValue( key, out item ) )
+                                {
+                                    item = new ToolStripMenuItem( path[ i ] );
+                                    menus[ key ] = item;
+                                    parent.Add( item );
+                                }
+                                parent = item.DropDownItems;
+                            }
+
+                            ToolStripItem dropDownItem = parent.Add( path[ path.Length - 1 ] );
                             dropDownItem.Tag = Path.GetFullPath( Path.Combine( repo, submodule ) );
                             dropDownItem.Click += SubmoduleToolStripDropDownItem_Click;
                         }
