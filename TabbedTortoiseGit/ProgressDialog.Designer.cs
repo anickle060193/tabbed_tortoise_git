@@ -74,6 +74,7 @@
             // 
             // ElapsedTimeLabel
             // 
+            this.ElapsedTimeLabel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.ElapsedTimeLabel.AutoSize = true;
             this.ElapsedTimeLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.ElapsedTimeLabel.Location = new System.Drawing.Point(12, 351);
@@ -84,8 +85,9 @@
             // 
             // ElapsedTime
             // 
+            this.ElapsedTime.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.ElapsedTime.AutoSize = true;
-            this.ElapsedTime.Location = new System.Drawing.Point(97, 351);
+            this.ElapsedTime.Location = new System.Drawing.Point(105, 351);
             this.ElapsedTime.Name = "ElapsedTime";
             this.ElapsedTime.Size = new System.Drawing.Size(49, 13);
             this.ElapsedTime.TabIndex = 5;
@@ -95,7 +97,7 @@
             // 
             this.ElapsedUpdateTimer.Interval = 50;
             // 
-            // ProcessProgressDialog
+            // ProgressDialog
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
@@ -109,7 +111,7 @@
             this.MaximizeBox = false;
             this.MinimizeBox = false;
             this.MinimumSize = new System.Drawing.Size(250, 150);
-            this.Name = "ProcessProgressDialog";
+            this.Name = "ProgressDialog";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Progress";
             this.ResumeLayout(false);
