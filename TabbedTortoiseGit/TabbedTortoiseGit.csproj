@@ -162,6 +162,7 @@
     <Compile Include="ReferencesDialog.Designer.cs">
       <DependentUpon>ReferencesDialog.cs</DependentUpon>
     </Compile>
+    <Compile Include="RetrieveSubmodulesProgressTask.cs" />
     <Compile Include="Settings.cs" />
     <Compile Include="SettingsForm.cs">
       <SubType>Form</SubType>

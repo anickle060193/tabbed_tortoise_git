@@ -143,16 +143,7 @@ namespace TabbedTortoiseGit
             };
 
             dialog.AddTask( CreateFetchTask( repo, tags, prune, progress, false ) );
-
-            using( Repository r = new Repository( repo ) )
-            {
-                foreach( Submodule submodule in r.Submodules )
-                {
-                    String submodulePath = Path.Combine( repo, submodule.Path );
-                    ProcessProgressTask t = CreateFetchTask( submodulePath, tags, prune, progress, true );
-                    dialog.AddTask( t );
-                }
-            }
+            dialog.AddTask( new FetchSubmodulesProgressTask( repo, false, tags, prune, progress ) );
 
             return dialog;
         }
@@ -210,6 +201,26 @@ namespace TabbedTortoiseGit
             int maxProcesses = Settings.Default.FastFetchMaxProcesses;
 
             return FastFetchDialog.PrepareFetch( repo + " - " + "Faster Fetch", "Faster Fetch Completed", repo, tags, prune, progress, maxProcesses );
+        }
+
+        class FetchSubmodulesProgressTask : RetrieveSubmodulesProgressTask
+        {
+            public bool Tags { get; private set; }
+            public bool Prune { get; private set; }
+            public bool Progress { get; private set; }
+
+            public FetchSubmodulesProgressTask( String repo, bool modifiedOnly, bool tags, bool prune, bool progress ) : base( repo, modifiedOnly )
+            {
+                this.Tags = tags;
+                this.Prune = prune;
+                this.Progress = progress;
+            }
+
+            protected override ProcessProgressTask GetTaskForSubmodule( string submodule )
+            {
+                String submodulePath = Path.GetFullPath( Path.Combine( this.Repo, submodule ) );
+                return CreateFetchTask( submodulePath, this.Tags, this.Prune, this.Progress, true );
+            }
         }
     }
 }

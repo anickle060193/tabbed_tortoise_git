@@ -15,6 +15,8 @@ namespace TabbedTortoiseGit
         {
             public const int NCHITTEST = 0x0084;
             public const int WM_KEYDOWN = 0x100;
+
+            public const int PBM_SETSTATE = 0x0410;
         }
 
         public static class HitTestValues
@@ -43,6 +45,13 @@ namespace TabbedTortoiseGit
             public const int OBJECT = 19;
             public const int CLOSE = 20;
             public const int HELP = 21;
+        }
+
+        public enum ProgressBarState
+        {
+            Normal = 1,
+            Error = 2,
+            Paused = 3
         }
 
         public const int GWL_WNDPROC = -4;
@@ -255,6 +264,11 @@ namespace TabbedTortoiseGit
         public static void SendKeyDown( IntPtr windowHandle, Keys key )
         {
             PostMessage( windowHandle, WindowMessage.WM_KEYDOWN, (IntPtr)key, IntPtr.Zero );
+        }
+
+        public static void SetState( this ProgressBar bar, ProgressBarState state )
+        {
+            SendMessage( bar.Handle, WindowMessage.PBM_SETSTATE, (IntPtr)state, IntPtr.Zero );
         }
     }
 }

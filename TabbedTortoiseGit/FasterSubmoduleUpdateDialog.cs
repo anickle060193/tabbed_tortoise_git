@@ -90,7 +90,7 @@ namespace TabbedTortoiseGit
             bool force = ForceCheck.Checked;
             int maxProcesses = (int)MaxProcessCountNumeric.Value;
 
-            RetrieveSubmodulesProgressTask task = new RetrieveSubmodulesProgressTask( this.Repo, allSubmodules, init, recursive, force );
+            RetrieveSubmodulesProgressTask task = new UpdateSubmodulesProgressTask( this.Repo, !allSubmodules, init, recursive, force );
 
             ProgressDialog dialog = new ProgressDialog()
             {
@@ -109,60 +109,22 @@ namespace TabbedTortoiseGit
         }
     }
 
-    class RetrieveSubmodulesProgressTask : ProgressTask
+    class UpdateSubmodulesProgressTask : RetrieveSubmodulesProgressTask
     {
-        public String Repo { get; private set; }
-        public bool AllSubmodules { get; private set; }
         public bool Init { get; private set; }
         public bool Recursive { get; private set; }
         public bool Force { get; private set; }
 
-        public RetrieveSubmodulesProgressTask( String repo, bool allSubmodules, bool init, bool recursive, bool force )
+        public UpdateSubmodulesProgressTask( String repo, bool modifiedOnly, bool init, bool recursive, bool force ) : base( repo, modifiedOnly )
         {
-            this.Repo = repo;
-            this.AllSubmodules = allSubmodules;
-
             this.Init = init;
             this.Recursive = recursive;
             this.Force = force;
         }
 
-        public override string Description
+        protected override ProcessProgressTask GetTaskForSubmodule( string submodule )
         {
-            get
-            {
-                return "Retrieve Submodules";
-            }
-        }
-
-        public override string InitialOutput
-        {
-            get
-            {
-                return null;
-            }
-        }
-
-        public override void Cancel()
-        {
-        }
-
-        public override async void StartProgress()
-        {
-            Output( "Retrieving submodules" );
-            List<String> submodules = await Git.GetSubmodules( this.Repo );
-            Output( $"{submodules.Count} submodules found" );
-
-            if( !this.AllSubmodules )
-            {
-                Output( "Retrieving modified submodules" );
-                submodules = await Git.GetModifiedSubmodules( this.Repo, submodules );
-                Output( $"{submodules.Count} modified submodules found" );
-            }
-
-            IEnumerable<ProcessProgressTask> tasks = submodules.Select( submodule => Git.CreateSubmoduleUpdateTask( this.Repo, submodule, this.Init, this.Recursive, this.Force ) );
-
-            OnProgressCompleted( new ProgressCompletedEventArgs( tasks ) );
+            return Git.CreateSubmoduleUpdateTask( this.Repo, submodule, this.Init, this.Recursive, this.Force );
         }
     }
 }

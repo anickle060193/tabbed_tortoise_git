@@ -129,13 +129,14 @@ namespace TabbedTortoiseGit
         public void AddTask( ProgressTask task )
         {
             LOG.Debug( $"{nameof( AddTask )} - {task.Description}" );
-            _tasks.Enqueue( task );
 
             task.OutputReceived += Task_OutputReceived;
             task.ErrorOutputReceived += Task_ErrorOutputReceived;
             task.ProgressCompleted += Task_ProgressCompleted;
 
             this.UiBeginInvoke( (Action)( () => this.TotalTaskCount++ ) );
+
+            _tasks.Enqueue( task );
         }
 
         public void DoProgress()
@@ -208,6 +209,12 @@ namespace TabbedTortoiseGit
 
             ElapsedUpdateTimer.Stop();
 
+            if( e.Error != null )
+            {
+                LogOutput( Environment.NewLine + $"An error occurred while running the tasks:{Environment.NewLine}{e.Error}", Color.Red );
+                this.ProgressBar.SetState( Native.ProgressBarState.Error );
+            }
+
             if( !_cancel )
             {
                 LogOutput( Environment.NewLine + this.CompletedText, CompletedTextColor );
@@ -257,7 +264,7 @@ namespace TabbedTortoiseGit
                             Output.UiBeginInvoke( (Action<String, Color>)LogOutput, initialOutput, CommandTextColor );
                         }
                         _runningTasks[ t ] = 0;
-                        t.StartProgress();
+                        t.StartTask();
                     }
                     else
                     {
@@ -315,12 +322,13 @@ namespace TabbedTortoiseGit
 
             this.AddTasks( e.AdditionalTasks );
 
+            this.UiBeginInvoke( (Action)( () => this.CompletedTaskCount++ ) );
+
             byte removed;
             if( !_runningTasks.TryRemove( t, out removed ) )
             {
                 LOG.Error( $"{nameof( Task_ProgressCompleted )} - Failed to remove running task - {t.Description}" );
             }
-            this.UiBeginInvoke( (Action)( () => this.CompletedTaskCount++ ) );
         }
     }
 
@@ -387,7 +395,20 @@ namespace TabbedTortoiseGit
             ProgressCompleted?.Invoke( this, e );
         }
 
-        public abstract void StartProgress();
+        public void StartTask()
+        {
+            try
+            {
+                this.RunTask();
+            }
+            catch( Exception e )
+            {
+                Error( $"Failed to run task: {e}" );
+                OnProgressCompleted( ProgressCompletedEventArgs.Empty );
+            }
+        }
+
+        public abstract void RunTask();
         public abstract void Cancel();
     }
 
@@ -436,7 +457,7 @@ namespace TabbedTortoiseGit
             OnProgressCompleted( ProgressCompletedEventArgs.Empty );
         }
 
-        public override void StartProgress()
+        public override void RunTask()
         {
             this.Process.StartInfo.RedirectStandardOutput = true;
             this.Process.StartInfo.RedirectStandardError = true;
