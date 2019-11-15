@@ -51,7 +51,6 @@
             this.ShowDebugLogMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.AboutMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.ExitMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.LogTabs = new Tabs.TabControl();
             this.FavoritesMenuContextMenu = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.ShowFavoritesManagerMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.FavoritesFolderContextMenu = new System.Windows.Forms.ContextMenuStrip(this.components);
@@ -62,6 +61,7 @@
             this.ToolStripSpacer = new System.Windows.Forms.ToolStripStatusLabel();
             this.BackgroundFasterFetch = new System.Windows.Forms.ToolStripButton();
             this.BackgroundFasterFetchProgress = new System.Windows.Forms.ToolStripProgressBar();
+            this.LogTabs = new Tabs.TabControl();
             this.TabContextMenu.SuspendLayout();
             this.FavoriteRepoContextMenu.SuspendLayout();
             this.OptionsContextMenu.SuspendLayout();
@@ -217,17 +217,6 @@
             this.ExitMenuItem.Size = new System.Drawing.Size(171, 22);
             this.ExitMenuItem.Text = "Exit";
             // 
-            // LogTabs
-            // 
-            this.LogTabs.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.LogTabs.Location = new System.Drawing.Point(0, 24);
-            this.LogTabs.Name = "LogTabs";
-            this.LogTabs.NewTabContextMenu = this.NewTabContextMenu;
-            this.LogTabs.OptionsMenu = this.OptionsContextMenu;
-            this.LogTabs.Size = new System.Drawing.Size(644, 440);
-            this.LogTabs.TabContextMenu = this.TabContextMenu;
-            this.LogTabs.TabIndex = 3;
-            // 
             // FavoritesMenuContextMenu
             // 
             this.FavoritesMenuContextMenu.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
@@ -265,7 +254,6 @@
             this.StatusStrip.Name = "StatusStrip";
             this.StatusStrip.Size = new System.Drawing.Size(644, 22);
             this.StatusStrip.TabIndex = 6;
-            this.StatusStrip.Text = "statusStrip1";
             // 
             // SubmodulesToolStripDropDown
             // 
@@ -279,7 +267,7 @@
             // ToolStripSpacer
             // 
             this.ToolStripSpacer.Name = "ToolStripSpacer";
-            this.ToolStripSpacer.Size = new System.Drawing.Size(418, 17);
+            this.ToolStripSpacer.Size = new System.Drawing.Size(387, 17);
             this.ToolStripSpacer.Spring = true;
             // 
             // BackgroundFasterFetch
@@ -297,6 +285,17 @@
             this.BackgroundFasterFetchProgress.Enabled = false;
             this.BackgroundFasterFetchProgress.Name = "BackgroundFasterFetchProgress";
             this.BackgroundFasterFetchProgress.Size = new System.Drawing.Size(100, 16);
+            // 
+            // LogTabs
+            // 
+            this.LogTabs.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.LogTabs.Location = new System.Drawing.Point(0, 24);
+            this.LogTabs.Name = "LogTabs";
+            this.LogTabs.NewTabContextMenu = this.NewTabContextMenu;
+            this.LogTabs.OptionsMenu = this.OptionsContextMenu;
+            this.LogTabs.Size = new System.Drawing.Size(644, 440);
+            this.LogTabs.TabContextMenu = this.TabContextMenu;
+            this.LogTabs.TabIndex = 3;
             // 
             // TabbedTortoiseGitForm
             // 
