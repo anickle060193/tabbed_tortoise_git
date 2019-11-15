@@ -260,7 +260,15 @@ namespace TabbedTortoiseGit
 
             _favoriteRepos = Settings.Default.FavoriteRepos;
 
-            CreateFavoritesMenu( _favoriteRepos, FavoritesMenuStrip.Items );
+            if( _favoriteRepos.NestedCount == 0 )
+            {
+                FavoritesMenuStrip.Hide();
+            }
+            else
+            {
+                FavoritesMenuStrip.Show();
+                CreateFavoritesMenu( _favoriteRepos, FavoritesMenuStrip.Items );
+            }
 
             FavoritesMenuStrip.ResumeLayout();
 
