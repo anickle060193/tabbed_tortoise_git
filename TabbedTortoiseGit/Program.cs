@@ -58,11 +58,27 @@ namespace TabbedTortoiseGit
         private static void CurrentDomain_UnhandledException( object sender, UnhandledExceptionEventArgs e )
         {
             LOG.Fatal( "AppDomain UnhandledException Occurred", (Exception)e.ExceptionObject );
+
+            HandleConfigurationException( (Exception)e.ExceptionObject );
         }
 
         private static void Application_ThreadException( object sender, ThreadExceptionEventArgs e )
         {
             LOG.Fatal( "Application ThreadException Occurred", e.Exception );
+
+            HandleConfigurationException( e.Exception );
+        }
+
+        private static void HandleConfigurationException( Exception e )
+        {
+            if( e is System.Configuration.ConfigurationException )
+            {
+                if( e.InnerException is System.Configuration.ConfigurationException )
+                {
+                    var ex = (System.Configuration.ConfigurationException)e.InnerException;
+                    MessageBox.Show( $"Failed to read settings: '{ex.Filename}'. Fix/delete invalid settings file and restart Tabbed TortoiseGit.\n{ex.Message}", "An error occurred", MessageBoxButtons.OK, MessageBoxIcon.Error );
+                }
+            }
         }
     }
 }
