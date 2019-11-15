@@ -18,17 +18,19 @@ namespace Tabs
         private const int RIGHT_PADDING = 6;
 
         private const int TAB_HEIGHT = 26;
-        private const double TAB_INCLINE_ANGLE = 65 * ( Math.PI ) / 180;
+        private const double TAB_INCLINE_ANGLE = 90 * ( Math.PI ) / 180;
 
-        private const int TAB_ICON_PADDING = 3;
+        private const int TAB_ICON_PADDING = 8;
         private const int TAB_ICON_SIZE = 16;
 
         private const int TAB_CLOSE_BUTTON_RADIUS = 7;
         private const float TAB_CLOSE_X_INSET = 3.5f;
+        private const int TAB_CLOSE_BUTTON_PADDING = 4;
 
-        private const int NEW_TAB_BUTTON_WIDTH = 32;
+        private const int NEW_TAB_BUTTON_WIDTH = 18;
         private const float NEW_TAB_HEIGHT_PERCENTAGE = 0.65f;
         private const int NEW_TAB_PLUS_SIZE = 8;
+        private const int NEW_TAB_BUTTON_PADDING = (int)( TAB_HEIGHT * ( 1.0f - NEW_TAB_HEIGHT_PERCENTAGE ) / 2.0f + 0.5f );
 
         private const int OPTIONS_MENU_BUTTON_WIDTH = 24;
         private const float OPTIONS_MENU_BUTTON_HEIGHT_PERCENTAGE = 0.90f;
@@ -57,7 +59,7 @@ namespace Tabs
             int tabInclineWidth = (int)( TAB_HEIGHT / Math.Tan( TAB_INCLINE_ANGLE ) );
             int tabOverlapWidth = tabInclineWidth / 2;
 
-            int tabAreaWidth = this.Owner.Width - LEFT_PADDING - NEW_TAB_BUTTON_WIDTH - RIGHT_PADDING;
+            int tabAreaWidth = this.Owner.Width - LEFT_PADDING - NEW_TAB_BUTTON_WIDTH - NEW_TAB_BUTTON_PADDING - RIGHT_PADDING;
             if( this.Owner.OptionsMenu != null )
             {
                 tabAreaWidth -= OPTIONS_MENU_BUTTON_WIDTH + RIGHT_PADDING;
@@ -102,7 +104,7 @@ namespace Tabs
         {
             PointPath tabPath = GetTabPath( index );
 
-            int right = tabPath.MinimumBounds.Right;
+            int right = tabPath.MinimumBounds.Right - TAB_CLOSE_BUTTON_PADDING;
             int left = right - 2 * TAB_CLOSE_BUTTON_RADIUS;
             int top = tabPath.Bounds.Top + ( tabPath.Bounds.Height / 2 - TAB_CLOSE_BUTTON_RADIUS );
             int bottom = top + 2 * TAB_CLOSE_BUTTON_RADIUS;
@@ -117,13 +119,14 @@ namespace Tabs
 
         public PointPath GetNewTabPath()
         {
+            int h = (int)( TAB_HEIGHT * NEW_TAB_HEIGHT_PERCENTAGE );
+
             int left = LEFT_PADDING;
             if( this.Owner.TabCount > 0 )
             {
-                left = GetTabPath( this.Owner.TabCount - 1 ).Bounds.Right;
+                left = GetTabPath( this.Owner.TabCount - 1 ).Bounds.Right + NEW_TAB_BUTTON_PADDING;
             }
 
-            int h = (int)( TAB_HEIGHT * NEW_TAB_HEIGHT_PERCENTAGE );
             int tY = TOP_PADDING + ( TAB_HEIGHT - h ) / 2;
             int bY = tY + h;
 
@@ -230,7 +233,7 @@ namespace Tabs
                 g.DrawPointPath( p, path, false );
             }
 
-            int textAreaWidth = path.MinimumBounds.Width - 2 * TAB_CLOSE_BUTTON_RADIUS;
+            int textAreaWidth = path.MinimumBounds.Width - 2 * TAB_CLOSE_BUTTON_RADIUS - TAB_CLOSE_BUTTON_PADDING;
             int textAreaX = path.MinimumBounds.X;
 
             if( t.Icon != null )
