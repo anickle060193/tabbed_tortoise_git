@@ -483,5 +483,17 @@ namespace TabbedTortoiseGit.Properties {
                 this["CustomActionsString"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("True")]
+        public bool CheckTortoiseGitOnPath {
+            get {
+                return ((bool)(this["CheckTortoiseGitOnPath"]));
+            }
+            set {
+                this["CheckTortoiseGitOnPath"] = value;
+            }
+        }
     }
 }

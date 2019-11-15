@@ -42,6 +42,7 @@ namespace TabbedTortoiseGit
             f.CloseWindowOnLastTabClosed = Settings.Default.CloseWindowOnLastTabClosed;
             f.CloseToSystemTray = Settings.Default.CloseToSystemTray;
             f.RunOnStartup = TTG.RunOnStartup;
+            f.CheckTortoiseGitOnPath = Settings.Default.CheckTortoiseGitOnPath;
 
             f.DeveloperSettingsEnabled = Settings.Default.DeveloperSettingsEnabled;
             f.ShowHitTest = Settings.Default.ShowHitTest;
@@ -71,6 +72,7 @@ namespace TabbedTortoiseGit
                 Settings.Default.CloseWindowOnLastTabClosed = f.CloseWindowOnLastTabClosed;
                 Settings.Default.CloseToSystemTray = f.CloseToSystemTray;
                 TTG.RunOnStartup = f.RunOnStartup;
+                Settings.Default.CheckTortoiseGitOnPath = f.CheckTortoiseGitOnPath;
 
                 Settings.Default.DeveloperSettingsEnabled = f.DeveloperSettingsEnabled;
                 Settings.Default.ShowHitTest = f.ShowHitTest;
@@ -333,6 +335,12 @@ namespace TabbedTortoiseGit
             {
                 RunOnStartupCheck.Checked = value;
             }
+        }
+
+        public bool CheckTortoiseGitOnPath
+        {
+            get { return CheckTortoiseGitOnPathCheck.Checked; }
+            set { CheckTortoiseGitOnPathCheck.Checked = value; }
         }
 
         public bool DeveloperSettingsEnabled

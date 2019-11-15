@@ -2,6 +2,7 @@
 using log4net;
 using log4net.Appender;
 using log4net.Repository.Hierarchy;
+using Microsoft.WindowsAPICodePack.Dialogs;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -71,6 +72,29 @@ namespace TabbedTortoiseGit
 
         private async void TabbedTortoiseGitForm_Shown( object sender, EventArgs e )
         {
+            if( Settings.Default.CheckTortoiseGitOnPath )
+            {
+                if( !( await GitAction.CanAccessTortoiseGit() ) )
+                {
+                    TaskDialog confirmationDialog = new TaskDialog()
+                    {
+                        StandardButtons = TaskDialogStandardButtons.Ok,
+                        Text = "TortoiseGit does not appear to be on PATH (this will prevent Tabbed TortoiseGit from being able to open logs). Update PATH environment variable to include directory for TortoiseGitProc.exe.",
+                        Caption = "Cannot access TortoiseGit",
+                        FooterCheckBoxText = "Do not show again",
+                        FooterCheckBoxChecked = false
+                    };
+                    if( confirmationDialog.Show() == TaskDialogResult.Ok )
+                    {
+                        if( confirmationDialog.FooterCheckBoxChecked ?? false )
+                        {
+                            Settings.Default.CheckTortoiseGitOnPath = false;
+                            Settings.Default.Save();
+                        }
+                    }
+                }
+            }
+
             if( _showStartUpRepos )
             {
                 await OpenStartupRepos();

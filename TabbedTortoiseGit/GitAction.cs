@@ -49,6 +49,30 @@ namespace TabbedTortoiseGit
             Icon = icon;
         }
 
+        public static async Task<bool> CanAccessTortoiseGit()
+        {
+            LOG.Debug( $"{nameof( CanAccessTortoiseGit )}" );
+            try
+            {
+                Process p = Process.Start( new ProcessStartInfo( "where.exe", TORTOISE_GIT_EXE )
+                {
+                    UseShellExecute = false,
+                    CreateNoWindow = true,
+                } );
+                
+                await Task.Run( () => p.WaitForExit() );
+
+                LOG.Debug( $"{nameof( CanAccessTortoiseGit )} - Exit Code: {p.ExitCode}" );
+                return p.ExitCode == 0;
+            }
+            catch( Exception e )
+            {
+                LOG.Error( $"{nameof( CanAccessTortoiseGit )} - Failed to check if TortoiseGit is accessible:", e );
+            }
+
+            return false;
+        }
+
         private static async Task<Process> TortoiseGitCommand( String command, String workingDirectory, bool waitForExit = true )
         {
             LOG.Debug( $"{nameof( TortoiseGitCommand )} - Command: {command} - Working Directory: {workingDirectory} - Wait for Exit: {waitForExit}" );

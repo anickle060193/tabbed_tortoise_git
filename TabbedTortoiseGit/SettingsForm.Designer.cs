@@ -56,6 +56,13 @@ namespace TabbedTortoiseGit
             this.RemoveCustomAction = new System.Windows.Forms.Button();
             this.CreateCustomAction = new System.Windows.Forms.Button();
             this.CustomActionsDataGridView = new System.Windows.Forms.DataGridView();
+            this.CustomActionNameColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.CustomActionProgramColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.CustomActionArgumentsColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.WorkingDirectory = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.RefreshLogAfter = new System.Windows.Forms.DataGridViewCheckBoxColumn();
+            this.ShowProgressDialog = new System.Windows.Forms.DataGridViewCheckBoxColumn();
+            this.CreateNoWindow = new System.Windows.Forms.DataGridViewCheckBoxColumn();
             this.DisplaySettingsTab = new System.Windows.Forms.TabPage();
             this.ResetNormalTabFontButton = new System.Windows.Forms.Button();
             this.ChangeNormalTabFontButton = new System.Windows.Forms.Button();
@@ -75,13 +82,7 @@ namespace TabbedTortoiseGit
             this.ShowHitTestCheck = new System.Windows.Forms.CheckBox();
             this.ModifiedTabFontDialog = new System.Windows.Forms.FontDialog();
             this.NormalTabFontDialog = new System.Windows.Forms.FontDialog();
-            this.CustomActionNameColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.CustomActionProgramColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.CustomActionArgumentsColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.WorkingDirectory = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.RefreshLogAfter = new System.Windows.Forms.DataGridViewCheckBoxColumn();
-            this.ShowProgressDialog = new System.Windows.Forms.DataGridViewCheckBoxColumn();
-            this.CreateNoWindow = new System.Windows.Forms.DataGridViewCheckBoxColumn();
+            this.CheckTortoiseGitOnPathCheck = new System.Windows.Forms.CheckBox();
             ((System.ComponentModel.ISupportInitialize)(this.MaxRecentReposNumeric)).BeginInit();
             this.SettingsTabs.SuspendLayout();
             this.KeyboardShortcutsPage.SuspendLayout();
@@ -207,7 +208,7 @@ namespace TabbedTortoiseGit
             // MaxRecentReposLabel
             // 
             this.MaxRecentReposLabel.AutoSize = true;
-            this.MaxRecentReposLabel.Location = new System.Drawing.Point(6, 8);
+            this.MaxRecentReposLabel.Location = new System.Drawing.Point(6, 6);
             this.MaxRecentReposLabel.Name = "MaxRecentReposLabel";
             this.MaxRecentReposLabel.Size = new System.Drawing.Size(102, 13);
             this.MaxRecentReposLabel.TabIndex = 8;
@@ -261,7 +262,7 @@ namespace TabbedTortoiseGit
             this.KeyboardShortcutsPage.Location = new System.Drawing.Point(4, 22);
             this.KeyboardShortcutsPage.Name = "KeyboardShortcutsPage";
             this.KeyboardShortcutsPage.Padding = new System.Windows.Forms.Padding(3);
-            this.KeyboardShortcutsPage.Size = new System.Drawing.Size(598, 328);
+            this.KeyboardShortcutsPage.Size = new System.Drawing.Size(702, 332);
             this.KeyboardShortcutsPage.TabIndex = 5;
             this.KeyboardShortcutsPage.Text = "Keyboard Shortcuts";
             this.KeyboardShortcutsPage.UseVisualStyleBackColor = true;
@@ -283,7 +284,7 @@ namespace TabbedTortoiseGit
             this.KeyBoardShortcutsTableLayout.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 1F));
             this.KeyBoardShortcutsTableLayout.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 1F));
             this.KeyBoardShortcutsTableLayout.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 1F));
-            this.KeyBoardShortcutsTableLayout.Size = new System.Drawing.Size(592, 0);
+            this.KeyBoardShortcutsTableLayout.Size = new System.Drawing.Size(696, 0);
             this.KeyBoardShortcutsTableLayout.TabIndex = 2;
             // 
             // StartupReposTab
@@ -295,7 +296,7 @@ namespace TabbedTortoiseGit
             this.StartupReposTab.Location = new System.Drawing.Point(4, 22);
             this.StartupReposTab.Name = "StartupReposTab";
             this.StartupReposTab.Padding = new System.Windows.Forms.Padding(3);
-            this.StartupReposTab.Size = new System.Drawing.Size(598, 328);
+            this.StartupReposTab.Size = new System.Drawing.Size(702, 332);
             this.StartupReposTab.TabIndex = 0;
             this.StartupReposTab.Text = "Startup Repos";
             this.StartupReposTab.UseVisualStyleBackColor = true;
@@ -308,7 +309,7 @@ namespace TabbedTortoiseGit
             this.GitActionsTab.Location = new System.Drawing.Point(4, 22);
             this.GitActionsTab.Name = "GitActionsTab";
             this.GitActionsTab.Padding = new System.Windows.Forms.Padding(3);
-            this.GitActionsTab.Size = new System.Drawing.Size(602, 332);
+            this.GitActionsTab.Size = new System.Drawing.Size(702, 332);
             this.GitActionsTab.TabIndex = 1;
             this.GitActionsTab.Text = "Git Actions";
             this.GitActionsTab.UseVisualStyleBackColor = true;
@@ -413,6 +414,72 @@ namespace TabbedTortoiseGit
             this.CustomActionsDataGridView.TabIndex = 0;
             this.CustomActionsDataGridView.SelectionChanged += new System.EventHandler(this.CustomActionsDataGridView_SelectionChanged);
             // 
+            // CustomActionNameColumn
+            // 
+            this.CustomActionNameColumn.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
+            this.CustomActionNameColumn.DataPropertyName = "Name";
+            this.CustomActionNameColumn.HeaderText = "Name";
+            this.CustomActionNameColumn.Name = "CustomActionNameColumn";
+            this.CustomActionNameColumn.ReadOnly = true;
+            this.CustomActionNameColumn.Width = 60;
+            // 
+            // CustomActionProgramColumn
+            // 
+            this.CustomActionProgramColumn.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
+            this.CustomActionProgramColumn.DataPropertyName = "Program";
+            this.CustomActionProgramColumn.HeaderText = "Program";
+            this.CustomActionProgramColumn.Name = "CustomActionProgramColumn";
+            this.CustomActionProgramColumn.ReadOnly = true;
+            this.CustomActionProgramColumn.Width = 71;
+            // 
+            // CustomActionArgumentsColumn
+            // 
+            this.CustomActionArgumentsColumn.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
+            this.CustomActionArgumentsColumn.DataPropertyName = "Arguments";
+            this.CustomActionArgumentsColumn.HeaderText = "Arguments";
+            this.CustomActionArgumentsColumn.Name = "CustomActionArgumentsColumn";
+            this.CustomActionArgumentsColumn.ReadOnly = true;
+            this.CustomActionArgumentsColumn.Width = 82;
+            // 
+            // WorkingDirectory
+            // 
+            this.WorkingDirectory.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
+            this.WorkingDirectory.DataPropertyName = "WorkingDirectory";
+            this.WorkingDirectory.HeaderText = "Working Directory";
+            this.WorkingDirectory.Name = "WorkingDirectory";
+            this.WorkingDirectory.ReadOnly = true;
+            this.WorkingDirectory.Width = 107;
+            // 
+            // RefreshLogAfter
+            // 
+            this.RefreshLogAfter.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
+            this.RefreshLogAfter.DataPropertyName = "RefreshLogAfter";
+            this.RefreshLogAfter.HeaderText = "Refresh Log After";
+            this.RefreshLogAfter.Name = "RefreshLogAfter";
+            this.RefreshLogAfter.ReadOnly = true;
+            this.RefreshLogAfter.Resizable = System.Windows.Forms.DataGridViewTriState.False;
+            this.RefreshLogAfter.Width = 67;
+            // 
+            // ShowProgressDialog
+            // 
+            this.ShowProgressDialog.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
+            this.ShowProgressDialog.DataPropertyName = "ShowProgressDialog";
+            this.ShowProgressDialog.HeaderText = "Show Progress Dialog";
+            this.ShowProgressDialog.Name = "ShowProgressDialog";
+            this.ShowProgressDialog.ReadOnly = true;
+            this.ShowProgressDialog.Resizable = System.Windows.Forms.DataGridViewTriState.False;
+            this.ShowProgressDialog.Width = 105;
+            // 
+            // CreateNoWindow
+            // 
+            this.CreateNoWindow.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
+            this.CreateNoWindow.DataPropertyName = "CreateNoWindow";
+            this.CreateNoWindow.HeaderText = "Create No Window";
+            this.CreateNoWindow.Name = "CreateNoWindow";
+            this.CreateNoWindow.ReadOnly = true;
+            this.CreateNoWindow.Resizable = System.Windows.Forms.DataGridViewTriState.False;
+            this.CreateNoWindow.Width = 93;
+            // 
             // DisplaySettingsTab
             // 
             this.DisplaySettingsTab.Controls.Add(this.ResetNormalTabFontButton);
@@ -427,7 +494,7 @@ namespace TabbedTortoiseGit
             this.DisplaySettingsTab.Location = new System.Drawing.Point(4, 22);
             this.DisplaySettingsTab.Name = "DisplaySettingsTab";
             this.DisplaySettingsTab.Padding = new System.Windows.Forms.Padding(3);
-            this.DisplaySettingsTab.Size = new System.Drawing.Size(598, 328);
+            this.DisplaySettingsTab.Size = new System.Drawing.Size(702, 332);
             this.DisplaySettingsTab.TabIndex = 4;
             this.DisplaySettingsTab.Text = "Display";
             this.DisplaySettingsTab.UseVisualStyleBackColor = true;
@@ -567,6 +634,7 @@ namespace TabbedTortoiseGit
             // 
             // OtherSettingsTab
             // 
+            this.OtherSettingsTab.Controls.Add(this.CheckTortoiseGitOnPathCheck);
             this.OtherSettingsTab.Controls.Add(this.CloseWindowOnLastTabClosedCheck);
             this.OtherSettingsTab.Controls.Add(this.CloseToSystemTrayCheck);
             this.OtherSettingsTab.Controls.Add(this.RunOnStartupCheck);
@@ -576,7 +644,7 @@ namespace TabbedTortoiseGit
             this.OtherSettingsTab.Location = new System.Drawing.Point(4, 22);
             this.OtherSettingsTab.Name = "OtherSettingsTab";
             this.OtherSettingsTab.Padding = new System.Windows.Forms.Padding(3);
-            this.OtherSettingsTab.Size = new System.Drawing.Size(598, 328);
+            this.OtherSettingsTab.Size = new System.Drawing.Size(702, 332);
             this.OtherSettingsTab.TabIndex = 2;
             this.OtherSettingsTab.Text = "Other";
             this.OtherSettingsTab.UseVisualStyleBackColor = true;
@@ -609,7 +677,7 @@ namespace TabbedTortoiseGit
             this.DeveloperSettingsPage.Location = new System.Drawing.Point(4, 22);
             this.DeveloperSettingsPage.Name = "DeveloperSettingsPage";
             this.DeveloperSettingsPage.Padding = new System.Windows.Forms.Padding(3);
-            this.DeveloperSettingsPage.Size = new System.Drawing.Size(598, 328);
+            this.DeveloperSettingsPage.Size = new System.Drawing.Size(702, 332);
             this.DeveloperSettingsPage.TabIndex = 3;
             this.DeveloperSettingsPage.Text = "Developer Settings";
             this.DeveloperSettingsPage.UseVisualStyleBackColor = true;
@@ -636,71 +704,16 @@ namespace TabbedTortoiseGit
             this.NormalTabFontDialog.FontMustExist = true;
             this.NormalTabFontDialog.ShowColor = true;
             // 
-            // CustomActionNameColumn
+            // CheckTortoiseGitOnPathCheck
             // 
-            this.CustomActionNameColumn.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
-            this.CustomActionNameColumn.DataPropertyName = "Name";
-            this.CustomActionNameColumn.HeaderText = "Name";
-            this.CustomActionNameColumn.Name = "CustomActionNameColumn";
-            this.CustomActionNameColumn.ReadOnly = true;
-            this.CustomActionNameColumn.Width = 60;
-            // 
-            // CustomActionProgramColumn
-            // 
-            this.CustomActionProgramColumn.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
-            this.CustomActionProgramColumn.DataPropertyName = "Program";
-            this.CustomActionProgramColumn.HeaderText = "Program";
-            this.CustomActionProgramColumn.Name = "CustomActionProgramColumn";
-            this.CustomActionProgramColumn.ReadOnly = true;
-            this.CustomActionProgramColumn.Width = 71;
-            // 
-            // CustomActionArgumentsColumn
-            // 
-            this.CustomActionArgumentsColumn.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
-            this.CustomActionArgumentsColumn.DataPropertyName = "Arguments";
-            this.CustomActionArgumentsColumn.HeaderText = "Arguments";
-            this.CustomActionArgumentsColumn.Name = "CustomActionArgumentsColumn";
-            this.CustomActionArgumentsColumn.ReadOnly = true;
-            this.CustomActionArgumentsColumn.Width = 82;
-            // 
-            // WorkingDirectory
-            // 
-            this.WorkingDirectory.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
-            this.WorkingDirectory.DataPropertyName = "WorkingDirectory";
-            this.WorkingDirectory.HeaderText = "Working Directory";
-            this.WorkingDirectory.Name = "WorkingDirectory";
-            this.WorkingDirectory.ReadOnly = true;
-            this.WorkingDirectory.Width = 107;
-            // 
-            // RefreshLogAfter
-            // 
-            this.RefreshLogAfter.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
-            this.RefreshLogAfter.DataPropertyName = "RefreshLogAfter";
-            this.RefreshLogAfter.HeaderText = "Refresh Log After";
-            this.RefreshLogAfter.Name = "RefreshLogAfter";
-            this.RefreshLogAfter.ReadOnly = true;
-            this.RefreshLogAfter.Resizable = System.Windows.Forms.DataGridViewTriState.False;
-            this.RefreshLogAfter.Width = 67;
-            // 
-            // ShowProgressDialog
-            // 
-            this.ShowProgressDialog.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
-            this.ShowProgressDialog.DataPropertyName = "ShowProgressDialog";
-            this.ShowProgressDialog.HeaderText = "Show Progress Dialog";
-            this.ShowProgressDialog.Name = "ShowProgressDialog";
-            this.ShowProgressDialog.ReadOnly = true;
-            this.ShowProgressDialog.Resizable = System.Windows.Forms.DataGridViewTriState.False;
-            this.ShowProgressDialog.Width = 105;
-            // 
-            // CreateNoWindow
-            // 
-            this.CreateNoWindow.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
-            this.CreateNoWindow.DataPropertyName = "CreateNoWindow";
-            this.CreateNoWindow.HeaderText = "Create No Window";
-            this.CreateNoWindow.Name = "CreateNoWindow";
-            this.CreateNoWindow.ReadOnly = true;
-            this.CreateNoWindow.Resizable = System.Windows.Forms.DataGridViewTriState.False;
-            this.CreateNoWindow.Width = 93;
+            this.CheckTortoiseGitOnPathCheck.AutoSize = true;
+            this.CheckTortoiseGitOnPathCheck.CheckAlign = System.Drawing.ContentAlignment.MiddleRight;
+            this.CheckTortoiseGitOnPathCheck.Location = new System.Drawing.Point(6, 124);
+            this.CheckTortoiseGitOnPathCheck.Name = "CheckTortoiseGitOnPathCheck";
+            this.CheckTortoiseGitOnPathCheck.Size = new System.Drawing.Size(235, 17);
+            this.CheckTortoiseGitOnPathCheck.TabIndex = 14;
+            this.CheckTortoiseGitOnPathCheck.Text = "Check if TortoiseGit is accessible on startup:";
+            this.CheckTortoiseGitOnPathCheck.UseVisualStyleBackColor = true;
             // 
             // SettingsForm
             // 
@@ -797,5 +810,6 @@ namespace TabbedTortoiseGit
         private DataGridViewCheckBoxColumn RefreshLogAfter;
         private DataGridViewCheckBoxColumn ShowProgressDialog;
         private DataGridViewCheckBoxColumn CreateNoWindow;
+        private CheckBox CheckTortoiseGitOnPathCheck;
     }
 }
