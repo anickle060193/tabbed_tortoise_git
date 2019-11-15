@@ -91,7 +91,7 @@ namespace TabbedTortoiseGit
             LOG.Debug( nameof( FastSubmoduleUpdateForm_Shown ) );
 
             LOG.Debug( $"{nameof( FastSubmoduleUpdateForm_Shown )} - Get Submodules - Start" );
-            foreach( String submodule in await Git.GetSubmodules( Repo ) )
+            foreach( String submodule in await Task.Run( () => Git.GetSubmodules( Repo ) ) )
             {
                 LOG.Debug( $"Submodule - {submodule}" );
                 _submodules.Add( submodule );
@@ -105,7 +105,7 @@ namespace TabbedTortoiseGit
             LOG.Debug( $"{nameof( FastSubmoduleUpdateForm_Shown )} - Get Modified Submodules - Start" );
             try
             {
-                _modifiedSubmodules = await Git.GetModifiedSubmodules( Repo, _submodules );
+                _modifiedSubmodules = await Task.Run( () => Git.GetModifiedSubmodules( Repo, _submodules ) );
             }
             catch( Exception ex )
             {
