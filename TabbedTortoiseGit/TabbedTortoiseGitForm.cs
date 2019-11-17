@@ -250,6 +250,7 @@ namespace TabbedTortoiseGit
             TabContextMenu.Items.Add( CloseRepoTabMenuItem );
 
             FavoriteRepoContextMenu.Items.Add( "-" );
+            FavoriteRepoContextMenu.Items.Add( EditFavoriteContextMenuItem );
             FavoriteRepoContextMenu.Items.Add( RemoveFavoriteContextMenuItem );
 
             TabContextMenu.ResumeLayout();

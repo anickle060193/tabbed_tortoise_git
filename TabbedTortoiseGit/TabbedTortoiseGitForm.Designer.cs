@@ -62,6 +62,7 @@
             this.BackgroundFasterFetch = new System.Windows.Forms.ToolStripButton();
             this.BackgroundFasterFetchProgress = new System.Windows.Forms.ToolStripProgressBar();
             this.LogTabs = new Tabs.TabControl();
+            this.EditFavoriteContextMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.TabContextMenu.SuspendLayout();
             this.FavoriteRepoContextMenu.SuspendLayout();
             this.OptionsContextMenu.SuspendLayout();
@@ -132,9 +133,10 @@
             this.FavoriteRepoContextMenu.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.OpenFavoriteRepoLocationContextMenuItem,
             this.OpenFavoriteWithReferencesContextMenuItem,
+            this.EditFavoriteContextMenuItem,
             this.RemoveFavoriteContextMenuItem});
             this.FavoriteRepoContextMenu.Name = "FavoriteRepoContextMenu";
-            this.FavoriteRepoContextMenu.Size = new System.Drawing.Size(190, 70);
+            this.FavoriteRepoContextMenu.Size = new System.Drawing.Size(190, 114);
             // 
             // OpenFavoriteRepoLocationContextMenuItem
             // 
@@ -267,7 +269,7 @@
             // ToolStripSpacer
             // 
             this.ToolStripSpacer.Name = "ToolStripSpacer";
-            this.ToolStripSpacer.Size = new System.Drawing.Size(387, 17);
+            this.ToolStripSpacer.Size = new System.Drawing.Size(418, 17);
             this.ToolStripSpacer.Spring = true;
             // 
             // BackgroundFasterFetch
@@ -296,6 +298,12 @@
             this.LogTabs.Size = new System.Drawing.Size(644, 440);
             this.LogTabs.TabContextMenu = this.TabContextMenu;
             this.LogTabs.TabIndex = 3;
+            // 
+            // EditFavoriteContextMenuItem
+            // 
+            this.EditFavoriteContextMenuItem.Name = "EditFavoriteContextMenuItem";
+            this.EditFavoriteContextMenuItem.Size = new System.Drawing.Size(189, 22);
+            this.EditFavoriteContextMenuItem.Text = "Edit Favorite";
             // 
             // TabbedTortoiseGitForm
             // 
@@ -356,6 +364,7 @@
         private System.Windows.Forms.ToolStripStatusLabel ToolStripSpacer;
         private System.Windows.Forms.ToolStripButton BackgroundFasterFetch;
         private System.Windows.Forms.ToolStripProgressBar BackgroundFasterFetchProgress;
+        private System.Windows.Forms.ToolStripMenuItem EditFavoriteContextMenuItem;
     }
 }
 

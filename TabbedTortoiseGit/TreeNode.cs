@@ -19,6 +19,20 @@ namespace TabbedTortoiseGit
         public TreeNode<T>? Parent { get; private set; }
 
         [JsonIgnore]
+        public TreeNode<T> Root
+        {
+            get
+            {
+                TreeNode<T> parent = this;
+                while( parent.Parent != null )
+                {
+                    parent = parent.Parent;
+                }
+                return parent;
+            }
+        }
+
+        [JsonIgnore]
         public int Index
         {
             get

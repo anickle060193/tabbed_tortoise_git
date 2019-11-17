@@ -48,6 +48,7 @@ namespace TabbedTortoiseGit
             FavoriteRepoContextMenu.Closed += FavoriteItemContextMenu_Closed;
             OpenFavoriteRepoLocationContextMenuItem.Click += OpenFavoriteRepoLocationContextMenuItem_Click;
             OpenFavoriteWithReferencesContextMenuItem.Click += OpenFavoriteWithReferencesContextMenuItem_Click;
+            EditFavoriteContextMenuItem.Click += EditFavoriteContextMenuItem_Click;
             RemoveFavoriteContextMenuItem.Click += RemoveFavoriteItemContextMenuItem_Click;
             RemoveFavoriteFolderContextMenuItem.Click += RemoveFavoriteItemContextMenuItem_Click;
 
@@ -369,6 +370,26 @@ namespace TabbedTortoiseGit
             CustomAction customAction = (CustomAction)contextMenuItem.Tag;
 
             RunCustomAction( null, customAction, favorite.Value.Repo );
+        }
+
+        private void EditFavoriteContextMenuItem_Click( object sender, EventArgs e )
+        {
+            ToolStripMenuItem contextMenuItem = (ToolStripMenuItem)sender;
+            ToolStrip contextMenu = contextMenuItem.Owner;
+
+            TreeNode<FavoriteRepo> favorite = (TreeNode<FavoriteRepo>)contextMenu.Tag;
+
+            using FavoriteCreatorDialog dialog = FavoriteCreatorDialog.FromFavoriteRepo( favorite.Value );
+            if( dialog.ShowDialog() == DialogResult.OK )
+            {
+                TreeNode<FavoriteRepo> newNode = new TreeNode<FavoriteRepo>( dialog.ToFavoriteRepo() );
+                favorite.Parent!.Children[ favorite.Index ] = newNode;
+
+                Settings.Default.FavoriteRepos = _favoriteRepos!;
+                Settings.Default.Save();
+
+                UpdateFavoriteReposFromSettings();
+            }
         }
 
         private void RemoveFavoriteItemContextMenuItem_Click( object sender, EventArgs e )
