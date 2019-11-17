@@ -256,8 +256,7 @@ namespace TabbedTortoiseGit
             {
                 if( _runningTasks.Count < this.MaxTasks && !_tasks.IsEmpty )
                 {
-                    ProgressTask t;
-                    if( _tasks.TryDequeue( out t ) )
+                    if( _tasks.TryDequeue( out ProgressTask t ) )
                     {
                         LOG.Debug( $"{nameof( RunTasks )} - {t.Description}" );
                         String? initialOutput = t.InitialOutput;
@@ -326,8 +325,7 @@ namespace TabbedTortoiseGit
 
             this.UiBeginInvoke( (Action)( () => this.CompletedTaskCount++ ) );
 
-            byte removed;
-            if( !_runningTasks.TryRemove( t, out removed ) )
+            if( !_runningTasks.TryRemove( t, out byte removed ) )
             {
                 LOG.Error( $"{nameof( Task_ProgressCompleted )} - Failed to remove running task - {t.Description}" );
             }

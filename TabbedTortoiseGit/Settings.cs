@@ -292,8 +292,7 @@ namespace TabbedTortoiseGit.Properties
                 bool upgradedRepoString = false;
                 try
                 {
-                    String? reposString = Settings.Default.GetPreviousVersion( "FavoriteReposString" ) as String;
-                    if( reposString != null )
+                    if( Settings.Default.GetPreviousVersion( "FavoriteReposString" ) is String reposString )
                     {
                         Dictionary<String, String> favoritedRepos = JsonConvert.DeserializeObject<Dictionary<String, String>>( reposString );
 
@@ -325,8 +324,7 @@ namespace TabbedTortoiseGit.Properties
                 {
                     try
                     {
-                        String? reposString = Settings.Default.GetPreviousVersion( "FavoritedRepos" ) as String;
-                        if( reposString != null )
+                        if( Settings.Default.GetPreviousVersion( "FavoritedRepos" ) is String reposString )
                         {
                             Dictionary<String, String> favoritedRepos = JsonConvert.DeserializeObject<Dictionary<String, String>>( reposString );
 
@@ -382,8 +380,7 @@ namespace TabbedTortoiseGit.Properties
                     {
                         try
                         {
-                            Shortcut? oldShortcut = Settings.Default.GetPreviousVersion( pair.Key ) as Shortcut;
-                            if( oldShortcut != null )
+                            if( Settings.Default.GetPreviousVersion( pair.Key ) is Shortcut oldShortcut )
                             {
                                 shortcuts[ pair.Value ] = oldShortcut;
                             }

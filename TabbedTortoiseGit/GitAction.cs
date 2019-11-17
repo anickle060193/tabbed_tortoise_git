@@ -201,7 +201,7 @@ namespace TabbedTortoiseGit
 
         public static async Task<bool> Diff( String path )
         {
-            Process p = await TortoiseGitCommand( $"/command:diff /path:\"{path}\"", path );
+            await TortoiseGitCommand( $"/command:diff /path:\"{path}\"", path );
             return false;
         }
     }

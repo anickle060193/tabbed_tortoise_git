@@ -59,7 +59,6 @@ namespace Tabs
             }
         }
 
-        private bool RemovingItem { get; set; }
         private bool SupressTabEvents { get; set; }
         private bool ClosingTab { get; set; }
 
@@ -593,16 +592,6 @@ namespace Tabs
             OnTabRemoved( new TabRemovedEventArgs( tab ) );
         }
 
-        private void ResizeTabs()
-        {
-            Rectangle rect = DisplayRectangle;
-            Tab[] tabs = GetTabs();
-            for( int i = 0; i < tabs.Length; i++ )
-            {
-                tabs[ i ].Bounds = rect;
-            }
-        }
-
         internal void SetTab( int index, Tab tab )
         {
             if( index < 0 || index >= _tabCount )
@@ -965,17 +954,19 @@ namespace Tabs
 
             public void Add( String text )
             {
-                Tab tab = new Tab();
-                tab.Text = text;
-                Add( tab );
+                Add( new Tab
+                {
+                    Text = text
+                } );
             }
 
             public void Add( String key, String text )
             {
-                Tab tab = new Tab();
-                tab.Name = key;
-                tab.Text = text;
-                Add( tab );
+                Add( new Tab
+                {
+                    Name = key,
+                    Text = text
+                } );
             }
 
             public void AddRange( Tab[] tabs )
@@ -1072,17 +1063,19 @@ namespace Tabs
 
             public void Insert( int index, String text )
             {
-                Tab tab = new Tab();
-                tab.Text = text;
-                Insert( index, tab );
+                Insert( index, new Tab
+                {
+                    Text = text
+                } );
             }
 
             public void Insert( int index, String key, String text )
             {
-                Tab tab = new Tab();
-                tab.Name = key;
-                tab.Text = text;
-                Insert( index, tab );
+                Insert( index, new Tab
+                {
+                    Name = key,
+                    Text = text
+                } );
             }
 
             private bool IsValidIndex( int index )

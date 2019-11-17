@@ -149,8 +149,7 @@ namespace TabbedTortoiseGit
 
             foreach( KeyboardShortcuts keyboardShortcut in Enum.GetValues( typeof( KeyboardShortcuts ) ) )
             {
-                Shortcut shortcut;
-                if( shortcuts.TryGetValue( keyboardShortcut, out shortcut ) )
+                if( shortcuts.TryGetValue( keyboardShortcut, out Shortcut shortcut ) )
                 {
                     LOG.Debug( $"{nameof( UpdateShortcuts )} - KeyboardShortuct: {keyboardShortcut} - Shortcut: {shortcut}" );
                     _hotkeys[ keyboardShortcut ].SetShortcut( shortcut );

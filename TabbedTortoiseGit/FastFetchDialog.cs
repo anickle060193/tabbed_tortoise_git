@@ -164,7 +164,7 @@ namespace TabbedTortoiseGit
         {
             if( Settings.Default.ConfirmFasterFetch )
             {
-                TaskDialog confirmationDialog = new TaskDialog()
+                using TaskDialog confirmationDialog = new TaskDialog()
                 {
                     StandardButtons = TaskDialogStandardButtons.Yes | TaskDialogStandardButtons.No,
                     Text = "Faster Fetch uses settings previously configured in the Fast Fetch dialog.\n\nDo you want to continue?",

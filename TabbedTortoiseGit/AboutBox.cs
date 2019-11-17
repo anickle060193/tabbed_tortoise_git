@@ -23,7 +23,8 @@ namespace TabbedTortoiseGit
 
         public static void ShowAbout()
         {
-            new AboutBox().ShowDialog();
+            using AboutBox about = new AboutBox();
+            about.ShowDialog();
         }
 
         private Version? _newestVersion;

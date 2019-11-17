@@ -78,7 +78,7 @@ namespace TabbedTortoiseGit
             {
                 if( !( await GitAction.CanAccessTortoiseGit() ) )
                 {
-                    TaskDialog confirmationDialog = new TaskDialog()
+                    using TaskDialog confirmationDialog = new TaskDialog()
                     {
                         StandardButtons = TaskDialogStandardButtons.Ok,
                         Text = "TortoiseGit does not appear to be on PATH (this will prevent Tabbed TortoiseGit from being able to open logs). Update PATH environment variable to include directory for TortoiseGitProc.exe.",
@@ -153,8 +153,7 @@ namespace TabbedTortoiseGit
         {
             if( e.Data.GetDataPresent( DataFormats.FileDrop ) )
             {
-                String[]? files = e.Data.GetData( DataFormats.FileDrop ) as String[];
-                if( files != null )
+                if( e.Data.GetData( DataFormats.FileDrop ) is String[] files )
                 {
                     foreach( String file in files )
                     {
@@ -171,8 +170,7 @@ namespace TabbedTortoiseGit
         {
             if( e.Data.GetDataPresent( DataFormats.FileDrop ) )
             {
-                String[]? files = e.Data.GetData( DataFormats.FileDrop ) as String[];
-                if( files != null )
+                if( e.Data.GetData( DataFormats.FileDrop ) is String[] files )
                 {
                     foreach( String file in files )
                     {
@@ -344,7 +342,7 @@ namespace TabbedTortoiseGit
             TreeNode<FavoriteRepo> favorite = (TreeNode<FavoriteRepo>)contextMenu.Tag;
             String repo = Git.GetBaseRepoDirectoryOrError( favorite.Value.Repo );
 
-            ReferencesDialog dialog = new ReferencesDialog( repo );
+            using ReferencesDialog dialog = new ReferencesDialog( repo );
             if( dialog.ShowDialog() == DialogResult.OK )
             {
                 await OpenLog( favorite.Value.Repo, dialog.SelectedReferences );
@@ -445,7 +443,7 @@ namespace TabbedTortoiseGit
             TabControllerTag tag = LogTabs.SelectedTab!.Controller();
             String repo = Git.GetBaseRepoDirectoryOrError( tag.RepoItem );
 
-            ReferencesDialog dialog = new ReferencesDialog( repo );
+            using ReferencesDialog dialog = new ReferencesDialog( repo );
             if( dialog.ShowDialog() == DialogResult.OK )
             {
                 await OpenLog( tag.RepoItem, dialog.SelectedReferences );
@@ -578,8 +576,7 @@ namespace TabbedTortoiseGit
 
         private async void SubmoduleToolStripDropDownItem_Click( object sender, EventArgs e )
         {
-            String? submodule = ( sender as ToolStripItem )?.Tag as String;
-            if( submodule != null )
+            if( ( sender as ToolStripItem )?.Tag is String submodule )
             {
                 await OpenLog( submodule );
             }

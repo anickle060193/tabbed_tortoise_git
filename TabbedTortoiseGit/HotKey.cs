@@ -300,8 +300,7 @@ namespace TabbedTortoiseGit
                 if( m.Msg == WM_HOTKEY )
                 {
                     int hotkeyId = m.WParam.ToInt32();
-                    HotKey hotkey;
-                    if( _hotKeys.TryGetValue( hotkeyId, out hotkey ) )
+                    if( _hotKeys.TryGetValue( hotkeyId, out HotKey hotkey ) )
                     {
                         HotKeyPressedEventArgs e = new HotKeyPressedEventArgs();
                         hotkey.OnHotKeyPressed( e );

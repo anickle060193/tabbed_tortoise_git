@@ -234,7 +234,6 @@ namespace TabbedTortoiseGit
                     TreeNode<S> oldNode = _children[ index ];
                     oldNode.Parent = null;
 
-                    TreeNode<S> newNode = value;
                     _children[ index ] = value;
                     value.Parent = _owner;
                 }

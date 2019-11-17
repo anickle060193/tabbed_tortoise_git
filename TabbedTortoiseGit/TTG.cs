@@ -30,10 +30,8 @@ namespace TabbedTortoiseGit
             {
                 try
                 {
-                    using( RegistryKey run = Registry.CurrentUser.OpenSubKey( RUN_ON_STARTUP_KEY_PATH, false ) )
-                    {
-                        return run.GetValue( RUN_ON_STARTUP_KEY_NAME ) != null;
-                    }
+                    using RegistryKey run = Registry.CurrentUser.OpenSubKey( RUN_ON_STARTUP_KEY_PATH, false );
+                    return run.GetValue( RUN_ON_STARTUP_KEY_NAME ) != null;
                 }
                 catch( Exception e )
                 {
@@ -46,19 +44,17 @@ namespace TabbedTortoiseGit
             {
                 try
                 {
-                    using( RegistryKey run = Registry.CurrentUser.OpenSubKey( RUN_ON_STARTUP_KEY_PATH, true ) )
+                    using RegistryKey run = Registry.CurrentUser.OpenSubKey( RUN_ON_STARTUP_KEY_PATH, true );
+                    if( value )
                     {
-                        if( value )
+                        String exe = new Uri( Assembly.GetExecutingAssembly().CodeBase ).LocalPath;
+                        run.SetValue( RUN_ON_STARTUP_KEY_NAME, $"\"{exe}\" --startup" );
+                    }
+                    else
+                    {
+                        if( run.GetValue( RUN_ON_STARTUP_KEY_NAME ) != null )
                         {
-                            String exe = new Uri( Assembly.GetExecutingAssembly().CodeBase ).LocalPath;
-                            run.SetValue( RUN_ON_STARTUP_KEY_NAME, $"\"{exe}\" --startup" );
-                        }
-                        else
-                        {
-                            if( run.GetValue( RUN_ON_STARTUP_KEY_NAME ) != null )
-                            {
-                                run.DeleteValue( RUN_ON_STARTUP_KEY_NAME );
-                            }
+                            run.DeleteValue( RUN_ON_STARTUP_KEY_NAME );
                         }
                     }
                 }
@@ -93,21 +89,19 @@ namespace TabbedTortoiseGit
                 AssemblyName a = Assembly.GetExecutingAssembly().GetName();
                 Version currentVersion = a.Version;
                 request.UserAgent = $"{a.Name} {currentVersion}";
-                using( WebResponse response = await request.GetResponseAsync() )
-                using( StreamReader reader = new StreamReader( response.GetResponseStream() ) )
+                using WebResponse response = await request.GetResponseAsync();
+                using StreamReader reader = new StreamReader( response.GetResponseStream() );
+                String responseText = reader.ReadToEnd();
+                List<TagRef> responseObject = JsonConvert.DeserializeObject<List<TagRef>>( responseText );
+                Version newestVersion = responseObject.Select( o => Version.Parse( o.Ref.Replace( "refs/tags/", "" ) ) ).Max();
+
+                if( newestVersion > currentVersion )
                 {
-                    String responseText = reader.ReadToEnd();
-                    List<TagRef> responseObject = JsonConvert.DeserializeObject<List<TagRef>>( responseText );
-                    Version newestVersion = responseObject.Select( o => Version.Parse( o.Ref.Replace( "refs/tags/", "" ) ) ).Max();
-                    
-                    if( newestVersion > currentVersion )
-                    {
-                        return newestVersion;
-                    }
-                    else
-                    {
-                        return null;
-                    }
+                    return newestVersion;
+                }
+                else
+                {
+                    return null;
                 }
             }
             catch( Exception e )
@@ -126,14 +120,12 @@ namespace TabbedTortoiseGit
                 String path = Path.GetTempPath();
                 String downloadLocation = Path.Combine( path, $"tabbed_tortoisegit_setup-{newestVersion.ToString( 3 )}.msi" );
 
-                using( WebClient client = new WebClient() )
-                {
-                    await client.DownloadFileTaskAsync( updateUrl, downloadLocation );
+                using WebClient client = new WebClient();
+                await client.DownloadFileTaskAsync( updateUrl, downloadLocation );
 
-                    Process.Start( downloadLocation );
+                Process.Start( downloadLocation );
 
-                    return true;
-                }
+                return true;
             }
             catch( Exception e )
             {

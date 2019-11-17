@@ -21,11 +21,9 @@ namespace TabbedTortoiseGit
 {
     partial class FavoritesManagerDialog : Form
     {
-        private static readonly ILog LOG = LogManager.GetLogger( typeof( FavoritesManagerDialog ) );
-
         public static bool ShowFavoritesManager()
         {
-            FavoritesManagerDialog dialog = new FavoritesManagerDialog( Settings.Default.FavoriteRepos );
+            using FavoritesManagerDialog dialog = new FavoritesManagerDialog( Settings.Default.FavoriteRepos );
             if( dialog.ShowDialog() == DialogResult.OK )
             {
                 Settings.Default.FavoriteRepos = dialog.Favorites;
@@ -37,13 +35,7 @@ namespace TabbedTortoiseGit
             }
         }
 
-        public TreeNode<FavoriteRepo> Favorites
-        {
-            get
-            {
-                return _root;
-            }
-        }
+        public TreeNode<FavoriteRepo> Favorites { get; }
 
         private readonly CommonOpenFileDialog _folderDialog = new CommonOpenFileDialog()
         {
@@ -51,8 +43,6 @@ namespace TabbedTortoiseGit
         };
 
         private readonly FavoritesDragDropHelper _favoritesDragDropHelper;
-
-        private TreeNode<FavoriteRepo> _root;
         private TreeNode<FavoriteRepo>? _selectedFavoriteItem;
 
         private FavoritesManagerDialog( TreeNode<FavoriteRepo> favorites )
@@ -79,8 +69,8 @@ namespace TabbedTortoiseGit
             _favoritesDragDropHelper = new FavoritesDragDropHelper( this );
             _favoritesDragDropHelper.AddControl( FavoritesTree );
 
-            _root = favorites;
-            UpdateFavoritesTree( _root );
+            Favorites = favorites;
+            UpdateFavoritesTree( Favorites );
         }
 
         private void FavoritesTree_MouseUp( object sender, MouseEventArgs e )
@@ -89,7 +79,7 @@ namespace TabbedTortoiseGit
             {
                 TreeNode node = FavoritesTree.GetNodeAt( e.Location );
                 FavoritesTree.SelectedNode = node;
-                _selectedFavoriteItem = node?.Tag as TreeNode<FavoriteRepo> ?? _root;
+                _selectedFavoriteItem = node?.Tag as TreeNode<FavoriteRepo> ?? Favorites;
                 if( _selectedFavoriteItem != null )
                 {
                     FavoritesContextMenu.Show( FavoritesTree, e.Location );
@@ -104,7 +94,7 @@ namespace TabbedTortoiseGit
                 throw new InvalidOperationException( "No selected favorite item." );
             }
 
-            if( _selectedFavoriteItem == _root )
+            if( _selectedFavoriteItem == Favorites )
             {
                 EditFavoriteItemMenuItem.Enabled = false;
                 RemoveFavoriteItemMenuItem.Enabled = false;
@@ -138,7 +128,7 @@ namespace TabbedTortoiseGit
                 throw new InvalidOperationException( "No selected favorite item." );
             }
 
-            FavoriteCreatorDialog dialog = new FavoriteCreatorDialog( true );
+            using FavoriteCreatorDialog dialog = new FavoriteCreatorDialog( true );
             if( dialog.ShowDialog() == DialogResult.OK )
             {
                 TreeNode<FavoriteRepo> newNode = new TreeNode<FavoriteRepo>( dialog.ToFavoriteRepo() );
@@ -206,7 +196,7 @@ namespace TabbedTortoiseGit
 
             FavoriteRepo f = _selectedFavoriteItem.Value;
 
-            FavoriteCreatorDialog dialog = FavoriteCreatorDialog.FromFavoriteRepo( f );
+            using FavoriteCreatorDialog dialog = FavoriteCreatorDialog.FromFavoriteRepo( f );
             if( dialog.ShowDialog() == DialogResult.OK )
             {
                 TreeNode<FavoriteRepo> newNode = new TreeNode<FavoriteRepo>( dialog.ToFavoriteRepo() );
@@ -244,7 +234,7 @@ namespace TabbedTortoiseGit
             FavoritesTree.Nodes.Clear();
             FavoritesTreeImageList.Images.Clear();
 
-            AddToTreeView( FavoritesTree.Nodes, _root );
+            AddToTreeView( FavoritesTree.Nodes, Favorites );
 
             FavoritesTree.ExpandAll();
 
@@ -353,7 +343,7 @@ namespace TabbedTortoiseGit
                 throw new InvalidOperationException( "No selected favorite item." );
             }
 
-            FavoriteCreatorDialog dialog = new FavoriteCreatorDialog( false )
+            using FavoriteCreatorDialog dialog = new FavoriteCreatorDialog( false )
             {
                 FavoriteRepo = path
             };
@@ -398,7 +388,7 @@ namespace TabbedTortoiseGit
 
             protected override bool AllowDrag( TreeView parent, FavoritesDraggingItem item, int index )
             {
-                return item.Favorite != _owner._root;
+                return item.Favorite != _owner.Favorites;
             }
 
             private bool IsBefore( Rectangle bounds, Point p )
@@ -451,7 +441,7 @@ namespace TabbedTortoiseGit
 
                 bool allowDrop;
 
-                if( pointedFavorite == _owner._root )
+                if( pointedFavorite == _owner.Favorites )
                 {
                     allowDrop = false;
                 }

@@ -84,20 +84,24 @@ namespace TabbedTortoiseGit
             _watcher.EventArrived += Watcher_EventArrived;
             _watcher.Start();
 
-            _notifyIcon = new NotifyIcon();
-            _notifyIcon.Text = "Tabbed TortoiseGit";
-            _notifyIcon.Icon = Resources.TortoiseIcon;
-            _notifyIcon.Visible = true;
+            _notifyIcon = new NotifyIcon
+            {
+                Text = "Tabbed TortoiseGit",
+                Icon = Resources.TortoiseIcon,
+                Visible = true,
+                ContextMenuStrip = new ContextMenuStrip()
+            };
             _notifyIcon.DoubleClick += NotifyIcon_DoubleClick;
-            _notifyIcon.ContextMenuStrip = new ContextMenuStrip();
 
             ToolStripItem openItem = _notifyIcon.ContextMenuStrip.Items.Add( "Open" );
             openItem.Click += OpenNotifyIconMenuItem_Click;
             ToolStripItem exitItem = _notifyIcon.ContextMenuStrip.Items.Add( "Exit" );
             exitItem.Click += ExitNotifyIconMenuItem_Click;
 
-            _watcherTimer = new Timer();
-            _watcherTimer.Interval = 1000;
+            _watcherTimer = new Timer
+            {
+                Interval = 1000
+            };
             _watcherTimer.Tick += WatcherTimer_Tick;
             _watcherTimer.Start();
 

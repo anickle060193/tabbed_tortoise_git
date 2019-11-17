@@ -14,7 +14,7 @@ namespace TabbedTortoiseGit
 {
     static class Program
     {
-        private static ILog LOG = LogManager.GetLogger( typeof( Program ) );
+        private static readonly ILog LOG = LogManager.GetLogger( typeof( Program ) );
 
         private static readonly Mutex _mutex = new Mutex( true, "{fa53bc4a-ae04-444f-9c4e-0cf94346e62e}" );
 
@@ -75,9 +75,8 @@ namespace TabbedTortoiseGit
         {
             if( e is System.Configuration.ConfigurationException )
             {
-                if( e.InnerException is System.Configuration.ConfigurationException )
+                if( e.InnerException is System.Configuration.ConfigurationException ex )
                 {
-                    var ex = (System.Configuration.ConfigurationException)e.InnerException;
                     MessageBox.Show( $"Failed to read settings: '{ex.Filename}'. Fix/delete invalid settings file and restart Tabbed TortoiseGit.\n{ex.Message}", "An error occurred", MessageBoxButtons.OK, MessageBoxIcon.Error );
                 }
             }

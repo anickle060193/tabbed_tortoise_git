@@ -20,34 +20,35 @@ namespace TabbedTortoiseGit
     {
         public static bool ShowSettingsDialog()
         {
-            SettingsForm f = new SettingsForm();
+            using SettingsForm f = new SettingsForm
+            {
+                KeyboardShortcuts = Settings.Default.KeyboardShortcuts,
 
-            f.KeyboardShortcuts = Settings.Default.KeyboardShortcuts;
+                StartupRepos = Settings.Default.StartupRepos.ToArray(),
+                OpenStartupReposOnReOpen = Settings.Default.OpenStartupReposOnReOpen,
 
-            f.StartupRepos = Settings.Default.StartupRepos.ToArray();
-            f.OpenStartupReposOnReOpen = Settings.Default.OpenStartupReposOnReOpen;
+                TabContextMenuGitActions = Settings.Default.TabContextMenuGitActions,
+                ConfirmFasterFetch = Settings.Default.ConfirmFasterFetch,
 
-            f.TabContextMenuGitActions = Settings.Default.TabContextMenuGitActions;
-            f.ConfirmFasterFetch = Settings.Default.ConfirmFasterFetch;
+                CustomActions = Settings.Default.CustomActions,
 
-            f.CustomActions = Settings.Default.CustomActions;
+                NormalTabFont = Settings.Default.NormalTabFont,
+                NormalTabFontColor = Settings.Default.NormalTabFontColor,
+                IndicateModifiedTabs = Settings.Default.IndicateModifiedTabs,
+                CheckForModifiedTabsInterval = Settings.Default.CheckForModifiedTabsInterval,
+                ModifiedTabFont = Settings.Default.ModifiedTabFont,
+                ModifiedTabFontColor = Settings.Default.ModifiedTabFontColor,
 
-            f.NormalTabFont = Settings.Default.NormalTabFont;
-            f.NormalTabFontColor = Settings.Default.NormalTabFontColor;
-            f.IndicateModifiedTabs = Settings.Default.IndicateModifiedTabs;
-            f.CheckForModifiedTabsInterval = Settings.Default.CheckForModifiedTabsInterval;
-            f.ModifiedTabFont = Settings.Default.ModifiedTabFont;
-            f.ModifiedTabFontColor = Settings.Default.ModifiedTabFontColor;
+                MaxRecentRepos = Settings.Default.MaxRecentRepos,
+                ConfirmOnClose = Settings.Default.ConfirmOnClose,
+                CloseWindowOnLastTabClosed = Settings.Default.CloseWindowOnLastTabClosed,
+                CloseToSystemTray = Settings.Default.CloseToSystemTray,
+                RunOnStartup = TTG.RunOnStartup,
+                CheckTortoiseGitOnPath = Settings.Default.CheckTortoiseGitOnPath,
 
-            f.MaxRecentRepos = Settings.Default.MaxRecentRepos;
-            f.ConfirmOnClose = Settings.Default.ConfirmOnClose;
-            f.CloseWindowOnLastTabClosed = Settings.Default.CloseWindowOnLastTabClosed;
-            f.CloseToSystemTray = Settings.Default.CloseToSystemTray;
-            f.RunOnStartup = TTG.RunOnStartup;
-            f.CheckTortoiseGitOnPath = Settings.Default.CheckTortoiseGitOnPath;
-
-            f.DeveloperSettingsEnabled = Settings.Default.DeveloperSettingsEnabled;
-            f.ShowHitTest = Settings.Default.ShowHitTest;
+                DeveloperSettingsEnabled = Settings.Default.DeveloperSettingsEnabled,
+                ShowHitTest = Settings.Default.ShowHitTest
+            };
 
             if( f.ShowDialog() == DialogResult.OK )
             {
@@ -100,8 +101,7 @@ namespace TabbedTortoiseGit
             {
                 foreach( KeyboardShortcuts keyboardShortcut in Enum.GetValues( typeof( KeyboardShortcuts ) ) )
                 {
-                    Shortcut shortcut;
-                    if( value.TryGetValue( keyboardShortcut, out shortcut ) )
+                    if( value.TryGetValue( keyboardShortcut, out Shortcut shortcut ) )
                     {
                         UpdateShortcutTextBox( _shortcutTextboxes[ keyboardShortcut ], shortcut );
                     }
@@ -395,8 +395,10 @@ namespace TabbedTortoiseGit
 
             this.Icon = Resources.TortoiseIcon;
 
-            _folderDialog = new CommonOpenFileDialog();
-            _folderDialog.IsFolderPicker = true;
+            _folderDialog = new CommonOpenFileDialog
+            {
+                IsFolderPicker = true
+            };
 
             this.KeyPress += SettingsForm_KeyPress;
 
@@ -496,7 +498,7 @@ namespace TabbedTortoiseGit
         }
 
         private static readonly String CHEAT_CODE = "developer";
-        private Queue<char> _cheatCode = new Queue<char>();
+        private readonly Queue<char> _cheatCode = new Queue<char>();
 
         private void SettingsForm_KeyPress( object sender, KeyPressEventArgs e )
         {
@@ -646,13 +648,12 @@ namespace TabbedTortoiseGit
 
         private void CreateCustomAction_Click( object sender, EventArgs e )
         {
-            CustomActionDialog dialog = new CustomActionDialog();
+            using CustomActionDialog dialog = new CustomActionDialog();
             if( dialog.ShowDialog() == DialogResult.OK )
             {
-                CustomAction? action = dialog.CustomAction;
-                if( action != null )
+                if( dialog.CustomAction != null )
                 {
-                    _customActions.Add( action );
+                    _customActions.Add( dialog.CustomAction );
                 }
             }
         }
@@ -663,14 +664,15 @@ namespace TabbedTortoiseGit
             {
                 DataGridViewRow row = CustomActionsDataGridView.SelectedRows[ 0 ];
 
-                CustomActionDialog dialog = new CustomActionDialog();
-                dialog.CustomAction = row.DataBoundItem as CustomAction;
+                using CustomActionDialog dialog = new CustomActionDialog
+                {
+                    CustomAction = row.DataBoundItem as CustomAction
+                };
                 if( dialog.ShowDialog() == DialogResult.OK )
                 {
-                    CustomAction? action = dialog.CustomAction;
-                    if( action != null )
+                    if( dialog.CustomAction != null )
                     {
-                        _customActions[ row.Index ] = action;
+                        _customActions[ row.Index ] = dialog.CustomAction;
                     }
                 }
             }

@@ -73,8 +73,10 @@ namespace TabbedTortoiseGit
             _showStartUpRepos = showStartUpRepos;
             _createdAtPoint = createdAtPoint;
 
-            _folderDialog = new CommonOpenFileDialog();
-            _folderDialog.IsFolderPicker = true;
+            _folderDialog = new CommonOpenFileDialog
+            {
+                IsFolderPicker = true
+            };
 
             this.Icon = Resources.TortoiseIcon;
 
@@ -286,8 +288,10 @@ namespace TabbedTortoiseGit
         {
             foreach( TreeNode<FavoriteRepo> favorite in favorites.Children )
             {
-                ToolStripMenuItem item = new ToolStripMenuItem( favorite.Value.Name );
-                item.ToolTipText = favorite.Value.Repo;
+                ToolStripMenuItem item = new ToolStripMenuItem( favorite.Value.Name )
+                {
+                    ToolTipText = favorite.Value.Repo
+                };
                 Bitmap icon;
                 if( favorite.Value.IsFavoriteFolder )
                 {
@@ -359,7 +363,7 @@ namespace TabbedTortoiseGit
                 return;
             }
 
-            FavoriteCreatorDialog dialog = new FavoriteCreatorDialog( false )
+            using FavoriteCreatorDialog dialog = new FavoriteCreatorDialog( false )
             {
                 FavoriteRepo = path
             };
@@ -671,7 +675,7 @@ namespace TabbedTortoiseGit
             }
             else if( Settings.Default.ConfirmOnClose )
             {
-                TaskDialog confirmationDialog = new TaskDialog()
+                using TaskDialog confirmationDialog = new TaskDialog()
                 {
                     StandardButtons = TaskDialogStandardButtons.Yes | TaskDialogStandardButtons.No,
                     Text = "Are you sure you want to exit?",
@@ -725,14 +729,12 @@ namespace TabbedTortoiseGit
                 return;
             }
 
-            using( Bitmap shell = Resources.TortoiseShell )
-            using( Bitmap coloredShell = Util.ColorBitmap( shell, favorite.Color ) )
-            using( Bitmap background = Resources.TortoiseBody )
-            using( Graphics g = Graphics.FromImage( background ) )
-            {
-                g.DrawImage( coloredShell, 0, 0 );
-                this.Icon = background.ToIcon();
-            }
+            using Bitmap shell = Resources.TortoiseShell;
+            using Bitmap coloredShell = Util.ColorBitmap( shell, favorite.Color );
+            using Bitmap background = Resources.TortoiseBody;
+            using Graphics g = Graphics.FromImage( background );
+            g.DrawImage( coloredShell, 0, 0 );
+            this.Icon = background.ToIcon();
         }
 
         private async Task UpdateToolStripSubmodules()
@@ -768,8 +770,7 @@ namespace TabbedTortoiseGit
                             for( int i = 0; i < path.Length - 1; i++ )
                             {
                                 var key = Tuple.Create( i, path[ i ] );
-                                ToolStripMenuItem? item = null;
-                                if( !menus.TryGetValue( key, out item ) )
+                                if( !menus.TryGetValue( key, out ToolStripMenuItem item ) )
                                 {
                                     item = new ToolStripMenuItem( path[ i ] );
                                     menus[ key ] = item;

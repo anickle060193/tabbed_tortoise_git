@@ -224,10 +224,8 @@ namespace Tabs
             using( Brush b = new SolidBrush( tabColor ) )
             {
                 g.FillPointPath( b, path );
-                using( Pen bp = new Pen( b ) )
-                {
-                    g.DrawPointPath( bp, path, true );
-                }
+                using Pen bp = new Pen( b );
+                g.DrawPointPath( bp, path, true );
             }
 
             using( Pen p = new Pen( this.Owner.TabBorderColor ) )
@@ -280,21 +278,18 @@ namespace Tabs
             {
                 xColor = Color.White;
 
-                using( SolidBrush b = new SolidBrush( Color.FromArgb( 219, 68, 55 ) ) )
-                {
-                    g.FillCircle( b, path.Bounds.X + TAB_CLOSE_BUTTON_RADIUS, path.Bounds.Y + TAB_CLOSE_BUTTON_RADIUS, TAB_CLOSE_BUTTON_RADIUS );
-                }
+                using SolidBrush b = new SolidBrush( Color.FromArgb( 219, 68, 55 ) );
+                g.FillCircle( b, path.Bounds.X + TAB_CLOSE_BUTTON_RADIUS, path.Bounds.Y + TAB_CLOSE_BUTTON_RADIUS, TAB_CLOSE_BUTTON_RADIUS );
             }
 
-            using( Pen p = new Pen( xColor, 1.75f ) )
-            {
-                float left = path.Bounds.Left + TAB_CLOSE_X_INSET;
-                float right = path.Bounds.Right - TAB_CLOSE_X_INSET;
-                float top = path.Bounds.Top + TAB_CLOSE_X_INSET;
-                float bottom = path.Bounds.Bottom - TAB_CLOSE_X_INSET;
-                g.DrawLine( p, left, top, right, bottom );
-                g.DrawLine( p, right, top, left, bottom );
-            }
+            float left = path.Bounds.Left + TAB_CLOSE_X_INSET;
+            float right = path.Bounds.Right - TAB_CLOSE_X_INSET;
+            float top = path.Bounds.Top + TAB_CLOSE_X_INSET;
+            float bottom = path.Bounds.Bottom - TAB_CLOSE_X_INSET;
+
+            using Pen p = new Pen( xColor, 1.75f );
+            g.DrawLine( p, left, top, right, bottom );
+            g.DrawLine( p, right, top, left, bottom );
         }
 
         private void PaintNewTab( Graphics g )
@@ -391,18 +386,14 @@ namespace Tabs
             if( this.Owner.SelectedIndex != -1 )
             {
                 Rectangle tabBounds = GetTabPath( this.Owner.SelectedIndex ).Bounds;
-                using( Pen p = new Pen( this.Owner.TabBorderColor ) )
-                {
-                    g.DrawLines( p, new[] { left, new Point( tabBounds.Left, bY ) } );
-                    g.DrawLines( p, new[] { new Point( tabBounds.Right, bY ), right } );
-                }
+                using Pen p = new Pen( this.Owner.TabBorderColor );
+                g.DrawLines( p, new[] { left, new Point( tabBounds.Left, bY ) } );
+                g.DrawLines( p, new[] { new Point( tabBounds.Right, bY ), right } );
             }
             else
             {
-                using( Pen p = new Pen( this.Owner.TabBorderColor ) )
-                {
-                    g.DrawLines( p, new[] { left, right } );
-                }
+                using Pen p = new Pen( this.Owner.TabBorderColor );
+                g.DrawLines( p, new[] { left, right } );
             }
         }
     }

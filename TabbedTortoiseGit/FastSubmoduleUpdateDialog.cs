@@ -283,8 +283,6 @@ namespace TabbedTortoiseGit
 
         private void UpdateSubmoduleList()
         {
-            List<String> checkedSubmodules = SubmoduleCheckList.CheckedItems.Cast<String>().ToList();
-
             SubmoduleCheckList.Items.Clear();
 
             if( ShowModifiedSubmodulesOnlyCheck.Checked

@@ -77,7 +77,7 @@ namespace Common
             _mouseDown = false;
             _mouseDownLocation = Point.Empty;
 
-            _mouseDownItem = default( T );
+            _mouseDownItem = default;
             _mouseDownItemIndex = -1;
             _mouseDownParent = null;
         }
@@ -89,8 +89,7 @@ namespace Common
                 Point p = new Point( e.X, e.Y );
 
                 T? pointedItem;
-                int pointedItemIndex;
-                if( GetItemFromPoint( pointedParent, pointedParent.PointToClient( p ), out pointedItem!, out pointedItemIndex )
+                if( GetItemFromPoint( pointedParent, pointedParent.PointToClient( p ), out pointedItem!, out int pointedItemIndex )
                  && e.AllowedEffect == DragDropEffects.Move )
                 {
                     OnDragMoveOver( new DragMoveOverEventArgs<TControl, T>( d.DragParent, d.DragItem, d.DragItemIndex, d.DragStart, p, pointedParent, pointedItem, pointedItemIndex ) );
@@ -133,8 +132,7 @@ namespace Common
                     TControl parent = (TControl)sender;
 
                     T item;
-                    int itemIndex;
-                    if( GetItemFromPoint( parent, e.Location, out item!, out itemIndex )
+                    if( GetItemFromPoint( parent, e.Location, out item!, out int itemIndex )
                      && AllowDrag( parent, item, itemIndex ) )
                     {
                         _mouseDown = true;
@@ -172,8 +170,7 @@ namespace Common
                     if( Math.Sqrt( Math.Pow( p.X - _mouseDownLocation.X, 2 ) + Math.Pow( p.Y - _mouseDownLocation.Y, 2 ) ) >= DRAG_THRESHOLD )
                     {
                         T item;
-                        int itemIndex;
-                        if( GetItemFromPoint( parent, e.Location, out item!, out itemIndex )
+                        if( GetItemFromPoint( parent, e.Location, out item!, out int itemIndex )
                          && ItemsEqual( _mouseDownParent!, _mouseDownItem!, _mouseDownItemIndex, parent, item, itemIndex ) )
                         {
                             _mouseDown = false;

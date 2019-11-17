@@ -153,7 +153,7 @@ namespace TabbedTortoiseGit
         public FavoriteRepo ToFavoriteRepo()
         {
             bool isDirectory = !IsFavoritesFolder && Directory.Exists( FavoriteRepo );
-            return new TabbedTortoiseGit.FavoriteRepo( FavoriteName, FavoriteRepo, isDirectory, IsFavoritesFolder, FavoriteColor, FavoriteReferences );
+            return new FavoriteRepo( FavoriteName, FavoriteRepo, isDirectory, IsFavoritesFolder, FavoriteColor, FavoriteReferences );
         }
 
         private void RemoveReferencesButton_Click( object sender, EventArgs e )
@@ -166,7 +166,7 @@ namespace TabbedTortoiseGit
 
         private void SelectReferencesButton_Click( object sender, EventArgs e )
         {
-            ReferencesDialog d = new ReferencesDialog( this.FavoriteRepo );
+            using ReferencesDialog d = new ReferencesDialog( this.FavoriteRepo );
             if( d.ShowDialog() == DialogResult.OK )
             {
                 ReferencesListBox.Items.AddRange( d.SelectedReferences );
