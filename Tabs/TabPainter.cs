@@ -43,7 +43,7 @@ namespace Tabs
         {
             get
             {
-                int x = this.Owner.Width - this.Owner.OptionsMenu.Width;
+                int x = this.Owner.Width - ( this.Owner.OptionsMenu?.Width ?? 0 );
                 int y = TOP_PADDING + TAB_HEIGHT;
                 return new Point( x, y );
             }

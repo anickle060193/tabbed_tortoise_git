@@ -23,7 +23,7 @@ namespace TabbedTortoiseGit
         public bool IsFavoriteFolder { get; private set; }
 
         [JsonConstructor]
-        public FavoriteRepo( String name, String repo, bool isDirectory, bool isFavoriteFolder, Color color, IEnumerable<String> references )
+        public FavoriteRepo( String name, String repo, bool isDirectory, bool isFavoriteFolder, Color color, IEnumerable<String>? references )
         {
             Name = name ?? "";
             Color = color;
@@ -43,14 +43,14 @@ namespace TabbedTortoiseGit
             }
         }
 
-        public override bool Equals( object obj )
+        public override bool Equals( object? obj )
         {
             return this.Equals( obj as FavoriteRepo );
         }
 
-        public bool Equals( FavoriteRepo o )
+        public bool Equals( FavoriteRepo? o )
         {
-            if( (Object)o == null )
+            if( o is null )
             {
                 return false;
             }
@@ -78,14 +78,14 @@ namespace TabbedTortoiseGit
             return true;
         }
 
-        public static bool operator ==( FavoriteRepo a, FavoriteRepo b )
+        public static bool operator ==( FavoriteRepo? a, FavoriteRepo? b )
         {
             if( Object.ReferenceEquals( a, b ) )
             {
                 return true;
             }
 
-            if( (Object)a == null || (Object)b == null )
+            if( a is null || b is null )
             {
                 return false;
             }

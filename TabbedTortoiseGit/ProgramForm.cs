@@ -45,17 +45,34 @@ namespace TabbedTortoiseGit
         private readonly Timer _watcherTimer;
         private readonly bool _startup;
 
-        private TabbedTortoiseGitForm _activeForm;
+        private TabbedTortoiseGitForm? _activeForm;
 
-        public static ProgramForm Instance { get; private set; }
+        private static ProgramForm? _instance;
+
+        public static ProgramForm Instance
+        {
+            get
+            {
+                if( _instance is null )
+                {
+                    throw new InvalidOperationException( "Program Form has not been instantiated yet." );
+                }
+                return _instance;
+            }
+
+            private set
+            {
+                _instance = value;
+            }
+        }
 
         public static ProgramForm Create( bool startup )
         {
-            if( Instance == null )
+            if( _instance == null )
             {
-                Instance = new ProgramForm( startup );
+                _instance = new ProgramForm( startup );
             }
-            return Instance;
+            return _instance;
         }
 
         private ProgramForm( bool startup )
@@ -163,7 +180,7 @@ namespace TabbedTortoiseGit
                 CreateNewTabbedTortoiseGit( Settings.Default.OpenStartupReposOnReOpen, Point.Empty );
             }
 
-            if( _activeForm.WindowState == FormWindowState.Minimized )
+            if( _activeForm!.WindowState == FormWindowState.Minimized )
             {
                 _activeForm.WindowState = FormWindowState.Normal;
             }
@@ -178,7 +195,7 @@ namespace TabbedTortoiseGit
                 LOG.Debug( $"{nameof( CaptureNewLog )} - No active form" );
                 CreateNewTabbedTortoiseGit( false, Point.Empty );
             }
-            await _activeForm.AddNewLogProcess( p, repo );
+            await _activeForm!.AddNewLogProcess( p, repo );
         }
 
         private bool CheckTortoiseGitProcessObject( ManagementBaseObject o )
@@ -217,7 +234,7 @@ namespace TabbedTortoiseGit
         {
             lock( _capturedLogs )
             {
-                Process p = sender as Process;
+                Process p = (Process)sender;
                 _capturedLogs.Remove( p.Id );
             }
         }

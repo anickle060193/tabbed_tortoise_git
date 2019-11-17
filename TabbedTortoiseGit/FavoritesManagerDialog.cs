@@ -53,7 +53,7 @@ namespace TabbedTortoiseGit
         private readonly FavoritesDragDropHelper _favoritesDragDropHelper;
 
         private TreeNode<FavoriteRepo> _root;
-        private TreeNode<FavoriteRepo> _selectedFavoriteItem;
+        private TreeNode<FavoriteRepo>? _selectedFavoriteItem;
 
         private FavoritesManagerDialog( TreeNode<FavoriteRepo> favorites )
         {
@@ -89,7 +89,7 @@ namespace TabbedTortoiseGit
             {
                 TreeNode node = FavoritesTree.GetNodeAt( e.Location );
                 FavoritesTree.SelectedNode = node;
-                _selectedFavoriteItem = (TreeNode<FavoriteRepo>)node?.Tag ?? _root;
+                _selectedFavoriteItem = node?.Tag as TreeNode<FavoriteRepo> ?? _root;
                 if( _selectedFavoriteItem != null )
                 {
                     FavoritesContextMenu.Show( FavoritesTree, e.Location );
@@ -99,6 +99,11 @@ namespace TabbedTortoiseGit
 
         private void FavoritesContextMenu_Opening( object sender, CancelEventArgs e )
         {
+            if( _selectedFavoriteItem == null )
+            {
+                throw new InvalidOperationException( "No selected favorite item." );
+            }
+
             if( _selectedFavoriteItem == _root )
             {
                 EditFavoriteItemMenuItem.Enabled = false;
@@ -128,6 +133,11 @@ namespace TabbedTortoiseGit
 
         private void CreateFavoritesFolderMenuItem_Click( object sender, EventArgs e )
         {
+            if( _selectedFavoriteItem == null )
+            {
+                throw new InvalidOperationException( "No selected favorite item." );
+            }
+
             FavoriteCreatorDialog dialog = new FavoriteCreatorDialog( true );
             if( dialog.ShowDialog() == DialogResult.OK )
             {
@@ -138,7 +148,7 @@ namespace TabbedTortoiseGit
                 }
                 else
                 {
-                    _selectedFavoriteItem.Parent.Children.Insert( _selectedFavoriteItem.Index, newNode );
+                    _selectedFavoriteItem.Parent!.Children.Insert( _selectedFavoriteItem.Index, newNode );
                 }
                 UpdateFavoritesTree( newNode );
             }
@@ -166,7 +176,7 @@ namespace TabbedTortoiseGit
 
         private void AddFavoriteFolderMenuItem_Click( object sender, EventArgs e )
         {
-            String repo = null;
+            String? repo = null;
             while( repo == null )
             {
                 if( _folderDialog.ShowDialog() != CommonFileDialogResult.Ok )
@@ -189,6 +199,11 @@ namespace TabbedTortoiseGit
 
         private void EditFavoriteItemMenuItem_Click( object sender, EventArgs e )
         {
+            if( _selectedFavoriteItem == null )
+            {
+                throw new InvalidOperationException( "No selected favorite item." );
+            }
+
             FavoriteRepo f = _selectedFavoriteItem.Value;
 
             FavoriteCreatorDialog dialog = FavoriteCreatorDialog.FromFavoriteRepo( f );
@@ -199,11 +214,11 @@ namespace TabbedTortoiseGit
                 while( _selectedFavoriteItem.Children.Count > 0 )
                 {
                     TreeNode<FavoriteRepo> child = _selectedFavoriteItem.Children[ 0 ];
-                    child.Parent.Remove( child );
+                    child.Parent!.Remove( child );
                     newNode.Add( child );
                 }
 
-                _selectedFavoriteItem.Parent.Children[ _selectedFavoriteItem.Index ] = newNode;
+                _selectedFavoriteItem.Parent!.Children[ _selectedFavoriteItem.Index ] = newNode;
 
                 UpdateFavoritesTree( newNode );
             }
@@ -211,7 +226,12 @@ namespace TabbedTortoiseGit
 
         private void RemoveFavoriteItemMenuItem_Click( object sender, EventArgs e )
         {
-            TreeNode<FavoriteRepo> parent = _selectedFavoriteItem.Parent;
+            if( _selectedFavoriteItem == null )
+            {
+                throw new InvalidOperationException( "No selected favorite item." );
+            }
+
+            TreeNode<FavoriteRepo> parent = _selectedFavoriteItem.Parent!;
             parent.Remove( _selectedFavoriteItem );
 
             UpdateFavoritesTree( parent );
@@ -237,7 +257,7 @@ namespace TabbedTortoiseGit
         {
             if( favorite != null )
             {
-                TreeNode node = this.FindNodeByNode( favorite );
+                TreeNode? node = this.FindNodeByNode( favorite );
                 if( node != null )
                 {
                     if( before )
@@ -260,12 +280,12 @@ namespace TabbedTortoiseGit
             Native.PostMessage( FavoritesTree.Handle, 0x111A, (IntPtr)0, IntPtr.Zero );
         }
 
-        private TreeNode FindNodeByNode( TreeNode<FavoriteRepo> findNode )
+        private TreeNode? FindNodeByNode( TreeNode<FavoriteRepo> findNode )
         {
             return FindNodeByNode( findNode, FavoritesTree.Nodes );
         }
 
-        private TreeNode FindNodeByNode( TreeNode<FavoriteRepo> findNode, TreeNodeCollection nodes )
+        private TreeNode? FindNodeByNode( TreeNode<FavoriteRepo> findNode, TreeNodeCollection nodes )
         {
             foreach( TreeNode node in nodes )
             {
@@ -275,7 +295,7 @@ namespace TabbedTortoiseGit
                 }
                 else
                 {
-                    TreeNode foundNode = FindNodeByNode( findNode, node.Nodes );
+                    TreeNode? foundNode = FindNodeByNode( findNode, node.Nodes );
                     if( foundNode != null )
                     {
                         return foundNode;
@@ -328,6 +348,11 @@ namespace TabbedTortoiseGit
 
         private void AddFavoriteItem( String path )
         {
+            if( _selectedFavoriteItem == null )
+            {
+                throw new InvalidOperationException( "No selected favorite item." );
+            }
+
             FavoriteCreatorDialog dialog = new FavoriteCreatorDialog( false )
             {
                 FavoriteRepo = path
@@ -341,7 +366,7 @@ namespace TabbedTortoiseGit
                 }
                 else
                 {
-                    _selectedFavoriteItem.Parent.Children.Insert( _selectedFavoriteItem.Index, newNode );
+                    _selectedFavoriteItem.Parent!.Children.Insert( _selectedFavoriteItem.Index, newNode );
                 }
 
                 UpdateFavoritesTree( newNode );
@@ -388,9 +413,9 @@ namespace TabbedTortoiseGit
                 }
             }
 
-            protected override bool GetItemFromPoint( TreeView parent, Point p, out FavoritesDraggingItem item, out int itemIndex )
+            protected override bool GetItemFromPoint( TreeView parent, Point p, out FavoritesDraggingItem? item, out int itemIndex )
             {
-                TreeNode treeNode = parent.GetNodeAt( p );
+                TreeNode? treeNode = parent.GetNodeAt( p );
 
                 if( treeNode == null )
                 {
@@ -469,13 +494,13 @@ namespace TabbedTortoiseGit
 
                 if( pointedItem.Before )
                 {
-                    dragFavorite.Parent.Remove( dragFavorite );
-                    pointedFavorite.Parent.Children.Insert( pointedFavorite.Index, dragFavorite );
+                    dragFavorite.Parent!.Remove( dragFavorite );
+                    pointedFavorite.Parent!.Children.Insert( pointedFavorite.Index, dragFavorite );
                 }
                 else
                 {
-                    dragFavorite.Parent.Remove( dragFavorite );
-                    pointedFavorite.Parent.Children.Insert( pointedFavorite.Index + 1, dragFavorite );
+                    dragFavorite.Parent!.Remove( dragFavorite );
+                    pointedFavorite.Parent!.Children.Insert( pointedFavorite.Index + 1, dragFavorite );
                 }
 
                 _owner.UpdateFavoritesTree( dragFavorite );

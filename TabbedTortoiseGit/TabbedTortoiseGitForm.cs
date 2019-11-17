@@ -59,7 +59,7 @@ namespace TabbedTortoiseGit
         private readonly Point _createdAtPoint;
         private readonly Stack<String> _closedRepos = new Stack<String>();
 
-        private TreeNode<FavoriteRepo> _favoriteRepos;
+        private TreeNode<FavoriteRepo>? _favoriteRepos;
 
         private bool _favoriteContextMenuOpen;
 
@@ -99,7 +99,7 @@ namespace TabbedTortoiseGit
         {
             if( FORWARD_KEYS.Any( k => keyData == k ) )
             {
-                TabControllerTag tag = LogTabs.SelectedTab?.Controller();
+                TabControllerTag? tag = LogTabs.SelectedTab?.Controller();
                 if( tag != null )
                 {
                     Native.SetForegroundWindow( tag.Process.MainWindowHandle );
@@ -316,7 +316,7 @@ namespace TabbedTortoiseGit
 
         private void AddToRecentRepos( String path )
         {
-            String repo = Git.GetBaseRepoDirectory( path );
+            String? repo = Git.GetBaseRepoDirectory( path );
             if( repo == null )
             {
                 LOG.Error( $"Failed to add recent repo - Path: {path}" );
@@ -339,7 +339,7 @@ namespace TabbedTortoiseGit
             UpdateRecentReposFromSettings();
         }
 
-        private FavoriteRepo FindFavorite( String repo )
+        private FavoriteRepo? FindFavorite( String repo )
         {
             foreach( TreeNode<FavoriteRepo> favorite in Settings.Default.FavoriteRepos.BreadthFirst )
             {
@@ -365,7 +365,7 @@ namespace TabbedTortoiseGit
             };
             if( dialog.ShowDialog() == DialogResult.OK )
             {
-                _favoriteRepos.Add( dialog.ToFavoriteRepo() );
+                _favoriteRepos!.Add( dialog.ToFavoriteRepo() );
 
                 Settings.Default.FavoriteRepos = _favoriteRepos;
                 Settings.Default.Save();
@@ -376,14 +376,14 @@ namespace TabbedTortoiseGit
 
         private void RemoveFavorite( TreeNode<FavoriteRepo> favorite )
         {
-            favorite.Parent.Remove( favorite );
-            Settings.Default.FavoriteRepos = _favoriteRepos;
+            favorite.Parent?.Remove( favorite );
+            Settings.Default.FavoriteRepos = _favoriteRepos!;
             Settings.Default.Save();
 
             UpdateFavoriteReposFromSettings();
         }
 
-        private async Task OpenLog( String path, IEnumerable<String> references = null )
+        private async Task OpenLog( String path, IEnumerable<String>? references = null )
         {
             AddToRecentRepos( path );
 
@@ -409,11 +409,17 @@ namespace TabbedTortoiseGit
             }
             else if( keyboardShortcut == KeyboardShortcuts.DuplicateTab )
             {
-                await DuplicateTab( LogTabs.SelectedTab );
+                if( LogTabs.SelectedTab is Tab selectedTab )
+                {
+                    await DuplicateTab( selectedTab );
+                }
             }
             else if( keyboardShortcut == KeyboardShortcuts.CloseTab )
             {
-                CloseTab( LogTabs.SelectedTab );
+                if( LogTabs.SelectedTab is Tab selectedTab )
+                {
+                    CloseTab( selectedTab );
+                }
             }
             else if( keyboardShortcut == KeyboardShortcuts.ReopenClosedTab )
             {
@@ -428,10 +434,12 @@ namespace TabbedTortoiseGit
             }
             else if( KEYBOARD_SHORTCUT_ACTIONS.ContainsKey( keyboardShortcut ) )
             {
-                TabControllerTag tag = LogTabs.SelectedTab.Controller();
-                GitActionFunc gitActionFunc = KEYBOARD_SHORTCUT_ACTIONS[ keyboardShortcut ];
+                if( LogTabs.SelectedTab?.Controller() is TabControllerTag tag )
+                {
+                    GitActionFunc gitActionFunc = KEYBOARD_SHORTCUT_ACTIONS[ keyboardShortcut ];
 
-                await RunGitAction( tag, gitActionFunc );
+                    await RunGitAction( tag, gitActionFunc );
+                }
             }
             else
             {
@@ -702,14 +710,14 @@ namespace TabbedTortoiseGit
 
         private void UpdateIcon()
         {
-            String repo = LogTabs.SelectedTab?.Controller().RepoItem;
+            String? repo = LogTabs.SelectedTab?.Controller().RepoItem;
             if( repo == null )
             {
                 this.Icon = Resources.TortoiseIcon;
                 return;
             }
 
-            FavoriteRepo favorite = FindFavorite( repo );
+            FavoriteRepo? favorite = FindFavorite( repo );
             if( favorite == null
              || favorite.Color == Color.Black )
             {
@@ -729,7 +737,7 @@ namespace TabbedTortoiseGit
 
         private async Task UpdateToolStripSubmodules()
         {
-            TabControllerTag currentTab = LogTabs.SelectedTab?.Controller();
+            TabControllerTag? currentTab = LogTabs.SelectedTab?.Controller();
 
             if( currentTab == null )
             {
@@ -760,7 +768,7 @@ namespace TabbedTortoiseGit
                             for( int i = 0; i < path.Length - 1; i++ )
                             {
                                 var key = Tuple.Create( i, path[ i ] );
-                                ToolStripMenuItem item = null;
+                                ToolStripMenuItem? item = null;
                                 if( !menus.TryGetValue( key, out item ) )
                                 {
                                     item = new ToolStripMenuItem( path[ i ] );
@@ -790,7 +798,7 @@ namespace TabbedTortoiseGit
 
         private void UpdateToolStripFasterFetch()
         {
-            TabControllerTag currentTab = LogTabs.SelectedTab?.Controller();
+            TabControllerTag? currentTab = LogTabs.SelectedTab?.Controller();
 
             if( currentTab == null )
             {
@@ -821,7 +829,7 @@ namespace TabbedTortoiseGit
             }
         }
 
-        private void RunCustomAction( TabControllerTag tag, CustomAction customAction, String repoItem )
+        private void RunCustomAction( TabControllerTag? tag, CustomAction customAction, String repoItem )
         {
             LOG.Debug( $"{nameof( RunCustomAction )} - Action: {customAction} - Repo: {repoItem}" );
 
@@ -835,7 +843,7 @@ namespace TabbedTortoiseGit
             {
                 directory = Path.GetDirectoryName( filename );
             }
-            String repo = Git.GetBaseRepoDirectory( repoItem );
+            String repo = Git.GetBaseRepoDirectoryOrError( repoItem );
 
             String program = customAction.Program;
             String arguments = customAction.Arguments.Replace( "%f", filename ).Replace( "%d", directory ).Replace( "%r", repo );

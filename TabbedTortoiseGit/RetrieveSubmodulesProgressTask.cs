@@ -27,7 +27,7 @@ namespace TabbedTortoiseGit
             }
         }
 
-        public override string InitialOutput
+        public override String? InitialOutput
         {
             get
             {

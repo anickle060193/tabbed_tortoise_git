@@ -29,7 +29,7 @@ namespace TabbedTortoiseGit
             }
         }
 
-        public static String GetBaseRepoDirectory( String path )
+        public static String? GetBaseRepoDirectory( String path )
         {
             String repo = Repository.Discover( path );
             if( repo != null )
@@ -40,6 +40,11 @@ namespace TabbedTortoiseGit
             {
                 return null;
             }
+        }
+
+        public static String GetBaseRepoDirectoryOrError( String path )
+        {
+            return GetBaseRepoDirectory( path ) ?? throw new ArgumentException( $"Path is not a repo: '{path}'" );
         }
 
         private static ProcessStartInfo CreateGitProcessStartInfo( String repo, String args )
@@ -56,7 +61,7 @@ namespace TabbedTortoiseGit
         {
             List<String> submodules = new List<String>();
 
-            String repo = GetBaseRepoDirectory( path );
+            String? repo = GetBaseRepoDirectory( path );
             if( repo == null )
             {
                 return submodules;
@@ -73,7 +78,7 @@ namespace TabbedTortoiseGit
         {
             List<String> modifiedSubmodules = new List<String>();
 
-            String repo = GetBaseRepoDirectory( path );
+            String? repo = GetBaseRepoDirectory( path );
             if( repo == null )
             {
                 return modifiedSubmodules;
@@ -111,7 +116,7 @@ namespace TabbedTortoiseGit
 
         public static async Task<bool> IsModified( String path )
         {
-            String repo = GetBaseRepoDirectory( path );
+            String? repo = GetBaseRepoDirectory( path );
             if( repo == null )
             {
                 return false;

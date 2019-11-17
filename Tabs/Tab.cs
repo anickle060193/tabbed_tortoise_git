@@ -15,7 +15,7 @@ namespace Tabs
     [ToolboxItem( false )]
     public class Tab : Panel
     {
-        private Bitmap _icon;
+        private Bitmap? _icon;
 
         private bool _dragging = false;
         private int _draggingOffset = 0;
@@ -76,7 +76,7 @@ namespace Tabs
 
         [DefaultValue( typeof( Bitmap ), "" )]
         [Browsable( true )]
-        public Bitmap Icon
+        public Bitmap? Icon
         {
             get
             {

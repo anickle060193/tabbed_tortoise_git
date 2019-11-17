@@ -11,7 +11,7 @@ using System.Windows.Forms;
 
 namespace Common
 {
-    public abstract class DragDropHelper<TControl, T> where TControl : Control
+    public abstract class DragDropHelper<TControl, T> where TControl : Control where T : class
     {
         private static readonly ILog LOG = LogManager.GetLogger( typeof( DragDropHelper<TControl, T> ) );
 
@@ -20,9 +20,9 @@ namespace Common
         private bool _mouseDown;
         private Point _mouseDownLocation;
 
-        private T _mouseDownItem;
+        private T? _mouseDownItem;
         private int _mouseDownItemIndex;
-        private TControl _mouseDownParent;
+        private TControl? _mouseDownParent;
 
         public bool MoveOnDragDrop { get; set; }
 
@@ -43,7 +43,7 @@ namespace Common
             c.DragDrop += Control_DragDrop;
         }
 
-        protected abstract bool GetItemFromPoint( TControl parent, Point p, out T item, out int itemIndex );
+        protected abstract bool GetItemFromPoint( TControl parent, Point p, out T? item, out int itemIndex );
 
         protected abstract bool AllowDrag( TControl parent, T item, int index );
 
@@ -88,9 +88,9 @@ namespace Common
             {
                 Point p = new Point( e.X, e.Y );
 
-                T pointedItem;
+                T? pointedItem;
                 int pointedItemIndex;
-                if( GetItemFromPoint( pointedParent, pointedParent.PointToClient( p ), out pointedItem, out pointedItemIndex )
+                if( GetItemFromPoint( pointedParent, pointedParent.PointToClient( p ), out pointedItem!, out pointedItemIndex )
                  && e.AllowedEffect == DragDropEffects.Move )
                 {
                     OnDragMoveOver( new DragMoveOverEventArgs<TControl, T>( d.DragParent, d.DragItem, d.DragItemIndex, d.DragStart, p, pointedParent, pointedItem, pointedItemIndex ) );
@@ -134,7 +134,7 @@ namespace Common
 
                     T item;
                     int itemIndex;
-                    if( GetItemFromPoint( parent, e.Location, out item, out itemIndex )
+                    if( GetItemFromPoint( parent, e.Location, out item!, out itemIndex )
                      && AllowDrag( parent, item, itemIndex ) )
                     {
                         _mouseDown = true;
@@ -173,8 +173,8 @@ namespace Common
                     {
                         T item;
                         int itemIndex;
-                        if( GetItemFromPoint( parent, e.Location, out item, out itemIndex )
-                         && ItemsEqual( _mouseDownParent, _mouseDownItem, _mouseDownItemIndex, parent, item, itemIndex ) )
+                        if( GetItemFromPoint( parent, e.Location, out item!, out itemIndex )
+                         && ItemsEqual( _mouseDownParent!, _mouseDownItem!, _mouseDownItemIndex, parent, item, itemIndex ) )
                         {
                             _mouseDown = false;
 

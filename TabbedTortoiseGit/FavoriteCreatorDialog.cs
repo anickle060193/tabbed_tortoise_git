@@ -16,7 +16,7 @@ namespace TabbedTortoiseGit
 {
     public partial class FavoriteCreatorDialog : Form
     {
-        private String _favoriteRepo;
+        private String _favoriteRepo = "";
         private Color _favoriteColor;
 
         public bool IsFavoritesFolder { get; private set; }

@@ -97,7 +97,7 @@ namespace TabbedTortoiseGit
             return await TortoiseGitCommand( $"/command:{command} /path:\"{path}\"", path, waitForExit );
         }
 
-        public static Process Log( String path, IEnumerable<String> references = null )
+        public static Process Log( String path, IEnumerable<String>? references = null )
         {
             String command = $"/command:log /path:\"{path}\"";
             if( references != null )
@@ -113,14 +113,14 @@ namespace TabbedTortoiseGit
 
         public static async Task<bool> Fetch( String path )
         {
-            String repo = Git.GetBaseRepoDirectory( path );
+            String repo = Git.GetBaseRepoDirectoryOrError( path );
             Process p = await PathCommand( "fetch", repo );
             return p.ExitCode == 0;
         }
 
         public static async Task<bool> FastFetch( String path )
         {
-            String repo = Git.GetBaseRepoDirectory( path );
+            String repo = Git.GetBaseRepoDirectoryOrError( path );
             FastFetchDialog dialog = new FastFetchDialog( repo );
             dialog.Show();
             await dialog.WaitForClose();
@@ -129,7 +129,7 @@ namespace TabbedTortoiseGit
 
         public static Task<bool> FasterFetch( String path )
         {
-            String repo = Git.GetBaseRepoDirectory( path );
+            String repo = Git.GetBaseRepoDirectoryOrError( path );
             return FastFetchDialog.FasterFetch( repo );
         }
 
@@ -141,49 +141,49 @@ namespace TabbedTortoiseGit
 
         public static async Task<bool> Switch( String path )
         {
-            String repo = Git.GetBaseRepoDirectory( path );
+            String repo = Git.GetBaseRepoDirectoryOrError( path );
             Process p = await PathCommand( "switch", repo );
             return p.ExitCode == 0;
         }
 
         public static async Task<bool> Pull( String path )
         {
-            String repo = Git.GetBaseRepoDirectory( path );
+            String repo = Git.GetBaseRepoDirectoryOrError( path );
             Process p = await PathCommand( "pull", repo );
             return p.ExitCode == 0;
         }
 
         public static async Task<bool> Push( String path )
         {
-            String repo = Git.GetBaseRepoDirectory( path );
+            String repo = Git.GetBaseRepoDirectoryOrError( path );
             Process p = await PathCommand( "push", repo );
             return p.ExitCode == 0;
         }
 
         public static async Task<bool> Rebase( String path )
         {
-            String repo = Git.GetBaseRepoDirectory( path );
+            String repo = Git.GetBaseRepoDirectoryOrError( path );
             Process p = await PathCommand( "rebase", repo );
             return p.ExitCode == 0;
         }
 
         public static async Task<bool> Sync( String path )
         {
-            String repo = Git.GetBaseRepoDirectory( path );
+            String repo = Git.GetBaseRepoDirectoryOrError( path );
             Process p = await PathCommand( "sync", repo );
             return p.ExitCode == 0;
         }
 
         public static async Task<bool> SubmoduleUpdate( String path )
         {
-            String repo = Git.GetBaseRepoDirectory( path );
+            String repo = Git.GetBaseRepoDirectoryOrError( path );
             Process p = await TortoiseGitCommand( $"/command:subupdate /path:\"{repo}\" /bkpath:\"{repo}\"", repo );
             return p.ExitCode == 0;
         }
 
         public static async Task<bool> FasterSubmoduleUpdate( String path )
         {
-            String repo = Git.GetBaseRepoDirectory( path );
+            String repo = Git.GetBaseRepoDirectoryOrError( path );
             FasterSubmoduleUpdateDialog dialog = new FasterSubmoduleUpdateDialog( repo );
             dialog.Show();
             await dialog.WaitForClose();
@@ -192,7 +192,7 @@ namespace TabbedTortoiseGit
 
         public static async Task<bool> FastSubmoduleUpdate( String path )
         {
-            String repo = Git.GetBaseRepoDirectory( path );
+            String repo = Git.GetBaseRepoDirectoryOrError( path );
             FastSubmoduleUpdateDialog dialog = new FastSubmoduleUpdateDialog( repo );
             dialog.Show();
             await dialog.WaitForClose();

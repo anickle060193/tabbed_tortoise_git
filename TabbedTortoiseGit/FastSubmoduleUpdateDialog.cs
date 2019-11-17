@@ -25,7 +25,7 @@ namespace TabbedTortoiseGit
         private readonly List<String> _submodules = new List<String>();
         private readonly Dictionary<String, bool> _checkedSubmodules = new Dictionary<String, bool>();
 
-        private List<String> _modifiedSubmodules;
+        private List<String>? _modifiedSubmodules;
         private bool _userModified;
 
         public String Repo { get; private set; }

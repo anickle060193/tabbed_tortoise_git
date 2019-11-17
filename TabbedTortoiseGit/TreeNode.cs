@@ -16,7 +16,7 @@ namespace TabbedTortoiseGit
         public T Value { get; private set; }
 
         [JsonIgnore]
-        public TreeNode<T> Parent { get; private set; }
+        public TreeNode<T>? Parent { get; private set; }
 
         [JsonIgnore]
         public int Index
@@ -107,13 +107,13 @@ namespace TabbedTortoiseGit
         }
 
         [JsonIgnore]
-        public TreeNode<T> Previous
+        public TreeNode<T>? Previous
         {
             get
             {
                 if( this.Index > 0 )
                 {
-                    return this.Parent.Children[ this.Index - 1 ];
+                    return this.Parent?.Children[ this.Index - 1 ];
                 }
                 else
                 {
@@ -123,7 +123,7 @@ namespace TabbedTortoiseGit
         }
 
         [JsonIgnore]
-        public TreeNode<T> Next
+        public TreeNode<T>? Next
         {
             get
             {

@@ -52,7 +52,7 @@ namespace TabbedTortoiseGit
 
         private readonly String _repo;
 
-        private String _currentBranch;
+        private String? _currentBranch;
 
         public String[] SelectedReferences
         {

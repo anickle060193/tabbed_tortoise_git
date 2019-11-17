@@ -66,7 +66,7 @@ namespace TabbedTortoiseGit
     {
         private static readonly ILog LOG = LogManager.GetLogger( typeof( KeyboardShortcutsManager ) );
 
-        private static KeyboardShortcutsManager _instance;
+        private static KeyboardShortcutsManager? _instance;
 
         public static KeyboardShortcutsManager Instance
         {
@@ -97,7 +97,7 @@ namespace TabbedTortoiseGit
             return Instance;
         }
 
-        public event EventHandler<KeyboardShortcutPressedEventArgs> KeyboardShortcutPressed;
+        public event EventHandler<KeyboardShortcutPressedEventArgs>? KeyboardShortcutPressed;
 
         private readonly Dictionary<KeyboardShortcuts, HotKey> _hotkeys = new Dictionary<KeyboardShortcuts, HotKey>();
         private readonly IntPtr _windowHandle;

@@ -22,7 +22,7 @@ namespace Tabs
         private readonly TabControlDragDropHelper _dragDropHelper;
         private readonly ToolTip _tabToolTip;
 
-        private Tab[] _tabs;
+        private Tab?[]? _tabs;
         private int _tabCount = 0;
 
         private int _maximumTabWidth = 200;
@@ -33,16 +33,16 @@ namespace Tabs
         private bool _showTabHitTest = false;
         private bool _insertingItem = false;
         private bool _currentlyScaling = false;
-        private ContextMenuStrip _optionsMenu;
-        private CancellationTokenSource _tabToolTipCancellationToken;
+        private ContextMenuStrip? _optionsMenu;
+        private CancellationTokenSource? _tabToolTipCancellationToken;
 
-        public event EventHandler NewTabClick;
-        public event EventHandler<TabClickEventArgs> TabClick;
-        public event EventHandler SelectedTabChanged;
-        public event EventHandler<TabAddedEventArgs> TabAdded;
-        public event EventHandler<TabRemovedEventArgs> TabRemoved;
-        public event EventHandler<TabClosedEventArgs> TabClosed;
-        public event EventHandler<TabPulledOutEventArgs> TabPulledOut;
+        public event EventHandler? NewTabClick;
+        public event EventHandler<TabClickEventArgs>? TabClick;
+        public event EventHandler? SelectedTabChanged;
+        public event EventHandler<TabAddedEventArgs>? TabAdded;
+        public event EventHandler<TabRemovedEventArgs>? TabRemoved;
+        public event EventHandler<TabClosedEventArgs>? TabClosed;
+        public event EventHandler<TabPulledOutEventArgs>? TabPulledOut;
 
         [Browsable( false )]
         [EditorBrowsable( EditorBrowsableState.Never )]
@@ -64,10 +64,10 @@ namespace Tabs
         private bool ClosingTab { get; set; }
 
         [DefaultValue( typeof( ContextMenuStrip ), "(none)" )]
-        public ContextMenuStrip TabContextMenu { get; set; }
+        public ContextMenuStrip? TabContextMenu { get; set; }
 
         [DefaultValue( typeof( ContextMenuStrip ), "(none)" )]
-        public ContextMenuStrip NewTabContextMenu { get; set; }
+        public ContextMenuStrip? NewTabContextMenu { get; set; }
 
         [DefaultValue( true )]
         public bool CloseTabOnMiddleClick { get; set; }
@@ -111,7 +111,7 @@ namespace Tabs
 
         [Browsable( false )]
         [DesignerSerializationVisibility( DesignerSerializationVisibility.Hidden )]
-        public Tab SelectedTab
+        public Tab? SelectedTab
         {
             get
             {
@@ -124,7 +124,7 @@ namespace Tabs
             }
         }
 
-        internal Tab SelectedTabInternal
+        internal Tab? SelectedTabInternal
         {
             get
             {
@@ -135,7 +135,7 @@ namespace Tabs
                 }
                 else
                 {
-                    return _tabs[ index ];
+                    return _tabs![ index ];
                 }
             }
 
@@ -239,7 +239,7 @@ namespace Tabs
         }
 
         [DefaultValue( typeof( ContextMenuStrip ), "(none)" )]
-        public ContextMenuStrip OptionsMenu
+        public ContextMenuStrip? OptionsMenu
         {
             get
             {
@@ -420,7 +420,7 @@ namespace Tabs
             return _painter.GetTabPath( index ).Bounds;
         }
 
-        internal int FindTab( Tab tab )
+        internal int FindTab( Tab? tab )
         {
             if( _tabs != null )
             {
@@ -446,7 +446,7 @@ namespace Tabs
             {
                 throw new ArgumentOutOfRangeException( "index" );
             }
-            return _tabs[ index ];
+            return _tabs![ index ]!;
         }
 
         protected virtual object[] GetItems()
@@ -464,9 +464,9 @@ namespace Tabs
             return (Tab[])GetItems();
         }
 
-        private Tab GetTabFromPoint( Point p )
+        private Tab? GetTabFromPoint( Point p )
         {
-            Tab selected = SelectedTab;
+            Tab? selected = SelectedTab;
             if( selected != null )
             {
                 if( !selected.Dragging && _painter.GetTabPath( SelectedIndex ).HitTest( p ) )
@@ -481,7 +481,7 @@ namespace Tabs
                 {
                     if( _painter.GetTabPath( i ).HitTest( p ) )
                     {
-                        return _tabs[ i ];
+                        return _tabs![ i ];
                     }
                 }
             }
@@ -489,13 +489,13 @@ namespace Tabs
             return null;
         }
 
-        private Tab GetTabCloseFromPoint( Point p )
+        private Tab? GetTabCloseFromPoint( Point p )
         {
             for( int i = 0; i < _tabCount; i++ )
             {
                 if( _painter.GetTabClosePath( i ).HitTest( p ) )
                 {
-                    return _tabs[ i ];
+                    return _tabs![ i ];
                 }
             }
             return null;
@@ -560,7 +560,7 @@ namespace Tabs
                 throw new ArgumentOutOfRangeException( "index" );
             }
 
-            Tab tab = _tabs[ index ];
+            Tab tab = _tabs![ index ]!;
 
             _tabCount--;
             if( index < _tabCount )
@@ -609,7 +609,7 @@ namespace Tabs
             {
                 throw new ArgumentOutOfRangeException( "index" );
             }
-            _tabs[ index ] = tab;
+            _tabs![ index ] = tab;
         }
 
         private void UpdateTabSelection()
@@ -621,7 +621,7 @@ namespace Tabs
             {
                 if( _currentlyScaling )
                 {
-                    _tabs[ index ].SuspendLayout();
+                    _tabs![ index ]!.SuspendLayout();
                 }
 
                 tabs[ index ].Bounds = DisplayRectangle;
@@ -629,7 +629,7 @@ namespace Tabs
 
                 if( _currentlyScaling )
                 {
-                    _tabs[ index ].ResumeLayout( false );
+                    _tabs![ index ]!.ResumeLayout( false );
                 }
 
                 tabs[ index ].Visible = true;
@@ -708,7 +708,7 @@ namespace Tabs
 
             if( e.Button == MouseButtons.Left )
             {
-                Tab t = GetTabFromPoint( e.Location );
+                Tab? t = GetTabFromPoint( e.Location );
                 if( t != null )
                 {
                     SelectedIndex = Tabs.IndexOf( t );
@@ -723,7 +723,7 @@ namespace Tabs
 
             this.Invalidate();
 
-            Tab tab = this.GetTabFromPoint( e.Location );
+            Tab? tab = this.GetTabFromPoint( e.Location );
             if( tab != null )
             {
                 if( _tabToolTip.Tag != tab )
@@ -777,7 +777,7 @@ namespace Tabs
 
             if( e.Button == MouseButtons.Left )
             {
-                Tab closeTab = this.GetTabCloseFromPoint( e.Location );
+                Tab? closeTab = this.GetTabCloseFromPoint( e.Location );
                 if( closeTab != null )
                 {
                     ClosingTab = true;
@@ -790,7 +790,7 @@ namespace Tabs
 
             if( e.Button != MouseButtons.Left )
             {
-                Tab t = GetTabFromPoint( e.Location );
+                Tab? t = GetTabFromPoint( e.Location );
                 if( t != null )
                 {
                     if( e.Button == MouseButtons.Middle
@@ -904,7 +904,7 @@ namespace Tabs
                 }
             }
 
-            public virtual Tab this[ String key ]
+            public virtual Tab? this[ String key ]
             {
                 get
                 {
@@ -1231,7 +1231,7 @@ namespace Tabs
                 return !_partialMatch;
             }
 
-            protected override bool GetItemFromPoint( TabControl parent, Point p, out Tab item, out int itemIndex )
+            protected override bool GetItemFromPoint( TabControl parent, Point p, out Tab? item, out int itemIndex )
             {
                 _partialMatch = false;
 

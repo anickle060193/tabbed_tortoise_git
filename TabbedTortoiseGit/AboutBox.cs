@@ -26,7 +26,7 @@ namespace TabbedTortoiseGit
             new AboutBox().ShowDialog();
         }
 
-        private Version _newestVersion;
+        private Version? _newestVersion;
 
         private AboutBox()
         {
@@ -64,7 +64,7 @@ namespace TabbedTortoiseGit
 
         private async void UpdateButton_Click( object sender, EventArgs e )
         {
-            LOG.Debug( $"{nameof( UpdateButton_Click )} - Newest Version: {_newestVersion.ToString( 3 )}" );
+            LOG.Debug( $"{nameof( UpdateButton_Click )} - Newest Version: {_newestVersion!.ToString( 3 )}" );
             if( DialogResult.Yes == MessageBox.Show( "This will exit Tabbed TortoiseGit. Continue?", "New Update", MessageBoxButtons.YesNo ) )
             {
                 LOG.Debug( "Update Prompt - OK" );

@@ -1,4 +1,6 @@
-﻿using Common;
+﻿#nullable enable
+
+using Common;
 using log4net;
 using log4net.Appender;
 using log4net.Repository.Hierarchy;
@@ -112,7 +114,7 @@ namespace TabbedTortoiseGit
                 LOG.Debug( $"{nameof( TabbedTortoiseGitForm_VisibleChanged )} - Last Update Prompt Time: {lastUpdatePromptTime} - Now: {now} - Difference: {difference}" );
                 if( difference >= TimeSpan.FromDays( 1 ) )
                 {
-                    Version newestVersion = await TTG.IsUpToDate();
+                    Version? newestVersion = await TTG.IsUpToDate();
                     if( newestVersion != null )
                     {
                         LOG.Debug( $"Newest Version: {newestVersion}" );
@@ -151,7 +153,7 @@ namespace TabbedTortoiseGit
         {
             if( e.Data.GetDataPresent( DataFormats.FileDrop ) )
             {
-                String[] files = e.Data.GetData( DataFormats.FileDrop ) as String[];
+                String[]? files = e.Data.GetData( DataFormats.FileDrop ) as String[];
                 if( files != null )
                 {
                     foreach( String file in files )
@@ -169,7 +171,7 @@ namespace TabbedTortoiseGit
         {
             if( e.Data.GetDataPresent( DataFormats.FileDrop ) )
             {
-                String[] files = e.Data.GetData( DataFormats.FileDrop ) as String[];
+                String[]? files = e.Data.GetData( DataFormats.FileDrop ) as String[];
                 if( files != null )
                 {
                     foreach( String file in files )
@@ -340,7 +342,7 @@ namespace TabbedTortoiseGit
             ToolStrip contextMenu = contextMenuItem.Owner;
 
             TreeNode<FavoriteRepo> favorite = (TreeNode<FavoriteRepo>)contextMenu.Tag;
-            String repo = Git.GetBaseRepoDirectory( favorite.Value.Repo );
+            String repo = Git.GetBaseRepoDirectoryOrError( favorite.Value.Repo );
 
             ReferencesDialog dialog = new ReferencesDialog( repo );
             if( dialog.ShowDialog() == DialogResult.OK )
@@ -428,20 +430,20 @@ namespace TabbedTortoiseGit
 
         private void OpenRepoLocationTabMenuItem_Click( object sender, EventArgs e )
         {
-            Util.OpenInExplorer( LogTabs.SelectedTab.Controller().RepoItem );
+            Util.OpenInExplorer( LogTabs.SelectedTab!.Controller().RepoItem );
         }
 
         private void AddToFavoritesRepoTabMenuItem_Click( object sender, EventArgs e )
         {
-            TabControllerTag tag = LogTabs.SelectedTab.Controller();
+            TabControllerTag tag = LogTabs.SelectedTab!.Controller();
 
             AddFavoriteRepo( tag.RepoItem );
         }
 
         private async void OpenWithReferencesRepoTabMenuItem_Click( object sender, EventArgs e )
         {
-            TabControllerTag tag = LogTabs.SelectedTab.Controller();
-            String repo = Git.GetBaseRepoDirectory( tag.RepoItem );
+            TabControllerTag tag = LogTabs.SelectedTab!.Controller();
+            String repo = Git.GetBaseRepoDirectoryOrError( tag.RepoItem );
 
             ReferencesDialog dialog = new ReferencesDialog( repo );
             if( dialog.ShowDialog() == DialogResult.OK )
@@ -452,13 +454,13 @@ namespace TabbedTortoiseGit
 
         private async void DuplicateRepoTabMenuItem_Click( object sender, EventArgs e )
         {
-            await DuplicateTab( LogTabs.SelectedTab );
+            await DuplicateTab( LogTabs.SelectedTab! );
         }
 
         private void CloseRepoTabMenuItem_Click( object sender, EventArgs e )
         {
             LOG.Debug( nameof( CloseRepoTabMenuItem_Click ) );
-            CloseTab( LogTabs.SelectedTab );
+            CloseTab( LogTabs.SelectedTab! );
         }
 
         private async void GitCommandTabMenuItem_Click( object sender, EventArgs e )
@@ -466,7 +468,7 @@ namespace TabbedTortoiseGit
             ToolStripItem c = (ToolStripItem)sender;
             GitActionFunc gitActionFunc = (GitActionFunc)c.Tag;
 
-            TabControllerTag tag = LogTabs.SelectedTab.Controller();
+            TabControllerTag tag = LogTabs.SelectedTab!.Controller();
             await RunGitAction( tag, gitActionFunc );
         }
 
@@ -475,7 +477,7 @@ namespace TabbedTortoiseGit
             ToolStripItem c = (ToolStripItem)sender;
             CustomAction customAction = (CustomAction)c.Tag;
 
-            TabControllerTag tag = LogTabs.SelectedTab.Controller();
+            TabControllerTag tag = LogTabs.SelectedTab!.Controller();
 
             RunCustomAction( tag, customAction, tag.RepoItem );
         }
@@ -491,8 +493,7 @@ namespace TabbedTortoiseGit
                         return;
                     }
 
-                    Tab tab = LogTabs.Tabs[ i ];
-                    TabControllerTag tag = LogTabs.SelectedTab.Controller();
+                    TabControllerTag tag = LogTabs.Tabs[ i ].Controller();
 
                     tag.Modified = await Git.IsModified( tag.RepoItem );
                 }
@@ -508,7 +509,7 @@ namespace TabbedTortoiseGit
 
         private void BackgroundFasterFetch_Click( object sender, EventArgs e )
         {
-            TabControllerTag controller = this.LogTabs.SelectedTab?.Controller();
+            TabControllerTag? controller = this.LogTabs.SelectedTab?.Controller();
             if( controller != null )
             {
                 if( controller.BackgroundFasterFetchDialog?.Completed == true )
@@ -522,7 +523,7 @@ namespace TabbedTortoiseGit
                     return;
                 }
 
-                String repo = Git.GetBaseRepoDirectory( controller.RepoItem );
+                String repo = Git.GetBaseRepoDirectoryOrError( controller.RepoItem );
 
                 ProgressDialog dialog = FastFetchDialog.PrepareBackgroundFasterFetch( repo );
                 controller.BackgroundFasterFetchDialog = dialog;
@@ -563,10 +564,10 @@ namespace TabbedTortoiseGit
 
         private void BackgroundFasterFetchDialog_ProgressChanged( object sender, EventArgs e )
         {
-            TabControllerTag controller = this.LogTabs.SelectedTab?.Controller();
+            TabControllerTag? controller = this.LogTabs.SelectedTab?.Controller();
             if( controller != null )
             {
-                ProgressDialog dialog = sender as ProgressDialog;
+                ProgressDialog? dialog = sender as ProgressDialog;
 
                 if( dialog == controller.BackgroundFasterFetchDialog )
                 {
@@ -577,7 +578,7 @@ namespace TabbedTortoiseGit
 
         private async void SubmoduleToolStripDropDownItem_Click( object sender, EventArgs e )
         {
-            String submodule = ( sender as ToolStripItem )?.Tag as String;
+            String? submodule = ( sender as ToolStripItem )?.Tag as String;
             if( submodule != null )
             {
                 await OpenLog( submodule );

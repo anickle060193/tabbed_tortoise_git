@@ -14,7 +14,7 @@ namespace TabbedTortoiseGit
 {
     public partial class CustomActionDialog : Form
     {
-        public CustomAction CustomAction
+        public CustomAction? CustomAction
         {
             get
             {

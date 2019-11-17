@@ -38,9 +38,9 @@ namespace TabbedTortoiseGit
         };
 
         private static int _nextId = 0;
-        private static MessageFilter _filter;
+        private static MessageFilter? _filter;
 
-        private event EventHandler HotKeyPressedInternal;
+        private event EventHandler? HotKeyPressedInternal;
 
         private readonly ISet<IntPtr> _handles = new HashSet<IntPtr>();
         private bool _registered;
@@ -79,7 +79,7 @@ namespace TabbedTortoiseGit
         }
 
         public IntPtr WindowHandle { get; private set; }
-        public Shortcut Shortcut { get; private set; }
+        public Shortcut? Shortcut { get; private set; }
         public int Id { get; private set; }
 
         public KeyModifier Modifiers
@@ -211,7 +211,7 @@ namespace TabbedTortoiseGit
 
             if( _registered )
             {
-                if( _filter.UnregisterHotKey( this ) )
+                if( _filter?.UnregisterHotKey( this ) != false )
                 {
                     _registered = false;
                 }
@@ -307,7 +307,7 @@ namespace TabbedTortoiseGit
                         hotkey.OnHotKeyPressed( e );
                         if( !e.Handled )
                         {
-                            LOG.Debug( $"Fowarding unhandled HotKey: {hotkey.Shortcut.Text}" );
+                            LOG.Debug( $"Fowarding unhandled HotKey: {hotkey.Shortcut?.Text ?? "Unknown Shortcut"}" );
 
                             hotkey.Unregister();
 

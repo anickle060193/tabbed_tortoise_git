@@ -593,7 +593,7 @@ namespace TabbedTortoiseGit
                 return true;
             }
 
-            protected override bool GetItemFromPoint( CheckedListBox parent, Point p, out String item, out int itemIndex )
+            protected override bool GetItemFromPoint( CheckedListBox parent, Point p, out String? item, out int itemIndex )
             {
                 int index = parent.IndexFromPoint( p );
                 if( index != CheckedListBox.NoMatches )
@@ -649,7 +649,7 @@ namespace TabbedTortoiseGit
             CustomActionDialog dialog = new CustomActionDialog();
             if( dialog.ShowDialog() == DialogResult.OK )
             {
-                CustomAction action = dialog.CustomAction;
+                CustomAction? action = dialog.CustomAction;
                 if( action != null )
                 {
                     _customActions.Add( action );
@@ -667,7 +667,7 @@ namespace TabbedTortoiseGit
                 dialog.CustomAction = row.DataBoundItem as CustomAction;
                 if( dialog.ShowDialog() == DialogResult.OK )
                 {
-                    CustomAction action = dialog.CustomAction;
+                    CustomAction? action = dialog.CustomAction;
                     if( action != null )
                     {
                         _customActions[ row.Index ] = action;

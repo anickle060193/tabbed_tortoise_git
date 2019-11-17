@@ -72,9 +72,15 @@ namespace TabbedTortoiseGit
         class TagRef
         {
             public String Ref { get; set; }
+
+            [JsonConstructor]
+            public TagRef( String reference )
+            {
+                this.Ref = reference;
+            }
         }
 
-        public static async Task<Version> IsUpToDate()
+        public static async Task<Version?> IsUpToDate()
         {
             try
             {

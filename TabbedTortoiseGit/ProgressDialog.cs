@@ -85,15 +85,15 @@ namespace TabbedTortoiseGit
             }
         }
 
-        public String CompletedText { get; set; }
+        public String? CompletedText { get; set; }
         public int MaxTasks { get; set; }
         public Color CommandTextColor { get; set; }
         public Color ErrorTextColor { get; set; }
         public Color CompletedTextColor { get; set; }
         public Color CancelledTextColor { get; set; }
 
-        public event EventHandler ProgressChanged;
-        public event EventHandler ProgressCompleted;
+        public event EventHandler? ProgressChanged;
+        public event EventHandler? ProgressCompleted;
 
         public ProgressDialog()
         {
@@ -260,10 +260,10 @@ namespace TabbedTortoiseGit
                     if( _tasks.TryDequeue( out t ) )
                     {
                         LOG.Debug( $"{nameof( RunTasks )} - {t.Description}" );
-                        String initialOutput = t.InitialOutput;
+                        String? initialOutput = t.InitialOutput;
                         if( !String.IsNullOrWhiteSpace( initialOutput ) )
                         {
-                            Output.UiBeginInvoke( (Action<String, Color>)LogOutput, initialOutput, CommandTextColor );
+                            Output.UiBeginInvoke( (Action<String, Color>)LogOutput, initialOutput!, CommandTextColor );
                         }
                         _runningTasks[ t ] = 0;
                         t.StartTask();
@@ -365,12 +365,12 @@ namespace TabbedTortoiseGit
 
     public abstract class ProgressTask
     {
-        public event EventHandler<OutputEventArgs> OutputReceived;
-        public event EventHandler<OutputEventArgs> ErrorOutputReceived;
-        public event EventHandler<ProgressCompletedEventArgs> ProgressCompleted;
+        public event EventHandler<OutputEventArgs>? OutputReceived;
+        public event EventHandler<OutputEventArgs>? ErrorOutputReceived;
+        public event EventHandler<ProgressCompletedEventArgs>? ProgressCompleted;
 
-        public abstract String InitialOutput { get; }
-        public abstract String Description { get; }
+        public abstract String? InitialOutput { get; }
+        public abstract String? Description { get; }
 
         protected void OnOutputReceived( OutputEventArgs e )
         {
