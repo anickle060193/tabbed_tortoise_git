@@ -1,4 +1,6 @@
-﻿using Common;
+﻿#nullable enable
+
+using Common;
 using log4net;
 using Newtonsoft.Json;
 using System;

@@ -1,4 +1,6 @@
-﻿using Common;
+﻿#nullable enable
+
+using Common;
 using log4net;
 using Microsoft.WindowsAPICodePack.Dialogs;
 using Newtonsoft.Json;

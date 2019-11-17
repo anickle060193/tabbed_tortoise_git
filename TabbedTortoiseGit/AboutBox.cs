@@ -1,4 +1,6 @@
-﻿using Common;
+﻿#nullable enable
+
+using Common;
 using log4net;
 using log4net.Appender;
 using log4net.Repository.Hierarchy;

@@ -1,4 +1,6 @@
-﻿using Common;
+﻿#nullable enable
+
+using Common;
 using LibGit2Sharp;
 using log4net;
 using System;

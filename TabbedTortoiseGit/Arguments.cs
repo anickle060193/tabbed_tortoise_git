@@ -1,4 +1,6 @@
-﻿using CommandLine;
+﻿#nullable enable
+
+using CommandLine;
 using System;
 using System.Collections.Generic;
 using System.Linq;
