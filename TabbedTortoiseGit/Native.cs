@@ -272,5 +272,15 @@ namespace TabbedTortoiseGit
         {
             SendMessage( bar.Handle, WindowMessage.PBM_SETSTATE, (IntPtr)state, IntPtr.Zero );
         }
+
+        [DllImport( "shlwapi.dll", EntryPoint = "PathRelativePathTo" )]
+        private static extern bool PathRelativePathTo( StringBuilder lpszDst, String from, UInt32 attrFrom, String to, UInt32 attrTo );
+
+        public static String GetRelativePath( String from, String to )
+        {
+            StringBuilder builder = new StringBuilder( 1024 );
+            bool result = PathRelativePathTo( builder, from, 0, to, 0 );
+            return builder.ToString();
+        }
     }
 }

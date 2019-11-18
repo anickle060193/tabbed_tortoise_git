@@ -123,9 +123,8 @@ namespace TabbedTortoiseGit
         public void UpdateIcon()
         {
             Color tabColor = Settings.Default.FavoriteRepos
-                                                .BreadthFirst
-                                                .Where( f => f.Value.Repo == this.RepoItem )
-                                                .FirstOrDefault()?.Value?.Color ?? Color.Black;
+                                                .BreadFirstSearch( f => f is FavoriteRepo r && r.Repo == this.RepoItem )
+                                                ?.Color ?? Color.Black;
             if( tabColor != _lastColor
              || this.Tab.Icon == null )
             {

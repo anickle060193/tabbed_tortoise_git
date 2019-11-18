@@ -80,51 +80,51 @@
             this.FavoritesContextMenuSeparator3,
             this.RemoveFavoriteItemMenuItem});
             this.FavoritesContextMenu.Name = "FavoritesTreeViewContextMenu";
-            this.FavoritesContextMenu.Size = new System.Drawing.Size(178, 132);
+            this.FavoritesContextMenu.Size = new System.Drawing.Size(208, 132);
             // 
             // CreateFavoritesFolderMenuItem
             // 
             this.CreateFavoritesFolderMenuItem.Name = "CreateFavoritesFolderMenuItem";
-            this.CreateFavoritesFolderMenuItem.Size = new System.Drawing.Size(177, 22);
+            this.CreateFavoritesFolderMenuItem.Size = new System.Drawing.Size(207, 22);
             this.CreateFavoritesFolderMenuItem.Text = "Create Folder";
             // 
             // FavoritesContextMenuSeparator1
             // 
             this.FavoritesContextMenuSeparator1.Name = "FavoritesContextMenuSeparator1";
-            this.FavoritesContextMenuSeparator1.Size = new System.Drawing.Size(174, 6);
+            this.FavoritesContextMenuSeparator1.Size = new System.Drawing.Size(204, 6);
             // 
             // AddFavoriteFileMenuItem
             // 
             this.AddFavoriteFileMenuItem.Name = "AddFavoriteFileMenuItem";
-            this.AddFavoriteFileMenuItem.Size = new System.Drawing.Size(177, 22);
-            this.AddFavoriteFileMenuItem.Text = "Add Favorite File";
+            this.AddFavoriteFileMenuItem.Size = new System.Drawing.Size(207, 22);
+            this.AddFavoriteFileMenuItem.Text = "Add Favorite Repo File";
             // 
             // AddFavoriteFolderMenuItem
             // 
             this.AddFavoriteFolderMenuItem.Name = "AddFavoriteFolderMenuItem";
-            this.AddFavoriteFolderMenuItem.Size = new System.Drawing.Size(177, 22);
-            this.AddFavoriteFolderMenuItem.Text = "Add Favorite Folder";
+            this.AddFavoriteFolderMenuItem.Size = new System.Drawing.Size(207, 22);
+            this.AddFavoriteFolderMenuItem.Text = "Add Favorite Repo Folder";
             // 
             // FavoritesContextMenuSeparator2
             // 
             this.FavoritesContextMenuSeparator2.Name = "FavoritesContextMenuSeparator2";
-            this.FavoritesContextMenuSeparator2.Size = new System.Drawing.Size(174, 6);
+            this.FavoritesContextMenuSeparator2.Size = new System.Drawing.Size(204, 6);
             // 
             // EditFavoriteItemMenuItem
             // 
             this.EditFavoriteItemMenuItem.Name = "EditFavoriteItemMenuItem";
-            this.EditFavoriteItemMenuItem.Size = new System.Drawing.Size(177, 22);
+            this.EditFavoriteItemMenuItem.Size = new System.Drawing.Size(207, 22);
             this.EditFavoriteItemMenuItem.Text = "Edit";
             // 
             // FavoritesContextMenuSeparator3
             // 
             this.FavoritesContextMenuSeparator3.Name = "FavoritesContextMenuSeparator3";
-            this.FavoritesContextMenuSeparator3.Size = new System.Drawing.Size(174, 6);
+            this.FavoritesContextMenuSeparator3.Size = new System.Drawing.Size(204, 6);
             // 
             // RemoveFavoriteItemMenuItem
             // 
             this.RemoveFavoriteItemMenuItem.Name = "RemoveFavoriteItemMenuItem";
-            this.RemoveFavoriteItemMenuItem.Size = new System.Drawing.Size(177, 22);
+            this.RemoveFavoriteItemMenuItem.Size = new System.Drawing.Size(207, 22);
             this.RemoveFavoriteItemMenuItem.Text = "Remove";
             // 
             // Cancel

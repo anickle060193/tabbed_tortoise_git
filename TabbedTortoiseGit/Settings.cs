@@ -3,6 +3,7 @@
 using Common;
 using log4net;
 using Newtonsoft.Json;
+using Newtonsoft.Json.Serialization;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -10,6 +11,7 @@ using System.Configuration;
 using System.Diagnostics;
 using System.Drawing;
 using System.Linq;
+using System.Reflection;
 using System.Windows.Forms;
 
 namespace TabbedTortoiseGit.Properties
@@ -114,21 +116,24 @@ namespace TabbedTortoiseGit.Properties
             set { throw new NotSupportedException( "ReopenClosedTabShortcut is obsolete. Use KeyboardShortcuts." ); }
         }
 
-        public TreeNode<FavoriteRepo> FavoriteRepos
+        public FavoriteFolder FavoriteRepos
         {
             get
             {
-                TreeNode<FavoriteRepo>? favoriteRepos = null;
+                FavoriteFolder? favoriteRepos = null;
                 try
                 {
-                    favoriteRepos = JsonConvert.DeserializeObject<TreeNode<FavoriteRepo>>( Settings.Default.FavoriteReposJsonString, FavoriteReposContractResolver.Settings );
+                    favoriteRepos = JsonConvert.DeserializeObject<FavoriteFolder>( Settings.Default.FavoriteReposJsonString, new JsonSerializerSettings()
+                    {
+                        Converters = new [] { new FavoriteJsonConverter() }
+                    } );
                 }
                 catch( JsonException e )
                 {
                     LOG.Error( $"Failed to deserialize Favorite Repos setting - Favorited Repos:\n{Settings.Default.FavoriteReposJsonString}", e );
                 }
 
-                if( favoriteRepos == null || favoriteRepos.Value != Settings.Default.DefaultFavoriteRepos.Value )
+                if( favoriteRepos == null )
                 {
                     return Settings.Default.DefaultFavoriteRepos;
                 }
@@ -142,7 +147,7 @@ namespace TabbedTortoiseGit.Properties
             {
                 try
                 {
-                    Settings.Default.FavoriteReposJsonString = JsonConvert.SerializeObject( value, FavoriteReposContractResolver.Settings );
+                    Settings.Default.FavoriteReposJsonString = JsonConvert.SerializeObject( value, Formatting.Indented );
                 }
                 catch( JsonException e )
                 {
@@ -211,11 +216,11 @@ namespace TabbedTortoiseGit.Properties
             }
         }
 
-        public TreeNode<FavoriteRepo> DefaultFavoriteRepos
+        public FavoriteFolder DefaultFavoriteRepos
         {
             get
             {
-                return new TreeNode<FavoriteRepo>( new FavoriteRepo( "Favorites", "", false, true, Color.Black, null ) );
+                return new FavoriteFolder( "Favorites", Color.Black );
             }
         }
 
@@ -289,26 +294,26 @@ namespace TabbedTortoiseGit.Properties
                 Settings.Default.Upgrade();
                 Settings.Default.UpgradeRequired = false;
 
-                bool upgradedRepoString = false;
+                bool upgradedFavoriteReposString = false;
                 try
                 {
                     if( Settings.Default.GetPreviousVersion( "FavoriteReposString" ) is String reposString )
                     {
                         Dictionary<String, String> favoritedRepos = JsonConvert.DeserializeObject<Dictionary<String, String>>( reposString );
 
-                        TreeNode<FavoriteRepo> root = Settings.Default.DefaultFavoriteRepos;
+                        FavoriteFolder root = Settings.Default.DefaultFavoriteRepos;
 
                         if( favoritedRepos != null )
                         {
                             foreach( KeyValuePair<String, String> favorite in favoritedRepos )
                             {
-                                root.Add( new FavoriteRepo( favorite.Key, favorite.Value, true, false, Color.Black, null ) );
+                                root.Children.Add( new FavoriteRepo( favorite.Key, favorite.Value, true, Color.Black, null ) );
                             }
                         }
 
                         Settings.Default.FavoriteRepos = root;
 
-                        upgradedRepoString = true;
+                        upgradedFavoriteReposString = true;
                     }
                 }
                 catch( SettingsPropertyNotFoundException ex )
@@ -320,7 +325,7 @@ namespace TabbedTortoiseGit.Properties
                     LOG.Error( "Failed to upgrade FavoriteReposString setting", ex );
                 }
 
-                if( !upgradedRepoString )
+                if( !upgradedFavoriteReposString )
                 {
                     try
                     {
@@ -328,24 +333,60 @@ namespace TabbedTortoiseGit.Properties
                         {
                             Dictionary<String, String> favoritedRepos = JsonConvert.DeserializeObject<Dictionary<String, String>>( reposString );
 
-                            TreeNode<FavoriteRepo> root = Settings.Default.DefaultFavoriteRepos;
+                            FavoriteFolder root = Settings.Default.DefaultFavoriteRepos;
 
                             if( favoritedRepos != null )
                             {
                                 foreach( KeyValuePair<String, String> favorite in favoritedRepos )
                                 {
-                                    root.Add( new FavoriteRepo( favorite.Key, favorite.Value, true, false, Color.Black, null ) );
+                                    root.Children.Add( new FavoriteRepo( favorite.Key, favorite.Value, true, Color.Black, null ) );
                                 }
                             }
 
                             Settings.Default.FavoriteRepos = root;
 
-                            upgradedRepoString = true;
+                            upgradedFavoriteReposString = true;
                         }
                     }
                     catch( SettingsPropertyNotFoundException ex )
                     {
                         LOG.Error( "Failed to upgrade FavoritedRepos setting", ex );
+                    }
+                }
+
+                if( !upgradedFavoriteReposString )
+                {
+                    String favoriteReposString = Settings.Default.FavoriteReposJsonString;
+                    if( !String.IsNullOrEmpty( favoriteReposString )
+                     && !favoriteReposString.Contains( "\"Type\":" ) )
+                    {
+                        try
+                        {
+                            TreeNode<OldFavoriteRepo>? favoriteRepos = JsonConvert.DeserializeObject<TreeNode<OldFavoriteRepo>>( Settings.Default.FavoriteReposJsonString, OldFavoriteReposContractResolver.Settings );
+                            if( favoriteRepos != null )
+                            {
+                                Favorite favorites = OldTreeNodeFavoriteToFavorite( favoriteRepos );
+                                if( favorites is FavoriteFolder folder )
+                                {
+                                    Settings.Default.FavoriteRepos = folder;
+                                    upgradedFavoriteReposString = true;
+                                    LOG.Debug( "Upgraded tree-based FavoriteRepos to new Favorites" );
+                                }
+                                else
+                                {
+                                    FavoriteFolder f = Settings.Default.DefaultFavoriteRepos;
+                                    f.Children.Add( favorites );
+
+                                    Settings.Default.FavoriteRepos = f;
+                                    upgradedFavoriteReposString = true;
+                                    LOG.Debug( "Upgraded tree-based FavoriteRepos to new Favorites" );
+                                }
+                            }
+                        }
+                        catch( JsonException ex )
+                        {
+                            LOG.Error( $"Failed to upgrade FavoriteReposJsonString setting to new subclassed FavoriteRepos - Favorite Repos Json String:\n{favoriteReposString}", ex );
+                        }
                     }
                 }
 
@@ -473,6 +514,180 @@ namespace TabbedTortoiseGit.Properties
             }
 
             Settings.Default.Save();
+        }
+
+        private Favorite OldTreeNodeFavoriteToFavorite( TreeNode<OldFavoriteRepo> favorite )
+        {
+            if( favorite.Value.IsFavoriteFolder )
+            {
+                return new FavoriteFolder( favorite.Value.Name, favorite.Value.Color, favorite.Children.Select( OldTreeNodeFavoriteToFavorite ) );
+            }
+            else
+            {
+                return new FavoriteRepo( favorite.Value.Name, favorite.Value.Repo, favorite.Value.IsDirectory, favorite.Value.Color, favorite.Value.References );
+            }
+        }
+
+        private class OldFavoriteRepo
+        {
+            public String Name { get; private set; }
+            public String Repo { get; private set; }
+            public bool IsDirectory { get; private set; }
+            public Color Color { get; private set; }
+            public IReadOnlyList<String> References { get; private set; }
+
+            public bool IsFavoriteFolder { get; private set; }
+
+            [JsonConstructor]
+            public OldFavoriteRepo( String name, String repo, bool isDirectory, bool isFavoriteFolder, Color color, IEnumerable<String>? references )
+            {
+                Name = name ?? "";
+                Color = color;
+
+                IsFavoriteFolder = isFavoriteFolder;
+                if( !IsFavoriteFolder )
+                {
+                    Repo = repo ?? "";
+                    IsDirectory = isDirectory;
+                    References = references?.ToList().AsReadOnly() ?? new List<String>().AsReadOnly();
+                }
+                else
+                {
+                    Repo = "";
+                    IsDirectory = false;
+                    References = new List<String>().AsReadOnly();
+                }
+            }
+
+            public override bool Equals( object? obj )
+            {
+                return this.Equals( obj as FavoriteRepo );
+            }
+
+            public bool Equals( OldFavoriteRepo? o )
+            {
+                if( o is null )
+                {
+                    return false;
+                }
+
+                if( this.Name != o.Name )
+                {
+                    return false;
+                }
+
+                if( this.Repo != o.Repo )
+                {
+                    return false;
+                }
+
+                if( this.IsDirectory != o.IsDirectory )
+                {
+                    return false;
+                }
+
+                if( this.IsFavoriteFolder != o.IsFavoriteFolder )
+                {
+                    return false;
+                }
+
+                return true;
+            }
+
+            public static bool operator ==( OldFavoriteRepo? a, OldFavoriteRepo? b )
+            {
+                if( Object.ReferenceEquals( a, b ) )
+                {
+                    return true;
+                }
+
+                if( a is null || b is null )
+                {
+                    return false;
+                }
+
+                return a.Equals( b );
+            }
+
+            public static bool operator !=( OldFavoriteRepo a, OldFavoriteRepo b )
+            {
+                return !( a == b );
+            }
+
+            public override int GetHashCode()
+            {
+                unchecked
+                {
+                    int hash = 23;
+                    hash = ( hash * 29 ) ^ ( this.Name?.GetHashCode() ?? 0 );
+                    hash = ( hash * 31 ) ^ ( this.Repo?.GetHashCode() ?? 0 );
+                    hash = ( hash * 37 ) ^ this.IsDirectory.GetHashCode();
+                    hash = ( hash * 41 ) ^ this.IsFavoriteFolder.GetHashCode();
+                    return hash;
+                }
+            }
+        }
+
+        class OldFavoriteReposContractResolver : DefaultContractResolver
+        {
+            public static readonly OldFavoriteReposContractResolver Instance = new OldFavoriteReposContractResolver();
+
+            public static JsonSerializerSettings Settings
+            {
+                get
+                {
+                    return new JsonSerializerSettings()
+                    {
+                        ContractResolver = Instance,
+                        Formatting = Formatting.Indented
+                    };
+                }
+            }
+
+            protected override JsonProperty CreateProperty( MemberInfo member, MemberSerialization memberSerialization )
+            {
+                JsonProperty property = base.CreateProperty( member, memberSerialization );
+
+                if( property.DeclaringType == typeof( OldFavoriteRepo ) )
+                {
+                    if( property.PropertyName == nameof( OldFavoriteRepo.Repo ) )
+                    {
+                        property.ShouldSerialize = ShouldNotSerializeIfFavoriteFolder;
+                        property.DefaultValue = false;
+                    }
+                    else if( property.PropertyName == nameof( OldFavoriteRepo.IsDirectory ) )
+                    {
+                        property.ShouldSerialize = ShouldNotSerializeIfFavoriteFolder;
+                        property.DefaultValue = false;
+                    }
+                    else if( property.PropertyName == nameof( OldFavoriteRepo.References ) )
+                    {
+                        property.ShouldSerialize = ( instance ) =>
+                        {
+                            OldFavoriteRepo favoriteRepo = (OldFavoriteRepo)instance;
+                            return !favoriteRepo.IsFavoriteFolder && favoriteRepo.References.Count > 0;
+                        };
+                    }
+                }
+                else if( property.DeclaringType == typeof( TreeNode<OldFavoriteRepo> ) )
+                {
+                    if( property.PropertyName == nameof( TreeNode<OldFavoriteRepo>.Children ) )
+                    {
+                        property.ShouldSerialize = ( instance ) =>
+                        {
+                            TreeNode<OldFavoriteRepo> favorite = (TreeNode<OldFavoriteRepo>)instance;
+                            return favorite.Children.Count > 0;
+                        };
+                    }
+                }
+
+                return property;
+            }
+
+            private bool ShouldNotSerializeIfFavoriteFolder( Object instance )
+            {
+                return !( (OldFavoriteRepo)instance ).IsFavoriteFolder;
+            }
         }
     }
 }

@@ -63,9 +63,8 @@
       <HintPath>..\packages\WindowsAPICodePack-Shell.1.1.1\lib\Microsoft.WindowsAPICodePack.Shell.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="Newtonsoft.Json, Version=10.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
-      <HintPath>..\packages\Newtonsoft.Json.10.0.2\lib\net45\Newtonsoft.Json.dll</HintPath>
-      <Private>True</Private>
+    <Reference Include="Newtonsoft.Json, Version=12.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\packages\Newtonsoft.Json.12.0.3\lib\net45\Newtonsoft.Json.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Collections.Immutable, Version=1.2.1.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
@@ -121,14 +120,20 @@
     <Compile Include="FastSubmoduleUpdateDialog.Designer.cs">
       <DependentUpon>FastSubmoduleUpdateDialog.cs</DependentUpon>
     </Compile>
-    <Compile Include="FavoriteCreatorDialog.cs">
+    <Compile Include="FavoriteRepoCreatorDialog.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="FavoriteCreatorDialog.Designer.cs">
-      <DependentUpon>FavoriteCreatorDialog.cs</DependentUpon>
+    <Compile Include="FavoriteRepoCreatorDialog.Designer.cs">
+      <DependentUpon>FavoriteRepoCreatorDialog.cs</DependentUpon>
     </Compile>
-    <Compile Include="FavoriteRepo.cs" />
-    <Compile Include="FavoriteReposContractResolver.cs" />
+    <Compile Include="FavoriteFolderCreatorDialog.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FavoriteFolderCreatorDialog.Designer.cs">
+      <DependentUpon>FavoriteFolderCreatorDialog.cs</DependentUpon>
+    </Compile>
+    <Compile Include="FavoriteJsonConverter.cs" />
+    <Compile Include="Favorite.cs" />
     <Compile Include="FavoritesManagerDialog.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -139,7 +144,7 @@
     <Compile Include="HotKey.cs" />
     <Compile Include="KeyboardShortcuts.cs" />
     <Compile Include="Native.cs" />
-    <Compile Include="NoTypeConverterJsonConverter.cs" />
+    <Compile Include="ForceJsonConverter.cs" />
     <Compile Include="ProcessHelper.cs" />
     <Compile Include="ProgressDialog.cs">
       <SubType>Form</SubType>
@@ -206,8 +211,11 @@
     <EmbeddedResource Include="FastSubmoduleUpdateDialog.resx">
       <DependentUpon>FastSubmoduleUpdateDialog.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="FavoriteCreatorDialog.resx">
-      <DependentUpon>FavoriteCreatorDialog.cs</DependentUpon>
+    <EmbeddedResource Include="FavoriteRepoCreatorDialog.resx">
+      <DependentUpon>FavoriteRepoCreatorDialog.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FavoriteFolderCreatorDialog.resx">
+      <DependentUpon>FavoriteFolderCreatorDialog.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="FavoritesManagerDialog.resx">
       <DependentUpon>FavoritesManagerDialog.cs</DependentUpon>

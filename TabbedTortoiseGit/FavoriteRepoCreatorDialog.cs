@@ -1,5 +1,6 @@
 ﻿#nullable enable
 
+using Microsoft.WindowsAPICodePack.Dialogs;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -14,41 +15,14 @@ using TabbedTortoiseGit.Properties;
 
 namespace TabbedTortoiseGit
 {
-    public partial class FavoriteCreatorDialog : Form
+    public partial class FavoriteRepoCreatorDialog : Form
     {
-        private String _favoriteRepo = "";
-        private Color _favoriteColor;
-
-        public bool IsFavoritesFolder { get; private set; }
-
-        public String FavoriteRepo
+        private readonly CommonOpenFileDialog _favoriteRepoDialog = new CommonOpenFileDialog()
         {
-            get
-            {
-                if( IsFavoritesFolder )
-                {
-                    return "";
-                }
-                else
-                {
-                    return _favoriteRepo;
-                }
-            }
+            IsFolderPicker = true
+        };
 
-            set
-            {
-                if( IsFavoritesFolder || String.IsNullOrWhiteSpace( value ) )
-                {
-                    _favoriteRepo = "";
-                    this.Text = "Favorite Creator";
-                }
-                else
-                {
-                    _favoriteRepo = value;
-                    this.Text = "Favorite Creator - " + _favoriteRepo;
-                }
-            }
-        }
+        private Color _favoriteColor;
 
         public String FavoriteName
         {
@@ -60,6 +34,19 @@ namespace TabbedTortoiseGit
             set
             {
                 FavoriteNameText.Text = value;
+            }
+        }
+
+        public String FavoriteRepo
+        {
+            get
+            {
+                return FavoriteRepoText.Text;
+            }
+
+            set
+            {
+                FavoriteRepoText.Text = value;
             }
         }
 
@@ -82,31 +69,19 @@ namespace TabbedTortoiseGit
         {
             get
             {
-                if( IsFavoritesFolder )
-                {
-                    return Enumerable.Empty<String>();
-                }
-                else
-                {
-                    return ReferencesListBox.Items.Cast<String>();
-                }
+                return ReferencesListBox.Items.Cast<String>();
             }
 
             set
             {
                 ReferencesListBox.Items.Clear();
-
-                if( !IsFavoritesFolder )
-                {
-                    String[] references = value.ToArray();
-                    ReferencesListBox.Items.AddRange( references );
-                }
+                ReferencesListBox.Items.AddRange( value.ToArray() );
             }
         }
 
-        public static FavoriteCreatorDialog FromFavoriteRepo( FavoriteRepo favorite )
+        public static FavoriteRepoCreatorDialog FromFavoriteRepo( FavoriteRepo favorite )
         {
-            return new FavoriteCreatorDialog( favorite.IsFavoriteFolder )
+            return new FavoriteRepoCreatorDialog()
             {
                 FavoriteRepo = favorite.Repo,
                 FavoriteName = favorite.Name,
@@ -115,18 +90,18 @@ namespace TabbedTortoiseGit
             };
         }
 
-        public FavoriteCreatorDialog( bool isFavoriteFolder )
+        public FavoriteRepoCreatorDialog()
         {
             InitializeComponent();
 
             this.Icon = Resources.TortoiseIcon;
 
-            this.IsFavoritesFolder = isFavoriteFolder;
-
             this.FavoriteRepo = "";
             this.FavoriteName = "";
             this.FavoriteColor = Color.Black;
             this.FavoriteReferences = Enumerable.Empty<String>();
+
+            BrowseButton.Click += BrowseButton_Click;
 
             SelectReferencesButton.Click += SelectReferencesButton_Click;
             RemoveReferencesButton.Click += RemoveReferencesButton_Click;
@@ -134,26 +109,29 @@ namespace TabbedTortoiseGit
             ChangeFavoriteColorButton.Click += ChangeFavoriteColorButton_Click;
 
             Ok.Click += Ok_Click;
-
-            if( IsFavoritesFolder )
-            {
-                ReferencesGroup.Visible = false;
-
-                TableLayout.RowStyles[ 1 ] = new RowStyle( SizeType.Absolute, 0.0f );
-                TableLayout.AutoSize = true;
-                TableLayout.AutoSizeMode = AutoSizeMode.GrowAndShrink;
-
-                this.MinimumSize = new Size( 0, 0 );
-                this.AutoSize = true;
-                this.AutoSizeMode = AutoSizeMode.GrowAndShrink;
-                this.FormBorderStyle = FormBorderStyle.Fixed3D;
-            }
         }
 
         public FavoriteRepo ToFavoriteRepo()
         {
-            bool isDirectory = !IsFavoritesFolder && Directory.Exists( FavoriteRepo );
-            return new FavoriteRepo( FavoriteName, FavoriteRepo, isDirectory, IsFavoritesFolder, FavoriteColor, FavoriteReferences );
+            bool isDirectory = Directory.Exists( FavoriteRepo );
+            return new FavoriteRepo( FavoriteName, FavoriteRepo, isDirectory, FavoriteColor, FavoriteReferences );
+        }
+
+        private void BrowseButton_Click( object sender, EventArgs e )
+        {
+            if( Directory.Exists( this.FavoriteRepo ) )
+            {
+                _favoriteRepoDialog.DefaultDirectory = this.FavoriteRepo;
+            }
+            else
+            {
+                _favoriteRepoDialog.DefaultFileName = this.FavoriteRepo;
+            }
+
+            if( _favoriteRepoDialog.ShowDialog() == CommonFileDialogResult.Ok )
+            {
+                this.FavoriteRepo = _favoriteRepoDialog.FileName;
+            }
         }
 
         private void RemoveReferencesButton_Click( object sender, EventArgs e )
@@ -185,7 +163,12 @@ namespace TabbedTortoiseGit
         {
             if( String.IsNullOrWhiteSpace( this.FavoriteName ) )
             {
-                MessageBox.Show( "Favorite name cannot be empty.", "Invalid Favorite Name", MessageBoxButtons.OK );
+                MessageBox.Show( "Favorite name cannot be empty.", "Invalid Favorite Name", MessageBoxButtons.OK, MessageBoxIcon.Error );
+            }
+            else if( !Directory.Exists( this.FavoriteRepo )
+                  && !File.Exists( this.FavoriteRepo ) )
+            {
+                MessageBox.Show( "Favorite repo location does not exist.", "Invalid Favorite Repo", MessageBoxButtons.OK, MessageBoxIcon.Error );
             }
             else
             {

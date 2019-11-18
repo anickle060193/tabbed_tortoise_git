@@ -27,12 +27,12 @@ namespace TabbedTortoiseGit
             return JsonSerializer.CreateDefault( settings );
         }
 
-        public override object ReadJson( JsonReader reader, Type objectType, object existingValue, JsonSerializer serializer )
+        public override object? ReadJson( JsonReader reader, Type objectType, object? existingValue, JsonSerializer serializer )
         {
             return CreateNoTypeSerializer().Deserialize( reader, objectType );
         }
 
-        public override void WriteJson( JsonWriter writer, object value, JsonSerializer serializer )
+        public override void WriteJson( JsonWriter writer, object? value, JsonSerializer serializer )
         {
             CreateNoTypeSerializer().Serialize( writer, value );
         }
