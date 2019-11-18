@@ -40,9 +40,9 @@ namespace TabbedTortoiseGit
 
             return type switch
             {
-                FavoriteType.Repo => o.ToObject<FavoriteRepo>(),
-                FavoriteType.Folder => o.ToObject<FavoriteFolder>(),
-                FavoriteType.ReposDirectory => o.ToObject<FavoriteReposDirectory>(),
+                FavoriteType.Repo => o.ToObject<FavoriteRepo>( serializer ),
+                FavoriteType.Folder => o.ToObject<FavoriteFolder>( serializer ),
+                FavoriteType.ReposDirectory => o.ToObject<FavoriteReposDirectory>( serializer ),
                 _ => throw new JsonSerializationException( $"Unknown {nameof( FavoriteType )}: {type}" ),
             };
         }

@@ -170,6 +170,10 @@ namespace TabbedTortoiseGit
             {
                 MessageBox.Show( "Favorite repo location does not exist.", "Invalid Favorite Repo", MessageBoxButtons.OK, MessageBoxIcon.Error );
             }
+            else if( !Git.IsInRepo( this.FavoriteRepo ) )
+            {
+                MessageBox.Show( "Favorite repo location is not a repo.", "Invalid Favorite Repo", MessageBoxButtons.OK, MessageBoxIcon.Error );
+            }
             else
             {
                 this.DialogResult = DialogResult.OK;

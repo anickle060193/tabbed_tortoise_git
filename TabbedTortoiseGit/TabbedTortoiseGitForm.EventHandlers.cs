@@ -264,8 +264,15 @@ namespace TabbedTortoiseGit
         private async void FavoriteRepoMenuItem_Click( object sender, EventArgs e )
         {
             ToolStripItem item = (ToolStripItem)sender;
-            FavoriteRepo favorite = (FavoriteRepo)item.Tag;
-            await OpenLog( favorite.Repo, favorite.References );
+            Favorite favorite = (Favorite)item.Tag;
+            if( favorite is FavoriteRepo repo )
+            {
+                await OpenLog( repo.Repo, repo.References );
+            }
+            else if( favorite is FavoriteReposDirectoryRepo subrepo )
+            {
+                await OpenLog( subrepo.Repo );
+            }
         }
 
         private void FavoritesMenuStrip_MouseClick( object sender, MouseEventArgs e )
@@ -297,6 +304,16 @@ namespace TabbedTortoiseGit
                 else if( favorite is FavoriteRepo )
                 {
                     favoriteContextMenu = FavoriteRepoContextMenu;
+
+                    EditFavoriteContextMenuItem.Visible = true;
+                    RemoveFavoriteContextMenuItem.Visible = true;
+                }
+                else if( favorite is FavoriteReposDirectoryRepo )
+                {
+                    favoriteContextMenu = FavoriteRepoContextMenu;
+
+                    EditFavoriteContextMenuItem.Visible = false;
+                    RemoveFavoriteContextMenuItem.Visible = false;
                 }
                 else
                 {
@@ -332,8 +349,27 @@ namespace TabbedTortoiseGit
             ToolStripMenuItem contextMenuItem = (ToolStripMenuItem)sender;
             ToolStrip contextMenu = contextMenuItem.Owner;
 
-            FavoriteRepo favorite = (FavoriteRepo)contextMenu.Tag;
-            Util.OpenInExplorer( favorite.Repo );
+            Favorite favorite = (Favorite)contextMenu.Tag;
+
+            String location;
+            if( favorite is FavoriteRepo repo )
+            {
+                location = repo.Repo;
+            }
+            else if( favorite is FavoriteReposDirectory dir )
+            {
+                location = dir.Directory;
+            }
+            else if( favorite is FavoriteReposDirectoryRepo subrepo )
+            {
+                location = subrepo.Repo;
+            }
+            else
+            {
+                return;
+            }
+
+            Util.OpenInExplorer( location );
         }
 
         private async void OpenFavoriteWithReferencesContextMenuItem_Click( object sender, EventArgs e )
@@ -341,13 +377,26 @@ namespace TabbedTortoiseGit
             ToolStripMenuItem contextMenuItem = (ToolStripMenuItem)sender;
             ToolStrip contextMenu = contextMenuItem.Owner;
 
-            FavoriteRepo favorite = (FavoriteRepo)contextMenu.Tag;
-            String repo = Git.GetBaseRepoDirectoryOrError( favorite.Repo );
+            Favorite favorite = (Favorite)contextMenu.Tag;
+
+            String repo;
+            if( favorite is FavoriteRepo r )
+            {
+                repo = r.Repo;
+            }
+            else if( favorite is FavoriteReposDirectoryRepo subrepo )
+            {
+                repo = subrepo.Repo;
+            }
+            else
+            {
+                return;
+            }
 
             using ReferencesDialog dialog = new ReferencesDialog( repo );
             if( dialog.ShowDialog() == DialogResult.OK )
             {
-                await OpenLog( favorite.Repo, dialog.SelectedReferences );
+                await OpenLog( repo, dialog.SelectedReferences );
             }
         }
 
@@ -356,10 +405,24 @@ namespace TabbedTortoiseGit
             ToolStripMenuItem contextMenuItem = (ToolStripMenuItem)sender;
             ToolStrip contextMenu = contextMenuItem.Owner;
 
-            FavoriteRepo favorite = (FavoriteRepo)contextMenu.Tag;
+            Favorite favorite = (Favorite)contextMenu.Tag;
             GitActionFunc gitActionFunc = (GitActionFunc)contextMenuItem.Tag;
 
-            await gitActionFunc.Invoke( favorite.Repo );
+            String repo;
+            if( favorite is FavoriteRepo r )
+            {
+                repo = r.Repo;
+            }
+            else if( favorite is FavoriteReposDirectoryRepo subrepo )
+            {
+                repo = subrepo.Repo;
+            }
+            else
+            {
+                return;
+            }
+
+            await gitActionFunc.Invoke( repo );
         }
 
         private void CustomActionFavoriteContextMenuItem_Click( object sender, EventArgs e )
@@ -367,37 +430,46 @@ namespace TabbedTortoiseGit
             ToolStripMenuItem contextMenuItem = (ToolStripMenuItem)sender;
             ToolStrip contextMenu = contextMenuItem.Owner;
 
-            FavoriteRepo favorite = (FavoriteRepo)contextMenu.Tag;
+            Favorite favorite = (Favorite)contextMenu.Tag;
             CustomAction customAction = (CustomAction)contextMenuItem.Tag;
 
-            RunCustomAction( null, customAction, favorite.Repo );
+            String repo;
+            if( favorite is FavoriteRepo r )
+            {
+                repo = r.Repo;
+            }
+            else if( favorite is FavoriteReposDirectoryRepo subrepo )
+            {
+                repo = subrepo.Repo;
+            }
+            else
+            {
+                return;
+            }
+
+            RunCustomAction( null, customAction, repo );
         }
 
         private void EditFavoriteContextMenuItem_Click( object sender, EventArgs e )
         {
+            if( _favoriteRepos is null )
+            {
+                LOG.Error( $"{nameof( EditFavoriteContextMenuItem_Click )} - Favorite repos is null" );
+                return;
+            }
+
             ToolStripMenuItem contextMenuItem = (ToolStripMenuItem)sender;
             ToolStrip contextMenu = contextMenuItem.Owner;
 
             Favorite favorite = (Favorite)contextMenu.Tag;
 
+            Favorite? newFavorite = null;
             if( favorite is FavoriteFolder folder )
             {
                 using FavoriteFolderCreatorDialog dialog = FavoriteFolderCreatorDialog.FromFavoriteFolder( folder );
                 if( dialog.ShowDialog() == DialogResult.OK )
                 {
-                    FavoriteFolder newFolder = dialog.ToFavoriteFolder();
-
-                    if( _favoriteRepos?.Replace( folder, newFolder ) == true )
-                    {
-                        Settings.Default.FavoriteRepos = _favoriteRepos!;
-                        Settings.Default.Save();
-
-                        UpdateFavoriteReposFromSettings();
-                    }
-                    else
-                    {
-                        LOG.Error( $"{nameof( EditFavoriteContextMenuItem_Click )} - Faild to replace old favorite folder with new favorite - Old: {folder} - New: {newFolder}" );
-                    }
+                    newFavorite = dialog.ToFavoriteFolder();
                 }
             }
             else if( favorite is FavoriteRepo repo )
@@ -405,20 +477,33 @@ namespace TabbedTortoiseGit
                 using FavoriteRepoCreatorDialog dialog = FavoriteRepoCreatorDialog.FromFavoriteRepo( repo );
                 if( dialog.ShowDialog() == DialogResult.OK )
                 {
-                    FavoriteRepo newRepo = dialog.ToFavoriteRepo();
-
-                    if( _favoriteRepos?.Replace( repo, newRepo ) == true )
-                    {
-                        Settings.Default.FavoriteRepos = _favoriteRepos!;
-                        Settings.Default.Save();
-
-                        UpdateFavoriteReposFromSettings();
-                    }
-                    else
-                    {
-                        LOG.Error( $"{nameof( EditFavoriteContextMenuItem_Click )} - Faild to replace old favorite repo with new favorite - Old: {repo} - New: {newRepo}" );
-                    }
+                    newFavorite = dialog.ToFavoriteRepo();
                 }
+            }
+            else if( favorite is FavoriteReposDirectory directory )
+            {
+                using FavoriteReposDirectoryCreatorDialog dialog = FavoriteReposDirectoryCreatorDialog.FromFavoriteReposDirectory( directory );
+                if( dialog.ShowDialog() == DialogResult.OK )
+                {
+                    newFavorite = dialog.ToFavoriteReposDirectory();
+                }
+            }
+            else
+            {
+                LOG.Error( $"{nameof( EditFavoriteContextMenuItem_Click )} - Unknown favorite type: {favorite}" );
+            }
+
+            if( newFavorite != null )
+            {
+                if( !_favoriteRepos.Replace( favorite, newFavorite ) )
+                {
+                    LOG.Error( $"{nameof( EditFavoriteContextMenuItem_Click )} - Failed to replace old favorite: {favorite} - {newFavorite}" );
+                    return;
+                }
+
+                Settings.Default.FavoriteRepos = _favoriteRepos!;
+                Settings.Default.Save();
+                UpdateFavoriteReposFromSettings();
             }
         }
 

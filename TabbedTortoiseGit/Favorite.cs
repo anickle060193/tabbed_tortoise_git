@@ -101,6 +101,11 @@ namespace TabbedTortoiseGit
             return null;
         }
 
+        public FavoriteFolder? FindParent( Favorite favorite )
+        {
+            return this.BreadFirstSearch( ( f ) => f is FavoriteFolder ff && ff.Children.Contains( favorite ) ) as FavoriteFolder;
+        }
+
         public bool Remove( Favorite favorite )
         {
             if( this.Children.Remove( favorite ) )
@@ -113,6 +118,28 @@ namespace TabbedTortoiseGit
                 {
                     if( child is FavoriteFolder folder
                      && folder.Remove( favorite ) )
+                    {
+                        return true;
+                    }
+                }
+                return false;
+            }
+        }
+
+        public bool InsertBefore( Favorite reference, Favorite newFavorite )
+        {
+            int index = this.Children.IndexOf( reference );
+            if( index >= 0 )
+            {
+                this.Children.Insert( index, newFavorite );
+                return true;
+            }
+            else
+            {
+                foreach( Favorite child in this.Children )
+                {
+                    if( child is FavoriteFolder folder
+                     && folder.InsertBefore( reference, newFavorite ) )
                     {
                         return true;
                     }
@@ -153,28 +180,44 @@ namespace TabbedTortoiseGit
     {
         public String Directory { get; private set; }
 
-        [JsonIgnore]
-        public List<Favorite> Children
-        {
-            get
-            {
-                return System.IO.Directory
-                    .GetDirectories( this.Directory )
-                    .Where( ( dir ) => Repository.IsValid( dir ) )
-                    .Select( ( dir ) => new FavoriteRepo( Native.GetRelativePath( this.Directory, dir ), dir, true, this.Color, null ) )
-                    .ToList<Favorite>();
-            }
-        }
-
         [JsonConstructor]
         public FavoriteReposDirectory( String name, String directory, Color color ): base( name, color, FavoriteType.ReposDirectory )
         {
             this.Directory = directory;
         }
 
+        public List<Favorite> GetRepos()
+        {
+            return System.IO.Directory
+                .GetDirectories( this.Directory )
+                .Where( ( dir ) => Repository.IsValid( dir ) )
+                .Select( ( dir ) =>
+                {
+                    String name = dir.Replace( this.Directory, "" ).TrimStart( Path.DirectorySeparatorChar, Path.AltDirectorySeparatorChar );
+                    return new FavoriteReposDirectoryRepo( name, dir, this.Color );
+                } )
+                .ToList<Favorite>();
+        }
+
         public override string ToString()
         {
             return $"{nameof( FavoriteReposDirectory )}( {base.ToString()} Directory={this.Directory} )";
+        }
+    }
+
+    public class FavoriteReposDirectoryRepo : Favorite
+    {
+        public String Repo { get; private set; }
+
+        [JsonConstructor]
+        public FavoriteReposDirectoryRepo( String name, String repo, Color color ) : base( name, color, FavoriteType.Repo )
+        {
+            this.Repo = repo;
+        }
+
+        public override string ToString()
+        {
+            return $"{nameof( FavoriteReposDirectoryRepo )}( {base.ToString()} Repo={this.Repo} )";
         }
     }
 }

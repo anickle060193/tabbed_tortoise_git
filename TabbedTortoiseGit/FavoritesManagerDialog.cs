@@ -21,12 +21,15 @@ namespace TabbedTortoiseGit
 {
     partial class FavoritesManagerDialog : Form
     {
+        private static readonly ILog LOG = LogManager.GetLogger( nameof( FavoritesManagerDialog ) );
+
         public static bool ShowFavoritesManager()
         {
             using FavoritesManagerDialog dialog = new FavoritesManagerDialog( Settings.Default.FavoriteRepos );
             if( dialog.ShowDialog() == DialogResult.OK )
             {
                 Settings.Default.FavoriteRepos = dialog.Favorites;
+                Settings.Default.Save();
                 return true;
             }
             else
@@ -37,13 +40,8 @@ namespace TabbedTortoiseGit
 
         public FavoriteFolder Favorites { get; }
 
-        private readonly CommonOpenFileDialog _folderDialog = new CommonOpenFileDialog()
-        {
-            IsFolderPicker = true
-        };
-
+        private Favorite? _selectedFavoriteItem;
         //private readonly FavoritesDragDropHelper _favoritesDragDropHelper;
-        //private Favorite? _selectedFavoriteItem;
 
         private FavoritesManagerDialog( FavoriteFolder favorites )
         {
@@ -51,20 +49,16 @@ namespace TabbedTortoiseGit
 
             this.Icon = Resources.TortoiseIcon;
 
-            //FavoritesTree.MouseUp += FavoritesTree_MouseUp;
+            FavoritesTree.MouseUp += FavoritesTree_MouseUp;
 
-            //FavoritesContextMenu.Opening += FavoritesContextMenu_Opening;
+            FavoritesContextMenu.Opening += FavoritesContextMenu_Opening;
 
-            //CreateFavoritesFolderMenuItem.Click += CreateFavoritesFolderMenuItem_Click;
+            AddFavoritesFolderMenuItem.Click += AddFavoritesFolderMenuItem_Click;
+            AddRepoMenuItem.Click += AddRepoMenuItem_Click;
+            AddReposDirectoryMenuItem.Click += AddReposDirectoryMenuItem_Click;
 
-            //AddFavoriteFileMenuItem.Click += AddFavoriteFileMenuItem_Click;
-            //AddFavoriteFolderMenuItem.Click += AddFavoriteFolderMenuItem_Click;
-
-            //EditFavoriteItemMenuItem.Click += EditFavoriteItemMenuItem_Click;
-
-            //RemoveFavoriteItemMenuItem.Click += RemoveFavoriteItemMenuItem_Click;
-
-            //FindFavoriteFileDialog.FileOk += FindFavoriteFileDialog_FileOk;
+            EditFavoriteMenuItem.Click += EditFavoriteMenuItem_Click;
+            RemoveFavoriteMenuItem.Click += RemoveFavoriteMenuItem_Click;
 
             //_favoritesDragDropHelper = new FavoritesDragDropHelper( this );
             //_favoritesDragDropHelper.AddControl( FavoritesTree );
@@ -73,167 +67,178 @@ namespace TabbedTortoiseGit
             UpdateFavoritesTree( Favorites );
         }
 
-        //private void FavoritesTree_MouseUp( object sender, MouseEventArgs e )
-        //{
-        //    if( e.Button == MouseButtons.Right )
-        //    {
-        //        TreeNode node = FavoritesTree.GetNodeAt( e.Location );
-        //        FavoritesTree.SelectedNode = node;
-        //        _selectedFavoriteItem = node?.Tag as Favorite ?? Favorites;
-        //        if( _selectedFavoriteItem != null )
-        //        {
-        //            FavoritesContextMenu.Show( FavoritesTree, e.Location );
-        //        }
-        //    }
-        //}
+        private void FavoritesTree_MouseUp( object sender, MouseEventArgs e )
+        {
+            if( e.Button == MouseButtons.Right )
+            {
+                TreeNode node = FavoritesTree.GetNodeAt( e.Location );
+                FavoritesTree.SelectedNode = node;
+                _selectedFavoriteItem = node?.Tag as Favorite ?? Favorites;
+                if( _selectedFavoriteItem != null )
+                {
+                    FavoritesContextMenu.Show( FavoritesTree, e.Location );
+                }
+            }
+        }
 
-        //private void FavoritesContextMenu_Opening( object sender, CancelEventArgs e )
-        //{
-        //    if( _selectedFavoriteItem == null )
-        //    {
-        //        throw new InvalidOperationException( "No selected favorite item." );
-        //    }
+        private void FavoritesContextMenu_Opening( object sender, CancelEventArgs e )
+        {
+            if( _selectedFavoriteItem == null )
+            {
+                LOG.Error( $"{nameof( FavoritesContextMenu_Opening )} - Selected favorite is null" );
+                return;
+            }
 
-        //    if( _selectedFavoriteItem == Favorites )
-        //    {
-        //        EditFavoriteItemMenuItem.Enabled = false;
-        //        RemoveFavoriteItemMenuItem.Enabled = false;
-        //    }
-        //    else
-        //    {
-        //        EditFavoriteItemMenuItem.Enabled = true;
-        //        RemoveFavoriteItemMenuItem.Enabled = true;
-        //    }
+            if( _selectedFavoriteItem == Favorites )
+            {
+                EditFavoriteMenuItem.Enabled = false;
+                RemoveFavoriteMenuItem.Enabled = false;
+            }
+            else
+            {
+                EditFavoriteMenuItem.Enabled = true;
+                RemoveFavoriteMenuItem.Enabled = true;
+            }
 
-        //    if( _selectedFavoriteItem is FavoriteFolder )
-        //    {
-        //        CreateFavoritesFolderMenuItem.Text = "Add Folder";
+            if( _selectedFavoriteItem is FavoriteFolder )
+            {
+                AddFavoritesFolderMenuItem.Text = "Add Favorites Folder";
 
-        //        AddFavoriteFileMenuItem.Text = "Add Favorite File";
-        //        AddFavoriteFolderMenuItem.Text = "Add Favorite Folder";
-        //    }
-        //    else
-        //    {
-        //        CreateFavoritesFolderMenuItem.Text = "Insert Folder";
+                AddRepoMenuItem.Text = "Add Repo";
+                AddReposDirectoryMenuItem.Text = "Add Repos Folder";
+            }
+            else
+            {
+                AddFavoritesFolderMenuItem.Text = "Insert Favorites Folder";
 
-        //        AddFavoriteFileMenuItem.Text = "Insert Favorite File";
-        //        AddFavoriteFolderMenuItem.Text = "Insert Favorite Folder";
-        //    }
-        //}
+                AddRepoMenuItem.Text = "Insert Repo";
+                AddReposDirectoryMenuItem.Text = "Insert Repos Folder";
+            }
+        }
 
-        //private void CreateFavoritesFolderMenuItem_Click( object sender, EventArgs e )
-        //{
-        //    if( _selectedFavoriteItem == null )
-        //    {
-        //        throw new InvalidOperationException( "No selected favorite item." );
-        //    }
-        //    else if( !( _selectedFavoriteItem is FavoriteFolder ) )
-        //    {
-        //        throw new InvalidOperationException( "Canot add favorite item to non-folder." );
-        //    }
+        private void AddFavorite( Favorite newFavorite )
+        {
+            if( _selectedFavoriteItem == null )
+            {
+                LOG.Error( $"{nameof( AddFavorite )} - Selected favorite is null" );
+                return;
+            }
 
-        //    FavoriteFolder selectedFolder = (FavoriteFolder)_selectedFavoriteItem;
+            if( _selectedFavoriteItem is FavoriteFolder ff )
+            {
+                ff.Children.Add( newFavorite );
 
-        //    using FavoriteFolderCreatorDialog dialog = new FavoriteFolderCreatorDialog();
-        //    if( dialog.ShowDialog() == DialogResult.OK )
-        //    {
-        //        FavoriteFolder newNode = dialog.ToFavoriteFolder();
-        //        if( _selectedFavoriteItem.Value.IsFavoriteFolder )
-        //        {
-        //            _selectedFavoriteItem.Add( newNode );
-        //        }
-        //        else
-        //        {
-        //            _selectedFavoriteItem.Parent!.Children.Insert( _selectedFavoriteItem.Index, newNode );
-        //        }
-        //        UpdateFavoritesTree( newNode );
-        //    }
-        //}
+                UpdateFavoritesTree( newFavorite );
+            }
+            else
+            {
+                if( !Favorites.InsertBefore( _selectedFavoriteItem, newFavorite ) )
+                {
+                    LOG.Error( $"{nameof( AddFavoritesFolderMenuItem_Click )} - Failed to insert new favorite: {_selectedFavoriteItem} - {newFavorite}" );
+                    return;
+                }
 
-        //private void AddFavoriteFileMenuItem_Click( object sender, EventArgs e )
-        //{
-        //    if( FindFavoriteFileDialog.ShowDialog() == DialogResult.OK )
-        //    {
-        //        if( Git.IsInRepo( FindFavoriteFileDialog.FileName ) )
-        //        {
-        //            AddFavoriteItem( FindFavoriteFileDialog.FileName );
-        //        }
-        //    }
-        //}
+                UpdateFavoritesTree( newFavorite );
+            }
+        }
 
-        //private void FindFavoriteFileDialog_FileOk( object sender, CancelEventArgs e )
-        //{
-        //    if( !Git.IsInRepo( FindFavoriteFileDialog.FileName  ))
-        //    {
-        //        MessageBox.Show( "File is not in a Git repo.", "Not a Git Repo", MessageBoxButtons.OK, MessageBoxIcon.Error );
-        //        e.Cancel = true;
-        //    }
-        //}
+        private void AddFavoritesFolderMenuItem_Click( object sender, EventArgs e )
+        {
+            using FavoriteFolderCreatorDialog dialog = new FavoriteFolderCreatorDialog();
+            if( dialog.ShowDialog() == DialogResult.OK )
+            {
+                AddFavorite( dialog.ToFavoriteFolder() );
+            }
+        }
 
-        //private void AddFavoriteFolderMenuItem_Click( object sender, EventArgs e )
-        //{
-        //    String? repo = null;
-        //    while( repo == null )
-        //    {
-        //        if( _folderDialog.ShowDialog() != CommonFileDialogResult.Ok )
-        //        {
-        //            return;
-        //        }
+        private void AddRepoMenuItem_Click( object sender, EventArgs e )
+        {
+            using FavoriteRepoCreatorDialog dialog = new FavoriteRepoCreatorDialog();
+            if( dialog.ShowDialog() == DialogResult.OK )
+            {
+                AddFavorite( dialog.ToFavoriteRepo() );
+            }
+        }
 
-        //        if( !Git.IsInRepo( _folderDialog.FileName ) )
-        //        {
-        //            MessageBox.Show( "Directory is not a Git repo.", "Invalid Directory", MessageBoxButtons.OK );
-        //        }
-        //        else
-        //        {
-        //            repo = _folderDialog.FileName;
-        //        }
-        //    }
+        private void AddReposDirectoryMenuItem_Click( object sender, EventArgs e )
+        {
+            using FavoriteReposDirectoryCreatorDialog dialog = new FavoriteReposDirectoryCreatorDialog();
+            if( dialog.ShowDialog() == DialogResult.OK )
+            {
+                AddFavorite( dialog.ToFavoriteReposDirectory() );
+            }
+        }
 
-        //    AddFavoriteItem( repo );
-        //}
+        private void EditFavoriteMenuItem_Click( object sender, EventArgs e )
+        {
+            if( _selectedFavoriteItem == null )
+            {
+                LOG.Error( $"{nameof( EditFavoriteMenuItem_Click )} - Selected favorite is null" );
+                return;
+            }
 
-        //private void EditFavoriteItemMenuItem_Click( object sender, EventArgs e )
-        //{
-        //    if( _selectedFavoriteItem == null )
-        //    {
-        //        throw new InvalidOperationException( "No selected favorite item." );
-        //    }
+            Favorite? newFavorite = null;
+            if( _selectedFavoriteItem is FavoriteFolder folder )
+            {
+                using FavoriteFolderCreatorDialog dialog = FavoriteFolderCreatorDialog.FromFavoriteFolder( folder );
+                if( dialog.ShowDialog() == DialogResult.OK )
+                {
+                    newFavorite = dialog.ToFavoriteFolder();
+                }
+            }
+            else if( _selectedFavoriteItem is FavoriteRepo repo )
+            {
+                using FavoriteRepoCreatorDialog dialog = FavoriteRepoCreatorDialog.FromFavoriteRepo( repo );
+                if( dialog.ShowDialog() == DialogResult.OK )
+                {
+                    newFavorite = dialog.ToFavoriteRepo();
+                }
+            }
+            else if( _selectedFavoriteItem is FavoriteReposDirectory directory )
+            {
+                using FavoriteReposDirectoryCreatorDialog dialog = FavoriteReposDirectoryCreatorDialog.FromFavoriteReposDirectory( directory );
+                if( dialog.ShowDialog() == DialogResult.OK )
+                {
+                    newFavorite = dialog.ToFavoriteReposDirectory();
+                }
+            }
+            else
+            {
+                LOG.Error( $"{nameof( EditFavoriteMenuItem_Click )} - Unknown favorite type: {_selectedFavoriteItem}" );
+            }
 
-        //    Favorite f = _selectedFavoriteItem.Value;
+            if( newFavorite != null )
+            {
+                if( !Favorites.Replace( _selectedFavoriteItem, newFavorite ) )
+                {
+                    LOG.Error( $"{nameof( EditFavoriteMenuItem_Click )} - Failed to replace old favorite: {_selectedFavoriteItem} - {newFavorite}" );
+                    return;
+                }
 
-        //    using FavoriteFolderCreatorDialog dialog = FavoriteFolderCreatorDialog.FromFavorite( f );
-        //    if( dialog.ShowDialog() == DialogResult.OK )
-        //    {
-        //        TreeNode<Favorite> newNode = new TreeNode<Favorite>( dialog.ToFavoriteFolder() );
+                UpdateFavoritesTree( newFavorite );
+            }
+        }
 
-        //        while( _selectedFavoriteItem.Children.Count > 0 )
-        //        {
-        //            TreeNode<Favorite> child = _selectedFavoriteItem.Children[ 0 ];
-        //            child.Parent!.Remove( child );
-        //            newNode.Add( child );
-        //        }
+        private void RemoveFavoriteMenuItem_Click( object sender, EventArgs e )
+        {
+            if( _selectedFavoriteItem == null )
+            {
+                LOG.Error( $"{nameof( RemoveFavoriteMenuItem_Click )} - Selected favorite is null" );
+                return;
+            }
 
-        //        _selectedFavoriteItem.Parent!.Children[ _selectedFavoriteItem.Index ] = newNode;
+            FavoriteFolder? parent = Favorites.FindParent( _selectedFavoriteItem );
 
-        //        UpdateFavoritesTree( newNode );
-        //    }
-        //}
+            if( !Favorites.Remove( _selectedFavoriteItem ) )
+            {
+                LOG.Error( $"{nameof( RemoveFavoriteMenuItem_Click )} - Unknown to remove favorite: {_selectedFavoriteItem}" );
+                return;
+            }
 
-        //private void RemoveFavoriteItemMenuItem_Click( object sender, EventArgs e )
-        //{
-        //    if( _selectedFavoriteItem == null )
-        //    {
-        //        throw new InvalidOperationException( "No selected favorite item." );
-        //    }
+            UpdateFavoritesTree( parent );
+        }
 
-        //    TreeNode<Favorite> parent = _selectedFavoriteItem.Parent!;
-        //    parent.Remove( _selectedFavoriteItem );
-
-        //    UpdateFavoritesTree( parent );
-        //}
-
-        private void UpdateFavoritesTree( Favorite selectNode )
+        private void UpdateFavoritesTree( Favorite? selectedFavorite )
         {
             FavoritesTree.SuspendLayout();
 
@@ -246,35 +251,15 @@ namespace TabbedTortoiseGit
 
             FavoritesTree.ResumeLayout();
 
-            FavoritesTree.SelectedNode = FindTreeNodeByFavorite( selectNode );
+            if( selectedFavorite is null )
+            {
+                FavoritesTree.SelectedNode = null;
+            }
+            else
+            {
+                FavoritesTree.SelectedNode = FindTreeNodeByFavorite( selectedFavorite );
+            }
         }
-
-        //private void UpdateInsertionMark( TreeNode<Favorite> favorite, bool before )
-        //{
-        //    if( favorite != null )
-        //    {
-        //        TreeNode? node = this.FindNodeByNode( favorite );
-        //        if( node != null )
-        //        {
-        //            if( before )
-        //            {
-        //                Native.PostMessage( FavoritesTree.Handle, 0x111A, (IntPtr)0, node.Handle );
-        //                return;
-        //            }
-        //            else
-        //            {
-        //                Native.PostMessage( FavoritesTree.Handle, 0x111A, (IntPtr)1, node.Handle );
-        //                return;
-        //            }
-        //        }
-        //    }
-        //    ClearInsertionMark();
-        //}
-
-        //private void ClearInsertionMark()
-        //{
-        //    Native.PostMessage( FavoritesTree.Handle, 0x111A, (IntPtr)0, IntPtr.Zero );
-        //}
 
         private TreeNode? FindTreeNodeByFavorite( Favorite findNode )
         {
@@ -310,8 +295,7 @@ namespace TabbedTortoiseGit
             String imageKey;
             Bitmap icon;
 
-            if( favorite is FavoriteFolder
-             || favorite is FavoriteReposDirectory )
+            if( favorite is FavoriteFolder )
             {
                 imageKey = "FolderFolder";
                 icon = Resources.FolderFolder;
@@ -328,6 +312,11 @@ namespace TabbedTortoiseGit
                     imageKey = "File";
                     icon = Resources.File;
                 }
+            }
+            else if( favorite is FavoriteReposDirectory )
+            {
+                imageKey = "SymLink";
+                icon = Resources.SymLink;
             }
             else
             {
@@ -350,31 +339,31 @@ namespace TabbedTortoiseGit
             }
         }
 
-        //private void AddFavoriteItem( String path )
+        //private void UpdateInsertionMark( TreeNode<Favorite> favorite, bool before )
         //{
-        //    if( _selectedFavoriteItem == null )
+        //    if( favorite != null )
         //    {
-        //        throw new InvalidOperationException( "No selected favorite item." );
-        //    }
-
-        //    using FavoriteFolderCreatorDialog dialog = new FavoriteFolderCreatorDialog( false )
-        //    {
-        //        FavoriteRepo = path
-        //    };
-        //    if( dialog.ShowDialog() == DialogResult.OK )
-        //    {
-        //        TreeNode<FavoriteRepo> newNode = new TreeNode<FavoriteRepo>( dialog.ToFavoriteFolder() );
-        //        if( _selectedFavoriteItem.Value.IsFavoriteFolder )
+        //        TreeNode? node = this.FindNodeByNode( favorite );
+        //        if( node != null )
         //        {
-        //            _selectedFavoriteItem.Add( newNode );
+        //            if( before )
+        //            {
+        //                Native.PostMessage( FavoritesTree.Handle, 0x111A, (IntPtr)0, node.Handle );
+        //                return;
+        //            }
+        //            else
+        //            {
+        //                Native.PostMessage( FavoritesTree.Handle, 0x111A, (IntPtr)1, node.Handle );
+        //                return;
+        //            }
         //        }
-        //        else
-        //        {
-        //            _selectedFavoriteItem.Parent!.Children.Insert( _selectedFavoriteItem.Index, newNode );
-        //        }
-
-        //        UpdateFavoritesTree( newNode );
         //    }
+        //    ClearInsertionMark();
+        //}
+
+        //private void ClearInsertionMark()
+        //{
+        //    Native.PostMessage( FavoritesTree.Handle, 0x111A, (IntPtr)0, IntPtr.Zero );
         //}
 
         //class FavoritesDraggingItem

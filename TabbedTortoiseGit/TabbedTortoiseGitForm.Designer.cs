@@ -41,6 +41,7 @@
             this.FavoriteRepoContextMenu = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.OpenFavoriteRepoLocationContextMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.OpenFavoriteWithReferencesContextMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.EditFavoriteContextMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.RemoveFavoriteContextMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.OptionsContextMenu = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.OpenRepoMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -62,7 +63,6 @@
             this.BackgroundFasterFetch = new System.Windows.Forms.ToolStripButton();
             this.BackgroundFasterFetchProgress = new System.Windows.Forms.ToolStripProgressBar();
             this.LogTabs = new Tabs.TabControl();
-            this.EditFavoriteContextMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.TabContextMenu.SuspendLayout();
             this.FavoriteRepoContextMenu.SuspendLayout();
             this.OptionsContextMenu.SuspendLayout();
@@ -150,6 +150,12 @@
             this.OpenFavoriteWithReferencesContextMenuItem.Name = "OpenFavoriteWithReferencesContextMenuItem";
             this.OpenFavoriteWithReferencesContextMenuItem.Size = new System.Drawing.Size(189, 22);
             this.OpenFavoriteWithReferencesContextMenuItem.Text = "Open with References";
+            // 
+            // EditFavoriteContextMenuItem
+            // 
+            this.EditFavoriteContextMenuItem.Name = "EditFavoriteContextMenuItem";
+            this.EditFavoriteContextMenuItem.Size = new System.Drawing.Size(189, 22);
+            this.EditFavoriteContextMenuItem.Text = "Edit Favorite";
             // 
             // RemoveFavoriteContextMenuItem
             // 
@@ -298,12 +304,6 @@
             this.LogTabs.Size = new System.Drawing.Size(644, 440);
             this.LogTabs.TabContextMenu = this.TabContextMenu;
             this.LogTabs.TabIndex = 3;
-            // 
-            // EditFavoriteContextMenuItem
-            // 
-            this.EditFavoriteContextMenuItem.Name = "EditFavoriteContextMenuItem";
-            this.EditFavoriteContextMenuItem.Size = new System.Drawing.Size(189, 22);
-            this.EditFavoriteContextMenuItem.Text = "Edit Favorite";
             // 
             // TabbedTortoiseGitForm
             // 

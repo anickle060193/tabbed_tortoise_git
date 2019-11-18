@@ -272,7 +272,7 @@ namespace TabbedTortoiseGit
             else
             {
                 FavoritesMenuStrip.Show();
-                CreateFavoritesMenu( _favoriteRepos, FavoritesMenuStrip.Items );
+                CreateFavoritesMenu( _favoriteRepos.Children, FavoritesMenuStrip.Items );
             }
 
             FavoritesMenuStrip.ResumeLayout();
@@ -285,9 +285,9 @@ namespace TabbedTortoiseGit
             UpdateIcon();
         }
 
-        private void CreateFavoritesMenu( FavoriteFolder favorites, ToolStripItemCollection menuItems )
+        private void CreateFavoritesMenu( List<Favorite> favorites, ToolStripItemCollection menuItems )
         {
-            foreach( Favorite favorite in favorites.Children )
+            foreach( Favorite favorite in favorites )
             {
                 ToolStripMenuItem item = new ToolStripMenuItem( favorite.Name );
                 Bitmap icon;
@@ -315,7 +315,14 @@ namespace TabbedTortoiseGit
                 {
                     item.ToolTipText = directory.Directory;
 
-                    icon = Resources.FolderFolder;
+                    icon = Resources.SymLink;
+                }
+                else if( favorite is FavoriteReposDirectoryRepo subrepo )
+                {
+                    item.ToolTipText = subrepo.Repo;
+
+                    icon = Resources.Folder;
+                    item.Click += FavoriteRepoMenuItem_Click;
                 }
                 else
                 {
@@ -331,7 +338,11 @@ namespace TabbedTortoiseGit
 
                 if( favorite is FavoriteFolder f )
                 {
-                    CreateFavoritesMenu( f, item.DropDownItems );
+                    CreateFavoritesMenu( f.Children, item.DropDownItems );
+                }
+                else if( favorite is FavoriteReposDirectory d )
+                {
+                    CreateFavoritesMenu( d.GetRepos(), item.DropDownItems );
                 }
             }
         }
