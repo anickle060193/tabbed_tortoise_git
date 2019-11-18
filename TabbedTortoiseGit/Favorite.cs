@@ -12,6 +12,7 @@ using System.Reflection;
 using LibGit2Sharp;
 using System.IO;
 using Newtonsoft.Json.Converters;
+using System.Collections;
 
 namespace TabbedTortoiseGit
 {
@@ -28,6 +29,107 @@ namespace TabbedTortoiseGit
         public String Name { get; private set; }
         public Color Color { get; private set; }
         public FavoriteType Type { get; private set; }
+
+        [JsonIgnore]
+        public FavoriteFolder? Parent { get; set; }
+
+        [JsonIgnore]
+        public FavoriteFolder? Root
+        {
+            get
+            {
+                FavoriteFolder? parent = this.Parent;
+                while( parent?.Parent != null )
+                {
+                    parent = parent?.Parent;
+                }
+                return parent;
+            }
+        }
+
+        [JsonIgnore]
+        public Favorite? Previous
+        {
+            get
+            {
+                if( this.Index > 0 )
+                {
+                    return this.Parent?.Children[ this.Index - 1 ];
+                }
+                else
+                {
+                    return null;
+                }
+            }
+        }
+
+        [JsonIgnore]
+        public Favorite? Next
+        {
+            get
+            {
+                if( this.Parent == null )
+                {
+                    return null;
+                }
+                else if( this.Index + 1 >= this.Parent.Children.Count )
+                {
+                    return null;
+                }
+                else
+                {
+                    return this.Parent.Children[ this.Index + 1 ];
+                }
+            }
+        }
+
+        [JsonIgnore]
+        public int Index
+        {
+            get
+            {
+                if( this.Parent != null )
+                {
+                    return this.Parent.Children.IndexOf( this );
+                }
+                else
+                {
+                    return -1;
+                }
+            }
+        }
+
+        [JsonIgnore]
+        public int NestedIndex
+        {
+            get
+            {
+                if( this.Parent == null )
+                {
+                    return 0;
+                }
+                else
+                {
+                    int index = this.Parent.NestedIndex + 1;
+                    foreach( Favorite child in this.Parent.Children )
+                    {
+                        if( child == this )
+                        {
+                            break;
+                        }
+
+                        index++;
+
+                        if( child is FavoriteFolder cf )
+                        {
+                            index += cf.NestedCount;
+                        }
+                    }
+
+                    return index;
+                }
+            }
+        }
 
         public Favorite( String name, Color color, FavoriteType type )
         {
@@ -64,7 +166,16 @@ namespace TabbedTortoiseGit
 
     public class FavoriteFolder : Favorite
     {
-        public List<Favorite> Children { get; private set; }
+        public FavoriteCollection Children { get; private set; }
+
+        [JsonIgnore]
+        public int NestedCount
+        {
+            get
+            {
+                return this.Children.Count + this.Children.Sum( child => ( child as FavoriteFolder )?.NestedCount ?? 0 );
+            }
+        }
 
         public FavoriteFolder( String name, Color color ): this( name, color, Enumerable.Empty<Favorite>() )
         {
@@ -73,7 +184,8 @@ namespace TabbedTortoiseGit
         [JsonConstructor]
         public FavoriteFolder( String name, Color color, IEnumerable<Favorite> children ) : base( name, color, FavoriteType.Folder )
         {
-            this.Children = children.ToList();
+            this.Children = new FavoriteCollection( this );
+            this.Children.AddRange( children );
         }
 
         public Favorite? BreadFirstSearch( Func<Favorite, bool> selector )
@@ -104,6 +216,12 @@ namespace TabbedTortoiseGit
         public FavoriteFolder? FindParent( Favorite favorite )
         {
             return this.BreadFirstSearch( ( f ) => f is FavoriteFolder ff && ff.Children.Contains( favorite ) ) as FavoriteFolder;
+        }
+
+        public bool NestedContains( Favorite favorite )
+        {
+            return this.Children.Contains( favorite )
+                || this.Children.OfType<FavoriteFolder>().Any( ( c ) => c.NestedContains( favorite ) );
         }
 
         public bool Remove( Favorite favorite )
@@ -173,6 +291,187 @@ namespace TabbedTortoiseGit
         public override string ToString()
         {
             return $"{nameof( FavoriteFolder )}( {base.ToString()} Children={this.Children} )";
+        }
+
+        public class FavoriteCollection : IList<Favorite>
+        {
+            private readonly List<Favorite> _children = new List<Favorite>();
+            private readonly FavoriteFolder _owner;
+
+            public FavoriteCollection( FavoriteFolder owner )
+            {
+                _owner = owner;
+            }
+
+            public Favorite this[ int index ]
+            {
+                get
+                {
+                    if( index < 0 || index >= this.Count )
+                    {
+                        throw new ArgumentOutOfRangeException( nameof( index ) );
+                    }
+
+                    return _children[ index ];
+                }
+
+                set
+                {
+                    if( index < 0 || index >= this.Count )
+                    {
+                        throw new ArgumentOutOfRangeException( nameof( index ) );
+                    }
+                    if( value == null )
+                    {
+                        throw new ArgumentNullException( nameof( value ) );
+                    }
+                    if( this.Contains( value ) )
+                    {
+                        throw new ArgumentException( "Node already exists as child of this node.", nameof( value ) );
+                    }
+                    if( value.Parent != null )
+                    {
+                        throw new ArgumentException( "Node is already a child of another node.", nameof( value ) );
+                    }
+
+                    Favorite oldNode = _children[ index ];
+                    oldNode.Parent = null;
+
+                    _children[ index ] = value;
+                    value.Parent = _owner;
+                }
+            }
+
+            public int Count
+            {
+                get
+                {
+                    return _children.Count;
+                }
+            }
+
+            public bool IsReadOnly
+            {
+                get
+                {
+                    return false;
+                }
+            }
+
+            public void Add( Favorite node )
+            {
+                this.Insert( this.Count, node );
+            }
+
+            public void AddRange( IEnumerable<Favorite> nodes )
+            {
+                if( nodes == null )
+                {
+                    throw new ArgumentException( nameof( nodes ) );
+                }
+
+                foreach( Favorite node in nodes )
+                {
+                    this.Add( node );
+                }
+            }
+
+            public void Clear()
+            {
+                while( this.Count > 0 )
+                {
+                    this.Remove( this[ 0 ] );
+                }
+            }
+
+            public bool Contains( Favorite node )
+            {
+                if( node == null )
+                {
+                    throw new ArgumentNullException( nameof( node ) );
+                }
+
+                return _children.Contains( node );
+            }
+
+            public void CopyTo( Favorite[] array, int arrayIndex )
+            {
+                throw new InvalidOperationException();
+            }
+
+            public IEnumerator<Favorite> GetEnumerator()
+            {
+                return _children.GetEnumerator();
+            }
+
+            public int IndexOf( Favorite node )
+            {
+                if( node == null )
+                {
+                    throw new ArgumentNullException( nameof( node ) );
+                }
+
+                return _children.IndexOf( node );
+            }
+
+            public void Insert( int index, Favorite node )
+            {
+                if( index < 0 || index > this.Count )
+                {
+                    throw new ArgumentOutOfRangeException( nameof( index ) );
+                }
+                if( node == null )
+                {
+                    throw new ArgumentNullException( nameof( node ) );
+                }
+                if( this.Contains( node ) )
+                {
+                    throw new ArgumentException( "Node already exists as child of this node.", nameof( node ) );
+                }
+                if( node.Parent != null )
+                {
+                    throw new ArgumentException( "Node is already a child of another node.", nameof( node ) );
+                }
+
+                _children.Insert( index, node );
+                node.Parent = _owner;
+            }
+
+            public bool Remove( Favorite node )
+            {
+                if( node == null )
+                {
+                    throw new ArgumentNullException( nameof( node ) );
+                }
+
+                int index = this.IndexOf( node );
+                if( index != -1 )
+                {
+                    this.RemoveAt( index );
+                    return true;
+                }
+                else
+                {
+                    return false;
+                }
+            }
+
+            public void RemoveAt( int index )
+            {
+                if( index < 0 || index >= this.Count )
+                {
+                    throw new ArgumentOutOfRangeException( nameof( index ) );
+                }
+
+                Favorite node = this[ index ];
+                node.Parent = null;
+                _children.RemoveAt( index );
+            }
+
+            IEnumerator IEnumerable.GetEnumerator()
+            {
+                return ( (IEnumerable)_children ).GetEnumerator();
+            }
         }
     }
 

@@ -285,7 +285,7 @@ namespace TabbedTortoiseGit
             UpdateIcon();
         }
 
-        private void CreateFavoritesMenu( List<Favorite> favorites, ToolStripItemCollection menuItems )
+        private void CreateFavoritesMenu( IEnumerable<Favorite> favorites, ToolStripItemCollection menuItems )
         {
             foreach( Favorite favorite in favorites )
             {

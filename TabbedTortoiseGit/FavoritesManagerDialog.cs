@@ -41,7 +41,7 @@ namespace TabbedTortoiseGit
         public FavoriteFolder Favorites { get; }
 
         private Favorite? _selectedFavoriteItem;
-        //private readonly FavoritesDragDropHelper _favoritesDragDropHelper;
+        private readonly FavoritesDragDropHelper _favoritesDragDropHelper;
 
         private FavoritesManagerDialog( FavoriteFolder favorites )
         {
@@ -60,8 +60,8 @@ namespace TabbedTortoiseGit
             EditFavoriteMenuItem.Click += EditFavoriteMenuItem_Click;
             RemoveFavoriteMenuItem.Click += RemoveFavoriteMenuItem_Click;
 
-            //_favoritesDragDropHelper = new FavoritesDragDropHelper( this );
-            //_favoritesDragDropHelper.AddControl( FavoritesTree );
+            _favoritesDragDropHelper = new FavoritesDragDropHelper( this );
+            _favoritesDragDropHelper.AddControl( FavoritesTree );
 
             Favorites = favorites;
             UpdateFavoritesTree( Favorites );
@@ -339,165 +339,167 @@ namespace TabbedTortoiseGit
             }
         }
 
-        //private void UpdateInsertionMark( TreeNode<Favorite> favorite, bool before )
-        //{
-        //    if( favorite != null )
-        //    {
-        //        TreeNode? node = this.FindNodeByNode( favorite );
-        //        if( node != null )
-        //        {
-        //            if( before )
-        //            {
-        //                Native.PostMessage( FavoritesTree.Handle, 0x111A, (IntPtr)0, node.Handle );
-        //                return;
-        //            }
-        //            else
-        //            {
-        //                Native.PostMessage( FavoritesTree.Handle, 0x111A, (IntPtr)1, node.Handle );
-        //                return;
-        //            }
-        //        }
-        //    }
-        //    ClearInsertionMark();
-        //}
+        private void UpdateInsertionMark( Favorite favorite, bool before )
+        {
+            if( favorite != null )
+            {
+                TreeNode? node = this.FindTreeNodeByFavorite( favorite );
+                if( node != null )
+                {
+                    if( before )
+                    {
+                        Native.PostMessage( FavoritesTree.Handle, 0x111A, (IntPtr)0, node.Handle );
+                        return;
+                    }
+                    else
+                    {
+                        Native.PostMessage( FavoritesTree.Handle, 0x111A, (IntPtr)1, node.Handle );
+                        return;
+                    }
+                }
+            }
 
-        //private void ClearInsertionMark()
-        //{
-        //    Native.PostMessage( FavoritesTree.Handle, 0x111A, (IntPtr)0, IntPtr.Zero );
-        //}
+            ClearInsertionMark();
+        }
 
-        //class FavoritesDraggingItem
-        //{
-        //    public TreeNode<FavoriteRepo> Favorite { get; private set; }
-        //    public bool Before { get; private set; }
+        private void ClearInsertionMark()
+        {
+            Native.PostMessage( FavoritesTree.Handle, 0x111A, (IntPtr)0, IntPtr.Zero );
+        }
 
-        //    public FavoritesDraggingItem( TreeNode<FavoriteRepo> favorite, bool before )
-        //    {
-        //        Favorite = favorite;
-        //        Before = before;
-        //    }
-        //}
+        class FavoritesDraggingItem
+        {
+            public Favorite Favorite { get; private set; }
+            public bool Before { get; private set; }
 
-        //class FavoritesDragDropHelper : DragDropHelper<TreeView, FavoritesDraggingItem>
-        //{
-        //    private readonly FavoritesManagerDialog _owner;
+            public FavoritesDraggingItem( Favorite favorite, bool before )
+            {
+                Favorite = favorite;
+                Before = before;
+            }
+        }
 
-        //    public FavoritesDragDropHelper( FavoritesManagerDialog owner )
-        //    {
-        //        _owner = owner;
+        class FavoritesDragDropHelper : DragDropHelper<TreeView, FavoritesDraggingItem>
+        {
+            private readonly FavoritesManagerDialog _owner;
 
-        //        MoveOnDragDrop = true;
-        //    }
+            public FavoritesDragDropHelper( FavoritesManagerDialog owner )
+            {
+                _owner = owner;
 
-        //    protected override bool AllowDrag( TreeView parent, FavoritesDraggingItem item, int index )
-        //    {
-        //        return item.Favorite != _owner.Favorites;
-        //    }
+                MoveOnDragDrop = true;
+            }
 
-        //    private bool IsBefore( Rectangle bounds, Point p )
-        //    {
-        //        if( p.Y < bounds.Top + bounds.Height / 2 )
-        //        {
-        //            return true;
-        //        }
-        //        else
-        //        {
-        //            return false;
-        //        }
-        //    }
+            protected override bool AllowDrag( TreeView parent, FavoritesDraggingItem item, int index )
+            {
+                return item.Favorite != _owner.Favorites;
+            }
 
-        //    protected override bool GetItemFromPoint( TreeView parent, Point p, out FavoritesDraggingItem? item, out int itemIndex )
-        //    {
-        //        TreeNode? treeNode = parent.GetNodeAt( p );
+            private bool IsBefore( Rectangle bounds, Point p )
+            {
+                if( p.Y < bounds.Top + bounds.Height / 2 )
+                {
+                    return true;
+                }
+                else
+                {
+                    return false;
+                }
+            }
 
-        //        if( treeNode == null )
-        //        {
-        //            item = null;
-        //            itemIndex = -1;
-        //            return false;
-        //        }
-        //        else
-        //        {
-        //            TreeNode<FavoriteRepo> favorite = (TreeNode<FavoriteRepo>)treeNode.Tag;
-        //            item = new FavoritesDraggingItem( favorite, IsBefore( treeNode.Bounds, p ) );
-        //            itemIndex = favorite.NestedIndex;
-        //            return true;
-        //        }
-        //    }
+            protected override bool GetItemFromPoint( TreeView parent, Point p, out FavoritesDraggingItem? item, out int itemIndex )
+            {
+                TreeNode? treeNode = parent.GetNodeAt( p );
 
-        //    protected override bool ItemsEqual( TreeView parent1, FavoritesDraggingItem item1, int itemIndex1, TreeView parent2, FavoritesDraggingItem item2, int itemIndex2 )
-        //    {
-        //        return item1.Favorite == item2.Favorite;
-        //    }
+                if( treeNode == null )
+                {
+                    item = null;
+                    itemIndex = -1;
+                    return false;
+                }
+                else
+                {
+                    Favorite favorite = (Favorite)treeNode.Tag;
+                    item = new FavoritesDraggingItem( favorite, IsBefore( treeNode.Bounds, p ) );
+                    itemIndex = favorite.NestedIndex;
+                    return true;
+                }
+            }
 
-        //    protected override void OnDragEnd( DragEndEventArgs<TreeView, FavoritesDraggingItem> e )
-        //    {
-        //        base.OnDragEnd( e );
+            protected override bool ItemsEqual( TreeView parent1, FavoritesDraggingItem item1, int itemIndex1, TreeView parent2, FavoritesDraggingItem item2, int itemIndex2 )
+            {
+                return item1.Favorite == item2.Favorite;
+            }
 
-        //        _owner.ClearInsertionMark();
-        //    }
+            protected override void OnDragEnd( DragEndEventArgs<TreeView, FavoritesDraggingItem> e )
+            {
+                base.OnDragEnd( e );
 
-        //    protected override bool AllowDrop( TreeView dragParent, FavoritesDraggingItem dragItem, int dragItemIndex, TreeView pointedParent, FavoritesDraggingItem pointedItem, int pointedItemIndex )
-        //    {
-        //        TreeNode<FavoriteRepo> dragFavorite = dragItem.Favorite;
-        //        TreeNode<FavoriteRepo> pointedFavorite = pointedItem.Favorite;
+                _owner.ClearInsertionMark();
+            }
 
-        //        bool allowDrop;
+            protected override bool AllowDrop( TreeView dragParent, FavoritesDraggingItem dragItem, int dragItemIndex, TreeView pointedParent, FavoritesDraggingItem pointedItem, int pointedItemIndex )
+            {
+                Favorite dragFavorite = dragItem.Favorite;
+                Favorite pointedFavorite = pointedItem.Favorite;
 
-        //        if( pointedFavorite == _owner.Favorites )
-        //        {
-        //            allowDrop = false;
-        //        }
-        //        else if( pointedFavorite == dragFavorite
-        //              || dragFavorite.NestedContains( pointedFavorite ) )
-        //        {
-        //            allowDrop = false;
-        //        }
-        //        else if( pointedItem.Before
-        //              && pointedFavorite.Previous == dragFavorite )
-        //        {
-        //            allowDrop = false;
-        //        }
-        //        else if( !pointedItem.Before
-        //              && pointedFavorite.Next == dragFavorite )
-        //        {
-        //            allowDrop = false;
-        //        }
-        //        else
-        //        {
-        //            allowDrop = true;
-        //        }
+                bool allowDrop;
 
-        //        if( allowDrop )
-        //        {
-        //            _owner.UpdateInsertionMark( pointedFavorite, pointedItem.Before );
-        //        }
-        //        else
-        //        {
-        //            _owner.ClearInsertionMark();
-        //        }
+                if( pointedFavorite == _owner.Favorites )
+                {
+                    allowDrop = false;
+                }
+                else if( pointedFavorite == dragFavorite
+                    || ( dragFavorite is FavoriteFolder ff
+                      && ff.NestedContains( pointedFavorite ) ) )
+                {
+                    allowDrop = false;
+                }
+                else if( pointedItem.Before
+                      && pointedFavorite.Previous == dragFavorite )
+                {
+                    allowDrop = false;
+                }
+                else if( !pointedItem.Before
+                      && pointedFavorite.Next == dragFavorite )
+                {
+                    allowDrop = false;
+                }
+                else
+                {
+                    allowDrop = true;
+                }
 
-        //        return allowDrop;
-        //    }
+                if( allowDrop )
+                {
+                    _owner.UpdateInsertionMark( pointedFavorite, pointedItem.Before );
+                }
+                else
+                {
+                    _owner.ClearInsertionMark();
+                }
 
-        //    protected override void MoveItem( TreeView dragParent, FavoritesDraggingItem dragItem, int dragItemIndex, TreeView pointedParent, FavoritesDraggingItem pointedItem, int pointedItemIndex )
-        //    {
-        //        TreeNode<FavoriteRepo> dragFavorite = dragItem.Favorite;
-        //        TreeNode<FavoriteRepo> pointedFavorite = pointedItem.Favorite;
+                return allowDrop;
+            }
 
-        //        if( pointedItem.Before )
-        //        {
-        //            dragFavorite.Parent!.Remove( dragFavorite );
-        //            pointedFavorite.Parent!.Children.Insert( pointedFavorite.Index, dragFavorite );
-        //        }
-        //        else
-        //        {
-        //            dragFavorite.Parent!.Remove( dragFavorite );
-        //            pointedFavorite.Parent!.Children.Insert( pointedFavorite.Index + 1, dragFavorite );
-        //        }
+            protected override void MoveItem( TreeView dragParent, FavoritesDraggingItem dragItem, int dragItemIndex, TreeView pointedParent, FavoritesDraggingItem pointedItem, int pointedItemIndex )
+            {
+                Favorite dragFavorite = dragItem.Favorite;
+                Favorite pointedFavorite = pointedItem.Favorite;
 
-        //        _owner.UpdateFavoritesTree( dragFavorite );
-        //    }
-        //}
+                if( pointedItem.Before )
+                {
+                    dragFavorite.Parent!.Remove( dragFavorite );
+                    pointedFavorite.Parent!.Children.Insert( pointedFavorite.Index, dragFavorite );
+                }
+                else
+                {
+                    dragFavorite.Parent!.Remove( dragFavorite );
+                    pointedFavorite.Parent!.Children.Insert( pointedFavorite.Index + 1, dragFavorite );
+                }
+
+                _owner.UpdateFavoritesTree( dragFavorite );
+            }
+        }
     }
 }
