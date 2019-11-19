@@ -27,6 +27,7 @@ namespace TabbedTortoiseGit
     {
         private void InitializeEventHandlers()
         {
+            this.Load += TabbedTortoiseGitForm_Load;
             this.Shown += TabbedTortoiseGitForm_Shown;
             this.VisibleChanged += TabbedTortoiseGitForm_VisibleChanged;
             this.DragOver += TabbedTortoiseGitForm_DragOver;
@@ -71,6 +72,11 @@ namespace TabbedTortoiseGit
             BackgroundFasterFetchProgress.Click += BackgroundFasterFetchProgress_Click;
 
             ModifiedRepoCheckBackgroundWorker.DoWork += ModifiedRepoCheckBackgroundWorker_DoWork;
+        }
+
+        private async void TabbedTortoiseGitForm_Load( object sender, EventArgs e )
+        {
+            await UpdateFromSettings( true );
         }
 
         private async void TabbedTortoiseGitForm_Shown( object sender, EventArgs e )
@@ -450,7 +456,7 @@ namespace TabbedTortoiseGit
             RunCustomAction( null, customAction, repo );
         }
 
-        private void EditFavoriteContextMenuItem_Click( object sender, EventArgs e )
+        private async void EditFavoriteContextMenuItem_Click( object sender, EventArgs e )
         {
             if( _favoriteRepos is null )
             {
@@ -503,24 +509,24 @@ namespace TabbedTortoiseGit
 
                 Settings.Default.FavoriteRepos = _favoriteRepos!;
                 Settings.Default.Save();
-                UpdateFavoriteReposFromSettings();
+                await UpdateFavoriteReposFromSettings();
             }
         }
 
-        private void RemoveFavoriteItemContextMenuItem_Click( object sender, EventArgs e )
+        private async void RemoveFavoriteItemContextMenuItem_Click( object sender, EventArgs e )
         {
             ToolStripMenuItem contextMenuItem = (ToolStripMenuItem)sender;
             ToolStrip contextMenu = contextMenuItem.Owner;
 
             Favorite favorite = (Favorite)contextMenu.Tag;
-            RemoveFavorite( favorite );
+            await RemoveFavorite( favorite );
         }
 
-        private void ShowFavoritesManagerMenuItem_Click( object sender, EventArgs e )
+        private async void ShowFavoritesManagerMenuItem_Click( object sender, EventArgs e )
         {
             if( FavoritesManagerDialog.ShowFavoritesManager() )
             {
-                UpdateFavoriteReposFromSettings();
+                await UpdateFavoriteReposFromSettings();
             }
         }
 
@@ -529,11 +535,11 @@ namespace TabbedTortoiseGit
             await FindRepo();
         }
 
-        private void SettingsMenuItem_Click( object sender, EventArgs e )
+        private async void SettingsMenuItem_Click( object sender, EventArgs e )
         {
             if( SettingsForm.ShowSettingsDialog() )
             {
-                UpdateFromSettings( false );
+                await UpdateFromSettings( false );
             }
         }
 
@@ -567,11 +573,11 @@ namespace TabbedTortoiseGit
             Util.OpenInExplorer( LogTabs.SelectedTab!.Controller().RepoItem );
         }
 
-        private void AddToFavoritesRepoTabMenuItem_Click( object sender, EventArgs e )
+        private async void AddToFavoritesRepoTabMenuItem_Click( object sender, EventArgs e )
         {
             TabControllerTag tag = LogTabs.SelectedTab!.Controller();
 
-            AddFavoriteRepo( tag.RepoItem );
+            await AddFavoriteRepo( tag.RepoItem );
         }
 
         private async void OpenWithReferencesRepoTabMenuItem_Click( object sender, EventArgs e )

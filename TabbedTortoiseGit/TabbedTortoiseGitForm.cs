@@ -79,8 +79,6 @@ namespace TabbedTortoiseGit
             };
 
             this.Icon = Resources.TortoiseIcon;
-
-            UpdateFromSettings( true );
         }
 
         protected override void OnHandleCreated( EventArgs e )
@@ -113,7 +111,7 @@ namespace TabbedTortoiseGit
             return base.ProcessCmdKey( ref msg, keyData );
         }
 
-        private void UpdateFromSettings( bool updateWindowState )
+        private async Task UpdateFromSettings( bool updateWindowState )
         {
             if( updateWindowState )
             {
@@ -169,7 +167,7 @@ namespace TabbedTortoiseGit
 
             UpdateRecentReposFromSettings();
             UpdateRepoContextMenusFromSettings();
-            UpdateFavoriteReposFromSettings();
+            await UpdateFavoriteReposFromSettings();
         }
 
         private void UpdateRecentReposFromSettings()
@@ -257,23 +255,20 @@ namespace TabbedTortoiseGit
             FavoriteRepoContextMenu.ResumeLayout();
         }
 
-        private void UpdateFavoriteReposFromSettings()
+        private async Task UpdateFavoriteReposFromSettings()
         {
+            _favoriteRepos = Settings.Default.FavoriteRepos;
+
+            List<ToolStripItem> items = new List<ToolStripItem>();
+
+            await CreateFavoritesMenu( _favoriteRepos.Children, items );
+
             FavoritesMenuStrip.SuspendLayout();
 
             FavoritesMenuStrip.Items.Clear();
+            FavoritesMenuStrip.Items.AddRange( items.ToArray() );
 
-            _favoriteRepos = Settings.Default.FavoriteRepos;
-
-            if( _favoriteRepos.Children.Count == 0 )
-            {
-                FavoritesMenuStrip.Hide();
-            }
-            else
-            {
-                FavoritesMenuStrip.Show();
-                CreateFavoritesMenu( _favoriteRepos.Children, FavoritesMenuStrip.Items );
-            }
+            FavoritesMenuStrip.Visible = items.Count > 0;
 
             FavoritesMenuStrip.ResumeLayout();
 
@@ -285,7 +280,7 @@ namespace TabbedTortoiseGit
             UpdateIcon();
         }
 
-        private void CreateFavoritesMenu( IEnumerable<Favorite> favorites, ToolStripItemCollection menuItems )
+        private async Task CreateFavoritesMenu( IEnumerable<Favorite> favorites, System.Collections.IList menuItems )
         {
             foreach( Favorite favorite in favorites )
             {
@@ -338,11 +333,11 @@ namespace TabbedTortoiseGit
 
                 if( favorite is FavoriteFolder f )
                 {
-                    CreateFavoritesMenu( f.Children, item.DropDownItems );
+                    await CreateFavoritesMenu( f.Children, item.DropDownItems );
                 }
                 else if( favorite is FavoriteReposDirectory d )
                 {
-                    CreateFavoritesMenu( d.GetRepos(), item.DropDownItems );
+                    await CreateFavoritesMenu( await Task.Run( () => d.GetDirectoryRepos() ), item.DropDownItems );
                 }
             }
         }
@@ -377,7 +372,7 @@ namespace TabbedTortoiseGit
             return _favoriteRepos?.BreadFirstSearch( ( f ) => f is FavoriteRepo r && r.Repo == repo );
         }
 
-        private void AddFavoriteRepo( String path )
+        private async Task AddFavoriteRepo( String path )
         {
             if( _favoriteRepos is null )
             {
@@ -402,17 +397,17 @@ namespace TabbedTortoiseGit
                 Settings.Default.FavoriteRepos = _favoriteRepos;
                 Settings.Default.Save();
 
-                UpdateFavoriteReposFromSettings();
+                await UpdateFavoriteReposFromSettings();
             }
         }
 
-        private void RemoveFavorite( Favorite favorite )
+        private async Task RemoveFavorite( Favorite favorite )
         {
             _favoriteRepos?.Remove( favorite );
             Settings.Default.FavoriteRepos = _favoriteRepos!;
             Settings.Default.Save();
 
-            UpdateFavoriteReposFromSettings();
+            await UpdateFavoriteReposFromSettings();
         }
 
         private async Task OpenLog( String path, IEnumerable<String>? references = null )

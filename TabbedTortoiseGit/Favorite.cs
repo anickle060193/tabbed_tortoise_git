@@ -485,17 +485,38 @@ namespace TabbedTortoiseGit
             this.Directory = directory;
         }
 
-        public List<Favorite> GetRepos()
+        public List<Favorite> GetDirectoryRepos()
         {
-            return System.IO.Directory
-                .GetDirectories( this.Directory )
-                .Where( ( dir ) => Repository.IsValid( dir ) )
-                .Select( ( dir ) =>
+            return this.GetDirectoryRepoPaths()
+                    .Select( ( dir ) =>
+                    {
+                        String name = dir.Replace( this.Directory, "" ).TrimStart( Path.DirectorySeparatorChar, Path.AltDirectorySeparatorChar );
+                        return new FavoriteReposDirectoryRepo( name, dir, this.Color );
+                    } )
+                    .ToList<Favorite>();
+        }
+
+        private IEnumerable<String> GetDirectoryRepoPaths()
+        {
+            Stack<String> toCheck = new Stack<String>();
+            toCheck.Push( this.Directory );
+
+            while( toCheck.Count > 0 )
+            {
+                String dir = toCheck.Pop();
+
+                if( System.IO.Directory.Exists( Path.Combine( dir, ".git" ) )
+                 && Repository.IsValid( dir ) )
                 {
-                    String name = dir.Replace( this.Directory, "" ).TrimStart( Path.DirectorySeparatorChar, Path.AltDirectorySeparatorChar );
-                    return new FavoriteReposDirectoryRepo( name, dir, this.Color );
-                } )
-                .ToList<Favorite>();
+                    yield return dir;
+                    continue;
+                }
+
+                foreach( String subdir in System.IO.Directory.GetDirectories( dir ).Reverse() )
+                {
+                    toCheck.Push( subdir );
+                }
+            }
         }
 
         public override string ToString()
