@@ -55,6 +55,7 @@
             this.FavoritesMenuContextMenu = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.ShowFavoritesManagerMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.FavoritesFolderContextMenu = new System.Windows.Forms.ContextMenuStrip(this.components);
+            this.EditFavoriteFolderContextMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.RemoveFavoriteFolderContextMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.ModifiedRepoCheckBackgroundWorker = new System.ComponentModel.BackgroundWorker();
             this.StatusStrip = new System.Windows.Forms.StatusStrip();
@@ -63,12 +64,18 @@
             this.BackgroundFasterFetch = new System.Windows.Forms.ToolStripButton();
             this.BackgroundFasterFetchProgress = new System.Windows.Forms.ToolStripProgressBar();
             this.LogTabs = new Tabs.TabControl();
+            this.FavoriteReposDirectoryContextMenu = new System.Windows.Forms.ContextMenuStrip(this.components);
+            this.OpenFavoriteReposDirectoryLocationContextMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.FavoriteReposDirectoryContextMenuSeparator = new System.Windows.Forms.ToolStripSeparator();
+            this.EditFavoriteReposDirectoryContextMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.RemoveFavoriteReposDirectoryContextMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.TabContextMenu.SuspendLayout();
             this.FavoriteRepoContextMenu.SuspendLayout();
             this.OptionsContextMenu.SuspendLayout();
             this.FavoritesMenuContextMenu.SuspendLayout();
             this.FavoritesFolderContextMenu.SuspendLayout();
             this.StatusStrip.SuspendLayout();
+            this.FavoriteReposDirectoryContextMenu.SuspendLayout();
             this.SuspendLayout();
             // 
             // FavoritesMenuStrip
@@ -136,7 +143,7 @@
             this.EditFavoriteContextMenuItem,
             this.RemoveFavoriteContextMenuItem});
             this.FavoriteRepoContextMenu.Name = "FavoriteRepoContextMenu";
-            this.FavoriteRepoContextMenu.Size = new System.Drawing.Size(190, 114);
+            this.FavoriteRepoContextMenu.Size = new System.Drawing.Size(190, 92);
             // 
             // OpenFavoriteRepoLocationContextMenuItem
             // 
@@ -241,9 +248,16 @@
             // FavoritesFolderContextMenu
             // 
             this.FavoritesFolderContextMenu.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.EditFavoriteFolderContextMenuItem,
             this.RemoveFavoriteFolderContextMenuItem});
             this.FavoritesFolderContextMenu.Name = "FavoritesFolderContextMenu";
-            this.FavoritesFolderContextMenu.Size = new System.Drawing.Size(199, 26);
+            this.FavoritesFolderContextMenu.Size = new System.Drawing.Size(199, 48);
+            // 
+            // EditFavoriteFolderContextMenuItem
+            // 
+            this.EditFavoriteFolderContextMenuItem.Name = "EditFavoriteFolderContextMenuItem";
+            this.EditFavoriteFolderContextMenuItem.Size = new System.Drawing.Size(198, 22);
+            this.EditFavoriteFolderContextMenuItem.Text = "Edit Favorite Folder";
             // 
             // RemoveFavoriteFolderContextMenuItem
             // 
@@ -305,6 +319,39 @@
             this.LogTabs.TabContextMenu = this.TabContextMenu;
             this.LogTabs.TabIndex = 3;
             // 
+            // FavoriteReposDirectoryContextMenu
+            // 
+            this.FavoriteReposDirectoryContextMenu.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.OpenFavoriteReposDirectoryLocationContextMenuItem,
+            this.FavoriteReposDirectoryContextMenuSeparator,
+            this.EditFavoriteReposDirectoryContextMenuItem,
+            this.RemoveFavoriteReposDirectoryContextMenuItem});
+            this.FavoriteReposDirectoryContextMenu.Name = "FavoriteReposDirectoryContextMenu";
+            this.FavoriteReposDirectoryContextMenu.Size = new System.Drawing.Size(181, 98);
+            // 
+            // OpenFavoriteReposDirectoryLocationContextMenuItem
+            // 
+            this.OpenFavoriteReposDirectoryLocationContextMenuItem.Name = "OpenFavoriteReposDirectoryLocationContextMenuItem";
+            this.OpenFavoriteReposDirectoryLocationContextMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.OpenFavoriteReposDirectoryLocationContextMenuItem.Text = "Open Directory";
+            // 
+            // FavoriteReposDirectoryContextMenuSeparator
+            // 
+            this.FavoriteReposDirectoryContextMenuSeparator.Name = "FavoriteReposDirectoryContextMenuSeparator";
+            this.FavoriteReposDirectoryContextMenuSeparator.Size = new System.Drawing.Size(177, 6);
+            // 
+            // EditFavoriteReposDirectoryContextMenuItem
+            // 
+            this.EditFavoriteReposDirectoryContextMenuItem.Name = "EditFavoriteReposDirectoryContextMenuItem";
+            this.EditFavoriteReposDirectoryContextMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.EditFavoriteReposDirectoryContextMenuItem.Text = "Edit Favorite";
+            // 
+            // RemoveFavoriteReposDirectoryContextMenuItem
+            // 
+            this.RemoveFavoriteReposDirectoryContextMenuItem.Name = "RemoveFavoriteReposDirectoryContextMenuItem";
+            this.RemoveFavoriteReposDirectoryContextMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.RemoveFavoriteReposDirectoryContextMenuItem.Text = "Remove Favorite";
+            // 
             // TabbedTortoiseGitForm
             // 
             this.AllowDrop = true;
@@ -326,6 +373,7 @@
             this.FavoritesFolderContextMenu.ResumeLayout(false);
             this.StatusStrip.ResumeLayout(false);
             this.StatusStrip.PerformLayout();
+            this.FavoriteReposDirectoryContextMenu.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -365,6 +413,12 @@
         private System.Windows.Forms.ToolStripButton BackgroundFasterFetch;
         private System.Windows.Forms.ToolStripProgressBar BackgroundFasterFetchProgress;
         private System.Windows.Forms.ToolStripMenuItem EditFavoriteContextMenuItem;
+        private System.Windows.Forms.ContextMenuStrip FavoriteReposDirectoryContextMenu;
+        private System.Windows.Forms.ToolStripMenuItem OpenFavoriteReposDirectoryLocationContextMenuItem;
+        private System.Windows.Forms.ToolStripSeparator FavoriteReposDirectoryContextMenuSeparator;
+        private System.Windows.Forms.ToolStripMenuItem EditFavoriteReposDirectoryContextMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem RemoveFavoriteReposDirectoryContextMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem EditFavoriteFolderContextMenuItem;
     }
 }
 

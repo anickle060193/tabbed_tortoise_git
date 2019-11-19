@@ -311,4 +311,7 @@
         AAAAAAAAAAAAAAAAAAAAgBHYaqv/DwZQNf6x8pdKAAAAAElFTkSuQmCC
 </value>
   </data>
+  <metadata name="FavoriteReposDirectoryContextMenu.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
+    <value>867, 57</value>
+  </metadata>
 </root>

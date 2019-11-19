@@ -79,6 +79,15 @@ namespace TabbedTortoiseGit
             }
         }
 
+        public static FavoriteRepoCreatorDialog FromRepo( String repo )
+        {
+            return new FavoriteRepoCreatorDialog()
+            {
+                FavoriteRepo = repo,
+                FavoriteName = Path.GetFileName( repo ),
+            };
+        }
+
         public static FavoriteRepoCreatorDialog FromFavoriteRepo( FavoriteRepo favorite )
         {
             return new FavoriteRepoCreatorDialog()

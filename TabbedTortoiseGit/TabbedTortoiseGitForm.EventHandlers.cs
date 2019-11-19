@@ -47,13 +47,22 @@ namespace TabbedTortoiseGit
             LogTabs.DragDrop += TabbedTortoiseGitForm_DragDrop;
 
             FavoritesMenuStrip.MouseClick += FavoritesMenuStrip_MouseClick;
-            FavoritesFolderContextMenu.Closed += FavoriteItemContextMenu_Closed;
             FavoriteRepoContextMenu.Closed += FavoriteItemContextMenu_Closed;
+            FavoritesFolderContextMenu.Closed += FavoriteItemContextMenu_Closed;
+            FavoriteReposDirectoryContextMenu.Closed += FavoriteItemContextMenu_Closed;
+
             OpenFavoriteRepoLocationContextMenuItem.Click += OpenFavoriteRepoLocationContextMenuItem_Click;
+            OpenFavoriteReposDirectoryLocationContextMenuItem.Click += OpenFavoriteRepoLocationContextMenuItem_Click;
+
             OpenFavoriteWithReferencesContextMenuItem.Click += OpenFavoriteWithReferencesContextMenuItem_Click;
+
             EditFavoriteContextMenuItem.Click += EditFavoriteContextMenuItem_Click;
+            EditFavoriteFolderContextMenuItem.Click += EditFavoriteContextMenuItem_Click;
+            EditFavoriteReposDirectoryContextMenuItem.Click += EditFavoriteContextMenuItem_Click;
+
             RemoveFavoriteContextMenuItem.Click += RemoveFavoriteItemContextMenuItem_Click;
             RemoveFavoriteFolderContextMenuItem.Click += RemoveFavoriteItemContextMenuItem_Click;
+            RemoveFavoriteReposDirectoryContextMenuItem.Click += RemoveFavoriteItemContextMenuItem_Click;
 
             ShowFavoritesManagerMenuItem.Click += ShowFavoritesManagerMenuItem_Click;
 
@@ -359,6 +368,10 @@ namespace TabbedTortoiseGit
 
                     EditFavoriteContextMenuItem.Visible = false;
                     RemoveFavoriteContextMenuItem.Visible = false;
+                }
+                else if( favorite is FavoriteReposDirectory )
+                {
+                    favoriteContextMenu = FavoriteReposDirectoryContextMenu;
                 }
                 else
                 {

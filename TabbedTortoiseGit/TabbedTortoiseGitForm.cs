@@ -407,10 +407,7 @@ namespace TabbedTortoiseGit
                 return;
             }
 
-            using FavoriteRepoCreatorDialog dialog = new FavoriteRepoCreatorDialog()
-            {
-                FavoriteRepo = path
-            };
+            using FavoriteRepoCreatorDialog dialog = FavoriteRepoCreatorDialog.FromRepo( path );
             if( dialog.ShowDialog() == DialogResult.OK )
             {
                 _favoriteRepos.Children.Add( dialog.ToFavoriteRepo() );
