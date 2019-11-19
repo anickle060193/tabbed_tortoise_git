@@ -27,6 +27,8 @@ namespace TabbedTortoiseGit
     {
         private void InitializeEventHandlers()
         {
+            Settings.Default.PropertyChanged += Settings_PropertyChanged;
+
             this.Load += TabbedTortoiseGitForm_Load;
             this.Shown += TabbedTortoiseGitForm_Shown;
             this.VisibleChanged += TabbedTortoiseGitForm_VisibleChanged;
@@ -72,6 +74,43 @@ namespace TabbedTortoiseGit
             BackgroundFasterFetchProgress.Click += BackgroundFasterFetchProgress_Click;
 
             ModifiedRepoCheckBackgroundWorker.DoWork += ModifiedRepoCheckBackgroundWorker_DoWork;
+        }
+
+        private async void Settings_PropertyChanged( object sender, PropertyChangedEventArgs e )
+        {
+            if( e.PropertyName == nameof( Settings.Default.DeveloperSettingsEnabled ) )
+            {
+                UpdateHitTestFromSettings();
+            }
+            else if( e.PropertyName == nameof( Settings.Default.ShowHitTest ) )
+            {
+                UpdateHitTestFromSettings();
+            }
+            else if( e.PropertyName == nameof( Settings.Default.IndicateModifiedTabs )
+                  || e.PropertyName == nameof( Settings.Default.ModifiedTabFont )
+                  || e.PropertyName == nameof( Settings.Default.ModifiedTabFontColor )
+                  || e.PropertyName == nameof( Settings.Default.NormalTabFont )
+                  || e.PropertyName == nameof( Settings.Default.NormalTabFontColor ) )
+            {
+                UpdateModifiedTabsStatusFromSettings();
+            }
+            else if( e.PropertyName == nameof( Settings.Default.RecentRepos ) )
+            {
+                UpdateRecentReposFromSettings();
+            }
+            else if( e.PropertyName == nameof( Settings.Default.TabContextMenuGitActions )
+                  || e.PropertyName == nameof( Settings.Default.CustomActionsString ) )
+            {
+                UpdateRepoContextMenusFromSettings();
+            }
+            else if( e.PropertyName == nameof( Settings.Default.FavoriteReposJsonString ) )
+            {
+                await UpdateFavoriteReposFromSettings();
+            }
+            else
+            {
+                LOG.Debug( $"{nameof( Settings_PropertyChanged )} - Unhandled setting change: {e.PropertyName}" );
+            }
         }
 
         private async void TabbedTortoiseGitForm_Load( object sender, EventArgs e )
@@ -456,7 +495,7 @@ namespace TabbedTortoiseGit
             RunCustomAction( null, customAction, repo );
         }
 
-        private async void EditFavoriteContextMenuItem_Click( object sender, EventArgs e )
+        private void EditFavoriteContextMenuItem_Click( object sender, EventArgs e )
         {
             if( _favoriteRepos is null )
             {
@@ -509,25 +548,21 @@ namespace TabbedTortoiseGit
 
                 Settings.Default.FavoriteRepos = _favoriteRepos!;
                 Settings.Default.Save();
-                await UpdateFavoriteReposFromSettings();
             }
         }
 
-        private async void RemoveFavoriteItemContextMenuItem_Click( object sender, EventArgs e )
+        private void RemoveFavoriteItemContextMenuItem_Click( object sender, EventArgs e )
         {
             ToolStripMenuItem contextMenuItem = (ToolStripMenuItem)sender;
             ToolStrip contextMenu = contextMenuItem.Owner;
 
             Favorite favorite = (Favorite)contextMenu.Tag;
-            await RemoveFavorite( favorite );
+            RemoveFavorite( favorite );
         }
 
-        private async void ShowFavoritesManagerMenuItem_Click( object sender, EventArgs e )
+        private void ShowFavoritesManagerMenuItem_Click( object sender, EventArgs e )
         {
-            if( FavoritesManagerDialog.ShowFavoritesManager() )
-            {
-                await UpdateFavoriteReposFromSettings();
-            }
+            FavoritesManagerDialog.ShowFavoritesManager();
         }
 
         private async void OpenRepoMenuItem_Click( object sender, EventArgs e )
@@ -535,12 +570,9 @@ namespace TabbedTortoiseGit
             await FindRepo();
         }
 
-        private async void SettingsMenuItem_Click( object sender, EventArgs e )
+        private void SettingsMenuItem_Click( object sender, EventArgs e )
         {
-            if( SettingsForm.ShowSettingsDialog() )
-            {
-                await UpdateFromSettings( false );
-            }
+             SettingsForm.ShowSettingsDialog();
         }
 
         private void ShowDebugLogMenuItem_Click( object sender, EventArgs e )
@@ -573,11 +605,11 @@ namespace TabbedTortoiseGit
             Util.OpenInExplorer( LogTabs.SelectedTab!.Controller().RepoItem );
         }
 
-        private async void AddToFavoritesRepoTabMenuItem_Click( object sender, EventArgs e )
+        private void AddToFavoritesRepoTabMenuItem_Click( object sender, EventArgs e )
         {
             TabControllerTag tag = LogTabs.SelectedTab!.Controller();
 
-            await AddFavoriteRepo( tag.RepoItem );
+            AddFavoriteRepo( tag.RepoItem );
         }
 
         private async void OpenWithReferencesRepoTabMenuItem_Click( object sender, EventArgs e )

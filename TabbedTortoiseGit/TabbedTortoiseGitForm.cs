@@ -115,32 +115,48 @@ namespace TabbedTortoiseGit
         {
             if( updateWindowState )
             {
-                if( !Settings.Default.Size.IsEmpty )
-                {
-                    this.Size = Settings.Default.Size;
-                    this.CenterToScreen();
-                }
-
-                if( !_createdAtPoint.IsEmpty )
-                {
-                    this.StartPosition = FormStartPosition.Manual;
-
-                    Rectangle formBounds = this.Bounds;
-                    Rectangle tabBounds = LogTabs.RectangleToScreen( LogTabs.GetTabRect( 0 ) );
-                    int tabX = tabBounds.Left - formBounds.Left;
-                    int tabY = tabBounds.Top - formBounds.Top;
-
-                    int x = _createdAtPoint.X - tabX - tabBounds.Width / 2;
-                    int y = _createdAtPoint.Y - tabY - tabBounds.Height / 2;
-                    this.Location = new Point( x, y );
-                }
-
-                if( Settings.Default.Maximized )
-                {
-                    this.WindowState = FormWindowState.Maximized;
-                }
+                UpdateWindowStateFromSettings();
             }
 
+            UpdateHitTestFromSettings();
+
+            UpdateModifiedTabsStatusFromSettings();
+
+            UpdateRecentReposFromSettings();
+            UpdateRepoContextMenusFromSettings();
+            await UpdateFavoriteReposFromSettings();
+        }
+
+        private void UpdateWindowStateFromSettings()
+        {
+            if( !Settings.Default.Size.IsEmpty )
+            {
+                this.Size = Settings.Default.Size;
+                this.CenterToScreen();
+            }
+
+            if( !_createdAtPoint.IsEmpty )
+            {
+                this.StartPosition = FormStartPosition.Manual;
+
+                Rectangle formBounds = this.Bounds;
+                Rectangle tabBounds = LogTabs.RectangleToScreen( LogTabs.GetTabRect( 0 ) );
+                int tabX = tabBounds.Left - formBounds.Left;
+                int tabY = tabBounds.Top - formBounds.Top;
+
+                int x = _createdAtPoint.X - tabX - tabBounds.Width / 2;
+                int y = _createdAtPoint.Y - tabY - tabBounds.Height / 2;
+                this.Location = new Point( x, y );
+            }
+
+            if( Settings.Default.Maximized )
+            {
+                this.WindowState = FormWindowState.Maximized;
+            }
+        }
+
+        private void UpdateHitTestFromSettings()
+        {
             if( Settings.Default.DeveloperSettingsEnabled )
             {
                 LogTabs.ShowHitTest = Settings.Default.ShowHitTest;
@@ -149,25 +165,23 @@ namespace TabbedTortoiseGit
             {
                 LogTabs.ShowHitTest = false;
             }
+        }
+
+        private void UpdateModifiedTabsStatusFromSettings()
+        {
+            lock( _tags )
+            {
+                foreach( TabControllerTag tag in _tags.Values )
+                {
+                    tag.UpdateTabDisplay();
+                }
+            }
 
             if( Settings.Default.IndicateModifiedTabs
              && !ModifiedRepoCheckBackgroundWorker.IsBusy )
             {
                 ModifiedRepoCheckBackgroundWorker.RunWorkerAsync();
             }
-
-            lock( _tags )
-            {
-                foreach( TabControllerTag tag in _tags.Values )
-                {
-                    tag.UpdateTabDisplay();
-                    tag.UpdateIcon();
-                }
-            }
-
-            UpdateRecentReposFromSettings();
-            UpdateRepoContextMenusFromSettings();
-            await UpdateFavoriteReposFromSettings();
         }
 
         private void UpdateRecentReposFromSettings()
@@ -258,6 +272,14 @@ namespace TabbedTortoiseGit
         private async Task UpdateFavoriteReposFromSettings()
         {
             _favoriteRepos = Settings.Default.FavoriteRepos;
+
+            lock( _tags )
+            {
+                foreach( TabControllerTag tag in _tags.Values )
+                {
+                    tag.UpdateIcon();
+                }
+            }
 
             List<ToolStripItem> items = new List<ToolStripItem>();
 
@@ -364,7 +386,6 @@ namespace TabbedTortoiseGit
             }
 
             Settings.Default.Save();
-            UpdateRecentReposFromSettings();
         }
 
         private Favorite? FindFavorite( String repo )
@@ -372,7 +393,7 @@ namespace TabbedTortoiseGit
             return _favoriteRepos?.BreadFirstSearch( ( f ) => f is FavoriteRepo r && r.Repo == repo );
         }
 
-        private async Task AddFavoriteRepo( String path )
+        private void AddFavoriteRepo( String path )
         {
             if( _favoriteRepos is null )
             {
@@ -396,18 +417,14 @@ namespace TabbedTortoiseGit
 
                 Settings.Default.FavoriteRepos = _favoriteRepos;
                 Settings.Default.Save();
-
-                await UpdateFavoriteReposFromSettings();
             }
         }
 
-        private async Task RemoveFavorite( Favorite favorite )
+        private void RemoveFavorite( Favorite favorite )
         {
             _favoriteRepos?.Remove( favorite );
             Settings.Default.FavoriteRepos = _favoriteRepos!;
             Settings.Default.Save();
-
-            await UpdateFavoriteReposFromSettings();
         }
 
         private async Task OpenLog( String path, IEnumerable<String>? references = null )
