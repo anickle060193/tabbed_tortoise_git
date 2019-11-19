@@ -388,11 +388,6 @@ namespace TabbedTortoiseGit
             Settings.Default.Save();
         }
 
-        private Favorite? FindFavorite( String repo )
-        {
-            return _favoriteRepos?.BreadFirstSearch( ( f ) => f is FavoriteRepo r && r.Repo == repo );
-        }
-
         private void AddFavoriteRepo( String path )
         {
             if( _favoriteRepos is null )
@@ -758,23 +753,21 @@ namespace TabbedTortoiseGit
 
         private void UpdateIcon()
         {
-            String? repo = LogTabs.SelectedTab?.Controller().RepoItem;
-            if( repo == null )
+            TabControllerTag? tag = LogTabs.SelectedTab?.Controller();
+            if( tag == null )
             {
                 this.Icon = Resources.TortoiseIcon;
                 return;
             }
 
-            Favorite? favorite = FindFavorite( repo );
-            if( favorite == null
-             || favorite.Color == Color.Black )
+            if( tag.Color == Color.Black )
             {
                 this.Icon = Resources.TortoiseIcon;
                 return;
             }
 
             using Bitmap shell = Resources.TortoiseShell;
-            using Bitmap coloredShell = Util.ColorBitmap( shell, favorite.Color );
+            using Bitmap coloredShell = Util.ColorBitmap( shell, tag.Color );
             using Bitmap background = Resources.TortoiseBody;
             using Graphics g = Graphics.FromImage( background );
             g.DrawImage( coloredShell, 0, 0 );

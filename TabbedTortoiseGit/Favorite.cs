@@ -188,7 +188,7 @@ namespace TabbedTortoiseGit
             this.Children.AddRange( children );
         }
 
-        public Favorite? BreadFirstSearch( Func<Favorite, bool> selector )
+        public Favorite? BreadthFirstSearch( Func<Favorite, bool> selector )
         {
             Queue<Favorite> toSearch = new Queue<Favorite>( new[] { this } );
 
@@ -215,7 +215,7 @@ namespace TabbedTortoiseGit
 
         public FavoriteFolder? FindParent( Favorite favorite )
         {
-            return this.BreadFirstSearch( ( f ) => f is FavoriteFolder ff && ff.Children.Contains( favorite ) ) as FavoriteFolder;
+            return this.BreadthFirstSearch( ( f ) => f is FavoriteFolder ff && ff.Children.Contains( favorite ) ) as FavoriteFolder;
         }
 
         public bool NestedContains( Favorite favorite )

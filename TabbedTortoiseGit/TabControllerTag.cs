@@ -20,12 +20,12 @@ namespace TabbedTortoiseGit
     {
         private static readonly ILog LOG = LogManager.GetLogger( typeof( TabControllerTag ) );
 
-        private Color _lastColor;
         private bool _modified;
 
         public Tab Tab { get; private set; }
         public Process Process { get; private set; }
         public String RepoItem { get; private set; }
+        public Color Color { get; private set; }
         public bool LoadingSubmodules { get; private set; }
         public List<String>? Submodules { get; private set; }
 
@@ -68,6 +68,8 @@ namespace TabbedTortoiseGit
             Process = process;
             RepoItem = repo;
             Modified = false;
+
+            this.Color = Color.Empty;
 
             Tab.Resize += Tab_Resize;
 
@@ -122,12 +124,17 @@ namespace TabbedTortoiseGit
 
         public void UpdateIcon()
         {
-            Color tabColor = Settings.Default.FavoriteRepos
-                                                .BreadFirstSearch( f => f is FavoriteRepo r && r.Repo == this.RepoItem )
-                                                ?.Color ?? Color.Black;
-            if( tabColor != _lastColor
+            FavoriteFolder favorites = Settings.Default.FavoriteRepos;
+
+            Color tabColor = favorites.BreadthFirstSearch( ( f ) => f is FavoriteRepo r && this.RepoItem == r.Repo )?.Color
+                          ?? favorites.BreadthFirstSearch( ( f ) => f is FavoriteReposDirectory d && this.RepoItem.StartsWith( d.Directory ) )?.Color
+                          ?? Color.Black;
+
+            if( tabColor != this.Color
              || this.Tab.Icon == null )
             {
+                this.Color = tabColor;
+
                 Bitmap icon;
                 if( File.Exists( this.RepoItem ) )
                 {
@@ -146,8 +153,6 @@ namespace TabbedTortoiseGit
                 {
                     this.Tab.Icon = Util.ColorBitmap( icon, tabColor );
                 }
-
-                _lastColor = tabColor;
             }
         }
 
