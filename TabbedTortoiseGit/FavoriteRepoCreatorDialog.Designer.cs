@@ -54,17 +54,17 @@
             this.ChangeFavoriteColorButton.Location = new System.Drawing.Point(12, 262);
             this.ChangeFavoriteColorButton.Name = "ChangeFavoriteColorButton";
             this.ChangeFavoriteColorButton.Size = new System.Drawing.Size(30, 30);
-            this.ChangeFavoriteColorButton.TabIndex = 1;
+            this.ChangeFavoriteColorButton.TabIndex = 4;
             this.ChangeFavoriteColorButton.UseVisualStyleBackColor = false;
             // 
             // FavoriteNameText
             // 
             this.FavoriteNameText.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.FavoriteNameText.Location = new System.Drawing.Point(56, 12);
+            this.FavoriteNameText.Location = new System.Drawing.Point(56, 40);
             this.FavoriteNameText.Name = "FavoriteNameText";
             this.FavoriteNameText.Size = new System.Drawing.Size(366, 20);
-            this.FavoriteNameText.TabIndex = 0;
+            this.FavoriteNameText.TabIndex = 2;
             // 
             // Ok
             // 
@@ -72,7 +72,7 @@
             this.Ok.Location = new System.Drawing.Point(266, 269);
             this.Ok.Name = "Ok";
             this.Ok.Size = new System.Drawing.Size(75, 23);
-            this.Ok.TabIndex = 2;
+            this.Ok.TabIndex = 5;
             this.Ok.Text = "OK";
             this.Ok.UseVisualStyleBackColor = true;
             // 
@@ -83,14 +83,14 @@
             this.Cancel.Location = new System.Drawing.Point(347, 269);
             this.Cancel.Name = "Cancel";
             this.Cancel.Size = new System.Drawing.Size(75, 23);
-            this.Cancel.TabIndex = 3;
+            this.Cancel.TabIndex = 6;
             this.Cancel.Text = "Cancel";
             this.Cancel.UseVisualStyleBackColor = true;
             // 
             // FavoriteNameLabel
             // 
             this.FavoriteNameLabel.AutoSize = true;
-            this.FavoriteNameLabel.Location = new System.Drawing.Point(12, 15);
+            this.FavoriteNameLabel.Location = new System.Drawing.Point(12, 43);
             this.FavoriteNameLabel.Name = "FavoriteNameLabel";
             this.FavoriteNameLabel.Size = new System.Drawing.Size(38, 13);
             this.FavoriteNameLabel.TabIndex = 4;
@@ -107,7 +107,7 @@
             this.ReferencesListBox.Name = "ReferencesListBox";
             this.ReferencesListBox.SelectionMode = System.Windows.Forms.SelectionMode.MultiExtended;
             this.ReferencesListBox.Size = new System.Drawing.Size(398, 136);
-            this.ReferencesListBox.TabIndex = 1;
+            this.ReferencesListBox.TabIndex = 0;
             // 
             // ReferencesGroup
             // 
@@ -120,7 +120,7 @@
             this.ReferencesGroup.Location = new System.Drawing.Point(12, 66);
             this.ReferencesGroup.Name = "ReferencesGroup";
             this.ReferencesGroup.Size = new System.Drawing.Size(410, 190);
-            this.ReferencesGroup.TabIndex = 5;
+            this.ReferencesGroup.TabIndex = 3;
             this.ReferencesGroup.TabStop = false;
             this.ReferencesGroup.Text = "References";
             // 
@@ -130,7 +130,7 @@
             this.SelectReferencesButton.Location = new System.Drawing.Point(299, 161);
             this.SelectReferencesButton.Name = "SelectReferencesButton";
             this.SelectReferencesButton.Size = new System.Drawing.Size(105, 23);
-            this.SelectReferencesButton.TabIndex = 4;
+            this.SelectReferencesButton.TabIndex = 1;
             this.SelectReferencesButton.Text = "Select References";
             this.SelectReferencesButton.UseVisualStyleBackColor = true;
             // 
@@ -140,17 +140,17 @@
             this.RemoveReferencesButton.Location = new System.Drawing.Point(6, 161);
             this.RemoveReferencesButton.Name = "RemoveReferencesButton";
             this.RemoveReferencesButton.Size = new System.Drawing.Size(75, 23);
-            this.RemoveReferencesButton.TabIndex = 3;
+            this.RemoveReferencesButton.TabIndex = 2;
             this.RemoveReferencesButton.Text = "Remove";
             this.RemoveReferencesButton.UseVisualStyleBackColor = true;
             // 
             // BrowseButton
             // 
             this.BrowseButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.BrowseButton.Location = new System.Drawing.Point(397, 38);
+            this.BrowseButton.Location = new System.Drawing.Point(397, 11);
             this.BrowseButton.Name = "BrowseButton";
-            this.BrowseButton.Size = new System.Drawing.Size(25, 23);
-            this.BrowseButton.TabIndex = 6;
+            this.BrowseButton.Size = new System.Drawing.Size(25, 21);
+            this.BrowseButton.TabIndex = 1;
             this.BrowseButton.Text = "...";
             this.BrowseButton.UseVisualStyleBackColor = true;
             // 
@@ -158,15 +158,15 @@
             // 
             this.FavoriteRepoText.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.FavoriteRepoText.Location = new System.Drawing.Point(56, 40);
+            this.FavoriteRepoText.Location = new System.Drawing.Point(56, 12);
             this.FavoriteRepoText.Name = "FavoriteRepoText";
-            this.FavoriteRepoText.Size = new System.Drawing.Size(335, 20);
-            this.FavoriteRepoText.TabIndex = 7;
+            this.FavoriteRepoText.Size = new System.Drawing.Size(336, 20);
+            this.FavoriteRepoText.TabIndex = 0;
             // 
             // FavoriteRepoLabel
             // 
             this.FavoriteRepoLabel.AutoSize = true;
-            this.FavoriteRepoLabel.Location = new System.Drawing.Point(12, 43);
+            this.FavoriteRepoLabel.Location = new System.Drawing.Point(12, 15);
             this.FavoriteRepoLabel.Name = "FavoriteRepoLabel";
             this.FavoriteRepoLabel.Size = new System.Drawing.Size(36, 13);
             this.FavoriteRepoLabel.TabIndex = 8;

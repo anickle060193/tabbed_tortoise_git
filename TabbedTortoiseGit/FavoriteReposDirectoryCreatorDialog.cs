@@ -103,7 +103,14 @@ namespace TabbedTortoiseGit
 
             if( _favoriteReposFolderDialog.ShowDialog() == CommonFileDialogResult.Ok )
             {
-                this.FavoriteDirectory = _favoriteReposFolderDialog.FileName;
+                String directory = _favoriteReposFolderDialog.FileName;
+                this.FavoriteDirectory = directory;
+
+                if( !String.IsNullOrWhiteSpace( directory )
+                 && String.IsNullOrWhiteSpace( this.FavoriteName ) )
+                {
+                    this.FavoriteName = Path.GetFileName( directory );
+                }
             }
         }
 

@@ -48,17 +48,17 @@
             this.ChangeFavoriteColorButton.Location = new System.Drawing.Point(12, 67);
             this.ChangeFavoriteColorButton.Name = "ChangeFavoriteColorButton";
             this.ChangeFavoriteColorButton.Size = new System.Drawing.Size(30, 30);
-            this.ChangeFavoriteColorButton.TabIndex = 1;
+            this.ChangeFavoriteColorButton.TabIndex = 3;
             this.ChangeFavoriteColorButton.UseVisualStyleBackColor = false;
             // 
             // FavoriteNameText
             // 
             this.FavoriteNameText.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.FavoriteNameText.Location = new System.Drawing.Point(57, 12);
+            this.FavoriteNameText.Location = new System.Drawing.Point(57, 38);
             this.FavoriteNameText.Name = "FavoriteNameText";
             this.FavoriteNameText.Size = new System.Drawing.Size(361, 20);
-            this.FavoriteNameText.TabIndex = 0;
+            this.FavoriteNameText.TabIndex = 2;
             // 
             // Ok
             // 
@@ -66,7 +66,7 @@
             this.Ok.Location = new System.Drawing.Point(262, 74);
             this.Ok.Name = "Ok";
             this.Ok.Size = new System.Drawing.Size(75, 23);
-            this.Ok.TabIndex = 2;
+            this.Ok.TabIndex = 4;
             this.Ok.Text = "OK";
             this.Ok.UseVisualStyleBackColor = true;
             // 
@@ -77,14 +77,14 @@
             this.Cancel.Location = new System.Drawing.Point(343, 74);
             this.Cancel.Name = "Cancel";
             this.Cancel.Size = new System.Drawing.Size(75, 23);
-            this.Cancel.TabIndex = 3;
+            this.Cancel.TabIndex = 5;
             this.Cancel.Text = "Cancel";
             this.Cancel.UseVisualStyleBackColor = true;
             // 
             // FavoriteNameLabel
             // 
             this.FavoriteNameLabel.AutoSize = true;
-            this.FavoriteNameLabel.Location = new System.Drawing.Point(12, 15);
+            this.FavoriteNameLabel.Location = new System.Drawing.Point(12, 41);
             this.FavoriteNameLabel.Name = "FavoriteNameLabel";
             this.FavoriteNameLabel.Size = new System.Drawing.Size(38, 13);
             this.FavoriteNameLabel.TabIndex = 4;
@@ -93,10 +93,10 @@
             // BrowseButton
             // 
             this.BrowseButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.BrowseButton.Location = new System.Drawing.Point(393, 38);
+            this.BrowseButton.Location = new System.Drawing.Point(393, 11);
             this.BrowseButton.Name = "BrowseButton";
-            this.BrowseButton.Size = new System.Drawing.Size(25, 23);
-            this.BrowseButton.TabIndex = 6;
+            this.BrowseButton.Size = new System.Drawing.Size(25, 21);
+            this.BrowseButton.TabIndex = 1;
             this.BrowseButton.Text = "...";
             this.BrowseButton.UseVisualStyleBackColor = true;
             // 
@@ -104,21 +104,21 @@
             // 
             this.FavoriteDirectoryText.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.FavoriteDirectoryText.Location = new System.Drawing.Point(57, 40);
+            this.FavoriteDirectoryText.Location = new System.Drawing.Point(57, 12);
             this.FavoriteDirectoryText.Name = "FavoriteDirectoryText";
             this.FavoriteDirectoryText.Size = new System.Drawing.Size(330, 20);
-            this.FavoriteDirectoryText.TabIndex = 7;
+            this.FavoriteDirectoryText.TabIndex = 0;
             // 
             // FavoriteDirectoryLabel
             // 
             this.FavoriteDirectoryLabel.AutoSize = true;
-            this.FavoriteDirectoryLabel.Location = new System.Drawing.Point(12, 43);
+            this.FavoriteDirectoryLabel.Location = new System.Drawing.Point(12, 15);
             this.FavoriteDirectoryLabel.Name = "FavoriteDirectoryLabel";
             this.FavoriteDirectoryLabel.Size = new System.Drawing.Size(39, 13);
             this.FavoriteDirectoryLabel.TabIndex = 8;
             this.FavoriteDirectoryLabel.Text = "Folder:";
             // 
-            // FavoriteReposFolderCreatorDialog
+            // FavoriteReposDirectoryCreatorDialog
             // 
             this.AcceptButton = this.Ok;
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -136,7 +136,7 @@
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.Fixed3D;
             this.MaximizeBox = false;
             this.MinimizeBox = false;
-            this.Name = "FavoriteReposFolderCreatorDialog";
+            this.Name = "FavoriteReposDirectoryCreatorDialog";
             this.ShowInTaskbar = false;
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
             this.Text = "Favorite Repos Folder";
