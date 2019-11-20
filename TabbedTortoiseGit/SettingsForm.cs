@@ -45,6 +45,7 @@ namespace TabbedTortoiseGit
                 CloseToSystemTray = Settings.Default.CloseToSystemTray,
                 RunOnStartup = TTG.RunOnStartup,
                 CheckTortoiseGitOnPath = Settings.Default.CheckTortoiseGitOnPath,
+                ShowChangelogOnUpdate = Settings.Default.ShowChangelogOnUpdate,
 
                 DeveloperSettingsEnabled = Settings.Default.DeveloperSettingsEnabled,
                 ShowHitTest = Settings.Default.ShowHitTest
@@ -76,6 +77,7 @@ namespace TabbedTortoiseGit
                 Settings.Default.CloseToSystemTray = f.CloseToSystemTray;
                 TTG.RunOnStartup = f.RunOnStartup;
                 Settings.Default.CheckTortoiseGitOnPath = f.CheckTortoiseGitOnPath;
+                Settings.Default.ShowChangelogOnUpdate = f.ShowChangelogOnUpdate;
 
                 Settings.Default.DeveloperSettingsEnabled = f.DeveloperSettingsEnabled;
                 Settings.Default.ShowHitTest = f.ShowHitTest;
@@ -343,6 +345,12 @@ namespace TabbedTortoiseGit
         {
             get { return CheckTortoiseGitOnPathCheck.Checked; }
             set { CheckTortoiseGitOnPathCheck.Checked = value; }
+        }
+
+        public bool ShowChangelogOnUpdate
+        {
+            get { return ShowChangelogOnUpdateCheck.Checked; }
+            set { ShowChangelogOnUpdateCheck.Checked = value; }
         }
 
         public bool DeveloperSettingsEnabled

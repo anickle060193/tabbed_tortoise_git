@@ -156,6 +156,16 @@ namespace TabbedTortoiseGit
             {
                 await OpenStartupRepos();
             }
+
+            if( Settings.Default.ShouldShowChangelog )
+            {
+                Settings.Default.ShouldShowChangelog = false;
+
+                if( Settings.Default.ShowChangelogOnUpdate )
+                {
+                    ChangelogDialog.ShowChangelog();
+                }
+            }
         }
 
         private async void TabbedTortoiseGitForm_VisibleChanged( object sender, EventArgs e )

@@ -44,6 +44,7 @@ namespace TabbedTortoiseGit
 
             UpdateButton.Click += UpdateButton_Click;
             ViewGithub.Click += ViewGithub_Click;
+            ChangelogButton.Click += ChangelogButton_Click;
         }
 
         private async void AboutBox_Load( object sender, EventArgs e )
@@ -85,6 +86,11 @@ namespace TabbedTortoiseGit
         private void ViewGithub_Click( object sender, EventArgs e )
         {
             Process.Start( "https://github.com/anickle060193/tabbed_tortoise_git" );
+        }
+
+        private void ChangelogButton_Click( object sender, EventArgs e )
+        {
+            ChangelogDialog.ShowChangelog();
         }
 
         #region Assembly Attribute Accessors

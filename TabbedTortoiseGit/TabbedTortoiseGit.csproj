@@ -95,6 +95,12 @@
       <DependentUpon>AboutBox.cs</DependentUpon>
     </Compile>
     <Compile Include="Arguments.cs" />
+    <Compile Include="ChangelogDialog.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="ChangelogDialog.Designer.cs">
+      <DependentUpon>ChangelogDialog.cs</DependentUpon>
+    </Compile>
     <Compile Include="CustomAction.cs" />
     <Compile Include="CustomActionDialog.cs">
       <SubType>Form</SubType>
@@ -204,6 +210,9 @@
     <Compile Include="GitAction.cs" />
     <EmbeddedResource Include="AboutBox.resx">
       <DependentUpon>AboutBox.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ChangelogDialog.resx">
+      <DependentUpon>ChangelogDialog.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="CustomActionDialog.resx">
       <DependentUpon>CustomActionDialog.cs</DependentUpon>
@@ -319,6 +328,9 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\symlink.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Changelog.md" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">

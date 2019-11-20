@@ -76,13 +76,14 @@ namespace TabbedTortoiseGit
             this.ModifiedTabFontGroup = new System.Windows.Forms.GroupBox();
             this.ModifiedTabFontSample = new System.Windows.Forms.Label();
             this.OtherSettingsTab = new System.Windows.Forms.TabPage();
+            this.CheckTortoiseGitOnPathCheck = new System.Windows.Forms.CheckBox();
             this.CloseWindowOnLastTabClosedCheck = new System.Windows.Forms.CheckBox();
             this.CloseToSystemTrayCheck = new System.Windows.Forms.CheckBox();
             this.DeveloperSettingsPage = new System.Windows.Forms.TabPage();
             this.ShowHitTestCheck = new System.Windows.Forms.CheckBox();
             this.ModifiedTabFontDialog = new System.Windows.Forms.FontDialog();
             this.NormalTabFontDialog = new System.Windows.Forms.FontDialog();
-            this.CheckTortoiseGitOnPathCheck = new System.Windows.Forms.CheckBox();
+            this.ShowChangelogOnUpdateCheck = new System.Windows.Forms.CheckBox();
             ((System.ComponentModel.ISupportInitialize)(this.MaxRecentReposNumeric)).BeginInit();
             this.SettingsTabs.SuspendLayout();
             this.KeyboardShortcutsPage.SuspendLayout();
@@ -634,6 +635,7 @@ namespace TabbedTortoiseGit
             // 
             // OtherSettingsTab
             // 
+            this.OtherSettingsTab.Controls.Add(this.ShowChangelogOnUpdateCheck);
             this.OtherSettingsTab.Controls.Add(this.CheckTortoiseGitOnPathCheck);
             this.OtherSettingsTab.Controls.Add(this.CloseWindowOnLastTabClosedCheck);
             this.OtherSettingsTab.Controls.Add(this.CloseToSystemTrayCheck);
@@ -648,6 +650,17 @@ namespace TabbedTortoiseGit
             this.OtherSettingsTab.TabIndex = 2;
             this.OtherSettingsTab.Text = "Other";
             this.OtherSettingsTab.UseVisualStyleBackColor = true;
+            // 
+            // CheckTortoiseGitOnPathCheck
+            // 
+            this.CheckTortoiseGitOnPathCheck.AutoSize = true;
+            this.CheckTortoiseGitOnPathCheck.CheckAlign = System.Drawing.ContentAlignment.MiddleRight;
+            this.CheckTortoiseGitOnPathCheck.Location = new System.Drawing.Point(6, 124);
+            this.CheckTortoiseGitOnPathCheck.Name = "CheckTortoiseGitOnPathCheck";
+            this.CheckTortoiseGitOnPathCheck.Size = new System.Drawing.Size(235, 17);
+            this.CheckTortoiseGitOnPathCheck.TabIndex = 14;
+            this.CheckTortoiseGitOnPathCheck.Text = "Check if TortoiseGit is accessible on startup:";
+            this.CheckTortoiseGitOnPathCheck.UseVisualStyleBackColor = true;
             // 
             // CloseWindowOnLastTabClosedCheck
             // 
@@ -704,16 +717,16 @@ namespace TabbedTortoiseGit
             this.NormalTabFontDialog.FontMustExist = true;
             this.NormalTabFontDialog.ShowColor = true;
             // 
-            // CheckTortoiseGitOnPathCheck
+            // ShowChangelogOnUpdateCheck
             // 
-            this.CheckTortoiseGitOnPathCheck.AutoSize = true;
-            this.CheckTortoiseGitOnPathCheck.CheckAlign = System.Drawing.ContentAlignment.MiddleRight;
-            this.CheckTortoiseGitOnPathCheck.Location = new System.Drawing.Point(6, 124);
-            this.CheckTortoiseGitOnPathCheck.Name = "CheckTortoiseGitOnPathCheck";
-            this.CheckTortoiseGitOnPathCheck.Size = new System.Drawing.Size(235, 17);
-            this.CheckTortoiseGitOnPathCheck.TabIndex = 14;
-            this.CheckTortoiseGitOnPathCheck.Text = "Check if TortoiseGit is accessible on startup:";
-            this.CheckTortoiseGitOnPathCheck.UseVisualStyleBackColor = true;
+            this.ShowChangelogOnUpdateCheck.AutoSize = true;
+            this.ShowChangelogOnUpdateCheck.CheckAlign = System.Drawing.ContentAlignment.MiddleRight;
+            this.ShowChangelogOnUpdateCheck.Location = new System.Drawing.Point(6, 147);
+            this.ShowChangelogOnUpdateCheck.Name = "ShowChangelogOnUpdateCheck";
+            this.ShowChangelogOnUpdateCheck.Size = new System.Drawing.Size(160, 17);
+            this.ShowChangelogOnUpdateCheck.TabIndex = 15;
+            this.ShowChangelogOnUpdateCheck.Text = "Show changelog on update:";
+            this.ShowChangelogOnUpdateCheck.UseVisualStyleBackColor = true;
             // 
             // SettingsForm
             // 
@@ -811,5 +824,6 @@ namespace TabbedTortoiseGit
         private DataGridViewCheckBoxColumn ShowProgressDialog;
         private DataGridViewCheckBoxColumn CreateNoWindow;
         private CheckBox CheckTortoiseGitOnPathCheck;
+        private CheckBox ShowChangelogOnUpdateCheck;
     }
 }

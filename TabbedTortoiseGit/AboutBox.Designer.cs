@@ -41,6 +41,7 @@
             this.VersionLabel = new System.Windows.Forms.Label();
             this.UpdateButton = new System.Windows.Forms.Button();
             this.UpdateCheckLabel = new System.Windows.Forms.Label();
+            this.ChangelogButton = new System.Windows.Forms.Button();
             this.TableLayout.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.Logo)).BeginInit();
             this.ButtonLayout.SuspendLayout();
@@ -151,12 +152,13 @@
             // 
             this.ButtonLayout.AutoSize = true;
             this.ButtonLayout.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
-            this.ButtonLayout.ColumnCount = 2;
+            this.ButtonLayout.ColumnCount = 3;
+            this.ButtonLayout.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
             this.ButtonLayout.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
             this.ButtonLayout.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.ButtonLayout.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 20F));
             this.ButtonLayout.Controls.Add(this.ViewGithub, 0, 0);
-            this.ButtonLayout.Controls.Add(this.OK, 1, 0);
+            this.ButtonLayout.Controls.Add(this.OK, 2, 0);
+            this.ButtonLayout.Controls.Add(this.ChangelogButton, 1, 0);
             this.ButtonLayout.Dock = System.Windows.Forms.DockStyle.Fill;
             this.ButtonLayout.Location = new System.Drawing.Point(255, 235);
             this.ButtonLayout.Margin = new System.Windows.Forms.Padding(0);
@@ -241,6 +243,15 @@
             this.UpdateCheckLabel.Text = "Checking for newer version...";
             this.UpdateCheckLabel.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             // 
+            // ChangelogButton
+            // 
+            this.ChangelogButton.Location = new System.Drawing.Point(84, 3);
+            this.ChangelogButton.Name = "ChangelogButton";
+            this.ChangelogButton.Size = new System.Drawing.Size(75, 23);
+            this.ChangelogButton.TabIndex = 26;
+            this.ChangelogButton.Text = "Changelog";
+            this.ChangelogButton.UseVisualStyleBackColor = true;
+            // 
             // AboutBox
             // 
             this.AcceptButton = this.OK;
@@ -284,5 +295,6 @@
         private System.Windows.Forms.TableLayoutPanel VersionTableLayout;
         private System.Windows.Forms.Button UpdateButton;
         private System.Windows.Forms.Label UpdateCheckLabel;
+        private System.Windows.Forms.Button ChangelogButton;
     }
 }
