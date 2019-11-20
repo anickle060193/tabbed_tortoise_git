@@ -572,13 +572,13 @@ namespace Tabs
                 if( _tabCount == 0 )
                 {
                     _selectedIndex = -1;
-                    OnSelectedTabChanged( EventArgs.Empty );
                 }
                 else if( _selectedIndex == _tabCount )
                 {
                     _selectedIndex = _tabCount - 1;
-                    OnSelectedTabChanged( EventArgs.Empty );
                 }
+
+                OnSelectedTabChanged( EventArgs.Empty );
             }
             else if( index < _selectedIndex )
             {
