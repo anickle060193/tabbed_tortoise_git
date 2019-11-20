@@ -2773,9 +2773,14 @@
             {
             "AssemblyRegister" = "3:1"
             "AssemblyIsInGAC" = "11:FALSE"
-            "AssemblyAsmDisplayName" = "8:Common, Version=0.31.0.0, Culture=neutral, processorArchitecture=MSIL"
+            "AssemblyAsmDisplayName" = "8:Common, Version=0.32.0.0, Culture=neutral, processorArchitecture=MSIL"
                 "ScatterAssemblies"
                 {
+                    "_40985667CDE8C4D5ABB3D8CF908AB3BB"
+                    {
+                    "Name" = "8:Common.dll"
+                    "Attributes" = "3:512"
+                    }
                 }
             "SourcePath" = "8:Common.dll"
             "TargetName" = "8:"
@@ -5474,9 +5479,14 @@
             {
             "AssemblyRegister" = "3:1"
             "AssemblyIsInGAC" = "11:FALSE"
-            "AssemblyAsmDisplayName" = "8:Tabs, Version=0.31.0.0, Culture=neutral, processorArchitecture=MSIL"
+            "AssemblyAsmDisplayName" = "8:Tabs, Version=0.32.0.0, Culture=neutral, processorArchitecture=MSIL"
                 "ScatterAssemblies"
                 {
+                    "_EA2C72C24C82980645D11FEE9FCC3EB4"
+                    {
+                    "Name" = "8:Tabs.dll"
+                    "Attributes" = "3:512"
+                    }
                 }
             "SourcePath" = "8:Tabs.dll"
             "TargetName" = "8:"
@@ -5855,15 +5865,15 @@
         {
         "Name" = "8:Microsoft Visual Studio"
         "ProductName" = "8:Tabbed TortoiseGit"
-        "ProductCode" = "8:{6D5DACD9-D300-463E-A8DA-C30B22D92FFC}"
-        "PackageCode" = "8:{70EDFD3E-8587-4FC3-9903-6FF70A9AF40E}"
+        "ProductCode" = "8:{8E143942-0CCA-4AFC-9253-F6AA82F00BDD}"
+        "PackageCode" = "8:{668A8101-7E33-421E-9DE7-1642673780D9}"
         "UpgradeCode" = "8:{3DE2617B-9A43-49DF-AE0C-4DD2428C49F0}"
         "AspNetVersion" = "8:4.0.30319.0"
         "RestartWWWService" = "11:FALSE"
         "RemovePreviousVersions" = "11:TRUE"
         "DetectNewerInstalledVersion" = "11:FALSE"
         "InstallAllUsers" = "11:FALSE"
-        "ProductVersion" = "8:0.32.0"
+        "ProductVersion" = "8:0.33.0"
         "Manufacturer" = "8:TabbedTortoiseGit"
         "ARPHELPTELEPHONE" = "8:"
         "ARPHELPLINK" = "8:"
@@ -6335,7 +6345,7 @@
         {
             "{5259A561-127C-4D43-A0A1-72F10C7B3BF8}:_160F0C2105ED43BEB9FF74D75B8A5D4F"
             {
-            "SourcePath" = "8:..\\TabbedTortoiseGit\\obj\\Release\\Tabbed TortoiseGit.exe"
+            "SourcePath" = "8:..\\TabbedTortoiseGit\\obj\\Debug\\Tabbed TortoiseGit.exe"
             "TargetName" = "8:"
             "Tag" = "8:"
             "Folder" = "8:_E3807B2F33FD4261B64F191A30468331"
@@ -6363,7 +6373,7 @@
             }
             "{5259A561-127C-4D43-A0A1-72F10C7B3BF8}:_59BCF15C204B4EEF84FA004D9F10CADD"
             {
-            "SourcePath" = "8:..\\Tabs\\obj\\Release\\Tabs.dll"
+            "SourcePath" = "8:..\\Tabs\\obj\\Debug\\Tabs.dll"
             "TargetName" = "8:"
             "Tag" = "8:"
             "Folder" = "8:_E3807B2F33FD4261B64F191A30468331"
@@ -6391,7 +6401,7 @@
             }
             "{5259A561-127C-4D43-A0A1-72F10C7B3BF8}:_60BCE373C0CA4951BD68BDE6343267DA"
             {
-            "SourcePath" = "8:..\\Common\\obj\\Release\\Common.dll"
+            "SourcePath" = "8:..\\Common\\obj\\Debug\\Common.dll"
             "TargetName" = "8:"
             "Tag" = "8:"
             "Folder" = "8:_E3807B2F33FD4261B64F191A30468331"

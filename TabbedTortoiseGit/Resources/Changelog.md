@@ -1,4 +1,4 @@
-# Unreleased
+# Version 0.33.0
 * Correct issue with TabChanged event not firing when selected tab is removed.
 * Created changelog.
 
