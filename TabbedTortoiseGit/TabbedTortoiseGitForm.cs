@@ -56,14 +56,15 @@ namespace TabbedTortoiseGit
         private readonly Dictionary<int, TabControllerTag> _tags = new Dictionary<int, TabControllerTag>();
         private readonly CommonOpenFileDialog _folderDialog;
         private readonly bool _showStartUpRepos;
-        private readonly Point _createdAtPoint;
+        private readonly bool _skipUpdateCheck;
+        private readonly Point? _createdAtPoint;
         private readonly Stack<String> _closedRepos = new Stack<String>();
 
         private FavoriteFolder? _favoriteRepos;
 
         private bool _favoriteContextMenuOpen;
 
-        public TabbedTortoiseGitForm( bool showStartUpRepos, Point createdAtPoint )
+        public TabbedTortoiseGitForm( bool showStartUpRepos, bool skipUpdateCheck, Point? createdAtPoint )
         {
             LOG.Debug( $"Constructor - Show Start-up Repos: {showStartUpRepos}" );
 
@@ -71,6 +72,7 @@ namespace TabbedTortoiseGit
             InitializeEventHandlers();
 
             _showStartUpRepos = showStartUpRepos;
+            _skipUpdateCheck = skipUpdateCheck;
             _createdAtPoint = createdAtPoint;
 
             _folderDialog = new CommonOpenFileDialog
@@ -135,7 +137,7 @@ namespace TabbedTortoiseGit
                 this.CenterToScreen();
             }
 
-            if( !_createdAtPoint.IsEmpty )
+            if( _createdAtPoint is Point p )
             {
                 this.StartPosition = FormStartPosition.Manual;
 
@@ -144,8 +146,8 @@ namespace TabbedTortoiseGit
                 int tabX = tabBounds.Left - formBounds.Left;
                 int tabY = tabBounds.Top - formBounds.Top;
 
-                int x = _createdAtPoint.X - tabX - tabBounds.Width / 2;
-                int y = _createdAtPoint.Y - tabY - tabBounds.Height / 2;
+                int x = p.X - tabX - tabBounds.Width / 2;
+                int y = p.Y - tabY - tabBounds.Height / 2;
                 this.Location = new Point( x, y );
             }
 

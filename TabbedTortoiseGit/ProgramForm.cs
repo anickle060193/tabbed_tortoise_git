@@ -112,7 +112,7 @@ namespace TabbedTortoiseGit
 
         public void CreateNewFromTab( Tab tab, Point location )
         {
-            TabbedTortoiseGitForm form = CreateNewTabbedTortoiseGit( false, location );
+            TabbedTortoiseGitForm form = CreateNewTabbedTortoiseGit( false, true, location );
             form.AddExistingTab( tab );
         }
 
@@ -120,7 +120,7 @@ namespace TabbedTortoiseGit
         {
             if( m.Msg == WM_SHOWME )
             {
-                CreateNewTabbedTortoiseGit( true, Point.Empty );
+                CreateNewTabbedTortoiseGit( true, false, null );
             }
             else
             {
@@ -143,7 +143,7 @@ namespace TabbedTortoiseGit
 
             if( !_startup )
             {
-                CreateNewTabbedTortoiseGit( Settings.Default.OpenStartupReposOnReOpen, Point.Empty );
+                CreateNewTabbedTortoiseGit( true, false, null );
             }
         }
 
@@ -164,9 +164,9 @@ namespace TabbedTortoiseGit
             }
         }
 
-        private TabbedTortoiseGitForm CreateNewTabbedTortoiseGit( bool showStartUpRepos, Point createdAtPoint )
+        private TabbedTortoiseGitForm CreateNewTabbedTortoiseGit( bool showStartUpRepos, bool skipUpdateCheck, Point? createdAtPoint )
         {
-            TabbedTortoiseGitForm form = new TabbedTortoiseGitForm( showStartUpRepos, createdAtPoint );
+            TabbedTortoiseGitForm form = new TabbedTortoiseGitForm( showStartUpRepos, skipUpdateCheck, createdAtPoint );
             form.FormClosed += TabbedTortoiseGitForm_FormClosed;
             form.Activated += TabbedTortoiseGitForm_Activated;
 
@@ -181,7 +181,7 @@ namespace TabbedTortoiseGit
         {
             if( _activeForm == null )
             {
-                CreateNewTabbedTortoiseGit( Settings.Default.OpenStartupReposOnReOpen, Point.Empty );
+                CreateNewTabbedTortoiseGit( Settings.Default.OpenStartupReposOnReOpen, false, null );
             }
 
             if( _activeForm!.WindowState == FormWindowState.Minimized )
@@ -197,7 +197,7 @@ namespace TabbedTortoiseGit
             if( _activeForm == null )
             {
                 LOG.Debug( $"{nameof( CaptureNewLog )} - No active form" );
-                CreateNewTabbedTortoiseGit( false, Point.Empty );
+                CreateNewTabbedTortoiseGit( false, false, null );
             }
             await _activeForm!.AddNewLogProcess( p, repo );
         }
