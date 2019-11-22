@@ -289,7 +289,7 @@
             // ToolStripSpacer
             // 
             this.ToolStripSpacer.Name = "ToolStripSpacer";
-            this.ToolStripSpacer.Size = new System.Drawing.Size(418, 17);
+            this.ToolStripSpacer.Size = new System.Drawing.Size(387, 17);
             this.ToolStripSpacer.Spring = true;
             // 
             // BackgroundFasterFetch
@@ -327,29 +327,29 @@
             this.EditFavoriteReposDirectoryContextMenuItem,
             this.RemoveFavoriteReposDirectoryContextMenuItem});
             this.FavoriteReposDirectoryContextMenu.Name = "FavoriteReposDirectoryContextMenu";
-            this.FavoriteReposDirectoryContextMenu.Size = new System.Drawing.Size(181, 98);
+            this.FavoriteReposDirectoryContextMenu.Size = new System.Drawing.Size(163, 76);
             // 
             // OpenFavoriteReposDirectoryLocationContextMenuItem
             // 
             this.OpenFavoriteReposDirectoryLocationContextMenuItem.Name = "OpenFavoriteReposDirectoryLocationContextMenuItem";
-            this.OpenFavoriteReposDirectoryLocationContextMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.OpenFavoriteReposDirectoryLocationContextMenuItem.Size = new System.Drawing.Size(162, 22);
             this.OpenFavoriteReposDirectoryLocationContextMenuItem.Text = "Open Directory";
             // 
             // FavoriteReposDirectoryContextMenuSeparator
             // 
             this.FavoriteReposDirectoryContextMenuSeparator.Name = "FavoriteReposDirectoryContextMenuSeparator";
-            this.FavoriteReposDirectoryContextMenuSeparator.Size = new System.Drawing.Size(177, 6);
+            this.FavoriteReposDirectoryContextMenuSeparator.Size = new System.Drawing.Size(159, 6);
             // 
             // EditFavoriteReposDirectoryContextMenuItem
             // 
             this.EditFavoriteReposDirectoryContextMenuItem.Name = "EditFavoriteReposDirectoryContextMenuItem";
-            this.EditFavoriteReposDirectoryContextMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.EditFavoriteReposDirectoryContextMenuItem.Size = new System.Drawing.Size(162, 22);
             this.EditFavoriteReposDirectoryContextMenuItem.Text = "Edit Favorite";
             // 
             // RemoveFavoriteReposDirectoryContextMenuItem
             // 
             this.RemoveFavoriteReposDirectoryContextMenuItem.Name = "RemoveFavoriteReposDirectoryContextMenuItem";
-            this.RemoveFavoriteReposDirectoryContextMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.RemoveFavoriteReposDirectoryContextMenuItem.Size = new System.Drawing.Size(162, 22);
             this.RemoveFavoriteReposDirectoryContextMenuItem.Text = "Remove Favorite";
             // 
             // TabbedTortoiseGitForm

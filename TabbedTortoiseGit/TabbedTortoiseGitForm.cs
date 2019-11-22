@@ -845,16 +845,36 @@ namespace TabbedTortoiseGit
                 BackgroundFasterFetch.Enabled = false;
 
                 BackgroundFasterFetchProgress.Enabled = false;
+                BackgroundFasterFetchProgress.Maximum = 0;
                 BackgroundFasterFetchProgress.Value = 0;
             }
             else
             {
-                BackgroundFasterFetch.Enabled = ( currentTab.BackgroundFasterFetchDialog == null
-                                               || currentTab.BackgroundFasterFetchDialog.Completed );
+                if( currentTab.BackgroundFasterFetchDialog is null )
+                {
+                    BackgroundFasterFetch.Enabled = true;
+                
+                    BackgroundFasterFetchProgress.Enabled = false;
+                    BackgroundFasterFetchProgress.Maximum = 0;
+                    BackgroundFasterFetchProgress.Value = 0;
+                }
+                else
+                {
+                    BackgroundFasterFetch.Enabled = currentTab.BackgroundFasterFetchDialog.Completed;
 
-                BackgroundFasterFetchProgress.Enabled = ( currentTab.BackgroundFasterFetchDialog != null );
-                BackgroundFasterFetchProgress.Maximum = currentTab.BackgroundFasterFetchDialog?.TotalTaskCount ?? 0;
-                BackgroundFasterFetchProgress.Value = currentTab.BackgroundFasterFetchDialog?.CompletedTaskCount ?? 0;
+                    BackgroundFasterFetchProgress.Enabled = true;
+                    BackgroundFasterFetchProgress.Maximum = currentTab.BackgroundFasterFetchDialog.TotalTaskCount;
+
+                    if( currentTab.BackgroundFasterFetchDialog.TotalTaskCount > 1
+                     && currentTab.BackgroundFasterFetchDialog.CompletedTaskCount == 0 )
+                    {
+                        BackgroundFasterFetchProgress.Value = 1;
+                    }
+                    else
+                    {
+                        BackgroundFasterFetchProgress.Value = currentTab.BackgroundFasterFetchDialog.CompletedTaskCount;
+                    }
+                }
             }
         }
 
