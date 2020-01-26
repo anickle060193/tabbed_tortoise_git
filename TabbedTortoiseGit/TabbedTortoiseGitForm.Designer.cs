@@ -63,19 +63,19 @@
             this.ToolStripSpacer = new System.Windows.Forms.ToolStripStatusLabel();
             this.BackgroundFasterFetch = new System.Windows.Forms.ToolStripButton();
             this.BackgroundFasterFetchProgress = new System.Windows.Forms.ToolStripProgressBar();
-            this.LogTabs = new Tabs.TabControl();
             this.FavoriteReposDirectoryContextMenu = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.OpenFavoriteReposDirectoryLocationContextMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.FavoriteReposDirectoryContextMenuSeparator = new System.Windows.Forms.ToolStripSeparator();
             this.EditFavoriteReposDirectoryContextMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.RemoveFavoriteReposDirectoryContextMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.ReferencesTreeView = new System.Windows.Forms.TreeView();
-            this.SplitLayout = new System.Windows.Forms.SplitContainer();
-            this.ReferencesSplitLayout = new System.Windows.Forms.SplitContainer();
-            this.ReferencesListBox = new System.Windows.Forms.ListBox();
-            this.ReferencesFilter = new System.Windows.Forms.TextBox();
             this.ReferencesListBoxReferenceContextMenu = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.ReferenceContextMenuOpenLogMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.SplitLayout = new System.Windows.Forms.SplitContainer();
+            this.ReferencesSplitLayout = new System.Windows.Forms.SplitContainer();
+            this.ReferencesTreeView = new System.Windows.Forms.TreeView();
+            this.ReferencesListBox = new System.Windows.Forms.ListBox();
+            this.ReferencesFilter = new System.Windows.Forms.TextBox();
+            this.LogTabs = new Tabs.TabControl();
             this.TabContextMenu.SuspendLayout();
             this.FavoriteRepoContextMenu.SuspendLayout();
             this.OptionsContextMenu.SuspendLayout();
@@ -83,6 +83,7 @@
             this.FavoritesFolderContextMenu.SuspendLayout();
             this.StatusStrip.SuspendLayout();
             this.FavoriteReposDirectoryContextMenu.SuspendLayout();
+            this.ReferencesListBoxReferenceContextMenu.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.SplitLayout)).BeginInit();
             this.SplitLayout.Panel1.SuspendLayout();
             this.SplitLayout.Panel2.SuspendLayout();
@@ -91,7 +92,6 @@
             this.ReferencesSplitLayout.Panel1.SuspendLayout();
             this.ReferencesSplitLayout.Panel2.SuspendLayout();
             this.ReferencesSplitLayout.SuspendLayout();
-            this.ReferencesListBoxReferenceContextMenu.SuspendLayout();
             this.SuspendLayout();
             // 
             // FavoritesMenuStrip
@@ -324,17 +324,6 @@
             this.BackgroundFasterFetchProgress.Name = "BackgroundFasterFetchProgress";
             this.BackgroundFasterFetchProgress.Size = new System.Drawing.Size(100, 16);
             // 
-            // LogTabs
-            // 
-            this.LogTabs.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.LogTabs.Location = new System.Drawing.Point(0, 0);
-            this.LogTabs.Name = "LogTabs";
-            this.LogTabs.NewTabContextMenu = this.NewTabContextMenu;
-            this.LogTabs.OptionsMenu = this.OptionsContextMenu;
-            this.LogTabs.Size = new System.Drawing.Size(440, 440);
-            this.LogTabs.TabContextMenu = this.TabContextMenu;
-            this.LogTabs.TabIndex = 3;
-            // 
             // FavoriteReposDirectoryContextMenu
             // 
             this.FavoriteReposDirectoryContextMenu.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
@@ -368,18 +357,23 @@
             this.RemoveFavoriteReposDirectoryContextMenuItem.Size = new System.Drawing.Size(162, 22);
             this.RemoveFavoriteReposDirectoryContextMenuItem.Text = "Remove Favorite";
             // 
-            // ReferencesTreeView
+            // ReferencesListBoxReferenceContextMenu
             // 
-            this.ReferencesTreeView.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.ReferencesTreeView.HideSelection = false;
-            this.ReferencesTreeView.Location = new System.Drawing.Point(0, 0);
-            this.ReferencesTreeView.Name = "ReferencesTreeView";
-            this.ReferencesTreeView.Size = new System.Drawing.Size(200, 199);
-            this.ReferencesTreeView.TabIndex = 7;
+            this.ReferencesListBoxReferenceContextMenu.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.ReferenceContextMenuOpenLogMenuItem});
+            this.ReferencesListBoxReferenceContextMenu.Name = "ReferencesTreeViewReferenceContextMenu";
+            this.ReferencesListBoxReferenceContextMenu.Size = new System.Drawing.Size(127, 26);
+            // 
+            // ReferenceContextMenuOpenLogMenuItem
+            // 
+            this.ReferenceContextMenuOpenLogMenuItem.Name = "ReferenceContextMenuOpenLogMenuItem";
+            this.ReferenceContextMenuOpenLogMenuItem.Size = new System.Drawing.Size(126, 22);
+            this.ReferenceContextMenuOpenLogMenuItem.Text = "Open Log";
             // 
             // SplitLayout
             // 
             this.SplitLayout.DataBindings.Add(new System.Windows.Forms.Binding("SplitterDistance", global::TabbedTortoiseGit.Properties.Settings.Default, "SplitLayoutSplitterDistance", true, System.Windows.Forms.DataSourceUpdateMode.OnPropertyChanged));
+            this.SplitLayout.DataBindings.Add(new System.Windows.Forms.Binding("Panel1Collapsed", global::TabbedTortoiseGit.Properties.Settings.Default, "HideReferencesDisplay", true, System.Windows.Forms.DataSourceUpdateMode.OnPropertyChanged));
             this.SplitLayout.Dock = System.Windows.Forms.DockStyle.Fill;
             this.SplitLayout.FixedPanel = System.Windows.Forms.FixedPanel.Panel1;
             this.SplitLayout.Location = new System.Drawing.Point(0, 24);
@@ -388,6 +382,7 @@
             // SplitLayout.Panel1
             // 
             this.SplitLayout.Panel1.Controls.Add(this.ReferencesSplitLayout);
+            this.SplitLayout.Panel1Collapsed = global::TabbedTortoiseGit.Properties.Settings.Default.HideReferencesDisplay;
             // 
             // SplitLayout.Panel2
             // 
@@ -415,6 +410,15 @@
             this.ReferencesSplitLayout.SplitterDistance = 199;
             this.ReferencesSplitLayout.TabIndex = 9;
             // 
+            // ReferencesTreeView
+            // 
+            this.ReferencesTreeView.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.ReferencesTreeView.HideSelection = false;
+            this.ReferencesTreeView.Location = new System.Drawing.Point(0, 0);
+            this.ReferencesTreeView.Name = "ReferencesTreeView";
+            this.ReferencesTreeView.Size = new System.Drawing.Size(200, 199);
+            this.ReferencesTreeView.TabIndex = 7;
+            // 
             // ReferencesListBox
             // 
             this.ReferencesListBox.Dock = System.Windows.Forms.DockStyle.Fill;
@@ -434,18 +438,16 @@
             this.ReferencesFilter.Size = new System.Drawing.Size(200, 20);
             this.ReferencesFilter.TabIndex = 9;
             // 
-            // ReferencesListBoxReferenceContextMenu
+            // LogTabs
             // 
-            this.ReferencesListBoxReferenceContextMenu.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.ReferenceContextMenuOpenLogMenuItem});
-            this.ReferencesListBoxReferenceContextMenu.Name = "ReferencesTreeViewReferenceContextMenu";
-            this.ReferencesListBoxReferenceContextMenu.Size = new System.Drawing.Size(127, 26);
-            // 
-            // ReferenceContextMenuOpenLogMenuItem
-            // 
-            this.ReferenceContextMenuOpenLogMenuItem.Name = "ReferenceContextMenuOpenLogMenuItem";
-            this.ReferenceContextMenuOpenLogMenuItem.Size = new System.Drawing.Size(126, 22);
-            this.ReferenceContextMenuOpenLogMenuItem.Text = "Open Log";
+            this.LogTabs.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.LogTabs.Location = new System.Drawing.Point(0, 0);
+            this.LogTabs.Name = "LogTabs";
+            this.LogTabs.NewTabContextMenu = this.NewTabContextMenu;
+            this.LogTabs.OptionsMenu = this.OptionsContextMenu;
+            this.LogTabs.Size = new System.Drawing.Size(440, 440);
+            this.LogTabs.TabContextMenu = this.TabContextMenu;
+            this.LogTabs.TabIndex = 3;
             // 
             // TabbedTortoiseGitForm
             // 
@@ -469,6 +471,7 @@
             this.StatusStrip.ResumeLayout(false);
             this.StatusStrip.PerformLayout();
             this.FavoriteReposDirectoryContextMenu.ResumeLayout(false);
+            this.ReferencesListBoxReferenceContextMenu.ResumeLayout(false);
             this.SplitLayout.Panel1.ResumeLayout(false);
             this.SplitLayout.Panel2.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.SplitLayout)).EndInit();
@@ -478,7 +481,6 @@
             this.ReferencesSplitLayout.Panel2.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.ReferencesSplitLayout)).EndInit();
             this.ReferencesSplitLayout.ResumeLayout(false);
-            this.ReferencesListBoxReferenceContextMenu.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();
 

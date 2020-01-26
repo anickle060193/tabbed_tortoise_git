@@ -1,3 +1,6 @@
+# Version 0.34.0
+* Added references display for current log (this can be disabled in the settings).
+
 # Version 0.33.0
 * Correct issue with TabChanged event not firing when selected tab is removed.
 * Created changelog.

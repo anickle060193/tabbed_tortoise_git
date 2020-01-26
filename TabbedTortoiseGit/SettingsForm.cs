@@ -38,6 +38,7 @@ namespace TabbedTortoiseGit
                 CheckForModifiedTabsInterval = Settings.Default.CheckForModifiedTabsInterval,
                 ModifiedTabFont = Settings.Default.ModifiedTabFont,
                 ModifiedTabFontColor = Settings.Default.ModifiedTabFontColor,
+                HideReferencesDisplay = Settings.Default.HideReferencesDisplay,
 
                 MaxRecentRepos = Settings.Default.MaxRecentRepos,
                 ConfirmOnClose = Settings.Default.ConfirmOnClose,
@@ -69,6 +70,7 @@ namespace TabbedTortoiseGit
                 Settings.Default.IndicateModifiedTabs = f.IndicateModifiedTabs;
                 Settings.Default.ModifiedTabFont = f.ModifiedTabFont;
                 Settings.Default.ModifiedTabFontColor = f.ModifiedTabFontColor;
+                Settings.Default.HideReferencesDisplay = f.HideReferencesDisplay;
 
                 Settings.Default.MaxRecentRepos = f.MaxRecentRepos;
                 Settings.Default.RecentRepos = Settings.Default.RecentRepos.Take( Settings.Default.MaxRecentRepos ).ToList();
@@ -273,6 +275,19 @@ namespace TabbedTortoiseGit
             set
             {
                 ModifiedTabFontSample.ForeColor = value;
+            }
+        }
+
+        public bool HideReferencesDisplay
+        {
+            get
+            {
+                return HideReferencesDisplayCheck.Checked;
+            }
+
+            set
+            {
+                HideReferencesDisplayCheck.Checked = value;
             }
         }
 

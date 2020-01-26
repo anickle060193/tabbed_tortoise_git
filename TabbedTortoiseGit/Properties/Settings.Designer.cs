@@ -533,5 +533,17 @@ namespace TabbedTortoiseGit.Properties {
                 this["SplitLayoutSplitterDistance"] = value;
             }
         }
+
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public bool HideReferencesDisplay {
+            get {
+                return ((bool)(this["HideReferencesDisplay"]));
+            }
+            set {
+                this["HideReferencesDisplay"] = value;
+            }
+        }
     }
 }

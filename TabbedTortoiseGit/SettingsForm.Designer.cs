@@ -76,6 +76,7 @@ namespace TabbedTortoiseGit
             this.ModifiedTabFontGroup = new System.Windows.Forms.GroupBox();
             this.ModifiedTabFontSample = new System.Windows.Forms.Label();
             this.OtherSettingsTab = new System.Windows.Forms.TabPage();
+            this.ShowChangelogOnUpdateCheck = new System.Windows.Forms.CheckBox();
             this.CheckTortoiseGitOnPathCheck = new System.Windows.Forms.CheckBox();
             this.CloseWindowOnLastTabClosedCheck = new System.Windows.Forms.CheckBox();
             this.CloseToSystemTrayCheck = new System.Windows.Forms.CheckBox();
@@ -83,7 +84,7 @@ namespace TabbedTortoiseGit
             this.ShowHitTestCheck = new System.Windows.Forms.CheckBox();
             this.ModifiedTabFontDialog = new System.Windows.Forms.FontDialog();
             this.NormalTabFontDialog = new System.Windows.Forms.FontDialog();
-            this.ShowChangelogOnUpdateCheck = new System.Windows.Forms.CheckBox();
+            this.HideReferencesDisplayCheck = new System.Windows.Forms.CheckBox();
             ((System.ComponentModel.ISupportInitialize)(this.MaxRecentReposNumeric)).BeginInit();
             this.SettingsTabs.SuspendLayout();
             this.KeyboardShortcutsPage.SuspendLayout();
@@ -110,7 +111,7 @@ namespace TabbedTortoiseGit
             this.StartupReposList.Location = new System.Drawing.Point(6, 6);
             this.StartupReposList.Name = "StartupReposList";
             this.StartupReposList.SelectionMode = System.Windows.Forms.SelectionMode.MultiSimple;
-            this.StartupReposList.Size = new System.Drawing.Size(589, 264);
+            this.StartupReposList.Size = new System.Drawing.Size(640, 264);
             this.StartupReposList.TabIndex = 1;
             // 
             // AddDefaultRepo
@@ -127,7 +128,7 @@ namespace TabbedTortoiseGit
             // 
             this.OK.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.OK.DialogResult = System.Windows.Forms.DialogResult.OK;
-            this.OK.Location = new System.Drawing.Point(566, 376);
+            this.OK.Location = new System.Drawing.Point(516, 376);
             this.OK.Name = "OK";
             this.OK.Size = new System.Drawing.Size(75, 23);
             this.OK.TabIndex = 3;
@@ -138,7 +139,7 @@ namespace TabbedTortoiseGit
             // 
             this.Cancel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.Cancel.DialogResult = System.Windows.Forms.DialogResult.Cancel;
-            this.Cancel.Location = new System.Drawing.Point(647, 376);
+            this.Cancel.Location = new System.Drawing.Point(597, 376);
             this.Cancel.Name = "Cancel";
             this.Cancel.Size = new System.Drawing.Size(75, 23);
             this.Cancel.TabIndex = 4;
@@ -234,7 +235,7 @@ namespace TabbedTortoiseGit
             this.GitActionsCheckList.IntegralHeight = false;
             this.GitActionsCheckList.Location = new System.Drawing.Point(6, 6);
             this.GitActionsCheckList.Name = "GitActionsCheckList";
-            this.GitActionsCheckList.Size = new System.Drawing.Size(590, 253);
+            this.GitActionsCheckList.Size = new System.Drawing.Size(640, 253);
             this.GitActionsCheckList.TabIndex = 0;
             this.SettingsToolTip.SetToolTip(this.GitActionsCheckList, "Only valid when \"Retain Logs on Close\" is disabled.\r\n");
             // 
@@ -253,7 +254,7 @@ namespace TabbedTortoiseGit
             this.SettingsTabs.Location = new System.Drawing.Point(12, 12);
             this.SettingsTabs.Name = "SettingsTabs";
             this.SettingsTabs.SelectedIndex = 0;
-            this.SettingsTabs.Size = new System.Drawing.Size(710, 358);
+            this.SettingsTabs.Size = new System.Drawing.Size(660, 358);
             this.SettingsTabs.TabIndex = 12;
             // 
             // KeyboardShortcutsPage
@@ -263,7 +264,7 @@ namespace TabbedTortoiseGit
             this.KeyboardShortcutsPage.Location = new System.Drawing.Point(4, 22);
             this.KeyboardShortcutsPage.Name = "KeyboardShortcutsPage";
             this.KeyboardShortcutsPage.Padding = new System.Windows.Forms.Padding(3);
-            this.KeyboardShortcutsPage.Size = new System.Drawing.Size(702, 332);
+            this.KeyboardShortcutsPage.Size = new System.Drawing.Size(652, 332);
             this.KeyboardShortcutsPage.TabIndex = 5;
             this.KeyboardShortcutsPage.Text = "Keyboard Shortcuts";
             this.KeyboardShortcutsPage.UseVisualStyleBackColor = true;
@@ -285,7 +286,7 @@ namespace TabbedTortoiseGit
             this.KeyBoardShortcutsTableLayout.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 1F));
             this.KeyBoardShortcutsTableLayout.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 1F));
             this.KeyBoardShortcutsTableLayout.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 1F));
-            this.KeyBoardShortcutsTableLayout.Size = new System.Drawing.Size(696, 0);
+            this.KeyBoardShortcutsTableLayout.Size = new System.Drawing.Size(646, 0);
             this.KeyBoardShortcutsTableLayout.TabIndex = 2;
             // 
             // StartupReposTab
@@ -297,7 +298,7 @@ namespace TabbedTortoiseGit
             this.StartupReposTab.Location = new System.Drawing.Point(4, 22);
             this.StartupReposTab.Name = "StartupReposTab";
             this.StartupReposTab.Padding = new System.Windows.Forms.Padding(3);
-            this.StartupReposTab.Size = new System.Drawing.Size(702, 332);
+            this.StartupReposTab.Size = new System.Drawing.Size(652, 332);
             this.StartupReposTab.TabIndex = 0;
             this.StartupReposTab.Text = "Startup Repos";
             this.StartupReposTab.UseVisualStyleBackColor = true;
@@ -310,7 +311,7 @@ namespace TabbedTortoiseGit
             this.GitActionsTab.Location = new System.Drawing.Point(4, 22);
             this.GitActionsTab.Name = "GitActionsTab";
             this.GitActionsTab.Padding = new System.Windows.Forms.Padding(3);
-            this.GitActionsTab.Size = new System.Drawing.Size(702, 332);
+            this.GitActionsTab.Size = new System.Drawing.Size(652, 332);
             this.GitActionsTab.TabIndex = 1;
             this.GitActionsTab.Text = "Git Actions";
             this.GitActionsTab.UseVisualStyleBackColor = true;
@@ -322,7 +323,7 @@ namespace TabbedTortoiseGit
             this.GitActionsOptionsGroup.Controls.Add(this.ConfirmFasterFetchCheck);
             this.GitActionsOptionsGroup.Location = new System.Drawing.Point(6, 278);
             this.GitActionsOptionsGroup.Name = "GitActionsOptionsGroup";
-            this.GitActionsOptionsGroup.Size = new System.Drawing.Size(590, 48);
+            this.GitActionsOptionsGroup.Size = new System.Drawing.Size(640, 48);
             this.GitActionsOptionsGroup.TabIndex = 3;
             this.GitActionsOptionsGroup.TabStop = false;
             this.GitActionsOptionsGroup.Text = "Git Actions Options";
@@ -346,7 +347,7 @@ namespace TabbedTortoiseGit
             this.CustomActionsTab.Location = new System.Drawing.Point(4, 22);
             this.CustomActionsTab.Name = "CustomActionsTab";
             this.CustomActionsTab.Padding = new System.Windows.Forms.Padding(3);
-            this.CustomActionsTab.Size = new System.Drawing.Size(702, 332);
+            this.CustomActionsTab.Size = new System.Drawing.Size(652, 332);
             this.CustomActionsTab.TabIndex = 6;
             this.CustomActionsTab.Text = "Custom Actions";
             this.CustomActionsTab.UseVisualStyleBackColor = true;
@@ -411,7 +412,7 @@ namespace TabbedTortoiseGit
             this.CustomActionsDataGridView.ReadOnly = true;
             this.CustomActionsDataGridView.RowHeadersVisible = false;
             this.CustomActionsDataGridView.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.CustomActionsDataGridView.Size = new System.Drawing.Size(690, 291);
+            this.CustomActionsDataGridView.Size = new System.Drawing.Size(640, 291);
             this.CustomActionsDataGridView.TabIndex = 0;
             this.CustomActionsDataGridView.SelectionChanged += new System.EventHandler(this.CustomActionsDataGridView_SelectionChanged);
             // 
@@ -483,6 +484,7 @@ namespace TabbedTortoiseGit
             // 
             // DisplaySettingsTab
             // 
+            this.DisplaySettingsTab.Controls.Add(this.HideReferencesDisplayCheck);
             this.DisplaySettingsTab.Controls.Add(this.ResetNormalTabFontButton);
             this.DisplaySettingsTab.Controls.Add(this.ChangeNormalTabFontButton);
             this.DisplaySettingsTab.Controls.Add(this.NormalTabFontGroup);
@@ -495,7 +497,7 @@ namespace TabbedTortoiseGit
             this.DisplaySettingsTab.Location = new System.Drawing.Point(4, 22);
             this.DisplaySettingsTab.Name = "DisplaySettingsTab";
             this.DisplaySettingsTab.Padding = new System.Windows.Forms.Padding(3);
-            this.DisplaySettingsTab.Size = new System.Drawing.Size(702, 332);
+            this.DisplaySettingsTab.Size = new System.Drawing.Size(652, 332);
             this.DisplaySettingsTab.TabIndex = 4;
             this.DisplaySettingsTab.Text = "Display";
             this.DisplaySettingsTab.UseVisualStyleBackColor = true;
@@ -503,7 +505,7 @@ namespace TabbedTortoiseGit
             // ResetNormalTabFontButton
             // 
             this.ResetNormalTabFontButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.ResetNormalTabFontButton.Location = new System.Drawing.Point(436, 71);
+            this.ResetNormalTabFontButton.Location = new System.Drawing.Point(490, 71);
             this.ResetNormalTabFontButton.Name = "ResetNormalTabFontButton";
             this.ResetNormalTabFontButton.Size = new System.Drawing.Size(75, 23);
             this.ResetNormalTabFontButton.TabIndex = 8;
@@ -513,7 +515,7 @@ namespace TabbedTortoiseGit
             // ChangeNormalTabFontButton
             // 
             this.ChangeNormalTabFontButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.ChangeNormalTabFontButton.Location = new System.Drawing.Point(517, 71);
+            this.ChangeNormalTabFontButton.Location = new System.Drawing.Point(571, 71);
             this.ChangeNormalTabFontButton.Name = "ChangeNormalTabFontButton";
             this.ChangeNormalTabFontButton.Size = new System.Drawing.Size(75, 23);
             this.ChangeNormalTabFontButton.TabIndex = 7;
@@ -527,7 +529,7 @@ namespace TabbedTortoiseGit
             this.NormalTabFontGroup.Controls.Add(this.NormalTabFontSample);
             this.NormalTabFontGroup.Location = new System.Drawing.Point(6, 6);
             this.NormalTabFontGroup.Name = "NormalTabFontGroup";
-            this.NormalTabFontGroup.Size = new System.Drawing.Size(586, 59);
+            this.NormalTabFontGroup.Size = new System.Drawing.Size(640, 59);
             this.NormalTabFontGroup.TabIndex = 6;
             this.NormalTabFontGroup.TabStop = false;
             this.NormalTabFontGroup.Text = "Normal Tab Font";
@@ -538,7 +540,7 @@ namespace TabbedTortoiseGit
             this.NormalTabFontSample.Dock = System.Windows.Forms.DockStyle.Fill;
             this.NormalTabFontSample.Location = new System.Drawing.Point(3, 16);
             this.NormalTabFontSample.Name = "NormalTabFontSample";
-            this.NormalTabFontSample.Size = new System.Drawing.Size(580, 40);
+            this.NormalTabFontSample.Size = new System.Drawing.Size(634, 40);
             this.NormalTabFontSample.TabIndex = 0;
             this.NormalTabFontSample.Text = "C:\\sample\\font.git";
             this.NormalTabFontSample.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
@@ -593,7 +595,7 @@ namespace TabbedTortoiseGit
             // ResetModifiedTabFontButton
             // 
             this.ResetModifiedTabFontButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.ResetModifiedTabFontButton.Location = new System.Drawing.Point(436, 215);
+            this.ResetModifiedTabFontButton.Location = new System.Drawing.Point(490, 215);
             this.ResetModifiedTabFontButton.Name = "ResetModifiedTabFontButton";
             this.ResetModifiedTabFontButton.Size = new System.Drawing.Size(75, 23);
             this.ResetModifiedTabFontButton.TabIndex = 2;
@@ -603,7 +605,7 @@ namespace TabbedTortoiseGit
             // ChangeModifiedTabFontButton
             // 
             this.ChangeModifiedTabFontButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.ChangeModifiedTabFontButton.Location = new System.Drawing.Point(517, 215);
+            this.ChangeModifiedTabFontButton.Location = new System.Drawing.Point(571, 215);
             this.ChangeModifiedTabFontButton.Name = "ChangeModifiedTabFontButton";
             this.ChangeModifiedTabFontButton.Size = new System.Drawing.Size(75, 23);
             this.ChangeModifiedTabFontButton.TabIndex = 1;
@@ -617,7 +619,7 @@ namespace TabbedTortoiseGit
             this.ModifiedTabFontGroup.Controls.Add(this.ModifiedTabFontSample);
             this.ModifiedTabFontGroup.Location = new System.Drawing.Point(6, 150);
             this.ModifiedTabFontGroup.Name = "ModifiedTabFontGroup";
-            this.ModifiedTabFontGroup.Size = new System.Drawing.Size(586, 59);
+            this.ModifiedTabFontGroup.Size = new System.Drawing.Size(637, 59);
             this.ModifiedTabFontGroup.TabIndex = 0;
             this.ModifiedTabFontGroup.TabStop = false;
             this.ModifiedTabFontGroup.Text = "Modified Tab Font";
@@ -628,7 +630,7 @@ namespace TabbedTortoiseGit
             this.ModifiedTabFontSample.Dock = System.Windows.Forms.DockStyle.Fill;
             this.ModifiedTabFontSample.Location = new System.Drawing.Point(3, 16);
             this.ModifiedTabFontSample.Name = "ModifiedTabFontSample";
-            this.ModifiedTabFontSample.Size = new System.Drawing.Size(580, 40);
+            this.ModifiedTabFontSample.Size = new System.Drawing.Size(631, 40);
             this.ModifiedTabFontSample.TabIndex = 0;
             this.ModifiedTabFontSample.Text = "C:\\sample\\font.git";
             this.ModifiedTabFontSample.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
@@ -646,10 +648,21 @@ namespace TabbedTortoiseGit
             this.OtherSettingsTab.Location = new System.Drawing.Point(4, 22);
             this.OtherSettingsTab.Name = "OtherSettingsTab";
             this.OtherSettingsTab.Padding = new System.Windows.Forms.Padding(3);
-            this.OtherSettingsTab.Size = new System.Drawing.Size(702, 332);
+            this.OtherSettingsTab.Size = new System.Drawing.Size(652, 332);
             this.OtherSettingsTab.TabIndex = 2;
             this.OtherSettingsTab.Text = "Other";
             this.OtherSettingsTab.UseVisualStyleBackColor = true;
+            // 
+            // ShowChangelogOnUpdateCheck
+            // 
+            this.ShowChangelogOnUpdateCheck.AutoSize = true;
+            this.ShowChangelogOnUpdateCheck.CheckAlign = System.Drawing.ContentAlignment.MiddleRight;
+            this.ShowChangelogOnUpdateCheck.Location = new System.Drawing.Point(6, 147);
+            this.ShowChangelogOnUpdateCheck.Name = "ShowChangelogOnUpdateCheck";
+            this.ShowChangelogOnUpdateCheck.Size = new System.Drawing.Size(160, 17);
+            this.ShowChangelogOnUpdateCheck.TabIndex = 15;
+            this.ShowChangelogOnUpdateCheck.Text = "Show changelog on update:";
+            this.ShowChangelogOnUpdateCheck.UseVisualStyleBackColor = true;
             // 
             // CheckTortoiseGitOnPathCheck
             // 
@@ -717,16 +730,15 @@ namespace TabbedTortoiseGit
             this.NormalTabFontDialog.FontMustExist = true;
             this.NormalTabFontDialog.ShowColor = true;
             // 
-            // ShowChangelogOnUpdateCheck
+            // HideReferencesDisplayCheck
             // 
-            this.ShowChangelogOnUpdateCheck.AutoSize = true;
-            this.ShowChangelogOnUpdateCheck.CheckAlign = System.Drawing.ContentAlignment.MiddleRight;
-            this.ShowChangelogOnUpdateCheck.Location = new System.Drawing.Point(6, 147);
-            this.ShowChangelogOnUpdateCheck.Name = "ShowChangelogOnUpdateCheck";
-            this.ShowChangelogOnUpdateCheck.Size = new System.Drawing.Size(160, 17);
-            this.ShowChangelogOnUpdateCheck.TabIndex = 15;
-            this.ShowChangelogOnUpdateCheck.Text = "Show changelog on update:";
-            this.ShowChangelogOnUpdateCheck.UseVisualStyleBackColor = true;
+            this.HideReferencesDisplayCheck.AutoSize = true;
+            this.HideReferencesDisplayCheck.Location = new System.Drawing.Point(6, 244);
+            this.HideReferencesDisplayCheck.Name = "HideReferencesDisplayCheck";
+            this.HideReferencesDisplayCheck.Size = new System.Drawing.Size(136, 17);
+            this.HideReferencesDisplayCheck.TabIndex = 10;
+            this.HideReferencesDisplayCheck.Text = "Hide references display";
+            this.HideReferencesDisplayCheck.UseVisualStyleBackColor = true;
             // 
             // SettingsForm
             // 
@@ -734,7 +746,7 @@ namespace TabbedTortoiseGit
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.CancelButton = this.Cancel;
-            this.ClientSize = new System.Drawing.Size(734, 411);
+            this.ClientSize = new System.Drawing.Size(684, 411);
             this.Controls.Add(this.SettingsTabs);
             this.Controls.Add(this.Cancel);
             this.Controls.Add(this.OK);
@@ -825,5 +837,6 @@ namespace TabbedTortoiseGit
         private DataGridViewCheckBoxColumn CreateNoWindow;
         private CheckBox CheckTortoiseGitOnPathCheck;
         private CheckBox ShowChangelogOnUpdateCheck;
+        private CheckBox HideReferencesDisplayCheck;
     }
 }
