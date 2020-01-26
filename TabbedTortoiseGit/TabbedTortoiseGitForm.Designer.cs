@@ -69,6 +69,13 @@
             this.FavoriteReposDirectoryContextMenuSeparator = new System.Windows.Forms.ToolStripSeparator();
             this.EditFavoriteReposDirectoryContextMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.RemoveFavoriteReposDirectoryContextMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.ReferencesTreeView = new System.Windows.Forms.TreeView();
+            this.SplitLayout = new System.Windows.Forms.SplitContainer();
+            this.ReferencesSplitLayout = new System.Windows.Forms.SplitContainer();
+            this.ReferencesListBox = new System.Windows.Forms.ListBox();
+            this.ReferencesFilter = new System.Windows.Forms.TextBox();
+            this.ReferencesListBoxReferenceContextMenu = new System.Windows.Forms.ContextMenuStrip(this.components);
+            this.ReferenceContextMenuOpenLogMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.TabContextMenu.SuspendLayout();
             this.FavoriteRepoContextMenu.SuspendLayout();
             this.OptionsContextMenu.SuspendLayout();
@@ -76,6 +83,15 @@
             this.FavoritesFolderContextMenu.SuspendLayout();
             this.StatusStrip.SuspendLayout();
             this.FavoriteReposDirectoryContextMenu.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.SplitLayout)).BeginInit();
+            this.SplitLayout.Panel1.SuspendLayout();
+            this.SplitLayout.Panel2.SuspendLayout();
+            this.SplitLayout.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.ReferencesSplitLayout)).BeginInit();
+            this.ReferencesSplitLayout.Panel1.SuspendLayout();
+            this.ReferencesSplitLayout.Panel2.SuspendLayout();
+            this.ReferencesSplitLayout.SuspendLayout();
+            this.ReferencesListBoxReferenceContextMenu.SuspendLayout();
             this.SuspendLayout();
             // 
             // FavoritesMenuStrip
@@ -289,7 +305,7 @@
             // ToolStripSpacer
             // 
             this.ToolStripSpacer.Name = "ToolStripSpacer";
-            this.ToolStripSpacer.Size = new System.Drawing.Size(387, 17);
+            this.ToolStripSpacer.Size = new System.Drawing.Size(418, 17);
             this.ToolStripSpacer.Spring = true;
             // 
             // BackgroundFasterFetch
@@ -311,11 +327,11 @@
             // LogTabs
             // 
             this.LogTabs.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.LogTabs.Location = new System.Drawing.Point(0, 24);
+            this.LogTabs.Location = new System.Drawing.Point(0, 0);
             this.LogTabs.Name = "LogTabs";
             this.LogTabs.NewTabContextMenu = this.NewTabContextMenu;
             this.LogTabs.OptionsMenu = this.OptionsContextMenu;
-            this.LogTabs.Size = new System.Drawing.Size(644, 440);
+            this.LogTabs.Size = new System.Drawing.Size(440, 440);
             this.LogTabs.TabContextMenu = this.TabContextMenu;
             this.LogTabs.TabIndex = 3;
             // 
@@ -352,13 +368,92 @@
             this.RemoveFavoriteReposDirectoryContextMenuItem.Size = new System.Drawing.Size(162, 22);
             this.RemoveFavoriteReposDirectoryContextMenuItem.Text = "Remove Favorite";
             // 
+            // ReferencesTreeView
+            // 
+            this.ReferencesTreeView.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.ReferencesTreeView.HideSelection = false;
+            this.ReferencesTreeView.Location = new System.Drawing.Point(0, 0);
+            this.ReferencesTreeView.Name = "ReferencesTreeView";
+            this.ReferencesTreeView.Size = new System.Drawing.Size(200, 199);
+            this.ReferencesTreeView.TabIndex = 7;
+            // 
+            // SplitLayout
+            // 
+            this.SplitLayout.DataBindings.Add(new System.Windows.Forms.Binding("SplitterDistance", global::TabbedTortoiseGit.Properties.Settings.Default, "SplitLayoutSplitterDistance", true, System.Windows.Forms.DataSourceUpdateMode.OnPropertyChanged));
+            this.SplitLayout.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.SplitLayout.FixedPanel = System.Windows.Forms.FixedPanel.Panel1;
+            this.SplitLayout.Location = new System.Drawing.Point(0, 24);
+            this.SplitLayout.Name = "SplitLayout";
+            // 
+            // SplitLayout.Panel1
+            // 
+            this.SplitLayout.Panel1.Controls.Add(this.ReferencesSplitLayout);
+            // 
+            // SplitLayout.Panel2
+            // 
+            this.SplitLayout.Panel2.Controls.Add(this.LogTabs);
+            this.SplitLayout.Size = new System.Drawing.Size(644, 440);
+            this.SplitLayout.SplitterDistance = global::TabbedTortoiseGit.Properties.Settings.Default.SplitLayoutSplitterDistance;
+            this.SplitLayout.TabIndex = 8;
+            // 
+            // ReferencesSplitLayout
+            // 
+            this.ReferencesSplitLayout.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.ReferencesSplitLayout.Location = new System.Drawing.Point(0, 0);
+            this.ReferencesSplitLayout.Name = "ReferencesSplitLayout";
+            this.ReferencesSplitLayout.Orientation = System.Windows.Forms.Orientation.Horizontal;
+            // 
+            // ReferencesSplitLayout.Panel1
+            // 
+            this.ReferencesSplitLayout.Panel1.Controls.Add(this.ReferencesTreeView);
+            // 
+            // ReferencesSplitLayout.Panel2
+            // 
+            this.ReferencesSplitLayout.Panel2.Controls.Add(this.ReferencesListBox);
+            this.ReferencesSplitLayout.Panel2.Controls.Add(this.ReferencesFilter);
+            this.ReferencesSplitLayout.Size = new System.Drawing.Size(200, 440);
+            this.ReferencesSplitLayout.SplitterDistance = 199;
+            this.ReferencesSplitLayout.TabIndex = 9;
+            // 
+            // ReferencesListBox
+            // 
+            this.ReferencesListBox.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.ReferencesListBox.FormatString = "long";
+            this.ReferencesListBox.FormattingEnabled = true;
+            this.ReferencesListBox.IntegralHeight = false;
+            this.ReferencesListBox.Location = new System.Drawing.Point(0, 20);
+            this.ReferencesListBox.Name = "ReferencesListBox";
+            this.ReferencesListBox.Size = new System.Drawing.Size(200, 217);
+            this.ReferencesListBox.TabIndex = 8;
+            // 
+            // ReferencesFilter
+            // 
+            this.ReferencesFilter.Dock = System.Windows.Forms.DockStyle.Top;
+            this.ReferencesFilter.Location = new System.Drawing.Point(0, 0);
+            this.ReferencesFilter.Name = "ReferencesFilter";
+            this.ReferencesFilter.Size = new System.Drawing.Size(200, 20);
+            this.ReferencesFilter.TabIndex = 9;
+            // 
+            // ReferencesListBoxReferenceContextMenu
+            // 
+            this.ReferencesListBoxReferenceContextMenu.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.ReferenceContextMenuOpenLogMenuItem});
+            this.ReferencesListBoxReferenceContextMenu.Name = "ReferencesTreeViewReferenceContextMenu";
+            this.ReferencesListBoxReferenceContextMenu.Size = new System.Drawing.Size(127, 26);
+            // 
+            // ReferenceContextMenuOpenLogMenuItem
+            // 
+            this.ReferenceContextMenuOpenLogMenuItem.Name = "ReferenceContextMenuOpenLogMenuItem";
+            this.ReferenceContextMenuOpenLogMenuItem.Size = new System.Drawing.Size(126, 22);
+            this.ReferenceContextMenuOpenLogMenuItem.Text = "Open Log";
+            // 
             // TabbedTortoiseGitForm
             // 
             this.AllowDrop = true;
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(644, 486);
-            this.Controls.Add(this.LogTabs);
+            this.Controls.Add(this.SplitLayout);
             this.Controls.Add(this.StatusStrip);
             this.Controls.Add(this.FavoritesMenuStrip);
             this.MainMenuStrip = this.FavoritesMenuStrip;
@@ -374,6 +469,16 @@
             this.StatusStrip.ResumeLayout(false);
             this.StatusStrip.PerformLayout();
             this.FavoriteReposDirectoryContextMenu.ResumeLayout(false);
+            this.SplitLayout.Panel1.ResumeLayout(false);
+            this.SplitLayout.Panel2.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.SplitLayout)).EndInit();
+            this.SplitLayout.ResumeLayout(false);
+            this.ReferencesSplitLayout.Panel1.ResumeLayout(false);
+            this.ReferencesSplitLayout.Panel2.ResumeLayout(false);
+            this.ReferencesSplitLayout.Panel2.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.ReferencesSplitLayout)).EndInit();
+            this.ReferencesSplitLayout.ResumeLayout(false);
+            this.ReferencesListBoxReferenceContextMenu.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -419,6 +524,13 @@
         private System.Windows.Forms.ToolStripMenuItem EditFavoriteReposDirectoryContextMenuItem;
         private System.Windows.Forms.ToolStripMenuItem RemoveFavoriteReposDirectoryContextMenuItem;
         private System.Windows.Forms.ToolStripMenuItem EditFavoriteFolderContextMenuItem;
+        private System.Windows.Forms.TreeView ReferencesTreeView;
+        private System.Windows.Forms.SplitContainer SplitLayout;
+        private System.Windows.Forms.ContextMenuStrip ReferencesListBoxReferenceContextMenu;
+        private System.Windows.Forms.ToolStripMenuItem ReferenceContextMenuOpenLogMenuItem;
+        private System.Windows.Forms.ListBox ReferencesListBox;
+        private System.Windows.Forms.SplitContainer ReferencesSplitLayout;
+        private System.Windows.Forms.TextBox ReferencesFilter;
     }
 }
 

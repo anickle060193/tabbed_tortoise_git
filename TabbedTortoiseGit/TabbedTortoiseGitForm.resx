@@ -124,25 +124,25 @@
     <value>171, 23</value>
   </metadata>
   <metadata name="TabContextMenu.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
-    <value>578, 18</value>
+    <value>630, 23</value>
   </metadata>
   <metadata name="FavoriteRepoContextMenu.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
-    <value>839, 19</value>
+    <value>885, 23</value>
   </metadata>
   <metadata name="OptionsContextMenu.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
-    <value>284, 57</value>
+    <value>284, 62</value>
   </metadata>
   <metadata name="FavoritesMenuContextMenu.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
-    <value>453, 57</value>
+    <value>453, 62</value>
   </metadata>
   <metadata name="FavoritesFolderContextMenu.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
-    <value>659, 57</value>
+    <value>659, 62</value>
   </metadata>
   <metadata name="ModifiedRepoCheckBackgroundWorker.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
-    <value>17, 57</value>
+    <value>17, 62</value>
   </metadata>
   <metadata name="StatusStrip.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
-    <value>727, 15</value>
+    <value>775, 23</value>
   </metadata>
   <assembly alias="System.Drawing" name="System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
   <data name="BackgroundFasterFetch.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
@@ -312,6 +312,9 @@
 </value>
   </data>
   <metadata name="FavoriteReposDirectoryContextMenu.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
-    <value>867, 57</value>
+    <value>867, 62</value>
+  </metadata>
+  <metadata name="ReferencesListBoxReferenceContextMenu.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
+    <value>341, 23</value>
   </metadata>
 </root>

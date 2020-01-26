@@ -128,5 +128,8 @@
     <Setting Name="ShowChangelogOnUpdate" Type="System.Boolean" Scope="User">
       <Value Profile="(Default)">True</Value>
     </Setting>
+    <Setting Name="SplitLayoutSplitterDistance" Type="System.Int32" Scope="User">
+      <Value Profile="(Default)">200</Value>
+    </Setting>
   </Settings>
 </SettingsFile>

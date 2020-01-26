@@ -81,6 +81,8 @@ namespace TabbedTortoiseGit
             };
 
             this.Icon = Resources.TortoiseIcon;
+
+            ReferencesFilter.SetPlaceholder( "References filter" );
         }
 
         protected override void OnHandleCreated( EventArgs e )
@@ -876,6 +878,115 @@ namespace TabbedTortoiseGit
                     }
                 }
             }
+        }
+
+        private class DisplayReference : IFormattable, IComparable<DisplayReference>
+        {
+            public String Reference { get; private set; }
+            public String ShortReference { get; private set; }
+
+            public DisplayReference( String reference, String shortReference )
+            {
+                Reference = reference;
+                ShortReference = shortReference;
+            }
+
+            public override String ToString()
+            {
+                return ShortReference;
+            }
+
+            public string ToString( String format, IFormatProvider formatProvider )
+            {
+                if( format == "long" )
+                {
+                    return Reference;
+                }
+                else
+                {
+                    return ShortReference;
+                }
+            }
+
+            public int CompareTo( DisplayReference other )
+            {
+                return String.Compare( this.Reference, other?.Reference );
+            }
+        }
+
+        private void UpdateReferencesTreeView()
+        {
+            TabControllerTag? currentTab = LogTabs.SelectedTab?.Controller();
+
+            ReferencesTreeView.BeginUpdate();
+
+            ReferencesTreeView.Nodes.Clear();
+
+            if( currentTab != null )
+            {
+                using( Repository repository = new Repository( Git.GetBaseRepoDirectory( currentTab.RepoItem ) ) )
+                {
+                    foreach( Reference r in repository.Refs )
+                    {
+                        String[] splitRef = r.CanonicalName.Split( '/' );
+                        AddReferencesTreeViewReference( r.CanonicalName, splitRef, 0, ReferencesTreeView.Nodes );
+                    }
+                }
+
+                if( ReferencesTreeView.Nodes.Count > 0 )
+                {
+                    TreeNode firstNode = ReferencesTreeView.Nodes[ 0 ];
+                    firstNode.Expand();
+                    ReferencesTreeView.SelectedNode = firstNode;
+                }
+            }
+
+            ReferencesTreeView.EndUpdate();
+        }
+
+        private void AddReferencesTreeViewReference( String reference, String[] splitRef, int index, TreeNodeCollection parentNodes )
+        {
+            String splitRefPart = splitRef[ index ];
+            TreeNode node = parentNodes.Find( splitRefPart, false ).FirstOrDefault();
+            if( node == null )
+            {
+                node = parentNodes.Add( splitRefPart, splitRefPart );
+                node.Tag = new List<DisplayReference>();
+            }
+
+            List<DisplayReference> refs = (List<DisplayReference>)node.Tag;
+            DisplayReference displayRef = new DisplayReference( reference, String.Join( "/", splitRef, index + 1, splitRef.Length - index - 1 ) );
+            refs.Add( displayRef );
+
+            if( index + 1 < splitRef.Length - 1 )
+            {
+                AddReferencesTreeViewReference( reference, splitRef, index + 1, node.Nodes );
+            }
+        }
+
+        private void UpdateReferencesListBox()
+        {
+            TreeNode? selectedNode = ReferencesTreeView.SelectedNode;
+
+            ReferencesListBox.BeginUpdate();
+
+            ReferencesListBox.Items.Clear();
+
+            if( selectedNode != null )
+            {
+                IEnumerable<DisplayReference> references = (IEnumerable<DisplayReference>)selectedNode.Tag;
+
+                String filter = ReferencesFilter.Text;
+                if( !String.IsNullOrWhiteSpace( filter ) )
+                {
+                    String[] filters = filter.Split();
+                    references = references.Where( ( reference ) => filters.All( ( f ) => reference.Reference.IndexOf( f, StringComparison.OrdinalIgnoreCase ) != -1 ) );
+                }
+
+                ReferencesListBox.Items.AddRange( references.ToArray() );
+            }
+
+            ReferencesListBox.EndUpdate();
         }
 
         private async Task RunGitAction( TabControllerTag tag, GitActionFunc gitActionFunc )

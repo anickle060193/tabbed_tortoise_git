@@ -19,6 +19,8 @@ namespace TabbedTortoiseGit
             public const int WM_KEYDOWN = 0x100;
 
             public const int PBM_SETSTATE = 0x0410;
+
+            public const int EM_SETCUEBANNER = 0x1501;
         }
 
         public static class HitTestValues
@@ -215,6 +217,9 @@ namespace TabbedTortoiseGit
         [DllImport( "user32.dll" )]
         public static extern IntPtr SendMessage( IntPtr hWnd, int msg, IntPtr wp, IntPtr lp );
 
+        [DllImport( "user32.dll", CharSet = CharSet.Auto )]
+        public static extern IntPtr SendMessage( IntPtr hWnd, int msg, IntPtr wParam, [MarshalAs( UnmanagedType.LPWStr )]string lParam );
+
         public static void RemoveBorder( IntPtr windowHandle )
         {
             int style = GetWindowLongPtr( windowHandle, GWL_STYLE );
@@ -281,6 +286,11 @@ namespace TabbedTortoiseGit
             StringBuilder builder = new StringBuilder( 1024 );
             bool result = PathRelativePathTo( builder, from, 0, to, 0 );
             return builder.ToString();
+        }
+
+        public static void SetPlaceholder( this TextBox textBox, String placeholder )
+        {
+            SendMessage( textBox.Handle, WindowMessage.EM_SETCUEBANNER, new IntPtr( 1 ), placeholder );
         }
     }
 }

@@ -81,6 +81,14 @@ namespace TabbedTortoiseGit
             BackgroundFasterFetch.Click += BackgroundFasterFetch_Click;
             BackgroundFasterFetchProgress.Click += BackgroundFasterFetchProgress_Click;
 
+            ReferencesTreeView.AfterSelect += ReferencesTreeView_AfterSelect;
+
+            ReferencesFilter.TextChanged += ReferencesFilter_TextChanged;
+            ReferencesListBox.MouseDoubleClick += ReferencesListBox_MouseDoubleClick;
+            ReferencesListBox.MouseUp += ReferencesListBox_MouseUp;
+
+            ReferenceContextMenuOpenLogMenuItem.Click += ReferencesListBoxReferenceContextMenu_Click;
+
             ModifiedRepoCheckBackgroundWorker.DoWork += ModifiedRepoCheckBackgroundWorker_DoWork;
         }
 
@@ -317,6 +325,8 @@ namespace TabbedTortoiseGit
             }
 
             UpdateIcon();
+
+            UpdateReferencesTreeView();
 
             UpdateToolStripFasterFetch();
             await UpdateToolStripSubmodules();
@@ -752,6 +762,61 @@ namespace TabbedTortoiseGit
         private void BackgroundFasterFetchProgress_Click( object sender, EventArgs e )
         {
             this.LogTabs.SelectedTab?.Controller().BackgroundFasterFetchDialog?.Show();
+        }
+
+        private void ReferencesTreeView_AfterSelect( object sender, TreeViewEventArgs e )
+        {
+            UpdateReferencesListBox();
+        }
+
+        private void ReferencesFilter_TextChanged( object sender, EventArgs e )
+        {
+            UpdateReferencesListBox();
+        }
+
+        private async void ReferencesListBox_MouseDoubleClick( object sender, MouseEventArgs e )
+        {
+            TabControllerTag? controller = this.LogTabs.SelectedTab?.Controller();
+            if( controller == null )
+            {
+                return;
+            }
+
+            DisplayReference reference = (DisplayReference)ReferencesListBox.SelectedItem;
+
+            await OpenLog( controller.RepoItem, new[] { reference.Reference } );
+        }
+
+        private void ReferencesListBox_MouseUp( object sender, MouseEventArgs e )
+        {
+            ReferencesListBox.SelectedIndex = ReferencesListBox.IndexFromPoint( e.Location );
+
+            if( e.Button != MouseButtons.Right )
+            {
+                return;
+            }
+
+            DisplayReference reference = (DisplayReference)ReferencesListBox.SelectedItem;
+
+            ReferencesListBoxReferenceContextMenu.Tag = reference.Reference;
+            ReferencesListBoxReferenceContextMenu.Show( ReferencesListBox, e.X, e.Y );
+        }
+
+        private async void ReferencesListBoxReferenceContextMenu_Click( object sender, EventArgs e )
+        {
+            TabControllerTag? controller = this.LogTabs.SelectedTab?.Controller();
+            if( controller == null )
+            {
+                return;
+            }
+
+            String? reference = (String?)ReferencesListBoxReferenceContextMenu.Tag;
+            if( reference == null )
+            {
+                return;
+            }
+
+            await OpenLog( controller.RepoItem, new [] { reference } );
         }
 
         private void BackgroundFasterFetchDialog_ProgressChanged( object sender, EventArgs e )
