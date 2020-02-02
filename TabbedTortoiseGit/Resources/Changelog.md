@@ -1,3 +1,6 @@
+# Version 0.35.0
+* Added keyboard shortcut to hide/show references display.
+
 # Version 0.34.0
 * Added references display for current log (this can be disabled in the settings).
 
