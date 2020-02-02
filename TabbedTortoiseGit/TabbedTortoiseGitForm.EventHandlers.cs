@@ -326,7 +326,7 @@ namespace TabbedTortoiseGit
 
             UpdateIcon();
 
-            UpdateReferencesTreeView();
+            await UpdateReferencesTreeView();
 
             UpdateToolStripFasterFetch();
             await UpdateToolStripSubmodules();

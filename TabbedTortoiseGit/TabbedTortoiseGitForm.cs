@@ -472,6 +472,10 @@ namespace TabbedTortoiseGit
                     await OpenLog( repo );
                 }
             }
+            else if( keyboardShortcut == KeyboardShortcuts.ToggleReferencesDisplay )
+            {
+                SplitLayout.Panel1Collapsed = !SplitLayout.Panel1Collapsed;
+            }
             else if( KEYBOARD_SHORTCUT_ACTIONS.ContainsKey( keyboardShortcut ) )
             {
                 if( LogTabs.SelectedTab?.Controller() is TabControllerTag tag )
@@ -914,7 +918,7 @@ namespace TabbedTortoiseGit
             }
         }
 
-        private void UpdateReferencesTreeView()
+        private async Task UpdateReferencesTreeView()
         {
             TabControllerTag? currentTab = LogTabs.SelectedTab?.Controller();
 
@@ -924,13 +928,10 @@ namespace TabbedTortoiseGit
 
             if( currentTab != null )
             {
-                using( Repository repository = new Repository( Git.GetBaseRepoDirectory( currentTab.RepoItem ) ) )
+                foreach( String reference in await Git.GetReferences( currentTab.RepoItem ) )
                 {
-                    foreach( Reference r in repository.Refs )
-                    {
-                        String[] splitRef = r.CanonicalName.Split( '/' );
-                        AddReferencesTreeViewReference( r.CanonicalName, splitRef, 0, ReferencesTreeView.Nodes );
-                    }
+                    String[] splitRef = reference.Split( '/' );
+                    AddReferencesTreeViewReference( reference, splitRef, 0, ReferencesTreeView.Nodes );
                 }
 
                 if( ReferencesTreeView.Nodes.Count > 0 )

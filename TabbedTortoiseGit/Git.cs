@@ -153,5 +153,14 @@ namespace TabbedTortoiseGit
             p.StartInfo.WorkingDirectory = repoPath;
             return new ProcessProgressTask( p, true );
         }
+
+        public static Task<String[]> GetReferences( String repo )
+        {
+            return Task.Run( () =>
+            {
+                using Repository repository = new Repository( Git.GetBaseRepoDirectory( repo ) );
+                return repository.Refs.Select( ( r ) => r.CanonicalName ).ToArray();
+            } );
+        }
     }
 }

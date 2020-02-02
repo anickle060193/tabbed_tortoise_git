@@ -288,9 +288,9 @@
             this.ToolStripSpacer,
             this.BackgroundFasterFetch,
             this.BackgroundFasterFetchProgress});
-            this.StatusStrip.Location = new System.Drawing.Point(0, 464);
+            this.StatusStrip.Location = new System.Drawing.Point(0, 440);
             this.StatusStrip.Name = "StatusStrip";
-            this.StatusStrip.Size = new System.Drawing.Size(644, 22);
+            this.StatusStrip.Size = new System.Drawing.Size(440, 22);
             this.StatusStrip.TabIndex = 6;
             // 
             // SubmodulesToolStripDropDown
@@ -305,7 +305,7 @@
             // ToolStripSpacer
             // 
             this.ToolStripSpacer.Name = "ToolStripSpacer";
-            this.ToolStripSpacer.Size = new System.Drawing.Size(418, 17);
+            this.ToolStripSpacer.Size = new System.Drawing.Size(214, 17);
             this.ToolStripSpacer.Spring = true;
             // 
             // BackgroundFasterFetch
@@ -387,7 +387,8 @@
             // SplitLayout.Panel2
             // 
             this.SplitLayout.Panel2.Controls.Add(this.LogTabs);
-            this.SplitLayout.Size = new System.Drawing.Size(644, 440);
+            this.SplitLayout.Panel2.Controls.Add(this.StatusStrip);
+            this.SplitLayout.Size = new System.Drawing.Size(644, 462);
             this.SplitLayout.SplitterDistance = global::TabbedTortoiseGit.Properties.Settings.Default.SplitLayoutSplitterDistance;
             this.SplitLayout.TabIndex = 8;
             // 
@@ -406,8 +407,8 @@
             // 
             this.ReferencesSplitLayout.Panel2.Controls.Add(this.ReferencesListBox);
             this.ReferencesSplitLayout.Panel2.Controls.Add(this.ReferencesFilter);
-            this.ReferencesSplitLayout.Size = new System.Drawing.Size(200, 440);
-            this.ReferencesSplitLayout.SplitterDistance = 199;
+            this.ReferencesSplitLayout.Size = new System.Drawing.Size(200, 462);
+            this.ReferencesSplitLayout.SplitterDistance = 208;
             this.ReferencesSplitLayout.TabIndex = 9;
             // 
             // ReferencesTreeView
@@ -416,7 +417,7 @@
             this.ReferencesTreeView.HideSelection = false;
             this.ReferencesTreeView.Location = new System.Drawing.Point(0, 0);
             this.ReferencesTreeView.Name = "ReferencesTreeView";
-            this.ReferencesTreeView.Size = new System.Drawing.Size(200, 199);
+            this.ReferencesTreeView.Size = new System.Drawing.Size(200, 208);
             this.ReferencesTreeView.TabIndex = 7;
             // 
             // ReferencesListBox
@@ -427,7 +428,7 @@
             this.ReferencesListBox.IntegralHeight = false;
             this.ReferencesListBox.Location = new System.Drawing.Point(0, 20);
             this.ReferencesListBox.Name = "ReferencesListBox";
-            this.ReferencesListBox.Size = new System.Drawing.Size(200, 217);
+            this.ReferencesListBox.Size = new System.Drawing.Size(200, 230);
             this.ReferencesListBox.TabIndex = 8;
             // 
             // ReferencesFilter
@@ -456,7 +457,6 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(644, 486);
             this.Controls.Add(this.SplitLayout);
-            this.Controls.Add(this.StatusStrip);
             this.Controls.Add(this.FavoritesMenuStrip);
             this.MainMenuStrip = this.FavoritesMenuStrip;
             this.MinimumSize = new System.Drawing.Size(660, 525);
@@ -474,6 +474,7 @@
             this.ReferencesListBoxReferenceContextMenu.ResumeLayout(false);
             this.SplitLayout.Panel1.ResumeLayout(false);
             this.SplitLayout.Panel2.ResumeLayout(false);
+            this.SplitLayout.Panel2.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.SplitLayout)).EndInit();
             this.SplitLayout.ResumeLayout(false);
             this.ReferencesSplitLayout.Panel1.ResumeLayout(false);

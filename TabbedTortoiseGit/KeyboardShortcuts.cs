@@ -26,6 +26,9 @@ namespace TabbedTortoiseGit
         [Description( "Reopen Closed Tab" )]
         ReopenClosedTab,
 
+        [Description( "Toggle References Display" )]
+        ToggleReferencesDisplay,
+
         [Description( "Commit" )]
         Commit,
         [Description( "Fast Fetch" )]
