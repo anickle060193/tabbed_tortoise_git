@@ -5,6 +5,7 @@ using LibGit2Sharp;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
@@ -77,12 +78,10 @@ namespace TabbedTortoiseGit
 
         public static async Task<List<String>> GetModifiedSubmodules( String path, List<String> submodules )
         {
-            List<String> modifiedSubmodules = new List<String>();
-
             String? repo = GetBaseRepoDirectory( path );
             if( repo == null )
             {
-                return modifiedSubmodules;
+                return new List<String>();
             }
 
             ProcessStartInfo info = CreateGitProcessStartInfo( repo, "status --porcelain --ignore-submodules=none" );
@@ -94,8 +93,10 @@ namespace TabbedTortoiseGit
 
             if( p.ExitCode != 0 )
             {
-                return modifiedSubmodules;
+                return new List<String>();
             }
+
+            SortedSet<String> modifiedSubmodules = new SortedSet<String>();
 
             while( !p.StandardOutput.EndOfStream )
             {
@@ -112,7 +113,16 @@ namespace TabbedTortoiseGit
                 }
             }
 
-            return modifiedSubmodules;
+            foreach( String submodule in submodules )
+            {
+                if( !modifiedSubmodules.Contains( submodule )
+                 && !File.Exists( Path.Combine( repo, submodule, ".git" ) ) )
+                {
+                    modifiedSubmodules.Add( submodule );
+                }
+            }
+
+            return modifiedSubmodules.ToList();
         }
 
         public static async Task<bool> IsModified( String path )
