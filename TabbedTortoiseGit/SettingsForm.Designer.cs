@@ -64,6 +64,7 @@ namespace TabbedTortoiseGit
             this.ShowProgressDialog = new System.Windows.Forms.DataGridViewCheckBoxColumn();
             this.CreateNoWindow = new System.Windows.Forms.DataGridViewCheckBoxColumn();
             this.DisplaySettingsTab = new System.Windows.Forms.TabPage();
+            this.HideReferencesDisplayCheck = new System.Windows.Forms.CheckBox();
             this.ResetNormalTabFontButton = new System.Windows.Forms.Button();
             this.ChangeNormalTabFontButton = new System.Windows.Forms.Button();
             this.NormalTabFontGroup = new System.Windows.Forms.GroupBox();
@@ -84,7 +85,10 @@ namespace TabbedTortoiseGit
             this.ShowHitTestCheck = new System.Windows.Forms.CheckBox();
             this.ModifiedTabFontDialog = new System.Windows.Forms.FontDialog();
             this.NormalTabFontDialog = new System.Windows.Forms.FontDialog();
-            this.HideReferencesDisplayCheck = new System.Windows.Forms.CheckBox();
+            this.TortoiseGitProcExeLocationLabel = new System.Windows.Forms.Label();
+            this.TortoiseGitProcExeLocationText = new System.Windows.Forms.TextBox();
+            this.TortoiseGitProcExeLocationBrowse = new System.Windows.Forms.Button();
+            this.TortoiseGitProcExeLocationDialog = new System.Windows.Forms.OpenFileDialog();
             ((System.ComponentModel.ISupportInitialize)(this.MaxRecentReposNumeric)).BeginInit();
             this.SettingsTabs.SuspendLayout();
             this.KeyboardShortcutsPage.SuspendLayout();
@@ -172,7 +176,7 @@ namespace TabbedTortoiseGit
             // 
             this.RunOnStartupCheck.AutoSize = true;
             this.RunOnStartupCheck.CheckAlign = System.Drawing.ContentAlignment.MiddleRight;
-            this.RunOnStartupCheck.Location = new System.Drawing.Point(6, 101);
+            this.RunOnStartupCheck.Location = new System.Drawing.Point(9, 127);
             this.RunOnStartupCheck.Name = "RunOnStartupCheck";
             this.RunOnStartupCheck.Size = new System.Drawing.Size(99, 17);
             this.RunOnStartupCheck.TabIndex = 11;
@@ -183,7 +187,7 @@ namespace TabbedTortoiseGit
             // 
             this.ConfirmOnCloseCheck.AutoSize = true;
             this.ConfirmOnCloseCheck.CheckAlign = System.Drawing.ContentAlignment.MiddleRight;
-            this.ConfirmOnCloseCheck.Location = new System.Drawing.Point(6, 32);
+            this.ConfirmOnCloseCheck.Location = new System.Drawing.Point(9, 58);
             this.ConfirmOnCloseCheck.Name = "ConfirmOnCloseCheck";
             this.ConfirmOnCloseCheck.Size = new System.Drawing.Size(133, 17);
             this.ConfirmOnCloseCheck.TabIndex = 10;
@@ -192,7 +196,7 @@ namespace TabbedTortoiseGit
             // 
             // MaxRecentReposNumeric
             // 
-            this.MaxRecentReposNumeric.Location = new System.Drawing.Point(114, 6);
+            this.MaxRecentReposNumeric.Location = new System.Drawing.Point(114, 32);
             this.MaxRecentReposNumeric.Minimum = new decimal(new int[] {
             1,
             0,
@@ -210,7 +214,7 @@ namespace TabbedTortoiseGit
             // MaxRecentReposLabel
             // 
             this.MaxRecentReposLabel.AutoSize = true;
-            this.MaxRecentReposLabel.Location = new System.Drawing.Point(6, 6);
+            this.MaxRecentReposLabel.Location = new System.Drawing.Point(6, 34);
             this.MaxRecentReposLabel.Name = "MaxRecentReposLabel";
             this.MaxRecentReposLabel.Size = new System.Drawing.Size(102, 13);
             this.MaxRecentReposLabel.TabIndex = 8;
@@ -502,6 +506,16 @@ namespace TabbedTortoiseGit
             this.DisplaySettingsTab.Text = "Display";
             this.DisplaySettingsTab.UseVisualStyleBackColor = true;
             // 
+            // HideReferencesDisplayCheck
+            // 
+            this.HideReferencesDisplayCheck.AutoSize = true;
+            this.HideReferencesDisplayCheck.Location = new System.Drawing.Point(6, 244);
+            this.HideReferencesDisplayCheck.Name = "HideReferencesDisplayCheck";
+            this.HideReferencesDisplayCheck.Size = new System.Drawing.Size(136, 17);
+            this.HideReferencesDisplayCheck.TabIndex = 10;
+            this.HideReferencesDisplayCheck.Text = "Hide references display";
+            this.HideReferencesDisplayCheck.UseVisualStyleBackColor = true;
+            // 
             // ResetNormalTabFontButton
             // 
             this.ResetNormalTabFontButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
@@ -637,6 +651,9 @@ namespace TabbedTortoiseGit
             // 
             // OtherSettingsTab
             // 
+            this.OtherSettingsTab.Controls.Add(this.TortoiseGitProcExeLocationBrowse);
+            this.OtherSettingsTab.Controls.Add(this.TortoiseGitProcExeLocationText);
+            this.OtherSettingsTab.Controls.Add(this.TortoiseGitProcExeLocationLabel);
             this.OtherSettingsTab.Controls.Add(this.ShowChangelogOnUpdateCheck);
             this.OtherSettingsTab.Controls.Add(this.CheckTortoiseGitOnPathCheck);
             this.OtherSettingsTab.Controls.Add(this.CloseWindowOnLastTabClosedCheck);
@@ -657,7 +674,7 @@ namespace TabbedTortoiseGit
             // 
             this.ShowChangelogOnUpdateCheck.AutoSize = true;
             this.ShowChangelogOnUpdateCheck.CheckAlign = System.Drawing.ContentAlignment.MiddleRight;
-            this.ShowChangelogOnUpdateCheck.Location = new System.Drawing.Point(6, 147);
+            this.ShowChangelogOnUpdateCheck.Location = new System.Drawing.Point(9, 173);
             this.ShowChangelogOnUpdateCheck.Name = "ShowChangelogOnUpdateCheck";
             this.ShowChangelogOnUpdateCheck.Size = new System.Drawing.Size(160, 17);
             this.ShowChangelogOnUpdateCheck.TabIndex = 15;
@@ -668,7 +685,7 @@ namespace TabbedTortoiseGit
             // 
             this.CheckTortoiseGitOnPathCheck.AutoSize = true;
             this.CheckTortoiseGitOnPathCheck.CheckAlign = System.Drawing.ContentAlignment.MiddleRight;
-            this.CheckTortoiseGitOnPathCheck.Location = new System.Drawing.Point(6, 124);
+            this.CheckTortoiseGitOnPathCheck.Location = new System.Drawing.Point(9, 150);
             this.CheckTortoiseGitOnPathCheck.Name = "CheckTortoiseGitOnPathCheck";
             this.CheckTortoiseGitOnPathCheck.Size = new System.Drawing.Size(235, 17);
             this.CheckTortoiseGitOnPathCheck.TabIndex = 14;
@@ -679,7 +696,7 @@ namespace TabbedTortoiseGit
             // 
             this.CloseWindowOnLastTabClosedCheck.AutoSize = true;
             this.CloseWindowOnLastTabClosedCheck.CheckAlign = System.Drawing.ContentAlignment.MiddleRight;
-            this.CloseWindowOnLastTabClosedCheck.Location = new System.Drawing.Point(6, 55);
+            this.CloseWindowOnLastTabClosedCheck.Location = new System.Drawing.Point(9, 81);
             this.CloseWindowOnLastTabClosedCheck.Name = "CloseWindowOnLastTabClosedCheck";
             this.CloseWindowOnLastTabClosedCheck.Size = new System.Drawing.Size(189, 17);
             this.CloseWindowOnLastTabClosedCheck.TabIndex = 13;
@@ -690,7 +707,7 @@ namespace TabbedTortoiseGit
             // 
             this.CloseToSystemTrayCheck.AutoSize = true;
             this.CloseToSystemTrayCheck.CheckAlign = System.Drawing.ContentAlignment.MiddleRight;
-            this.CloseToSystemTrayCheck.Location = new System.Drawing.Point(6, 78);
+            this.CloseToSystemTrayCheck.Location = new System.Drawing.Point(9, 104);
             this.CloseToSystemTrayCheck.Name = "CloseToSystemTrayCheck";
             this.CloseToSystemTrayCheck.Size = new System.Drawing.Size(125, 17);
             this.CloseToSystemTrayCheck.TabIndex = 12;
@@ -703,7 +720,7 @@ namespace TabbedTortoiseGit
             this.DeveloperSettingsPage.Location = new System.Drawing.Point(4, 22);
             this.DeveloperSettingsPage.Name = "DeveloperSettingsPage";
             this.DeveloperSettingsPage.Padding = new System.Windows.Forms.Padding(3);
-            this.DeveloperSettingsPage.Size = new System.Drawing.Size(702, 332);
+            this.DeveloperSettingsPage.Size = new System.Drawing.Size(652, 332);
             this.DeveloperSettingsPage.TabIndex = 3;
             this.DeveloperSettingsPage.Text = "Developer Settings";
             this.DeveloperSettingsPage.UseVisualStyleBackColor = true;
@@ -730,15 +747,37 @@ namespace TabbedTortoiseGit
             this.NormalTabFontDialog.FontMustExist = true;
             this.NormalTabFontDialog.ShowColor = true;
             // 
-            // HideReferencesDisplayCheck
+            // TortoiseGitProcExeLocationLabel
             // 
-            this.HideReferencesDisplayCheck.AutoSize = true;
-            this.HideReferencesDisplayCheck.Location = new System.Drawing.Point(6, 244);
-            this.HideReferencesDisplayCheck.Name = "HideReferencesDisplayCheck";
-            this.HideReferencesDisplayCheck.Size = new System.Drawing.Size(136, 17);
-            this.HideReferencesDisplayCheck.TabIndex = 10;
-            this.HideReferencesDisplayCheck.Text = "Hide references display";
-            this.HideReferencesDisplayCheck.UseVisualStyleBackColor = true;
+            this.TortoiseGitProcExeLocationLabel.AutoSize = true;
+            this.TortoiseGitProcExeLocationLabel.Location = new System.Drawing.Point(6, 9);
+            this.TortoiseGitProcExeLocationLabel.Name = "TortoiseGitProcExeLocationLabel";
+            this.TortoiseGitProcExeLocationLabel.Size = new System.Drawing.Size(147, 13);
+            this.TortoiseGitProcExeLocationLabel.TabIndex = 16;
+            this.TortoiseGitProcExeLocationLabel.Text = "TortoiseGitProc.exe Location:";
+            // 
+            // TortoiseGitProcExeLocationText
+            // 
+            this.TortoiseGitProcExeLocationText.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.TortoiseGitProcExeLocationText.Location = new System.Drawing.Point(159, 6);
+            this.TortoiseGitProcExeLocationText.Name = "TortoiseGitProcExeLocationText";
+            this.TortoiseGitProcExeLocationText.Size = new System.Drawing.Size(406, 20);
+            this.TortoiseGitProcExeLocationText.TabIndex = 17;
+            // 
+            // TortoiseGitProcExeLocationBrowse
+            // 
+            this.TortoiseGitProcExeLocationBrowse.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.TortoiseGitProcExeLocationBrowse.Location = new System.Drawing.Point(571, 5);
+            this.TortoiseGitProcExeLocationBrowse.Name = "TortoiseGitProcExeLocationBrowse";
+            this.TortoiseGitProcExeLocationBrowse.Size = new System.Drawing.Size(75, 23);
+            this.TortoiseGitProcExeLocationBrowse.TabIndex = 18;
+            this.TortoiseGitProcExeLocationBrowse.Text = "Browse";
+            this.TortoiseGitProcExeLocationBrowse.UseVisualStyleBackColor = true;
+            // 
+            // TortoiseGitProcExeLocationDialog
+            // 
+            this.TortoiseGitProcExeLocationDialog.FileName = "TortoiseGitProc.exe";
             // 
             // SettingsForm
             // 
@@ -838,5 +877,9 @@ namespace TabbedTortoiseGit
         private CheckBox CheckTortoiseGitOnPathCheck;
         private CheckBox ShowChangelogOnUpdateCheck;
         private CheckBox HideReferencesDisplayCheck;
+        private Button TortoiseGitProcExeLocationBrowse;
+        private TextBox TortoiseGitProcExeLocationText;
+        private Label TortoiseGitProcExeLocationLabel;
+        private OpenFileDialog TortoiseGitProcExeLocationDialog;
     }
 }

@@ -545,5 +545,17 @@ namespace TabbedTortoiseGit.Properties {
                 this["HideReferencesDisplay"] = value;
             }
         }
+
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("C:\\Program Files\\TortoiseGit\\bin\\TortoiseGitProc.exe")]
+        public string TortoiseGitProcExeLocation {
+            get {
+                return ((string)(this["TortoiseGitProcExeLocation"]));
+            }
+            set {
+                this["TortoiseGitProcExeLocation"] = value;
+            }
+        }
     }
 }

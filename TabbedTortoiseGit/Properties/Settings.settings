@@ -134,5 +134,8 @@
     <Setting Name="HideReferencesDisplay" Type="System.Boolean" Scope="User">
       <Value Profile="(Default)">False</Value>
     </Setting>
+    <Setting Name="TortoiseGitProcExeLocation" Type="System.String" Scope="User">
+      <Value Profile="(Default)">C:\Program Files\TortoiseGit\bin\TortoiseGitProc.exe</Value>
+    </Setting>
   </Settings>
 </SettingsFile>

@@ -7,8 +7,10 @@ using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Diagnostics;
 using System.Drawing;
+using System.IO;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using TabbedTortoiseGit.Properties;
@@ -38,6 +40,11 @@ namespace TabbedTortoiseGit
             new GitAction( "Diff",                      GitAction.Diff,                     Resources.Diff              ),
         }.ToImmutableDictionary( command => command.Name );
 
+        private static readonly String[] TORTOISE_GIT_EXES = new[]
+        {
+            @"C:\Program Files\TortoiseGit\bin\TortoiseGitProc.exe",
+            @"C:\Program Files (x86)\TortoiseGit\bin\TortoiseGitProc.exe"
+        };
         private static readonly String TORTOISE_GIT_EXE = "TortoiseGitProc.exe";
 
         public String Name { get; private set; }
@@ -51,12 +58,38 @@ namespace TabbedTortoiseGit
             Icon = icon;
         }
 
+        private static String FindTortoiseGitExe()
+        {
+            if( File.Exists( Settings.Default.TortoiseGitProcExeLocation )
+             && Regex.IsMatch( Settings.Default.TortoiseGitProcExeLocation, @"\bTortoiseGitProc\.exe$" ) )
+            {
+                return Settings.Default.TortoiseGitProcExeLocation;
+            }
+
+            foreach( String exe in TORTOISE_GIT_EXES )
+            {
+                if( File.Exists( exe ) )
+                {
+                    return exe;
+                }
+            }
+
+            return TORTOISE_GIT_EXE;
+        }
+
         public static async Task<bool> CanAccessTortoiseGit()
         {
             LOG.Debug( $"{nameof( CanAccessTortoiseGit )}" );
+
             try
             {
-                Process p = Process.Start( new ProcessStartInfo( "where.exe", TORTOISE_GIT_EXE )
+                String exe = FindTortoiseGitExe();
+                if( exe != TORTOISE_GIT_EXE )
+                {
+                    return true;
+                }
+
+                Process p = Process.Start( new ProcessStartInfo( "where.exe", exe )
                 {
                     UseShellExecute = false,
                     CreateNoWindow = true,
@@ -80,7 +113,7 @@ namespace TabbedTortoiseGit
             LOG.Debug( $"{nameof( TortoiseGitCommand )} - Command: {command} - Working Directory: {workingDirectory} - Wait for Exit: {waitForExit}" );
             Process p = Process.Start( new ProcessStartInfo()
             {
-                FileName = TORTOISE_GIT_EXE,
+                FileName = FindTortoiseGitExe(),
                 Arguments = command,
                 WorkingDirectory = workingDirectory
             } );

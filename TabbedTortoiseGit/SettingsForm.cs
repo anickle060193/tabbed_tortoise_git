@@ -8,6 +8,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
 using System.Drawing;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -40,6 +41,7 @@ namespace TabbedTortoiseGit
                 ModifiedTabFontColor = Settings.Default.ModifiedTabFontColor,
                 HideReferencesDisplay = Settings.Default.HideReferencesDisplay,
 
+                TortoiseGitProcExeLocation = Settings.Default.TortoiseGitProcExeLocation,
                 MaxRecentRepos = Settings.Default.MaxRecentRepos,
                 ConfirmOnClose = Settings.Default.ConfirmOnClose,
                 CloseWindowOnLastTabClosed = Settings.Default.CloseWindowOnLastTabClosed,
@@ -72,6 +74,7 @@ namespace TabbedTortoiseGit
                 Settings.Default.ModifiedTabFontColor = f.ModifiedTabFontColor;
                 Settings.Default.HideReferencesDisplay = f.HideReferencesDisplay;
 
+                Settings.Default.TortoiseGitProcExeLocation = f.TortoiseGitProcExeLocation;
                 Settings.Default.MaxRecentRepos = f.MaxRecentRepos;
                 Settings.Default.RecentRepos = Settings.Default.RecentRepos.Take( Settings.Default.MaxRecentRepos ).ToList();
                 Settings.Default.ConfirmOnClose = f.ConfirmOnClose;
@@ -291,6 +294,19 @@ namespace TabbedTortoiseGit
             }
         }
 
+        public String TortoiseGitProcExeLocation
+        { 
+            get
+            {
+                return TortoiseGitProcExeLocationText.Text;
+            }
+
+            set
+            {
+                TortoiseGitProcExeLocationText.Text = value;
+            }
+        }
+
         public int MaxRecentRepos
         {
             get
@@ -437,6 +453,8 @@ namespace TabbedTortoiseGit
 
             this.ResetModifiedTabFontButton.Click += ResetModifiedTabFontButton_Click;
             this.ChangeModifiedTabFontButton.Click += ChangeModifiedTabFontButton_Click;
+
+            this.TortoiseGitProcExeLocationBrowse.Click += TortoiseGitProcExeLocationBrowse_Click;
 
             _dragDropHelper = new CheckListDragDrophelper();
             _dragDropHelper.AddControl( GitActionsCheckList );
@@ -596,6 +614,16 @@ namespace TabbedTortoiseGit
             {
                 this.ModifiedTabFont = ModifiedTabFontDialog.Font;
                 this.ModifiedTabFontColor = ModifiedTabFontDialog.Color;
+            }
+        }
+
+        private void TortoiseGitProcExeLocationBrowse_Click( object sender, EventArgs e )
+        {
+            TortoiseGitProcExeLocationDialog.InitialDirectory = Path.GetDirectoryName( this.TortoiseGitProcExeLocation );
+            TortoiseGitProcExeLocationDialog.FileName = Path.GetFileName( this.TortoiseGitProcExeLocation );
+            if( TortoiseGitProcExeLocationDialog.ShowDialog() == DialogResult.OK )
+            {
+                this.TortoiseGitProcExeLocation = TortoiseGitProcExeLocationDialog.FileName;
             }
         }
 
