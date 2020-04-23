@@ -1,3 +1,8 @@
+# Version 0.36.0
+* Handle uninitialized submodules as modified submodules for Fast(er) Submodule Update.
+* Check for TortoiseGitProc.exe in default location before checking PATH.
+* Add option to specify TortoiseGitProc.exe location manually.
+
 # Version 0.35.0
 * Added keyboard shortcut to hide/show references display.
 
