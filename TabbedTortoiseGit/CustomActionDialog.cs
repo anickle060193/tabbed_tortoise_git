@@ -1,6 +1,4 @@
-﻿#nullable enable
-
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -74,7 +72,7 @@ namespace TabbedTortoiseGit
             this.UpdateOk();
         }
 
-        private void ProgramBrowse_Click( object sender, EventArgs e )
+        private void ProgramBrowse_Click( object? sender, EventArgs e )
         {
             if( ProgramBrowseDialog.ShowDialog() == DialogResult.OK )
             {
@@ -94,12 +92,12 @@ namespace TabbedTortoiseGit
             Ok.Enabled = this.IsValidAction();
         }
 
-        private void ActionValue_TextChanged( object sender, EventArgs e )
+        private void ActionValue_TextChanged( object? sender, EventArgs e )
         {
             this.UpdateOk();
         }
 
-        private void Ok_Click( object sender, EventArgs e )
+        private void Ok_Click( object? sender, EventArgs e )
         {
             if( this.IsValidAction() )
             {

@@ -1,6 +1,4 @@
-﻿#nullable enable
-
-using Common;
+﻿using Common;
 using log4net;
 using System;
 using System.Collections.Generic;
@@ -37,18 +35,20 @@ namespace TabbedTortoiseGit
             RecursiveCheck.CheckedChanged += FasterSubmoduleUpdateDialog_SettingChanged;
             ForceCheck.CheckedChanged += FasterSubmoduleUpdateDialog_SettingChanged;
             MaxProcessCountNumeric.ValueChanged += FasterSubmoduleUpdateDialog_SettingChanged;
+            TreatUninitializedSubmodulesAsModifiedCheck.CheckedChanged += FasterSubmoduleUpdateDialog_SettingChanged;
 
             Cancel.Click += Cancel_Click;
             UpdateSubmodulesButton.Click += UpdateSubmodulesButton_Click;
         }
 
-        private void FasterSubmoduleUpdateDialog_SettingChanged( object sender, EventArgs e )
+        private void FasterSubmoduleUpdateDialog_SettingChanged( object? sender, EventArgs e )
         {
             Settings.Default.FasterSubmoduleUpdateAllSubmodules = SubmodulesAll.Checked;
             Settings.Default.FasterSubmoduleUpdateInitChecked = InitCheck.Checked;
             Settings.Default.FasterSubmoduleUpdateRecursiveChecked = RecursiveCheck.Checked;
             Settings.Default.FasterSubmoduleUpdateForceChecked = ForceCheck.Checked;
             Settings.Default.FasterSubmoduleUpdateMaxProcesses = (int)MaxProcessCountNumeric.Value;
+            Settings.Default.TreatUninitializedSubmodulesAsModified = TreatUninitializedSubmodulesAsModifiedCheck.Checked;
             Settings.Default.Save();
         }
 
@@ -66,15 +66,16 @@ namespace TabbedTortoiseGit
             RecursiveCheck.Checked = Settings.Default.FasterSubmoduleUpdateRecursiveChecked;
             ForceCheck.Checked = Settings.Default.FasterSubmoduleUpdateForceChecked;
             MaxProcessCountNumeric.Value = Settings.Default.FasterSubmoduleUpdateMaxProcesses;
+            TreatUninitializedSubmodulesAsModifiedCheck.Checked = Settings.Default.TreatUninitializedSubmodulesAsModified;
         }
 
-        private void Cancel_Click( object sender, EventArgs e )
+        private void Cancel_Click( object? sender, EventArgs e )
         {
             this.DialogResult = DialogResult.Cancel;
             this.Close();
         }
 
-        private async void UpdateSubmodulesButton_Click( object sender, EventArgs e )
+        private async void UpdateSubmodulesButton_Click( object? sender, EventArgs e )
         {
             UpdateSubmodulesButton.Enabled = false;
             await UpdateSubmodules();
@@ -91,8 +92,9 @@ namespace TabbedTortoiseGit
             bool recursive = RecursiveCheck.Checked;
             bool force = ForceCheck.Checked;
             int maxProcesses = (int)MaxProcessCountNumeric.Value;
+            bool treatUninitializedSubmodulesAsModified = TreatUninitializedSubmodulesAsModifiedCheck.Checked;
 
-            RetrieveSubmodulesProgressTask task = new UpdateSubmodulesProgressTask( this.Repo, !allSubmodules, init, recursive, force );
+            RetrieveSubmodulesProgressTask task = new UpdateSubmodulesProgressTask( this.Repo, !allSubmodules, treatUninitializedSubmodulesAsModified, init, recursive, force );
 
             ProgressDialog dialog = new ProgressDialog()
             {
@@ -117,7 +119,7 @@ namespace TabbedTortoiseGit
         public bool Recursive { get; private set; }
         public bool Force { get; private set; }
 
-        public UpdateSubmodulesProgressTask( String repo, bool modifiedOnly, bool init, bool recursive, bool force ) : base( repo, modifiedOnly )
+        public UpdateSubmodulesProgressTask( String repo, bool modifiedOnly, bool treatUninitializedSubmodulesAsModified, bool init, bool recursive, bool force ) : base( repo, modifiedOnly, treatUninitializedSubmodulesAsModified )
         {
             this.Init = init;
             this.Recursive = recursive;

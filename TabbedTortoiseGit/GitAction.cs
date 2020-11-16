@@ -1,6 +1,4 @@
-﻿#nullable enable
-
-using Common;
+﻿using Common;
 using log4net;
 using System;
 using System.Collections.Generic;
@@ -93,7 +91,7 @@ namespace TabbedTortoiseGit
                 {
                     UseShellExecute = false,
                     CreateNoWindow = true,
-                } );
+                } )!;
                 
                 await Task.Run( () => p.WaitForExit() );
 
@@ -116,7 +114,7 @@ namespace TabbedTortoiseGit
                 FileName = FindTortoiseGitExe(),
                 Arguments = command,
                 WorkingDirectory = workingDirectory
-            } );
+            } )!;
             if( waitForExit )
             {
                 await Task.Run( () => p.WaitForExit() );

@@ -1,349 +1,56 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
-<Project ToolsVersion="16.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
-  <Import Project="..\packages\LibGit2Sharp.NativeBinaries.1.0.164\build\LibGit2Sharp.NativeBinaries.props" Condition="Exists('..\packages\LibGit2Sharp.NativeBinaries.1.0.164\build\LibGit2Sharp.NativeBinaries.props')" />
-  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
   <PropertyGroup>
-    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
-    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{0183D895-B9C5-4C12-B75C-812A286E81F0}</ProjectGuid>
     <OutputType>WinExe</OutputType>
-    <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>TabbedTortoiseGit</RootNamespace>
-    <AssemblyName>Tabbed TortoiseGit</AssemblyName>
-    <TargetFrameworkVersion>v4.8</TargetFrameworkVersion>
-    <FileAlignment>512</FileAlignment>
-    <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
-    <NuGetPackageImportStamp>
-    </NuGetPackageImportStamp>
-    <LangVersion>8.0</LangVersion>
-    <!-- <Nullable>enable</Nullable> -->
-    <WarningsAsErrors>CS8600;CS8601;CS8602;CS8603;CS8604;CS8618;CS8625;CS8653;</WarningsAsErrors>
-    <TargetFrameworkProfile />
-  </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-    <PlatformTarget>AnyCPU</PlatformTarget>
-    <DebugSymbols>true</DebugSymbols>
-    <DebugType>full</DebugType>
-    <Optimize>false</Optimize>
-    <OutputPath>bin\Debug\</OutputPath>
-    <DefineConstants>DEBUG;TRACE</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
-  </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
-    <PlatformTarget>AnyCPU</PlatformTarget>
-    <DebugType>pdbonly</DebugType>
-    <Optimize>true</Optimize>
-    <OutputPath>bin\Release\</OutputPath>
-    <DefineConstants>TRACE</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
-  </PropertyGroup>
-  <PropertyGroup>
+    <TargetFramework>net5.0-windows</TargetFramework>
+    <UseWindowsForms>true</UseWindowsForms>
+    <Nullable>enable</Nullable>
+    <WarningsAsErrors>CS8600;CS8602;CS8603;CS8714;CS8622;CS8604;CS8762</WarningsAsErrors>
+    <Product>Tabbed TortoiseGit</Product>
+    <Description>A simple tabbed wrapper for TortoiseGit to host multiple TortoiseGit logs within a single application.</Description>
+    <Version>0.36.0</Version>
     <ApplicationIcon>Resources\tortoise.ico</ApplicationIcon>
   </PropertyGroup>
+
   <ItemGroup>
-    <Reference Include="CommandLine, Version=1.9.71.2, Culture=neutral, PublicKeyToken=de6f01bd326f8c32, processorArchitecture=MSIL">
-      <HintPath>..\packages\CommandLineParser.1.9.71\lib\net45\CommandLine.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="LibGit2Sharp, Version=0.23.1.0, Culture=neutral, PublicKeyToken=7cbde695407f0333, processorArchitecture=MSIL">
-      <HintPath>..\packages\LibGit2Sharp.0.23.1\lib\net40\LibGit2Sharp.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="log4net, Version=2.0.8.0, Culture=neutral, PublicKeyToken=669e0ddf0bb1aa2a, processorArchitecture=MSIL">
-      <HintPath>..\packages\log4net.2.0.8\lib\net45-full\log4net.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="Microsoft.WindowsAPICodePack, Version=1.1.2.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\WindowsAPICodePack-Core.1.1.2\lib\Microsoft.WindowsAPICodePack.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="Microsoft.WindowsAPICodePack.Shell, Version=1.1.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\WindowsAPICodePack-Shell.1.1.1\lib\Microsoft.WindowsAPICodePack.Shell.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="Newtonsoft.Json, Version=12.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
-      <HintPath>..\packages\Newtonsoft.Json.12.0.3\lib\net45\Newtonsoft.Json.dll</HintPath>
-    </Reference>
-    <Reference Include="System" />
-    <Reference Include="System.Collections.Immutable, Version=1.2.1.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
-      <HintPath>..\packages\System.Collections.Immutable.1.3.1\lib\portable-net45+win8+wp8+wpa81\System.Collections.Immutable.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="System.Core" />
-    <Reference Include="System.Management" />
-    <Reference Include="System.Xml.Linq" />
-    <Reference Include="System.Data.DataSetExtensions" />
-    <Reference Include="Microsoft.CSharp" />
-    <Reference Include="System.Data" />
-    <Reference Include="System.Deployment" />
-    <Reference Include="System.Drawing" />
-    <Reference Include="System.Net.Http" />
-    <Reference Include="System.Windows.Forms" />
-    <Reference Include="System.Xml" />
-    <Reference Include="WindowsInput, Version=1.0.4.0, Culture=neutral, PublicKeyToken=9b287f7dc5073cad, processorArchitecture=MSIL">
-      <HintPath>..\packages\InputSimulator.1.0.4.0\lib\net20\WindowsInput.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
+    <PackageReference Include="CommandLineParser" Version="2.8.0" />
+    <PackageReference Include="InputSimulatorCore" Version="1.0.5" />
+    <PackageReference Include="LibGit2Sharp" Version="0.26.2" />
+    <PackageReference Include="log4net" Version="2.0.12" />
+    <PackageReference Include="Newtonsoft.Json" Version="12.0.3" />
+    <PackageReference Include="System.Management" Version="5.0.0" />
   </ItemGroup>
+
   <ItemGroup>
-    <Compile Include="AboutBox.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="AboutBox.Designer.cs">
-      <DependentUpon>AboutBox.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Arguments.cs" />
-    <Compile Include="ChangelogDialog.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="ChangelogDialog.Designer.cs">
-      <DependentUpon>ChangelogDialog.cs</DependentUpon>
-    </Compile>
-    <Compile Include="CustomAction.cs" />
-    <Compile Include="CustomActionDialog.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="CustomActionDialog.Designer.cs">
-      <DependentUpon>CustomActionDialog.cs</DependentUpon>
-    </Compile>
-    <Compile Include="FasterSubmoduleUpdateDialog.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="FasterSubmoduleUpdateDialog.Designer.cs">
-      <DependentUpon>FasterSubmoduleUpdateDialog.cs</DependentUpon>
-    </Compile>
-    <Compile Include="FastFetchDialog.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="FastFetchDialog.Designer.cs">
-      <DependentUpon>FastFetchDialog.cs</DependentUpon>
-    </Compile>
-    <Compile Include="FastSubmoduleUpdateDialog.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="FastSubmoduleUpdateDialog.Designer.cs">
-      <DependentUpon>FastSubmoduleUpdateDialog.cs</DependentUpon>
-    </Compile>
-    <Compile Include="FavoriteReposDirectoryCreatorDialog.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="FavoriteReposDirectoryCreatorDialog.Designer.cs">
-      <DependentUpon>FavoriteReposDirectoryCreatorDialog.cs</DependentUpon>
-    </Compile>
-    <Compile Include="FavoriteRepoCreatorDialog.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="FavoriteRepoCreatorDialog.Designer.cs">
-      <DependentUpon>FavoriteRepoCreatorDialog.cs</DependentUpon>
-    </Compile>
-    <Compile Include="FavoriteFolderCreatorDialog.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="FavoriteFolderCreatorDialog.Designer.cs">
-      <DependentUpon>FavoriteFolderCreatorDialog.cs</DependentUpon>
-    </Compile>
-    <Compile Include="FavoriteJsonConverter.cs" />
-    <Compile Include="Favorite.cs" />
-    <Compile Include="FavoritesManagerDialog.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="FavoritesManagerDialog.Designer.cs">
-      <DependentUpon>FavoritesManagerDialog.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Git.cs" />
-    <Compile Include="HotKey.cs" />
-    <Compile Include="KeyboardShortcuts.cs" />
-    <Compile Include="Native.cs" />
-    <Compile Include="ForceJsonConverter.cs" />
-    <Compile Include="ProcessHelper.cs" />
-    <Compile Include="ProgressDialog.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="ProgressDialog.Designer.cs">
-      <DependentUpon>ProgressDialog.cs</DependentUpon>
-    </Compile>
-    <Compile Include="ProgramForm.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Properties\Resources.Designer.cs">
-      <AutoGen>True</AutoGen>
+    <ProjectReference Include="..\Common\Common.csproj" />
+    <ProjectReference Include="..\Tabs\Tabs.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Update="Properties\Resources.Designer.cs">
       <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
-    <Compile Include="Properties\Settings.Designer.cs">
-      <AutoGen>True</AutoGen>
+    <Compile Update="Properties\Settings.Designer.cs">
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
+      <AutoGen>True</AutoGen>
       <DependentUpon>Settings.settings</DependentUpon>
     </Compile>
-    <Compile Include="ReferencesDialog.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="ReferencesDialog.Designer.cs">
-      <DependentUpon>ReferencesDialog.cs</DependentUpon>
-    </Compile>
-    <Compile Include="RetrieveSubmodulesProgressTask.cs" />
-    <Compile Include="Settings.cs" />
-    <Compile Include="SettingsForm.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="SettingsForm.Designer.cs">
-      <DependentUpon>SettingsForm.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Shortcut.cs" />
-    <Compile Include="TabControllerTag.cs" />
-    <Compile Include="TreeNode.cs" />
-    <Compile Include="TTG.cs" />
-    <Compile Include="TabbedTortoiseGitForm.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="TabbedTortoiseGitForm.Designer.cs">
-      <DependentUpon>TabbedTortoiseGitForm.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Program.cs" />
-    <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="TabbedTortoiseGitForm.EventHandlers.cs">
-      <DependentUpon>TabbedTortoiseGitForm.cs</DependentUpon>
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="GitAction.cs" />
-    <EmbeddedResource Include="AboutBox.resx">
-      <DependentUpon>AboutBox.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="ChangelogDialog.resx">
-      <DependentUpon>ChangelogDialog.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="CustomActionDialog.resx">
-      <DependentUpon>CustomActionDialog.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="FasterSubmoduleUpdateDialog.resx">
-      <DependentUpon>FasterSubmoduleUpdateDialog.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="FastFetchDialog.resx">
-      <DependentUpon>FastFetchDialog.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="FastSubmoduleUpdateDialog.resx">
-      <DependentUpon>FastSubmoduleUpdateDialog.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="FavoriteReposDirectoryCreatorDialog.resx">
-      <DependentUpon>FavoriteReposDirectoryCreatorDialog.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="FavoriteRepoCreatorDialog.resx">
-      <DependentUpon>FavoriteRepoCreatorDialog.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="FavoriteFolderCreatorDialog.resx">
-      <DependentUpon>FavoriteFolderCreatorDialog.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="FavoritesManagerDialog.resx">
-      <DependentUpon>FavoritesManagerDialog.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="ProgressDialog.resx">
-      <DependentUpon>ProgressDialog.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Properties\Resources.resx">
+  </ItemGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Update="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
-      <SubType>Designer</SubType>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
-    <EmbeddedResource Include="ReferencesDialog.resx">
-      <DependentUpon>ReferencesDialog.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="SettingsForm.resx">
-      <DependentUpon>SettingsForm.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="TabbedTortoiseGitForm.resx">
-      <DependentUpon>TabbedTortoiseGitForm.cs</DependentUpon>
-    </EmbeddedResource>
-    <None Include="packages.config" />
-    <None Include="Properties\Settings.settings">
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Update="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
-      <SubType>Designer</SubType>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
     </None>
   </ItemGroup>
-  <ItemGroup>
-    <None Include="App.config" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\tortoise.ico" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\Tortoise.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\commit.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\fetch.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\pull.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\push.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\rebase.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\submodule_update.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\switch.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\sync.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\open_location.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\Common\Common.csproj">
-      <Project>{00252d2a-5562-4c76-b4c4-c894a4dc5f9a}</Project>
-      <Name>Common</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Tabs\Tabs.csproj">
-      <Project>{5c8a6d79-fd9c-4ddc-8cfe-522cd27e8eab}</Project>
-      <Name>Tabs</Name>
-    </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\folder_folder.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\file.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\folder.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\tortoise_body.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\tortoise_shell.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\diff.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\symlink.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\Changelog.md" />
-  </ItemGroup>
-  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
-  <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
-    <PropertyGroup>
-      <ErrorText>This project references NuGet package(s) that are missing on this computer. Use NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
-    </PropertyGroup>
-    <Error Condition="!Exists('..\packages\LibGit2Sharp.NativeBinaries.1.0.164\build\LibGit2Sharp.NativeBinaries.props')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\LibGit2Sharp.NativeBinaries.1.0.164\build\LibGit2Sharp.NativeBinaries.props'))" />
-  </Target>
-  <!-- To modify your build process, add your task inside one of the targets below and uncomment it.
-       Other similar extension points exist, see Microsoft.Common.targets.
-  <Target Name="BeforeBuild">
-  </Target>
-  <Target Name="AfterBuild">
-  </Target>
-  -->
+
 </Project>

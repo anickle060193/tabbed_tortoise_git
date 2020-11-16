@@ -1,6 +1,4 @@
-﻿#nullable enable
-
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -74,7 +72,7 @@ namespace TabbedTortoiseGit
             return new FavoriteFolder( this.FavoriteName, this.FavoriteColor );
         }
 
-        private void ChangeFavoriteColorButton_Click( object sender, EventArgs e )
+        private void ChangeFavoriteColorButton_Click( object? sender, EventArgs e )
         {
             if( FavoriteColorDialog.ShowDialog() == DialogResult.OK )
             {
@@ -82,7 +80,7 @@ namespace TabbedTortoiseGit
             }
         }
 
-        private void Ok_Click( object sender, EventArgs e )
+        private void Ok_Click( object? sender, EventArgs e )
         {
             if( String.IsNullOrWhiteSpace( this.FavoriteName ) )
             {

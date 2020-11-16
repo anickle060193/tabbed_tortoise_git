@@ -1,6 +1,4 @@
-﻿#nullable enable
-
-using log4net;
+﻿using log4net;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -123,7 +121,7 @@ namespace TabbedTortoiseGit
             Settings.Default.PropertyChanged += Settings_PropertyChanged;
         }
 
-        private void Settings_PropertyChanged( object sender, PropertyChangedEventArgs e )
+        private void Settings_PropertyChanged( object? sender, PropertyChangedEventArgs e )
         {
             if( e.PropertyName == nameof( Settings.Default.KeyboardShortcutsString ) )
             {
@@ -133,9 +131,9 @@ namespace TabbedTortoiseGit
             }
         }
 
-        private void Hotkey_HotKeyPressed( object sender, EventArgs e )
+        private void Hotkey_HotKeyPressed( object? sender, EventArgs e )
         {
-            HotKey hotkey = (HotKey)sender;
+            HotKey? hotkey = sender as HotKey;
 
             KeyboardShortcuts keyboardShortcut = _hotkeys.Where( pair => pair.Value == hotkey ).First().Key;
 
@@ -152,7 +150,7 @@ namespace TabbedTortoiseGit
 
             foreach( KeyboardShortcuts keyboardShortcut in Enum.GetValues( typeof( KeyboardShortcuts ) ) )
             {
-                if( shortcuts.TryGetValue( keyboardShortcut, out Shortcut shortcut ) )
+                if( shortcuts.TryGetValue( keyboardShortcut, out Shortcut? shortcut ) )
                 {
                     LOG.Debug( $"{nameof( UpdateShortcuts )} - KeyboardShortuct: {keyboardShortcut} - Shortcut: {shortcut}" );
                     _hotkeys[ keyboardShortcut ].SetShortcut( shortcut );

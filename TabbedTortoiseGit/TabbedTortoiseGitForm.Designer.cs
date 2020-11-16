@@ -76,6 +76,7 @@
             this.ReferencesListBox = new System.Windows.Forms.ListBox();
             this.ReferencesFilter = new System.Windows.Forms.TextBox();
             this.LogTabs = new Tabs.TabControl();
+            this.folderDialog = new System.Windows.Forms.FolderBrowserDialog();
             this.TabContextMenu.SuspendLayout();
             this.FavoriteRepoContextMenu.SuspendLayout();
             this.OptionsContextMenu.SuspendLayout();
@@ -99,8 +100,9 @@
             this.FavoritesMenuStrip.BackColor = System.Drawing.Color.White;
             this.FavoritesMenuStrip.Location = new System.Drawing.Point(0, 0);
             this.FavoritesMenuStrip.Name = "FavoritesMenuStrip";
+            this.FavoritesMenuStrip.Padding = new System.Windows.Forms.Padding(7, 2, 0, 2);
             this.FavoritesMenuStrip.ShowItemToolTips = true;
-            this.FavoritesMenuStrip.Size = new System.Drawing.Size(644, 24);
+            this.FavoritesMenuStrip.Size = new System.Drawing.Size(751, 24);
             this.FavoritesMenuStrip.TabIndex = 1;
             // 
             // NewTabContextMenu
@@ -122,7 +124,6 @@
             // 
             // OpenRepoLocationTabMenuItem
             // 
-            this.OpenRepoLocationTabMenuItem.Image = global::TabbedTortoiseGit.Properties.Resources.OpenLocation;
             this.OpenRepoLocationTabMenuItem.Name = "OpenRepoLocationTabMenuItem";
             this.OpenRepoLocationTabMenuItem.Size = new System.Drawing.Size(189, 22);
             this.OpenRepoLocationTabMenuItem.Text = "Open Repo Location";
@@ -163,7 +164,6 @@
             // 
             // OpenFavoriteRepoLocationContextMenuItem
             // 
-            this.OpenFavoriteRepoLocationContextMenuItem.Image = global::TabbedTortoiseGit.Properties.Resources.OpenLocation;
             this.OpenFavoriteRepoLocationContextMenuItem.Name = "OpenFavoriteRepoLocationContextMenuItem";
             this.OpenFavoriteRepoLocationContextMenuItem.Size = new System.Drawing.Size(189, 22);
             this.OpenFavoriteRepoLocationContextMenuItem.Text = "Open Repo Location";
@@ -288,9 +288,10 @@
             this.ToolStripSpacer,
             this.BackgroundFasterFetch,
             this.BackgroundFasterFetchProgress});
-            this.StatusStrip.Location = new System.Drawing.Point(0, 440);
+            this.StatusStrip.Location = new System.Drawing.Point(0, 513);
             this.StatusStrip.Name = "StatusStrip";
-            this.StatusStrip.Size = new System.Drawing.Size(440, 22);
+            this.StatusStrip.Padding = new System.Windows.Forms.Padding(1, 0, 16, 0);
+            this.StatusStrip.Size = new System.Drawing.Size(546, 24);
             this.StatusStrip.TabIndex = 6;
             // 
             // SubmodulesToolStripDropDown
@@ -299,13 +300,13 @@
             this.SubmodulesToolStripDropDown.Enabled = false;
             this.SubmodulesToolStripDropDown.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.SubmodulesToolStripDropDown.Name = "SubmodulesToolStripDropDown";
-            this.SubmodulesToolStripDropDown.Size = new System.Drawing.Size(86, 20);
+            this.SubmodulesToolStripDropDown.Size = new System.Drawing.Size(86, 22);
             this.SubmodulesToolStripDropDown.Text = "Submodules";
             // 
             // ToolStripSpacer
             // 
             this.ToolStripSpacer.Name = "ToolStripSpacer";
-            this.ToolStripSpacer.Size = new System.Drawing.Size(214, 17);
+            this.ToolStripSpacer.Size = new System.Drawing.Size(301, 19);
             this.ToolStripSpacer.Spring = true;
             // 
             // BackgroundFasterFetch
@@ -315,14 +316,14 @@
             this.BackgroundFasterFetch.Image = ((System.Drawing.Image)(resources.GetObject("BackgroundFasterFetch.Image")));
             this.BackgroundFasterFetch.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.BackgroundFasterFetch.Name = "BackgroundFasterFetch";
-            this.BackgroundFasterFetch.Size = new System.Drawing.Size(23, 20);
+            this.BackgroundFasterFetch.Size = new System.Drawing.Size(23, 22);
             this.BackgroundFasterFetch.Text = "Background Faster Fetch";
             // 
             // BackgroundFasterFetchProgress
             // 
             this.BackgroundFasterFetchProgress.Enabled = false;
             this.BackgroundFasterFetchProgress.Name = "BackgroundFasterFetchProgress";
-            this.BackgroundFasterFetchProgress.Size = new System.Drawing.Size(100, 16);
+            this.BackgroundFasterFetchProgress.Size = new System.Drawing.Size(117, 18);
             // 
             // FavoriteReposDirectoryContextMenu
             // 
@@ -372,30 +373,30 @@
             // 
             // SplitLayout
             // 
-            this.SplitLayout.DataBindings.Add(new System.Windows.Forms.Binding("SplitterDistance", global::TabbedTortoiseGit.Properties.Settings.Default, "SplitLayoutSplitterDistance", true, System.Windows.Forms.DataSourceUpdateMode.OnPropertyChanged));
-            this.SplitLayout.DataBindings.Add(new System.Windows.Forms.Binding("Panel1Collapsed", global::TabbedTortoiseGit.Properties.Settings.Default, "HideReferencesDisplay", true, System.Windows.Forms.DataSourceUpdateMode.OnPropertyChanged));
             this.SplitLayout.Dock = System.Windows.Forms.DockStyle.Fill;
             this.SplitLayout.FixedPanel = System.Windows.Forms.FixedPanel.Panel1;
             this.SplitLayout.Location = new System.Drawing.Point(0, 24);
+            this.SplitLayout.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             this.SplitLayout.Name = "SplitLayout";
             // 
             // SplitLayout.Panel1
             // 
             this.SplitLayout.Panel1.Controls.Add(this.ReferencesSplitLayout);
-            this.SplitLayout.Panel1Collapsed = global::TabbedTortoiseGit.Properties.Settings.Default.HideReferencesDisplay;
             // 
             // SplitLayout.Panel2
             // 
             this.SplitLayout.Panel2.Controls.Add(this.LogTabs);
             this.SplitLayout.Panel2.Controls.Add(this.StatusStrip);
-            this.SplitLayout.Size = new System.Drawing.Size(644, 462);
-            this.SplitLayout.SplitterDistance = global::TabbedTortoiseGit.Properties.Settings.Default.SplitLayoutSplitterDistance;
+            this.SplitLayout.Size = new System.Drawing.Size(751, 537);
+            this.SplitLayout.SplitterDistance = 200;
+            this.SplitLayout.SplitterWidth = 5;
             this.SplitLayout.TabIndex = 8;
             // 
             // ReferencesSplitLayout
             // 
             this.ReferencesSplitLayout.Dock = System.Windows.Forms.DockStyle.Fill;
             this.ReferencesSplitLayout.Location = new System.Drawing.Point(0, 0);
+            this.ReferencesSplitLayout.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             this.ReferencesSplitLayout.Name = "ReferencesSplitLayout";
             this.ReferencesSplitLayout.Orientation = System.Windows.Forms.Orientation.Horizontal;
             // 
@@ -407,8 +408,9 @@
             // 
             this.ReferencesSplitLayout.Panel2.Controls.Add(this.ReferencesListBox);
             this.ReferencesSplitLayout.Panel2.Controls.Add(this.ReferencesFilter);
-            this.ReferencesSplitLayout.Size = new System.Drawing.Size(200, 462);
-            this.ReferencesSplitLayout.SplitterDistance = 208;
+            this.ReferencesSplitLayout.Size = new System.Drawing.Size(200, 537);
+            this.ReferencesSplitLayout.SplitterDistance = 241;
+            this.ReferencesSplitLayout.SplitterWidth = 5;
             this.ReferencesSplitLayout.TabIndex = 9;
             // 
             // ReferencesTreeView
@@ -416,8 +418,9 @@
             this.ReferencesTreeView.Dock = System.Windows.Forms.DockStyle.Fill;
             this.ReferencesTreeView.HideSelection = false;
             this.ReferencesTreeView.Location = new System.Drawing.Point(0, 0);
+            this.ReferencesTreeView.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             this.ReferencesTreeView.Name = "ReferencesTreeView";
-            this.ReferencesTreeView.Size = new System.Drawing.Size(200, 208);
+            this.ReferencesTreeView.Size = new System.Drawing.Size(200, 241);
             this.ReferencesTreeView.TabIndex = 7;
             // 
             // ReferencesListBox
@@ -426,17 +429,20 @@
             this.ReferencesListBox.FormatString = "long";
             this.ReferencesListBox.FormattingEnabled = true;
             this.ReferencesListBox.IntegralHeight = false;
-            this.ReferencesListBox.Location = new System.Drawing.Point(0, 20);
+            this.ReferencesListBox.ItemHeight = 15;
+            this.ReferencesListBox.Location = new System.Drawing.Point(0, 23);
+            this.ReferencesListBox.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             this.ReferencesListBox.Name = "ReferencesListBox";
-            this.ReferencesListBox.Size = new System.Drawing.Size(200, 230);
+            this.ReferencesListBox.Size = new System.Drawing.Size(200, 268);
             this.ReferencesListBox.TabIndex = 8;
             // 
             // ReferencesFilter
             // 
             this.ReferencesFilter.Dock = System.Windows.Forms.DockStyle.Top;
             this.ReferencesFilter.Location = new System.Drawing.Point(0, 0);
+            this.ReferencesFilter.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             this.ReferencesFilter.Name = "ReferencesFilter";
-            this.ReferencesFilter.Size = new System.Drawing.Size(200, 20);
+            this.ReferencesFilter.Size = new System.Drawing.Size(200, 23);
             this.ReferencesFilter.TabIndex = 9;
             // 
             // LogTabs
@@ -446,20 +452,21 @@
             this.LogTabs.Name = "LogTabs";
             this.LogTabs.NewTabContextMenu = this.NewTabContextMenu;
             this.LogTabs.OptionsMenu = this.OptionsContextMenu;
-            this.LogTabs.Size = new System.Drawing.Size(440, 440);
+            this.LogTabs.Size = new System.Drawing.Size(546, 513);
             this.LogTabs.TabContextMenu = this.TabContextMenu;
             this.LogTabs.TabIndex = 3;
             // 
             // TabbedTortoiseGitForm
             // 
             this.AllowDrop = true;
-            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(644, 486);
+            this.ClientSize = new System.Drawing.Size(751, 561);
             this.Controls.Add(this.SplitLayout);
             this.Controls.Add(this.FavoritesMenuStrip);
             this.MainMenuStrip = this.FavoritesMenuStrip;
-            this.MinimumSize = new System.Drawing.Size(660, 525);
+            this.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
+            this.MinimumSize = new System.Drawing.Size(767, 600);
             this.Name = "TabbedTortoiseGitForm";
             this.StartPosition = System.Windows.Forms.FormStartPosition.Manual;
             this.Text = "Tabbed TortoiseGit";
@@ -534,6 +541,7 @@
         private System.Windows.Forms.ListBox ReferencesListBox;
         private System.Windows.Forms.SplitContainer ReferencesSplitLayout;
         private System.Windows.Forms.TextBox ReferencesFilter;
+        private System.Windows.Forms.FolderBrowserDialog folderDialog;
     }
 }
 

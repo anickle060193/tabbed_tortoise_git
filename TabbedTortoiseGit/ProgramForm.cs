@@ -1,6 +1,4 @@
-﻿#nullable enable
-
-using Common;
+﻿using Common;
 using log4net;
 using System;
 using System.Collections.Generic;
@@ -234,16 +232,18 @@ namespace TabbedTortoiseGit
             return true;
         }
 
-        private void LogProcess_Exited( object sender, EventArgs e )
+        private void LogProcess_Exited( object? sender, EventArgs e )
         {
             lock( _capturedLogs )
             {
-                Process p = (Process)sender;
-                _capturedLogs.Remove( p.Id );
+                if( sender is Process p )
+                {
+                    _capturedLogs.Remove( p.Id );
+                }
             }
         }
 
-        private void KeyboardShortcutsManager_KeyboardShortcutPressed( object sender, KeyboardShortcutPressedEventArgs e )
+        private void KeyboardShortcutsManager_KeyboardShortcutPressed( object? sender, KeyboardShortcutPressedEventArgs e )
         {
             LOG.Debug( $"{nameof( KeyboardShortcutsManager_KeyboardShortcutPressed )} - KeyboardShortcut: {e.KeyboardShortcut}" );
             
@@ -256,7 +256,7 @@ namespace TabbedTortoiseGit
             _activeForm.HandleKeyboardShortcut( e.KeyboardShortcut );
         }
 
-        private void ProgramForm_FormClosing( object sender, FormClosingEventArgs e )
+        private void ProgramForm_FormClosing( object? sender, FormClosingEventArgs e )
         {
             LOG.Debug( $"{nameof( ProgramForm_FormClosing )} - Close Reason: {e.CloseReason}" );
 
@@ -266,7 +266,7 @@ namespace TabbedTortoiseGit
             KeyboardShortcutsManager.Instance.Dispose();
         }
 
-        private void Watcher_EventArrived( object sender, EventArrivedEventArgs e )
+        private void Watcher_EventArrived( object? sender, EventArrivedEventArgs e )
         {
             ManagementBaseObject o = (ManagementBaseObject)e.NewEvent[ "TargetInstance" ];
             LOG.Debug( $"{nameof( Watcher_EventArrived )} - Object: {o.GetText( TextFormat.Mof )}" );
@@ -274,7 +274,7 @@ namespace TabbedTortoiseGit
             CheckTortoiseGitProcessObject( o );
         }
 
-        private void WatcherTimer_Tick( object sender, EventArgs e )
+        private void WatcherTimer_Tick( object? sender, EventArgs e )
         {
             var searcher = new ManagementObjectSearcher( TORTOISE_GIT_QUERY );
             foreach( ManagementBaseObject o in searcher.Get() )
@@ -289,24 +289,28 @@ namespace TabbedTortoiseGit
             }
         }
 
-        private void NotifyIcon_DoubleClick( object sender, EventArgs e )
+        private void NotifyIcon_DoubleClick( object? sender, EventArgs e )
         {
             ShowLastTabbedTortoiseGit();
         }
 
-        private void OpenNotifyIconMenuItem_Click( object sender, EventArgs e )
+        private void OpenNotifyIconMenuItem_Click( object? sender, EventArgs e )
         {
             ShowLastTabbedTortoiseGit();
         }
 
-        private void ExitNotifyIconMenuItem_Click( object sender, EventArgs e )
+        private void ExitNotifyIconMenuItem_Click( object? sender, EventArgs e )
         {
             Application.Exit();
         }
 
-        private void TabbedTortoiseGitForm_FormClosed( object sender, FormClosedEventArgs e )
+        private void TabbedTortoiseGitForm_FormClosed( object? sender, FormClosedEventArgs e )
         {
-            TabbedTortoiseGitForm form = (TabbedTortoiseGitForm)sender;
+            if( sender is not TabbedTortoiseGitForm form )
+            {
+                return;
+            }
+
             _forms.Remove( form );
             if( form == _activeForm )
             {
@@ -322,9 +326,13 @@ namespace TabbedTortoiseGit
             }
         }
 
-        private void TabbedTortoiseGitForm_Activated( object sender, EventArgs e )
+        private void TabbedTortoiseGitForm_Activated( object? sender, EventArgs e )
         {
-            TabbedTortoiseGitForm form = (TabbedTortoiseGitForm)sender;
+            if( sender is not TabbedTortoiseGitForm form )
+            {
+                return;
+            }
+
             _forms.Remove( form );
             _forms.Add( form );
             _activeForm = form;

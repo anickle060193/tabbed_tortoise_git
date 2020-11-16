@@ -1,6 +1,4 @@
-﻿#nullable enable
-
-using Common;
+﻿using Common;
 using log4net;
 using Microsoft.Win32;
 using Newtonsoft.Json;
@@ -30,8 +28,8 @@ namespace TabbedTortoiseGit
             {
                 try
                 {
-                    using RegistryKey run = Registry.CurrentUser.OpenSubKey( RUN_ON_STARTUP_KEY_PATH, false );
-                    return run.GetValue( RUN_ON_STARTUP_KEY_NAME ) != null;
+                    using RegistryKey? run = Registry.CurrentUser.OpenSubKey( RUN_ON_STARTUP_KEY_PATH, false );
+                    return run?.GetValue( RUN_ON_STARTUP_KEY_NAME ) != null;
                 }
                 catch( Exception e )
                 {
@@ -44,15 +42,15 @@ namespace TabbedTortoiseGit
             {
                 try
                 {
-                    using RegistryKey run = Registry.CurrentUser.OpenSubKey( RUN_ON_STARTUP_KEY_PATH, true );
+                    using RegistryKey? run = Registry.CurrentUser.OpenSubKey( RUN_ON_STARTUP_KEY_PATH, true );
                     if( value )
                     {
-                        String exe = new Uri( Assembly.GetExecutingAssembly().CodeBase ).LocalPath;
-                        run.SetValue( RUN_ON_STARTUP_KEY_NAME, $"\"{exe}\" --startup" );
+                        String exe = new Uri( Assembly.GetExecutingAssembly().Location ).LocalPath;
+                        run?.SetValue( RUN_ON_STARTUP_KEY_NAME, $"\"{exe}\" --startup" );
                     }
                     else
                     {
-                        if( run.GetValue( RUN_ON_STARTUP_KEY_NAME ) != null )
+                        if( run?.GetValue( RUN_ON_STARTUP_KEY_NAME ) != null )
                         {
                             run.DeleteValue( RUN_ON_STARTUP_KEY_NAME );
                         }
@@ -87,15 +85,16 @@ namespace TabbedTortoiseGit
                 request.Method = "GET";
                 request.Accept = "application/vnd.github.v3+json";
                 AssemblyName a = Assembly.GetExecutingAssembly().GetName();
-                Version currentVersion = a.Version;
+                Version currentVersion = a.Version ?? new Version();
                 request.UserAgent = $"{a.Name} {currentVersion}";
                 using WebResponse response = await request.GetResponseAsync();
                 using StreamReader reader = new StreamReader( response.GetResponseStream() );
                 String responseText = reader.ReadToEnd();
                 List<TagRef> responseObject = JsonConvert.DeserializeObject<List<TagRef>>( responseText );
-                Version newestVersion = responseObject.Select( o => Version.Parse( o.Ref.Replace( "refs/tags/", "" ) ) ).Max();
+                Version? newestVersion = responseObject.Select( o => Version.Parse( o.Ref.Replace( "refs/tags/", "" ) ) ).Max();
 
-                if( newestVersion > currentVersion )
+                if( newestVersion != null
+                 && newestVersion > currentVersion )
                 {
                     return newestVersion;
                 }
@@ -137,28 +136,30 @@ namespace TabbedTortoiseGit
 
         public static bool VerifyAssemblyVersions()
         {
-            Version ttgVersion = Assembly.GetAssembly( typeof( TabbedTortoiseGit.TTG ) ).GetName().Version;
-            Version tabsVersion = Assembly.GetAssembly( typeof( Tabs.TabControl ) ).GetName().Version;
-            Version commonVersion = Assembly.GetAssembly( typeof( Common.Util ) ).GetName().Version;
+            Version? ttgVersion = Assembly.GetAssembly( typeof( TabbedTortoiseGit.TTG ) )?.GetName().Version;
+            Version? tabsVersion = Assembly.GetAssembly( typeof( Tabs.TabControl ) )?.GetName().Version;
+            Version? commonVersion = Assembly.GetAssembly( typeof( Common.Util ) )?.GetName().Version;
 
-            bool match = ttgVersion == commonVersion && commonVersion == tabsVersion;
-
-            if( !match )
+            if( ttgVersion != null
+             && ttgVersion == tabsVersion
+             && ttgVersion == commonVersion )
             {
-                String ttg = ttgVersion.ToString( 3 );
-                String tabs = tabsVersion.ToString( 3 );
-                String common = commonVersion.ToString( 3 );
-                LOG.Fatal( $"Assembly version mismatch - TTG: {ttg} - Tabs: {tabs} - Common: {common}" );
-
-                String versionMismatchMessage = ( $"The current assembly versions do not match:\n" +
-                                                  $"    Tabbed TortoiseGit: {ttg}\n" +
-                                                  $"    Tabs: {tabs}\n" +
-                                                  $"    Common: {common}\n\n" +
-                                                  $"Update Tagged TortoiseGit to resolve issue.\n" +
-                                                  $"If issue persists, uninstall and re-install Tabbed TortoiseGit." );
-                MessageBox.Show( versionMismatchMessage, "Assembly Version Mismatch", MessageBoxButtons.OK, MessageBoxIcon.Error );
+                return true;
             }
-            return match;
+
+            String? ttg = ttgVersion?.ToString( 3 );
+            String? tabs = tabsVersion?.ToString( 3 );
+            String? common = commonVersion?.ToString( 3 );
+            LOG.Fatal( $"Assembly version mismatch - TTG: {ttg} - Tabs: {tabs} - Common: {common}" );
+
+            String versionMismatchMessage = ( $"The current assembly versions do not match:\n" +
+                                                $"    Tabbed TortoiseGit: {ttg}\n" +
+                                                $"    Tabs: {tabs}\n" +
+                                                $"    Common: {common}\n\n" +
+                                                $"Update Tagged TortoiseGit to resolve issue.\n" +
+                                                $"If issue persists, uninstall and re-install Tabbed TortoiseGit." );
+            MessageBox.Show( versionMismatchMessage, "Assembly Version Mismatch", MessageBoxButtons.OK, MessageBoxIcon.Error );
+            return false;
         }
     }
 }

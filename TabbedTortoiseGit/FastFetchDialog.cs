@@ -1,8 +1,5 @@
-﻿#nullable enable
-
-using Common;
+﻿using Common;
 using LibGit2Sharp;
-using Microsoft.WindowsAPICodePack.Dialogs;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -41,37 +38,37 @@ namespace TabbedTortoiseGit
             Cancel.Click += Cancel_Click;
         }
 
-        private void TagsCheck_CheckedChanged( object sender, EventArgs e )
+        private void TagsCheck_CheckedChanged( object? sender, EventArgs e )
         {
             Settings.Default.FastFetchTagsChecked = TagsCheck.Checked;
             Settings.Default.Save();
         }
 
-        private void PruneCheck_CheckedChanged( object sender, EventArgs e )
+        private void PruneCheck_CheckedChanged( object? sender, EventArgs e )
         {
             Settings.Default.FastFetchPruneChecked = PruneCheck.Checked;
             Settings.Default.Save();
         }
 
-        private void ShowProgressCheck_CheckedChanged( object sender, EventArgs e )
+        private void ShowProgressCheck_CheckedChanged( object? sender, EventArgs e )
         {
             Settings.Default.FastFetchShowProgress = ShowProgressCheck.Checked;
             Settings.Default.Save();
         }
 
-        private void MaxProcessesNumeric_ValueChanged( object sender, EventArgs e )
+        private void MaxProcessesNumeric_ValueChanged( object? sender, EventArgs e )
         {
             Settings.Default.FastFetchMaxProcesses = (int)MaxProcessesNumeric.Value;
             Settings.Default.Save();
         }
 
-        private void Cancel_Click( object sender, EventArgs e )
+        private void Cancel_Click( object? sender, EventArgs e )
         {
             this.DialogResult = DialogResult.Cancel;
             this.Close();
         }
 
-        private async void Ok_Click( object sender, EventArgs e )
+        private async void Ok_Click( object? sender, EventArgs e )
         {
             await Fetch();
         }
@@ -145,7 +142,7 @@ namespace TabbedTortoiseGit
             };
 
             dialog.AddTask( CreateFetchTask( repo, tags, prune, progress, false ) );
-            dialog.AddTask( new FetchSubmodulesProgressTask( repo, false, tags, prune, progress ) );
+            dialog.AddTask( new FetchSubmodulesProgressTask( repo, tags, prune, progress ) );
 
             return dialog;
         }
@@ -164,17 +161,10 @@ namespace TabbedTortoiseGit
         {
             if( Settings.Default.ConfirmFasterFetch )
             {
-                using TaskDialog confirmationDialog = new TaskDialog()
+                using ConfirmationDialog dialog = new ConfirmationDialog( "Faster Fetch", "Faster Fetch uses settings previously configured in the Fast Fetch dialog.\n\nDo you want to continue?" );
+                if( dialog.ShowDialog() == DialogResult.Yes )
                 {
-                    StandardButtons = TaskDialogStandardButtons.Yes | TaskDialogStandardButtons.No,
-                    Text = "Faster Fetch uses settings previously configured in the Fast Fetch dialog.\n\nDo you want to continue?",
-                    Caption = "Faster Fetch",
-                    FooterCheckBoxText = "Do not ask me again",
-                    FooterCheckBoxChecked = false
-                };
-                if( confirmationDialog.Show() == TaskDialogResult.Yes )
-                {
-                    if( confirmationDialog.FooterCheckBoxChecked ?? false )
+                    if( dialog.DoNotAskAgain )
                     {
                         Settings.Default.ConfirmFasterFetch = false;
                         Settings.Default.Save();
@@ -211,7 +201,7 @@ namespace TabbedTortoiseGit
             public bool Prune { get; private set; }
             public bool Progress { get; private set; }
 
-            public FetchSubmodulesProgressTask( String repo, bool modifiedOnly, bool tags, bool prune, bool progress ) : base( repo, modifiedOnly )
+            public FetchSubmodulesProgressTask( String repo, bool tags, bool prune, bool progress ) : base( repo, false, false )
             {
                 this.Tags = tags;
                 this.Prune = prune;

@@ -1,6 +1,4 @@
-﻿#nullable enable
-
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -37,13 +35,13 @@ namespace TabbedTortoiseGit
             this.LoadChangelog();
         }
 
-        private void ShowChangelogOnUpdateCheck_CheckedChanged( object sender, EventArgs e )
+        private void ShowChangelogOnUpdateCheck_CheckedChanged( object? sender, EventArgs e )
         {
             Settings.Default.ShowChangelogOnUpdate = ShowChangelogOnUpdateCheck.Checked;
             Settings.Default.Save();
         }
 
-        private void OkButton_Click( object sender, EventArgs e )
+        private void OkButton_Click( object? sender, EventArgs e )
         {
             this.Close();
         }

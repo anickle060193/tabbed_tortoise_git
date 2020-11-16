@@ -1,6 +1,4 @@
-﻿#nullable enable
-
-using Common;
+﻿using Common;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
@@ -102,9 +100,9 @@ namespace TabbedTortoiseGit
 
         public override object ConvertFrom( ITypeDescriptorContext context, CultureInfo culture, object value )
         {
-            if( value is String )
+            if( value is String s )
             {
-                return JsonConvert.DeserializeObject<Shortcut>( (String)value );
+                return JsonConvert.DeserializeObject<Shortcut>( s );
             }
             else
             {

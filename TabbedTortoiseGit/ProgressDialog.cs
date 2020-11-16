@@ -1,6 +1,4 @@
-﻿#nullable enable
-
-using Common;
+﻿using Common;
 using log4net;
 using System;
 using System.Collections.Concurrent;
@@ -172,12 +170,12 @@ namespace TabbedTortoiseGit
             this.ProgressCompleted?.Invoke( this, e );
         }
 
-        private void Cancel_Click( object sender, EventArgs e )
+        private void Cancel_Click( object? sender, EventArgs e )
         {
             this.Close();
         }
 
-        private void ProgressDialog_FormClosing( object sender, FormClosingEventArgs e )
+        private void ProgressDialog_FormClosing( object? sender, FormClosingEventArgs e )
         {
             LOG.Debug( nameof( ProgressDialog_FormClosing ) );
 
@@ -194,18 +192,18 @@ namespace TabbedTortoiseGit
             }
         }
 
-        private void ElapsedUpdateTimer_Tick( object sender, EventArgs e )
+        private void ElapsedUpdateTimer_Tick( object? sender, EventArgs e )
         {
             ElapsedTime.Text = ( DateTime.Now - _start ).TotalSeconds.ToString( "0.00 seconds" );
         }
 
-        private void Worker_DoWork( object sender, DoWorkEventArgs e )
+        private void Worker_DoWork( object? sender, DoWorkEventArgs e )
         {
             LOG.Debug( nameof( Worker_DoWork ) );
             RunTasks();
         }
 
-        private void Worker_RunWorkerCompleted( object sender, RunWorkerCompletedEventArgs e )
+        private void Worker_RunWorkerCompleted( object? sender, RunWorkerCompletedEventArgs e )
         {
             LOG.Debug( $"{nameof( Worker_RunWorkerCompleted )} - Elapsed Time: {DateTime.Now - _start}" );
 
@@ -256,7 +254,7 @@ namespace TabbedTortoiseGit
             {
                 if( _runningTasks.Count < this.MaxTasks && !_tasks.IsEmpty )
                 {
-                    if( _tasks.TryDequeue( out ProgressTask t ) )
+                    if( _tasks.TryDequeue( out ProgressTask? t ) )
                     {
                         LOG.Debug( $"{nameof( RunTasks )} - {t.Description}" );
                         String? initialOutput = t.InitialOutput;
@@ -307,19 +305,22 @@ namespace TabbedTortoiseGit
             LogOutput( output, Output.ForeColor );
         }
 
-        private void Task_OutputReceived( object sender, OutputEventArgs e )
+        private void Task_OutputReceived( object? sender, OutputEventArgs e )
         {
             Output.UiBeginInvoke( (Action<String>)LogOutput, e.Output );
         }
 
-        private void Task_ErrorOutputReceived( object sender, OutputEventArgs e )
+        private void Task_ErrorOutputReceived( object? sender, OutputEventArgs e )
         {
             Output.UiBeginInvoke( (Action<String, Color>)LogOutput, e.Output, ErrorTextColor );
         }
 
-        private void Task_ProgressCompleted( object sender, ProgressCompletedEventArgs e )
+        private void Task_ProgressCompleted( object? sender, ProgressCompletedEventArgs e )
         {
-            ProgressTask t = (ProgressTask)sender;
+            if( sender is not ProgressTask t )
+            {
+                return;
+            }
 
             this.AddTasks( e.AdditionalTasks );
 
@@ -442,17 +443,17 @@ namespace TabbedTortoiseGit
             KillOnCancel = killOnCancel;
         }
 
-        private void Process_OutputDataReceived( object sender, DataReceivedEventArgs e )
+        private void Process_OutputDataReceived( object? sender, DataReceivedEventArgs e )
         {
-            Output( e.Data );
+            Output( e.Data ?? "" );
         }
 
-        private void Process_ErrorDataReceived( object sender, DataReceivedEventArgs e )
+        private void Process_ErrorDataReceived( object? sender, DataReceivedEventArgs e )
         {
-            Error( e.Data );
+            Error( e.Data ?? "" );
         }
 
-        private void Process_Exited( object sender, EventArgs e )
+        private void Process_Exited( object? sender, EventArgs e )
         {
             OnProgressCompleted( ProgressCompletedEventArgs.Empty );
         }

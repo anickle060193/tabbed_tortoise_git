@@ -137,5 +137,8 @@
     <Setting Name="TortoiseGitProcExeLocation" Type="System.String" Scope="User">
       <Value Profile="(Default)">C:\Program Files\TortoiseGit\bin\TortoiseGitProc.exe</Value>
     </Setting>
+    <Setting Name="TreatUninitializedSubmodulesAsModified" Type="System.Boolean" Scope="User">
+      <Value Profile="(Default)">True</Value>
+    </Setting>
   </Settings>
 </SettingsFile>

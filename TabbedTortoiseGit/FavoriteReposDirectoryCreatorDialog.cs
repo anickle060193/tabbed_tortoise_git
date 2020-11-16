@@ -1,7 +1,4 @@
-﻿#nullable enable
-
-using Microsoft.WindowsAPICodePack.Dialogs;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -17,11 +14,6 @@ namespace TabbedTortoiseGit
 {
     public partial class FavoriteReposDirectoryCreatorDialog : Form
     {
-        private readonly CommonOpenFileDialog _favoriteReposFolderDialog = new CommonOpenFileDialog()
-        {
-            IsFolderPicker = true
-        };
-
         private Color _favoriteColor;
 
         public String FavoriteName
@@ -97,13 +89,13 @@ namespace TabbedTortoiseGit
             return new FavoriteReposDirectory( this.FavoriteName, this.FavoriteDirectory, this.FavoriteColor );
         }
 
-        private void BrowseButton_Click( object sender, EventArgs e )
+        private void BrowseButton_Click( object? sender, EventArgs e )
         {
-            _favoriteReposFolderDialog.DefaultDirectory = this.FavoriteDirectory;
+            favoriteReposFolderDialog.SelectedPath = this.FavoriteDirectory;
 
-            if( _favoriteReposFolderDialog.ShowDialog() == CommonFileDialogResult.Ok )
+            if( favoriteReposFolderDialog.ShowDialog() == DialogResult.OK )
             {
-                String directory = _favoriteReposFolderDialog.FileName;
+                String directory = favoriteReposFolderDialog.SelectedPath;
                 this.FavoriteDirectory = directory;
 
                 if( !String.IsNullOrWhiteSpace( directory )
@@ -114,7 +106,7 @@ namespace TabbedTortoiseGit
             }
         }
 
-        private void ChangeFavoriteColorButton_Click( object sender, EventArgs e )
+        private void ChangeFavoriteColorButton_Click( object? sender, EventArgs e )
         {
             if( FavoriteColorDialog.ShowDialog() == DialogResult.OK )
             {
@@ -122,7 +114,7 @@ namespace TabbedTortoiseGit
             }
         }
 
-        private void Ok_Click( object sender, EventArgs e )
+        private void Ok_Click( object? sender, EventArgs e )
         {
             if( String.IsNullOrWhiteSpace( this.FavoriteName ) )
             {

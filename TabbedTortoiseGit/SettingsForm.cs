@@ -1,12 +1,10 @@
-﻿#nullable enable
-
-using Common;
+﻿using Common;
 using LibGit2Sharp;
-using Microsoft.WindowsAPICodePack.Dialogs;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
+using System.Diagnostics.CodeAnalysis;
 using System.Drawing;
 using System.IO;
 using System.Linq;
@@ -108,7 +106,7 @@ namespace TabbedTortoiseGit
             {
                 foreach( KeyboardShortcuts keyboardShortcut in Enum.GetValues( typeof( KeyboardShortcuts ) ) )
                 {
-                    if( value.TryGetValue( keyboardShortcut, out Shortcut shortcut ) )
+                    if( value.TryGetValue( keyboardShortcut, out Shortcut? shortcut ) )
                     {
                         UpdateShortcutTextBox( _shortcutTextboxes[ keyboardShortcut ], shortcut );
                     }
@@ -423,7 +421,6 @@ namespace TabbedTortoiseGit
             }
         }
 
-        private readonly CommonOpenFileDialog _folderDialog;
         private readonly CheckListDragDrophelper _dragDropHelper;
         private readonly Dictionary<KeyboardShortcuts, TextBox> _shortcutTextboxes = new Dictionary<KeyboardShortcuts, TextBox>();
         private readonly BindingList<CustomAction> _customActions = new BindingList<CustomAction>();
@@ -433,11 +430,6 @@ namespace TabbedTortoiseGit
             InitializeComponent();
 
             this.Icon = Resources.TortoiseIcon;
-
-            _folderDialog = new CommonOpenFileDialog
-            {
-                IsFolderPicker = true
-            };
 
             this.KeyPress += SettingsForm_KeyPress;
 
@@ -510,22 +502,28 @@ namespace TabbedTortoiseGit
             }
         }
 
-        private void ShortcutText_Enter( object sender, EventArgs e )
+        private void ShortcutText_Enter( object? sender, EventArgs e )
         {
-            TextBox shortcutText = (TextBox)sender;
+            if( sender is not TextBox shortcutText )
+            {
+                return;
+            }
 
             UpdateShortcutTextBox( shortcutText, Shortcut.Empty );
         }
 
-        private void ShortcutTextBox_PreviewKeyDown( object sender, PreviewKeyDownEventArgs e )
+        private void ShortcutTextBox_PreviewKeyDown( object? sender, PreviewKeyDownEventArgs e )
         {
-            TextBox shortcutText = (TextBox)sender;
+            if( sender is not TextBox shortcutText )
+            {
+                return;
+            }
 
             Shortcut shortcut = Shortcut.FromKeyEventArgs( e );
             UpdateShortcutTextBox( shortcutText, shortcut );
         }
 
-        private void ShortcutText_KeyDown( object sender, KeyEventArgs e )
+        private void ShortcutText_KeyDown( object? sender, KeyEventArgs e )
         {
             e.SuppressKeyPress = true;
             e.Handled = true;
@@ -541,7 +539,7 @@ namespace TabbedTortoiseGit
         private static readonly String CHEAT_CODE = "developer";
         private readonly Queue<char> _cheatCode = new Queue<char>();
 
-        private void SettingsForm_KeyPress( object sender, KeyPressEventArgs e )
+        private void SettingsForm_KeyPress( object? sender, KeyPressEventArgs e )
         {
             _cheatCode.Enqueue( e.KeyChar );
             while( _cheatCode.Count > CHEAT_CODE.Length )
@@ -554,11 +552,11 @@ namespace TabbedTortoiseGit
             }
         }
 
-        private void AddDefaultRepo_Click( object sender, EventArgs e )
+        private void AddDefaultRepo_Click( object? sender, EventArgs e )
         {
-            if( _folderDialog.ShowDialog() == CommonFileDialogResult.Ok )
+            if( folderDialog.ShowDialog() == DialogResult.OK )
             {
-                String path = _folderDialog.FileName;
+                String path = folderDialog.SelectedPath;
                 if( Git.IsInRepo( path ) )
                 {
                     StartupReposList.Items.Add( path );
@@ -570,7 +568,7 @@ namespace TabbedTortoiseGit
             }
         }
 
-        private void RemoveDefaultRepo_Click( object sender, EventArgs e )
+        private void RemoveDefaultRepo_Click( object? sender, EventArgs e )
         {
             foreach( String defaultRepo in this.StartupReposList.SelectedItems.Cast<String>().ToArray() )
             {
@@ -578,18 +576,18 @@ namespace TabbedTortoiseGit
             }
         }
 
-        private void DefaultReposList_SelectedValueChanged( object sender, EventArgs e )
+        private void DefaultReposList_SelectedValueChanged( object? sender, EventArgs e )
         {
             UpdateDefaultReposActions();
         }
 
-        private void ResetNormalTabFontButton_Click( object sender, EventArgs e )
+        private void ResetNormalTabFontButton_Click( object? sender, EventArgs e )
         {
             this.NormalTabFont = SystemFonts.DefaultFont;
             this.NormalTabFontColor = SystemColors.ControlText;
         }
 
-        private void ChangeNormalTabFontButton_Click( object sender, EventArgs e )
+        private void ChangeNormalTabFontButton_Click( object? sender, EventArgs e )
         {
             NormalTabFontDialog.Font = this.NormalTabFont;
             NormalTabFontDialog.Color = this.NormalTabFontColor;
@@ -600,13 +598,13 @@ namespace TabbedTortoiseGit
             }
         }
 
-        private void ResetModifiedTabFontButton_Click( object sender, EventArgs e )
+        private void ResetModifiedTabFontButton_Click( object? sender, EventArgs e )
         {
             this.ModifiedTabFont = Settings.Default.DefaultModifiedTabFont;
             this.ModifiedTabFontColor = Settings.Default.DefaultModifiedTabFontColor;
         }
 
-        private void ChangeModifiedTabFontButton_Click( object sender, EventArgs e )
+        private void ChangeModifiedTabFontButton_Click( object? sender, EventArgs e )
         {
             ModifiedTabFontDialog.Font = this.ModifiedTabFont;
             ModifiedTabFontDialog.Color = this.ModifiedTabFontColor;
@@ -617,7 +615,7 @@ namespace TabbedTortoiseGit
             }
         }
 
-        private void TortoiseGitProcExeLocationBrowse_Click( object sender, EventArgs e )
+        private void TortoiseGitProcExeLocationBrowse_Click( object? sender, EventArgs e )
         {
             TortoiseGitProcExeLocationDialog.InitialDirectory = Path.GetDirectoryName( this.TortoiseGitProcExeLocation );
             TortoiseGitProcExeLocationDialog.FileName = Path.GetFileName( this.TortoiseGitProcExeLocation );
@@ -646,7 +644,7 @@ namespace TabbedTortoiseGit
                 return true;
             }
 
-            protected override bool GetItemFromPoint( CheckedListBox parent, Point p, out String? item, out int itemIndex )
+            protected override bool GetItemFromPoint( CheckedListBox parent, Point p, [MaybeNullWhen( false )] out String item, out int itemIndex )
             {
                 int index = parent.IndexFromPoint( p );
                 if( index != CheckedListBox.NoMatches )
@@ -683,7 +681,7 @@ namespace TabbedTortoiseGit
             }
         }
 
-        private void CustomActionsDataGridView_SelectionChanged( object sender, EventArgs e )
+        private void CustomActionsDataGridView_SelectionChanged( object? sender, EventArgs e )
         {
             if( CustomActionsDataGridView.SelectedRows.Count > 0 )
             {
@@ -697,7 +695,7 @@ namespace TabbedTortoiseGit
             }
         }
 
-        private void CreateCustomAction_Click( object sender, EventArgs e )
+        private void CreateCustomAction_Click( object? sender, EventArgs e )
         {
             using CustomActionDialog dialog = new CustomActionDialog();
             if( dialog.ShowDialog() == DialogResult.OK )
@@ -709,7 +707,7 @@ namespace TabbedTortoiseGit
             }
         }
 
-        private void EditCustomAction_Click( object sender, EventArgs e )
+        private void EditCustomAction_Click( object? sender, EventArgs e )
         {
             if( CustomActionsDataGridView.SelectedRows.Count > 0 )
             {
@@ -729,7 +727,7 @@ namespace TabbedTortoiseGit
             }
         }
 
-        private void RemoveCustomAction_Click( object sender, EventArgs e )
+        private void RemoveCustomAction_Click( object? sender, EventArgs e )
         {
             if( CustomActionsDataGridView.SelectedRows.Count > 0 )
             {

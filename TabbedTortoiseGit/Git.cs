@@ -1,6 +1,4 @@
-﻿#nullable enable
-
-using Common;
+﻿using Common;
 using LibGit2Sharp;
 using System;
 using System.Collections.Generic;
@@ -76,7 +74,7 @@ namespace TabbedTortoiseGit
             return submodules;
         }
 
-        public static async Task<List<String>> GetModifiedSubmodules( String path, List<String> submodules )
+        public static async Task<List<String>> GetModifiedSubmodules( String path, List<String> submodules, bool treatUninitializedSubmodulesAsModified )
         {
             String? repo = GetBaseRepoDirectory( path );
             if( repo == null )
@@ -88,7 +86,7 @@ namespace TabbedTortoiseGit
             info.CreateNoWindow = true;
             info.UseShellExecute = false;
             info.RedirectStandardOutput = true;
-            Process p = Process.Start( info );
+            Process p = Process.Start( info )!;
             await Task.Run( () => p.WaitForExit() );
 
             if( p.ExitCode != 0 )
@@ -100,9 +98,9 @@ namespace TabbedTortoiseGit
 
             while( !p.StandardOutput.EndOfStream )
             {
-                String line = p.StandardOutput.ReadLine();
-                Match m = GIT_STATUS_REGEX.Match( line );
-                if( m.Success )
+                if( p.StandardOutput.ReadLine() is String line
+                 && GIT_STATUS_REGEX.Match( line ) is Match m
+                 && m.Success )
                 {
                     bool modified = m.Groups[ "submoduleStatus" ].Value == "M";
                     String name = m.Groups[ "name" ].Value;
@@ -113,12 +111,15 @@ namespace TabbedTortoiseGit
                 }
             }
 
-            foreach( String submodule in submodules )
+            if( treatUninitializedSubmodulesAsModified )
             {
-                if( !modifiedSubmodules.Contains( submodule )
-                 && !File.Exists( Path.Combine( repo, submodule, ".git" ) ) )
+                foreach( String submodule in submodules )
                 {
-                    modifiedSubmodules.Add( submodule );
+                    if( !modifiedSubmodules.Contains( submodule )
+                     && !File.Exists( Path.Combine( repo, submodule, ".git" ) ) )
+                    {
+                        modifiedSubmodules.Add( submodule );
+                    }
                 }
             }
 
@@ -134,7 +135,7 @@ namespace TabbedTortoiseGit
             }
 
             ProcessStartInfo info = CreateGitProcessStartInfo( repo, $"diff-index --quiet HEAD -- \"{path}\"" );
-            Process p = Process.Start( info );
+            Process p = Process.Start( info )!;
             await Task.Run( () => p.WaitForExit() );
 
             return p.ExitCode == 1;

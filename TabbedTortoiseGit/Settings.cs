@@ -1,6 +1,4 @@
-﻿#nullable enable
-
-using Common;
+﻿using Common;
 using log4net;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
@@ -246,7 +244,7 @@ namespace TabbedTortoiseGit.Properties
             this.SettingChanging += Settings_SettingChanging;
         }
 
-        private void Settings_SettingChanging( object sender, SettingChangingEventArgs e )
+        private void Settings_SettingChanging( object? sender, SettingChangingEventArgs e )
         {
             if( e.SettingName == nameof( Settings.Default.MaxRecentRepos ) )
             {
@@ -286,7 +284,7 @@ namespace TabbedTortoiseGit.Properties
             }
         }
 
-        private void Settings_SettingsLoaded( object sender, SettingsLoadedEventArgs e )
+        private void Settings_SettingsLoaded( object? sender, SettingsLoadedEventArgs e )
         {
             if( Settings.Default.UpgradeRequired )
             {

@@ -1,6 +1,4 @@
-﻿#nullable enable
-
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -12,11 +10,13 @@ namespace TabbedTortoiseGit
     {
         public String Repo { get; private set; }
         public bool ModifiedOnly { get; private set; }
+        public bool TreatUninitializedSubmodulesAsModified { get; private set; }
 
-        public RetrieveSubmodulesProgressTask( String repo, bool modifiedOnly )
+        public RetrieveSubmodulesProgressTask( String repo, bool modifiedOnly, bool treatUninitializedSubmodulesAsModified )
         {
             this.Repo = repo;
             this.ModifiedOnly = modifiedOnly;
+            this.TreatUninitializedSubmodulesAsModified = treatUninitializedSubmodulesAsModified;
         }
 
         public override string Description
@@ -48,7 +48,7 @@ namespace TabbedTortoiseGit
             if( this.ModifiedOnly )
             {
                 Output( "Retrieving modified submodules" );
-                submodules = await Git.GetModifiedSubmodules( this.Repo, submodules );
+                submodules = await Git.GetModifiedSubmodules( this.Repo, submodules, this.TreatUninitializedSubmodulesAsModified );
                 Output( $"{submodules.Count} modified submodules found" );
             }
 

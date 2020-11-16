@@ -1,17 +1,11 @@
-﻿#nullable enable
-
-using log4net;
-using System;
-using System.Collections;
+﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Drawing;
-using System.Globalization;
 using System.Linq;
 using System.Reflection;
 using System.Runtime.InteropServices;
 using System.Text;
-using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
@@ -19,7 +13,7 @@ namespace Common
 {
     public static class Extensions
     {
-        public static TValue Pluck<TKey, TValue>( this Dictionary<TKey, TValue> self, TKey key )
+        public static TValue Pluck<TKey, TValue>( this Dictionary<TKey, TValue> self, TKey key ) where TKey : notnull
         {
             TValue v = self[ key ];
             self.Remove( key );
@@ -56,10 +50,10 @@ namespace Common
         public static String GetDescription( this Enum value )
         {
             Type type = value.GetType();
-            String name = Enum.GetName( type, value );
+            String? name = Enum.GetName( type, value );
             if( name != null )
             {
-                FieldInfo field = type.GetField( name );
+                FieldInfo? field = type.GetField( name );
                 if( field != null )
                 {
                     DescriptionAttribute? attr = Attribute.GetCustomAttribute( field, typeof( DescriptionAttribute ) ) as DescriptionAttribute;

@@ -1,7 +1,4 @@
-﻿#nullable enable
-
-using Microsoft.WindowsAPICodePack.Dialogs;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -17,11 +14,6 @@ namespace TabbedTortoiseGit
 {
     public partial class FavoriteRepoCreatorDialog : Form
     {
-        private readonly CommonOpenFileDialog _favoriteRepoDialog = new CommonOpenFileDialog()
-        {
-            IsFolderPicker = true
-        };
-
         private Color _favoriteColor;
 
         public String FavoriteName
@@ -126,20 +118,20 @@ namespace TabbedTortoiseGit
             return new FavoriteRepo( FavoriteName, FavoriteRepo, isDirectory, FavoriteColor, FavoriteReferences );
         }
 
-        private void BrowseButton_Click( object sender, EventArgs e )
+        private void BrowseButton_Click( object? sender, EventArgs e )
         {
             if( Directory.Exists( this.FavoriteRepo ) )
             {
-                _favoriteRepoDialog.DefaultDirectory = this.FavoriteRepo;
+                favoriteRepoDialog.SelectedPath = this.FavoriteRepo;
             }
             else
             {
-                _favoriteRepoDialog.DefaultFileName = this.FavoriteRepo;
+                favoriteRepoDialog.SelectedPath = this.FavoriteRepo;
             }
 
-            if( _favoriteRepoDialog.ShowDialog() == CommonFileDialogResult.Ok )
+            if( favoriteRepoDialog.ShowDialog() == DialogResult.OK )
             {
-                String directory = _favoriteRepoDialog.FileName;
+                String directory = favoriteRepoDialog.SelectedPath;
                 this.FavoriteRepo = directory;
 
                 if( !String.IsNullOrWhiteSpace( directory )
@@ -150,7 +142,7 @@ namespace TabbedTortoiseGit
             }
         }
 
-        private void RemoveReferencesButton_Click( object sender, EventArgs e )
+        private void RemoveReferencesButton_Click( object? sender, EventArgs e )
         {
             foreach( String branch in ReferencesListBox.SelectedItems.Cast<String>().ToList() )
             {
@@ -158,7 +150,7 @@ namespace TabbedTortoiseGit
             }
         }
 
-        private void SelectReferencesButton_Click( object sender, EventArgs e )
+        private void SelectReferencesButton_Click( object? sender, EventArgs e )
         {
             using ReferencesDialog d = new ReferencesDialog( this.FavoriteRepo );
             if( d.ShowDialog() == DialogResult.OK )
@@ -167,7 +159,7 @@ namespace TabbedTortoiseGit
             }
         }
 
-        private void ChangeFavoriteColorButton_Click( object sender, EventArgs e )
+        private void ChangeFavoriteColorButton_Click( object? sender, EventArgs e )
         {
             if( FavoriteColorDialog.ShowDialog() == DialogResult.OK )
             {
@@ -175,7 +167,7 @@ namespace TabbedTortoiseGit
             }
         }
 
-        private void Ok_Click( object sender, EventArgs e )
+        private void Ok_Click( object? sender, EventArgs e )
         {
             if( String.IsNullOrWhiteSpace( this.FavoriteName ) )
             {

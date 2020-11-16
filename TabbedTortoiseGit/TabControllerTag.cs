@@ -1,6 +1,4 @@
-﻿#nullable enable
-
-using Common;
+﻿using Common;
 using log4net;
 using System;
 using System.Collections.Generic;
@@ -200,7 +198,7 @@ namespace TabbedTortoiseGit
             }
         }
 
-        private void Tab_Resize( object sender, EventArgs e )
+        private void Tab_Resize( object? sender, EventArgs e )
         {
             if( this.Tab.FindForm()?.WindowState != FormWindowState.Minimized )
             {
@@ -208,7 +206,7 @@ namespace TabbedTortoiseGit
             }
         }
 
-        private void Process_Exited( object sender, EventArgs e )
+        private void Process_Exited( object? sender, EventArgs e )
         {
             this.Tab.UiBeginInvoke( (Action)( () => this.Tab.Parent = null ) );
         }

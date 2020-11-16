@@ -1,20 +1,20 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
-VisualStudioVersion = 16.0.29509.3
+VisualStudioVersion = 16.0.30711.63
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TabbedTortoiseGit", "TabbedTortoiseGit\TabbedTortoiseGit.csproj", "{0183D895-B9C5-4C12-B75C-812A286E81F0}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TabbedTortoiseGit", "TabbedTortoiseGit\TabbedTortoiseGit.csproj", "{CF9B6631-D648-4E3D-B659-CB41CC1649D1}"
 EndProject
-Project("{54435603-DBB4-11D2-8724-00A0C9A8B90C}") = "Setup", "Setup\Setup.vdproj", "{CC89F986-96FE-4B8E-9340-AEE2E0542352}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tabs", "Tabs\Tabs.csproj", "{5C8A6D79-FD9C-4DDC-8CFE-522CD27E8EAB}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Common", "Common\Common.csproj", "{00252D2A-5562-4C76-B4C4-C894A4DC5F9A}"
-EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{8A334E59-BDDF-420B-B557-F38EA7C60314}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{411AE563-4B05-4175-8276-5E7D1BA95D0C}"
 	ProjectSection(SolutionItems) = preProject
 		.editorconfig = .editorconfig
 	EndProjectSection
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Common", "Common\Common.csproj", "{CC29237C-3761-443D-95ED-B3C4FB0401B1}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tabs", "Tabs\Tabs.csproj", "{A4E9E616-1DA1-4FE4-BAD5-A4FE5C914FEE}"
+EndProject
+Project("{54435603-DBB4-11D2-8724-00A0C9A8B90C}") = "Setup", "Setup\Setup.vdproj", "{CC89F986-96FE-4B8E-9340-AEE2E0542352}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -22,25 +22,25 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{0183D895-B9C5-4C12-B75C-812A286E81F0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{0183D895-B9C5-4C12-B75C-812A286E81F0}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{0183D895-B9C5-4C12-B75C-812A286E81F0}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{0183D895-B9C5-4C12-B75C-812A286E81F0}.Release|Any CPU.Build.0 = Release|Any CPU
+		{CF9B6631-D648-4E3D-B659-CB41CC1649D1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CF9B6631-D648-4E3D-B659-CB41CC1649D1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CF9B6631-D648-4E3D-B659-CB41CC1649D1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CF9B6631-D648-4E3D-B659-CB41CC1649D1}.Release|Any CPU.Build.0 = Release|Any CPU
+		{CC29237C-3761-443D-95ED-B3C4FB0401B1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CC29237C-3761-443D-95ED-B3C4FB0401B1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CC29237C-3761-443D-95ED-B3C4FB0401B1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CC29237C-3761-443D-95ED-B3C4FB0401B1}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A4E9E616-1DA1-4FE4-BAD5-A4FE5C914FEE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A4E9E616-1DA1-4FE4-BAD5-A4FE5C914FEE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A4E9E616-1DA1-4FE4-BAD5-A4FE5C914FEE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A4E9E616-1DA1-4FE4-BAD5-A4FE5C914FEE}.Release|Any CPU.Build.0 = Release|Any CPU
 		{CC89F986-96FE-4B8E-9340-AEE2E0542352}.Debug|Any CPU.ActiveCfg = Debug
 		{CC89F986-96FE-4B8E-9340-AEE2E0542352}.Release|Any CPU.ActiveCfg = Release
-		{5C8A6D79-FD9C-4DDC-8CFE-522CD27E8EAB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{5C8A6D79-FD9C-4DDC-8CFE-522CD27E8EAB}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{5C8A6D79-FD9C-4DDC-8CFE-522CD27E8EAB}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{5C8A6D79-FD9C-4DDC-8CFE-522CD27E8EAB}.Release|Any CPU.Build.0 = Release|Any CPU
-		{00252D2A-5562-4C76-B4C4-C894A4DC5F9A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{00252D2A-5562-4C76-B4C4-C894A4DC5F9A}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{00252D2A-5562-4C76-B4C4-C894A4DC5F9A}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{00252D2A-5562-4C76-B4C4-C894A4DC5F9A}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
-		SolutionGuid = {B56D46B4-88C7-4643-A408-EBBC295553AD}
+		SolutionGuid = {8164E619-7334-4095-9D6E-E0D164FAFF91}
 	EndGlobalSection
 EndGlobal

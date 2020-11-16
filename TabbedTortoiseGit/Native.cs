@@ -1,6 +1,4 @@
-﻿#nullable enable
-
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
@@ -161,13 +159,13 @@ namespace TabbedTortoiseGit
         [DllImport( "user32" )]
         public static extern bool PostMessage( IntPtr hwnd, int msg, IntPtr wparam, IntPtr lparam );
 
-        [DllImport( "user32" )]
+        [DllImport( "user32", CharSet = CharSet.Unicode )]
         public static extern int RegisterWindowMessage( string message );
 
         [DllImport( "user32.dll", SetLastError = true )]
         internal static extern bool MoveWindow( IntPtr hWnd, int X, int Y, int nWidth, int nHeight, bool bRepaint );
 
-        [DllImport( "user32.dll", SetLastError = true )]
+        [DllImport( "user32.dll", SetLastError = true, CharSet = CharSet.Unicode )]
         static extern IntPtr FindWindow( string lpClassName, string lpWindowName );
 
         [DllImport( "user32.dll", SetLastError = true )]
@@ -278,13 +276,13 @@ namespace TabbedTortoiseGit
             SendMessage( bar.Handle, WindowMessage.PBM_SETSTATE, (IntPtr)state, IntPtr.Zero );
         }
 
-        [DllImport( "shlwapi.dll", EntryPoint = "PathRelativePathTo" )]
+        [DllImport( "shlwapi.dll", EntryPoint = "PathRelativePathTo", CharSet = CharSet.Unicode )]
         private static extern bool PathRelativePathTo( StringBuilder lpszDst, String from, UInt32 attrFrom, String to, UInt32 attrTo );
 
         public static String GetRelativePath( String from, String to )
         {
             StringBuilder builder = new StringBuilder( 1024 );
-            bool result = PathRelativePathTo( builder, from, 0, to, 0 );
+            PathRelativePathTo( builder, from, 0, to, 0 );
             return builder.ToString();
         }
 

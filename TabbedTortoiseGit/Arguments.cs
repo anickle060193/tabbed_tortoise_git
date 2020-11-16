@@ -1,6 +1,4 @@
-﻿#nullable enable
-
-using CommandLine;
+﻿using CommandLine;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,7 +9,7 @@ namespace TabbedTortoiseGit
 {
     class Arguments
     {
-        [Option( 's', "startup", DefaultValue=false, HelpText="Indicates Tabbed TortoiseGit is being opened from startup." )]
+        [Option( 's', "startup", Default = false, HelpText = "Indicates Tabbed TortoiseGit is being opened from startup." )]
         public bool Startup { get; set; }
     }
 }

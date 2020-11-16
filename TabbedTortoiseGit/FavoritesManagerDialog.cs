@@ -1,14 +1,12 @@
-﻿#nullable enable
-
-using Common;
+﻿using Common;
 using log4net;
-using Microsoft.WindowsAPICodePack.Dialogs;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
+using System.Diagnostics.CodeAnalysis;
 using System.Drawing;
 using System.IO;
 using System.Linq;
@@ -67,7 +65,7 @@ namespace TabbedTortoiseGit
             UpdateFavoritesTree( Favorites );
         }
 
-        private void FavoritesTree_MouseUp( object sender, MouseEventArgs e )
+        private void FavoritesTree_MouseUp( object? sender, MouseEventArgs e )
         {
             if( e.Button == MouseButtons.Right )
             {
@@ -81,7 +79,7 @@ namespace TabbedTortoiseGit
             }
         }
 
-        private void FavoritesContextMenu_Opening( object sender, CancelEventArgs e )
+        private void FavoritesContextMenu_Opening( object? sender, CancelEventArgs e )
         {
             if( _selectedFavoriteItem == null )
             {
@@ -142,7 +140,7 @@ namespace TabbedTortoiseGit
             }
         }
 
-        private void AddFavoritesFolderMenuItem_Click( object sender, EventArgs e )
+        private void AddFavoritesFolderMenuItem_Click( object? sender, EventArgs e )
         {
             using FavoriteFolderCreatorDialog dialog = new FavoriteFolderCreatorDialog();
             if( dialog.ShowDialog() == DialogResult.OK )
@@ -151,7 +149,7 @@ namespace TabbedTortoiseGit
             }
         }
 
-        private void AddRepoMenuItem_Click( object sender, EventArgs e )
+        private void AddRepoMenuItem_Click( object? sender, EventArgs e )
         {
             using FavoriteRepoCreatorDialog dialog = new FavoriteRepoCreatorDialog();
             if( dialog.ShowDialog() == DialogResult.OK )
@@ -160,7 +158,7 @@ namespace TabbedTortoiseGit
             }
         }
 
-        private void AddReposDirectoryMenuItem_Click( object sender, EventArgs e )
+        private void AddReposDirectoryMenuItem_Click( object? sender, EventArgs e )
         {
             using FavoriteReposDirectoryCreatorDialog dialog = new FavoriteReposDirectoryCreatorDialog();
             if( dialog.ShowDialog() == DialogResult.OK )
@@ -169,7 +167,7 @@ namespace TabbedTortoiseGit
             }
         }
 
-        private void EditFavoriteMenuItem_Click( object sender, EventArgs e )
+        private void EditFavoriteMenuItem_Click( object? sender, EventArgs e )
         {
             if( _selectedFavoriteItem == null )
             {
@@ -219,7 +217,7 @@ namespace TabbedTortoiseGit
             }
         }
 
-        private void RemoveFavoriteMenuItem_Click( object sender, EventArgs e )
+        private void RemoveFavoriteMenuItem_Click( object? sender, EventArgs e )
         {
             if( _selectedFavoriteItem == null )
             {
@@ -407,7 +405,7 @@ namespace TabbedTortoiseGit
                 }
             }
 
-            protected override bool GetItemFromPoint( TreeView parent, Point p, out FavoritesDraggingItem? item, out int itemIndex )
+            protected override bool GetItemFromPoint( TreeView parent, Point p, [MaybeNullWhen( false )] out FavoritesDraggingItem item, out int itemIndex )
             {
                 TreeNode? treeNode = parent.GetNodeAt( p );
 

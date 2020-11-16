@@ -1,6 +1,4 @@
-﻿#nullable enable
-
-using Common;
+﻿using Common;
 using log4net;
 using log4net.Appender;
 using log4net.Repository.Hierarchy;
@@ -47,7 +45,7 @@ namespace TabbedTortoiseGit
             ChangelogButton.Click += ChangelogButton_Click;
         }
 
-        private async void AboutBox_Load( object sender, EventArgs e )
+        private async void AboutBox_Load( object? sender, EventArgs e )
         {
             _newestVersion = await TTG.IsUpToDate();
             if( _newestVersion != null )
@@ -64,7 +62,7 @@ namespace TabbedTortoiseGit
             }
         }
 
-        private async void UpdateButton_Click( object sender, EventArgs e )
+        private async void UpdateButton_Click( object? sender, EventArgs e )
         {
             LOG.Debug( $"{nameof( UpdateButton_Click )} - Newest Version: {_newestVersion!.ToString( 3 )}" );
             if( DialogResult.Yes == MessageBox.Show( "This will exit Tabbed TortoiseGit. Continue?", "New Update", MessageBoxButtons.YesNo ) )
@@ -83,12 +81,12 @@ namespace TabbedTortoiseGit
             }
         }
 
-        private void ViewGithub_Click( object sender, EventArgs e )
+        private void ViewGithub_Click( object? sender, EventArgs e )
         {
             Process.Start( "https://github.com/anickle060193/tabbed_tortoise_git" );
         }
 
-        private void ChangelogButton_Click( object sender, EventArgs e )
+        private void ChangelogButton_Click( object? sender, EventArgs e )
         {
             ChangelogDialog.ShowChangelog();
         }
@@ -108,7 +106,7 @@ namespace TabbedTortoiseGit
                         return titleAttribute.Title;
                     }
                 }
-                return System.IO.Path.GetFileNameWithoutExtension( Assembly.GetExecutingAssembly().CodeBase );
+                return System.IO.Path.GetFileNameWithoutExtension( Assembly.GetExecutingAssembly().Location ) ?? "";
             }
         }
 
@@ -116,7 +114,7 @@ namespace TabbedTortoiseGit
         {
             get
             {
-                return Assembly.GetExecutingAssembly().GetName().Version.ToString( 3 );
+                return Assembly.GetExecutingAssembly().GetName().Version?.ToString( 3 ) ?? "";
             }
         }
 

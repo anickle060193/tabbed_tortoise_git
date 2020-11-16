@@ -1,6 +1,4 @@
-﻿#nullable enable
-
-using Common;
+﻿using Common;
 using LibGit2Sharp;
 using log4net;
 using System;
@@ -88,7 +86,7 @@ namespace TabbedTortoiseGit
             }
         }
 
-        private async void FastSubmoduleUpdateForm_Shown( object sender, EventArgs e )
+        private async void FastSubmoduleUpdateForm_Shown( object? sender, EventArgs e )
         {
             LOG.Debug( nameof( FastSubmoduleUpdateForm_Shown ) );
 
@@ -107,7 +105,7 @@ namespace TabbedTortoiseGit
             LOG.Debug( $"{nameof( FastSubmoduleUpdateForm_Shown )} - Get Modified Submodules - Start" );
             try
             {
-                _modifiedSubmodules = await Task.Run( () => Git.GetModifiedSubmodules( Repo, _submodules ) );
+                _modifiedSubmodules = await Task.Run( () => Git.GetModifiedSubmodules( Repo, _submodules, Settings.Default.TreatUninitializedSubmodulesAsModified ) );
             }
             catch( Exception ex )
             {
@@ -130,18 +128,18 @@ namespace TabbedTortoiseGit
             }
         }
 
-        private void Cancel_Click( object sender, EventArgs e )
+        private void Cancel_Click( object? sender, EventArgs e )
         {
             this.DialogResult = DialogResult.Cancel;
             this.Close();
         }
 
-        private void SubmoduleCheckList_Click( object sender, EventArgs e )
+        private void SubmoduleCheckList_Click( object? sender, EventArgs e )
         {
             _userModified = true;
         }
 
-        private void SubmoduleCheckList_ItemCheck( object sender, ItemCheckEventArgs e )
+        private void SubmoduleCheckList_ItemCheck( object? sender, ItemCheckEventArgs e )
         {
             String submodule = (String)SubmoduleCheckList.Items[ e.Index ];
             _checkedSubmodules[ submodule ] = e.NewValue == CheckState.Checked;
@@ -149,21 +147,21 @@ namespace TabbedTortoiseGit
             UpdateSubmoduleUpdateButton();
         }
 
-        private void SelectNoneSubmodules_Click( object sender, EventArgs e )
+        private void SelectNoneSubmodules_Click( object? sender, EventArgs e )
         {
             _userModified = true;
 
             SetChecked( false );
         }
 
-        private void SelectAllSubmodules_Click( object sender, EventArgs e )
+        private void SelectAllSubmodules_Click( object? sender, EventArgs e )
         {
             _userModified = true;
 
             SetChecked( true );
         }
 
-        private void ShowModifiedSubmodulesOnlyCheck_CheckedChanged( object sender, EventArgs e )
+        private void ShowModifiedSubmodulesOnlyCheck_CheckedChanged( object? sender, EventArgs e )
         {
             Settings.Default.FastSubmoduleUpdateShowOnlyModifiedSubmodulesChecked = ShowModifiedSubmodulesOnlyCheck.Checked;
             Settings.Default.Save();
@@ -171,42 +169,42 @@ namespace TabbedTortoiseGit
             UpdateSubmoduleList();
         }
 
-        private void CheckModifiedSubmodulesByDefaultCheck_CheckedChanged( object sender, EventArgs e )
+        private void CheckModifiedSubmodulesByDefaultCheck_CheckedChanged( object? sender, EventArgs e )
         {
             Settings.Default.FastSubmoduleUpdateCheckModifiedSubmodulesByDefault = CheckModifiedSubmodulesByDefaultCheck.Checked;
             Settings.Default.Save();
         }
 
-        private void InitCheck_CheckedChanged( object sender, EventArgs e )
+        private void InitCheck_CheckedChanged( object? sender, EventArgs e )
         {
             Settings.Default.FastSubmoduleUpdateInitChecked = InitCheck.Checked;
             Settings.Default.Save();
         }
 
-        private void RecursiveCheck_CheckedChanged( object sender, EventArgs e )
+        private void RecursiveCheck_CheckedChanged( object? sender, EventArgs e )
         {
             Settings.Default.FastSubmoduleUpdateRecursiveChecked = RecursiveCheck.Checked;
             Settings.Default.Save();
         }
 
-        private void ForceCheck_CheckedChanged( object sender, EventArgs e )
+        private void ForceCheck_CheckedChanged( object? sender, EventArgs e )
         {
             Settings.Default.FastSubmoduleUpdateForceChecked = ForceCheck.Checked;
             Settings.Default.Save();
         }
 
-        private void MaxProcessCountNumeric_ValueChanged( object sender, EventArgs e )
+        private void MaxProcessCountNumeric_ValueChanged( object? sender, EventArgs e )
         {
             Settings.Default.FastSubmoduleUpdateMaxProcesses = (int)MaxProcessCountNumeric.Value;
             Settings.Default.Save();
         }
 
-        private void SelectModifiedSubmodules_Click( object sender, EventArgs e )
+        private void SelectModifiedSubmodules_Click( object? sender, EventArgs e )
         {
             SetModifiedSubmodulesChecked();
         }
 
-        private async void UpdateSubmodulesButton_Click( object sender, EventArgs e )
+        private async void UpdateSubmodulesButton_Click( object? sender, EventArgs e )
         {
             UpdateSubmodulesButton.Enabled = false;
             await UpdateSubmodules();

@@ -1,10 +1,7 @@
-﻿#nullable enable
-
-using Common;
+﻿using Common;
 using log4net;
 using log4net.Appender;
 using log4net.Repository.Hierarchy;
-using Microsoft.WindowsAPICodePack.Dialogs;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -35,6 +32,8 @@ namespace TabbedTortoiseGit
             this.DragDrop += TabbedTortoiseGitForm_DragDrop;
             this.ResizeEnd += TabbedTortoiseGitForm_ResizeEnd;
             this.FormClosing += TabbedTortoiseGitForm_FormClosing;
+
+            SplitLayout.SplitterMoved += SplitLayout_SplitterMoved;
 
             LogTabs.NewTabClick += LogTabs_NewTabClick;
             LogTabs.TabAdded += LogTabs_TabAdded;
@@ -92,9 +91,14 @@ namespace TabbedTortoiseGit
             ModifiedRepoCheckBackgroundWorker.DoWork += ModifiedRepoCheckBackgroundWorker_DoWork;
         }
 
-        private async void Settings_PropertyChanged( object sender, PropertyChangedEventArgs e )
+        private async void Settings_PropertyChanged( object? sender, PropertyChangedEventArgs e )
         {
-            if( e.PropertyName == nameof( Settings.Default.DeveloperSettingsEnabled ) )
+            if( e.PropertyName == nameof( Settings.Default.SplitLayoutSplitterDistance )
+             || e.PropertyName == nameof( Settings.Default.HideReferencesDisplay ) )
+            {
+                UpdateUiLayoutFromSettings();
+            }
+            else if( e.PropertyName == nameof( Settings.Default.DeveloperSettingsEnabled ) )
             {
                 UpdateHitTestFromSettings();
             }
@@ -129,12 +133,12 @@ namespace TabbedTortoiseGit
             }
         }
 
-        private async void TabbedTortoiseGitForm_Load( object sender, EventArgs e )
+        private async void TabbedTortoiseGitForm_Load( object? sender, EventArgs e )
         {
             await UpdateFromSettings( true );
         }
 
-        private async void TabbedTortoiseGitForm_Shown( object sender, EventArgs e )
+        private async void TabbedTortoiseGitForm_Shown( object? sender, EventArgs e )
         {
             LOG.Debug( $"{nameof( TabbedTortoiseGitForm_Shown )}" );
 
@@ -184,17 +188,10 @@ namespace TabbedTortoiseGit
             {
                 if( !( await GitAction.CanAccessTortoiseGit() ) )
                 {
-                    using TaskDialog confirmationDialog = new TaskDialog()
+                    using ConfirmationDialog dialog = new ConfirmationDialog( "Cannot access TortoiseGit", "TortoiseGit does not appear to be on PATH (this will prevent Tabbed TortoiseGit from being able to open logs). Update PATH environment variable to include directory for TortoiseGitProc.exe." );
+                    if( dialog.ShowDialog() == DialogResult.OK )
                     {
-                        StandardButtons = TaskDialogStandardButtons.Ok,
-                        Text = "TortoiseGit does not appear to be on PATH (this will prevent Tabbed TortoiseGit from being able to open logs). Update PATH environment variable to include directory for TortoiseGitProc.exe.",
-                        Caption = "Cannot access TortoiseGit",
-                        FooterCheckBoxText = "Do not show again",
-                        FooterCheckBoxChecked = false
-                    };
-                    if( confirmationDialog.Show() == TaskDialogResult.Ok )
-                    {
-                        if( confirmationDialog.FooterCheckBoxChecked ?? false )
+                        if( dialog.DoNotAskAgain )
                         {
                             Settings.Default.CheckTortoiseGitOnPath = false;
                             Settings.Default.Save();
@@ -219,7 +216,7 @@ namespace TabbedTortoiseGit
             }
         }
 
-        private void TabbedTortoiseGitForm_DragOver( object sender, DragEventArgs e )
+        private void TabbedTortoiseGitForm_DragOver( object? sender, DragEventArgs e )
         {
             if( e.Data.GetDataPresent( DataFormats.FileDrop ) )
             {
@@ -236,7 +233,7 @@ namespace TabbedTortoiseGit
             }
         }
 
-        private async void TabbedTortoiseGitForm_DragDrop( object sender, DragEventArgs e )
+        private async void TabbedTortoiseGitForm_DragDrop( object? sender, DragEventArgs e )
         {
             if( e.Data.GetDataPresent( DataFormats.FileDrop ) )
             {
@@ -254,12 +251,12 @@ namespace TabbedTortoiseGit
             }
         }
 
-        private void TabbedTortoiseGitForm_ResizeEnd( object sender, EventArgs e )
+        private void TabbedTortoiseGitForm_ResizeEnd( object? sender, EventArgs e )
         {
             SaveWindowState();
         }
 
-        private void TabbedTortoiseGitForm_FormClosing( object sender, FormClosingEventArgs e )
+        private void TabbedTortoiseGitForm_FormClosing( object? sender, FormClosingEventArgs e )
         {
             LOG.Debug( $"{nameof( TabbedTortoiseGitForm_FormClosing )} - Reason: {e.CloseReason}" );
 
@@ -280,19 +277,25 @@ namespace TabbedTortoiseGit
             SaveWindowState();
         }
 
-        private async void LogTabs_NewTabClick( object sender, EventArgs e )
+        private void SplitLayout_SplitterMoved( object? sender, SplitterEventArgs e )
+        {
+            Settings.Default.SplitLayoutSplitterDistance = SplitLayout.SplitterDistance;
+            Settings.Default.Save();
+        }
+
+        private async void LogTabs_NewTabClick( object? sender, EventArgs e )
         {
             await FindRepo();
         }
 
-        private void LogTabs_TabAdded( object sender, TabAddedEventArgs e )
+        private void LogTabs_TabAdded( object? sender, TabAddedEventArgs e )
         {
             LOG.Debug( $"{nameof( LogTabs_TabAdded )} - Tab: {e.Tab}" );
 
             RegisterExistingTab( e.Tab );
         }
 
-        private void LogTabs_TabRemoved( object sender, TabRemovedEventArgs e )
+        private void LogTabs_TabRemoved( object? sender, TabRemovedEventArgs e )
         {
             LOG.Debug( $"{nameof( LogTabs_TabRemoved )} - Tab: {e.Tab}" );
 
@@ -301,19 +304,19 @@ namespace TabbedTortoiseGit
             CheckIfLastTab();
         }
 
-        private void LogTabs_TabClosed( object sender, TabClosedEventArgs e )
+        private void LogTabs_TabClosed( object? sender, TabClosedEventArgs e )
         {
             LOG.Debug( nameof( LogTabs_TabClosed ) );
 
             CloseTab( e.Tab );
         }
 
-        private void LogTabs_TabPulledOut( object sender, TabPulledOutEventArgs e )
+        private void LogTabs_TabPulledOut( object? sender, TabPulledOutEventArgs e )
         {
             ProgramForm.Instance.CreateNewFromTab( e.Tab, e.Location );
         }
 
-        private async void LogTabs_SelectedTabChanged( object sender, EventArgs e )
+        private async void LogTabs_SelectedTabChanged( object? sender, EventArgs e )
         {
             if( LogTabs.SelectedTab != null )
             {
@@ -332,10 +335,14 @@ namespace TabbedTortoiseGit
             await UpdateToolStripSubmodules();
         }
 
-        private async void FavoriteRepoMenuItem_Click( object sender, EventArgs e )
+        private async void FavoriteRepoMenuItem_Click( object? sender, EventArgs e )
         {
-            ToolStripItem item = (ToolStripItem)sender;
-            Favorite favorite = (Favorite)item.Tag;
+            if( sender is not ToolStripItem item
+             || item.Tag is not Favorite favorite )
+            {
+                return;
+            }
+
             if( favorite is FavoriteRepo repo )
             {
                 await OpenLog( repo.Repo, repo.References );
@@ -346,7 +353,7 @@ namespace TabbedTortoiseGit
             }
         }
 
-        private void FavoritesMenuStrip_MouseClick( object sender, MouseEventArgs e )
+        private void FavoritesMenuStrip_MouseClick( object? sender, MouseEventArgs e )
         {
             if( e.Button == MouseButtons.Right )
             {
@@ -358,10 +365,13 @@ namespace TabbedTortoiseGit
             }
         }
 
-        private async void FavoriteMenuItem_MouseUp( object sender, MouseEventArgs e )
+        private async void FavoriteMenuItem_MouseUp( object? sender, MouseEventArgs e )
         {
-            ToolStripMenuItem favoriteMenuItem = (ToolStripMenuItem)sender;
-            Favorite favorite = (Favorite)favoriteMenuItem.Tag;
+            if( sender is not ToolStripMenuItem favoriteMenuItem
+             || favoriteMenuItem.Tag is not Favorite favorite )
+            {
+                return;
+            }
 
             if( e.Button == MouseButtons.Right )
             {
@@ -405,7 +415,7 @@ namespace TabbedTortoiseGit
             }
         }
 
-        private void FavoriteMenuItemDropDown_Closing( object sender, ToolStripDropDownClosingEventArgs e )
+        private void FavoriteMenuItemDropDown_Closing( object? sender, ToolStripDropDownClosingEventArgs e )
         {
             if( _favoriteContextMenuOpen )
             {
@@ -413,18 +423,19 @@ namespace TabbedTortoiseGit
             }
         }
 
-        private void FavoriteItemContextMenu_Closed( object sender, ToolStripDropDownClosedEventArgs e )
+        private void FavoriteItemContextMenu_Closed( object? sender, ToolStripDropDownClosedEventArgs e )
         {
             _favoriteContextMenuOpen = false;
             CloseDropDowns( FavoritesMenuStrip.Items );
         }
 
-        private void OpenFavoriteRepoLocationContextMenuItem_Click( object sender, EventArgs e )
+        private void OpenFavoriteRepoLocationContextMenuItem_Click( object? sender, EventArgs e )
         {
-            ToolStripMenuItem contextMenuItem = (ToolStripMenuItem)sender;
-            ToolStrip contextMenu = contextMenuItem.Owner;
-
-            Favorite favorite = (Favorite)contextMenu.Tag;
+            if( sender is not ToolStripMenuItem contextMenuItem
+             || contextMenuItem.Owner.Tag is not Favorite favorite )
+            {
+                return;
+            }
 
             String location;
             if( favorite is FavoriteRepo repo )
@@ -447,12 +458,13 @@ namespace TabbedTortoiseGit
             Util.OpenInExplorer( location );
         }
 
-        private async void OpenFavoriteWithReferencesContextMenuItem_Click( object sender, EventArgs e )
+        private async void OpenFavoriteWithReferencesContextMenuItem_Click( object? sender, EventArgs e )
         {
-            ToolStripMenuItem contextMenuItem = (ToolStripMenuItem)sender;
-            ToolStrip contextMenu = contextMenuItem.Owner;
-
-            Favorite favorite = (Favorite)contextMenu.Tag;
+            if( sender is not ToolStripMenuItem contextMenuItem
+             || contextMenuItem.Owner.Tag is not Favorite favorite )
+            {
+                return;
+            }
 
             String repo;
             if( favorite is FavoriteRepo r )
@@ -475,13 +487,14 @@ namespace TabbedTortoiseGit
             }
         }
 
-        private async void GitCommandFavoriteContextMenuItem_Click( object sender, EventArgs e )
+        private async void GitCommandFavoriteContextMenuItem_Click( object? sender, EventArgs e )
         {
-            ToolStripMenuItem contextMenuItem = (ToolStripMenuItem)sender;
-            ToolStrip contextMenu = contextMenuItem.Owner;
-
-            Favorite favorite = (Favorite)contextMenu.Tag;
-            GitActionFunc gitActionFunc = (GitActionFunc)contextMenuItem.Tag;
+            if( sender is not ToolStripMenuItem contextMenuItem
+             || contextMenuItem.Owner.Tag is not Favorite favorite
+             || contextMenuItem.Tag is not GitActionFunc gitActionFunc )
+            {
+                return;
+            }
 
             String repo;
             if( favorite is FavoriteRepo r )
@@ -500,13 +513,14 @@ namespace TabbedTortoiseGit
             await gitActionFunc.Invoke( repo );
         }
 
-        private void CustomActionFavoriteContextMenuItem_Click( object sender, EventArgs e )
+        private void CustomActionFavoriteContextMenuItem_Click( object? sender, EventArgs e )
         {
-            ToolStripMenuItem contextMenuItem = (ToolStripMenuItem)sender;
-            ToolStrip contextMenu = contextMenuItem.Owner;
-
-            Favorite favorite = (Favorite)contextMenu.Tag;
-            CustomAction customAction = (CustomAction)contextMenuItem.Tag;
+            if( sender is not ToolStripMenuItem contextMenuItem
+             || contextMenuItem.Owner.Tag is not Favorite favorite
+             || contextMenuItem.Tag is not CustomAction customAction )
+            {
+                return;
+            }
 
             String repo;
             if( favorite is FavoriteRepo r )
@@ -525,7 +539,7 @@ namespace TabbedTortoiseGit
             RunCustomAction( null, customAction, repo );
         }
 
-        private void EditFavoriteContextMenuItem_Click( object sender, EventArgs e )
+        private void EditFavoriteContextMenuItem_Click( object? sender, EventArgs e )
         {
             if( _favoriteRepos is null )
             {
@@ -533,10 +547,11 @@ namespace TabbedTortoiseGit
                 return;
             }
 
-            ToolStripMenuItem contextMenuItem = (ToolStripMenuItem)sender;
-            ToolStrip contextMenu = contextMenuItem.Owner;
-
-            Favorite favorite = (Favorite)contextMenu.Tag;
+            if( sender is not ToolStripMenuItem contextMenuItem
+             || contextMenuItem.Owner.Tag is not Favorite favorite )
+            {
+                return;
+            }
 
             Favorite? newFavorite = null;
             if( favorite is FavoriteFolder folder )
@@ -581,68 +596,74 @@ namespace TabbedTortoiseGit
             }
         }
 
-        private void RemoveFavoriteItemContextMenuItem_Click( object sender, EventArgs e )
+        private void RemoveFavoriteItemContextMenuItem_Click( object? sender, EventArgs e )
         {
-            ToolStripMenuItem contextMenuItem = (ToolStripMenuItem)sender;
-            ToolStrip contextMenu = contextMenuItem.Owner;
+            if( sender is not ToolStripMenuItem contextMenuItem
+             || contextMenuItem.Owner.Tag is not Favorite favorite )
+            {
+                return;
+            }
 
-            Favorite favorite = (Favorite)contextMenu.Tag;
             RemoveFavorite( favorite );
         }
 
-        private void ShowFavoritesManagerMenuItem_Click( object sender, EventArgs e )
+        private void ShowFavoritesManagerMenuItem_Click( object? sender, EventArgs e )
         {
             FavoritesManagerDialog.ShowFavoritesManager();
         }
 
-        private async void OpenRepoMenuItem_Click( object sender, EventArgs e )
+        private async void OpenRepoMenuItem_Click( object? sender, EventArgs e )
         {
             await FindRepo();
         }
 
-        private void SettingsMenuItem_Click( object sender, EventArgs e )
+        private void SettingsMenuItem_Click( object? sender, EventArgs e )
         {
              SettingsForm.ShowSettingsDialog();
         }
 
-        private void ShowDebugLogMenuItem_Click( object sender, EventArgs e )
+        private void ShowDebugLogMenuItem_Click( object? sender, EventArgs e )
         {
-            FileAppender rootAppender = ( (Hierarchy)LogManager.GetRepository() ).Root.Appenders.OfType<FileAppender>().FirstOrDefault();
+            FileAppender? rootAppender = ( (Hierarchy)LogManager.GetRepository() ).Root.Appenders.OfType<FileAppender>().FirstOrDefault();
             if( rootAppender != null )
             {
                 Util.OpenInExplorer( rootAppender.File );
             }
         }
 
-        private void AboutMenuItem_Click( object sender, EventArgs e )
+        private void AboutMenuItem_Click( object? sender, EventArgs e )
         {
             AboutBox.ShowAbout();
         }
 
-        private void ExitMenuItem_Click( object sender, EventArgs e )
+        private void ExitMenuItem_Click( object? sender, EventArgs e )
         {
             this.Close();
         }
 
-        private async void RecentRepoMenuItem_Click( object sender, EventArgs e )
+        private async void RecentRepoMenuItem_Click( object? sender, EventArgs e )
         {
-            ToolStripItem item = (ToolStripItem)sender;
+            if( sender is not ToolStripItem item )
+            {
+                return;
+            }
+
             await OpenLog( item.Text );
         }
 
-        private void OpenRepoLocationTabMenuItem_Click( object sender, EventArgs e )
+        private void OpenRepoLocationTabMenuItem_Click( object? sender, EventArgs e )
         {
             Util.OpenInExplorer( LogTabs.SelectedTab!.Controller().RepoItem );
         }
 
-        private void AddToFavoritesRepoTabMenuItem_Click( object sender, EventArgs e )
+        private void AddToFavoritesRepoTabMenuItem_Click( object? sender, EventArgs e )
         {
             TabControllerTag tag = LogTabs.SelectedTab!.Controller();
 
             AddFavoriteRepo( tag.RepoItem );
         }
 
-        private async void OpenWithReferencesRepoTabMenuItem_Click( object sender, EventArgs e )
+        private async void OpenWithReferencesRepoTabMenuItem_Click( object? sender, EventArgs e )
         {
             TabControllerTag tag = LogTabs.SelectedTab!.Controller();
             String repo = Git.GetBaseRepoDirectoryOrError( tag.RepoItem );
@@ -654,37 +675,43 @@ namespace TabbedTortoiseGit
             }
         }
 
-        private async void DuplicateRepoTabMenuItem_Click( object sender, EventArgs e )
+        private async void DuplicateRepoTabMenuItem_Click( object? sender, EventArgs e )
         {
             await DuplicateTab( LogTabs.SelectedTab! );
         }
 
-        private void CloseRepoTabMenuItem_Click( object sender, EventArgs e )
+        private void CloseRepoTabMenuItem_Click( object? sender, EventArgs e )
         {
             LOG.Debug( nameof( CloseRepoTabMenuItem_Click ) );
             CloseTab( LogTabs.SelectedTab! );
         }
 
-        private async void GitCommandTabMenuItem_Click( object sender, EventArgs e )
+        private async void GitCommandTabMenuItem_Click( object? sender, EventArgs e )
         {
-            ToolStripItem c = (ToolStripItem)sender;
-            GitActionFunc gitActionFunc = (GitActionFunc)c.Tag;
+            if( sender is not ToolStripItem c
+             || c.Tag is not GitActionFunc gitActionFunc )
+            {
+                return;
+            }
 
             TabControllerTag tag = LogTabs.SelectedTab!.Controller();
             await RunGitAction( tag, gitActionFunc );
         }
 
-        private void CustomActionTabMenuItem_Click( object sender, EventArgs e )
+        private void CustomActionTabMenuItem_Click( object? sender, EventArgs e )
         {
-            ToolStripItem c = (ToolStripItem)sender;
-            CustomAction customAction = (CustomAction)c.Tag;
+            if( sender is not ToolStripItem c
+             || c.Tag is not CustomAction customAction )
+            {
+                return;
+            }
 
             TabControllerTag tag = LogTabs.SelectedTab!.Controller();
 
             RunCustomAction( tag, customAction, tag.RepoItem );
         }
 
-        private async void ModifiedRepoCheckBackgroundWorker_DoWork( object sender, DoWorkEventArgs e )
+        private async void ModifiedRepoCheckBackgroundWorker_DoWork( object? sender, DoWorkEventArgs e )
         {
             while( true )
             {
@@ -709,7 +736,7 @@ namespace TabbedTortoiseGit
             }
         }
 
-        private void BackgroundFasterFetch_Click( object sender, EventArgs e )
+        private void BackgroundFasterFetch_Click( object? sender, EventArgs e )
         {
             TabControllerTag? controller = this.LogTabs.SelectedTab?.Controller();
             if( controller != null )
@@ -730,7 +757,7 @@ namespace TabbedTortoiseGit
                 ProgressDialog dialog = FastFetchDialog.PrepareBackgroundFasterFetch( repo );
                 controller.BackgroundFasterFetchDialog = dialog;
 
-                dialog.ProgressCompleted += delegate ( object sender2, EventArgs e2 )
+                dialog.ProgressCompleted += delegate ( object? sender2, EventArgs e2 )
                 {
                     if( !controller.Process.HasExited )
                     {
@@ -743,7 +770,7 @@ namespace TabbedTortoiseGit
                     }
                 };
 
-                dialog.FormClosed += delegate ( object sender2, FormClosedEventArgs e2 )
+                dialog.FormClosed += delegate ( object? sender2, FormClosedEventArgs e2 )
                 {
                     controller.BackgroundFasterFetchDialog = null;
 
@@ -759,22 +786,22 @@ namespace TabbedTortoiseGit
             }
         }
 
-        private void BackgroundFasterFetchProgress_Click( object sender, EventArgs e )
+        private void BackgroundFasterFetchProgress_Click( object? sender, EventArgs e )
         {
             this.LogTabs.SelectedTab?.Controller().BackgroundFasterFetchDialog?.Show();
         }
 
-        private void ReferencesTreeView_AfterSelect( object sender, TreeViewEventArgs e )
+        private void ReferencesTreeView_AfterSelect( object? sender, TreeViewEventArgs e )
         {
             UpdateReferencesListBox();
         }
 
-        private void ReferencesFilter_TextChanged( object sender, EventArgs e )
+        private void ReferencesFilter_TextChanged( object? sender, EventArgs e )
         {
             UpdateReferencesListBox();
         }
 
-        private async void ReferencesListBox_MouseDoubleClick( object sender, MouseEventArgs e )
+        private async void ReferencesListBox_MouseDoubleClick( object? sender, MouseEventArgs e )
         {
             TabControllerTag? controller = this.LogTabs.SelectedTab?.Controller();
             if( controller == null )
@@ -787,7 +814,7 @@ namespace TabbedTortoiseGit
             await OpenLog( controller.RepoItem, new[] { reference.Reference } );
         }
 
-        private void ReferencesListBox_MouseUp( object sender, MouseEventArgs e )
+        private void ReferencesListBox_MouseUp( object? sender, MouseEventArgs e )
         {
             ReferencesListBox.SelectedIndex = ReferencesListBox.IndexFromPoint( e.Location );
 
@@ -802,7 +829,7 @@ namespace TabbedTortoiseGit
             ReferencesListBoxReferenceContextMenu.Show( ReferencesListBox, e.X, e.Y );
         }
 
-        private async void ReferencesListBoxReferenceContextMenu_Click( object sender, EventArgs e )
+        private async void ReferencesListBoxReferenceContextMenu_Click( object? sender, EventArgs e )
         {
             TabControllerTag? controller = this.LogTabs.SelectedTab?.Controller();
             if( controller == null )
@@ -819,7 +846,7 @@ namespace TabbedTortoiseGit
             await OpenLog( controller.RepoItem, new [] { reference } );
         }
 
-        private void BackgroundFasterFetchDialog_ProgressChanged( object sender, EventArgs e )
+        private void BackgroundFasterFetchDialog_ProgressChanged( object? sender, EventArgs e )
         {
             TabControllerTag? controller = this.LogTabs.SelectedTab?.Controller();
             if( controller != null )
@@ -833,7 +860,7 @@ namespace TabbedTortoiseGit
             }
         }
 
-        private async void SubmoduleToolStripDropDownItem_Click( object sender, EventArgs e )
+        private async void SubmoduleToolStripDropDownItem_Click( object? sender, EventArgs e )
         {
             if( ( sender as ToolStripItem )?.Tag is String submodule )
             {

@@ -1,8 +1,7 @@
-﻿#nullable enable
-
-using log4net;
+﻿using log4net;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Drawing;
 using System.Linq;
 using System.Text;
@@ -43,7 +42,7 @@ namespace Common
             c.DragDrop += Control_DragDrop;
         }
 
-        protected abstract bool GetItemFromPoint( TControl parent, Point p, out T? item, out int itemIndex );
+        protected abstract bool GetItemFromPoint( TControl parent, Point p, [MaybeNullWhen( false )] out T item, out int itemIndex );
 
         protected abstract bool AllowDrag( TControl parent, T item, int index );
 
@@ -123,16 +122,14 @@ namespace Common
             return false;
         }
 
-        private void Control_MouseDown( object sender, MouseEventArgs e )
+        private void Control_MouseDown( object? sender, MouseEventArgs e )
         {
             try
             {
                 if( e.Button == MouseButtons.Left )
                 {
-                    TControl parent = (TControl)sender;
-
-                    T item;
-                    if( GetItemFromPoint( parent, e.Location, out item!, out int itemIndex )
+                    if( sender is TControl parent
+                     && GetItemFromPoint( parent, e.Location, out T? item, out int itemIndex )
                      && AllowDrag( parent, item, itemIndex ) )
                     {
                         _mouseDown = true;
@@ -150,7 +147,7 @@ namespace Common
             }
         }
 
-        private void Control_MouseUp( object sender, MouseEventArgs e )
+        private void Control_MouseUp( object? sender, MouseEventArgs e )
         {
             if( _mouseDown )
             {
@@ -158,13 +155,18 @@ namespace Common
             }
         }
 
-        private void Control_MouseMove( object sender, MouseEventArgs e )
+        private void Control_MouseMove( object? sender, MouseEventArgs e )
         {
             try
             {
                 if( _mouseDown )
                 {
-                    TControl parent = (TControl)sender;
+                    TControl? parent = sender as TControl;
+                    if( parent == null )
+                    {
+                        return;
+                    }
+
                     Point p = parent.PointToScreen( e.Location );
 
                     if( Math.Sqrt( Math.Pow( p.X - _mouseDownLocation.X, 2 ) + Math.Pow( p.Y - _mouseDownLocation.Y, 2 ) ) >= DRAG_THRESHOLD )
@@ -197,15 +199,14 @@ namespace Common
             }
         }
 
-        private void Control_DragOver( object sender, DragEventArgs e )
+        private void Control_DragOver( object? sender, DragEventArgs e )
         {
             try
             {
-                if( e.Data.GetDataPresent( typeof( DragDropItem<TControl, T> ) ) )
+                if( sender is TControl pointedParent
+                 && e.Data.GetDataPresent( typeof( DragDropItem<TControl, T> ) ) )
                 {
                     DragDropItem<TControl, T> d = (DragDropItem<TControl, T>)e.Data.GetData( typeof( DragDropItem<TControl, T> ) );
-
-                    TControl pointedParent = (TControl)sender;
 
                     OnDragMove( new DragMoveEventArgs<TControl, T>( d.DragParent, d.DragItem, d.DragItemIndex, d.DragStart, new Point( e.X, e.Y ) ) );
 
@@ -218,15 +219,14 @@ namespace Common
             }
         }
 
-        private void Control_DragDrop( object sender, DragEventArgs e )
+        private void Control_DragDrop( object? sender, DragEventArgs e )
         {
             try
             {
-                if( e.Data.GetDataPresent( typeof( DragDropItem<TControl, T> ) ) )
+                if( sender is TControl pointedParent
+                 && e.Data.GetDataPresent( typeof( DragDropItem<TControl, T> ) ) )
                 {
                     DragDropItem<TControl, T> d = (DragDropItem<TControl, T>)e.Data.GetData( typeof( DragDropItem<TControl, T> ) );
-
-                    TControl pointedParent = (TControl)sender;
 
                     MoveItemInternal( pointedParent, d, e, true );
                 }
@@ -271,7 +271,7 @@ namespace Common
             DragParent = dragParent;
             DragItem = dragItem;
             DragItemIndex = dragItemIndex;
-        } 
+        }
     }
 
     public class DragStartEventArgs<TControl, T> : DragEventArgs<TControl, T> where TControl : Control

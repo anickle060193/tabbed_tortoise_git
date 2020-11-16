@@ -1,12 +1,10 @@
-﻿#nullable enable
-
-using Common;
+﻿using Common;
 using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Diagnostics.CodeAnalysis;
 using System.Drawing;
-using System.Drawing.Drawing2D;
 using System.Linq;
 using System.Text;
 using System.Threading;
@@ -443,7 +441,7 @@ namespace Tabs
         {
             if( index < 0 || index >= _tabCount )
             {
-                throw new ArgumentOutOfRangeException( "index" );
+                throw new ArgumentOutOfRangeException( nameof( index ) );
             }
             return _tabs![ index ]!;
         }
@@ -453,7 +451,7 @@ namespace Tabs
             Tab[] result = new Tab[ _tabCount ];
             if( _tabCount > 0 )
             {
-                Array.Copy( _tabs, result, _tabCount );
+                Array.Copy( _tabs!, result, _tabCount );
             }
             return result;
         }
@@ -535,11 +533,11 @@ namespace Tabs
         {
             if( index < 0 || index > _tabCount )
             {
-                throw new ArgumentOutOfRangeException( "index" );
+                throw new ArgumentOutOfRangeException( nameof( index ) );
             }
             if( tab == null )
             {
-                throw new ArgumentNullException( "tab" );
+                throw new ArgumentNullException( nameof( tab ) );
             }
 
             Insert( index, tab );
@@ -556,7 +554,7 @@ namespace Tabs
         {
             if( index < 0 || index >= _tabCount )
             {
-                throw new ArgumentOutOfRangeException( "index" );
+                throw new ArgumentOutOfRangeException( nameof( index ) );
             }
 
             Tab tab = _tabs![ index ]!;
@@ -566,7 +564,7 @@ namespace Tabs
             {
                 Array.Copy( _tabs, index + 1, _tabs, index, _tabCount - index );
             }
-            
+
             if( index == _selectedIndex )
             {
                 if( _tabCount == 0 )
@@ -596,7 +594,7 @@ namespace Tabs
         {
             if( index < 0 || index >= _tabCount )
             {
-                throw new ArgumentOutOfRangeException( "index" );
+                throw new ArgumentOutOfRangeException( nameof( index ) );
             }
             _tabs![ index ] = tab;
         }
@@ -853,7 +851,7 @@ namespace Tabs
             TabPulledOut?.Invoke( this, e );
         }
 
-        private void OptionsMenu_Closed( object sender, ToolStripDropDownClosedEventArgs e )
+        private void OptionsMenu_Closed( object? sender, ToolStripDropDownClosedEventArgs e )
         {
             this.Invalidate();
         }
@@ -942,7 +940,7 @@ namespace Tabs
             {
                 if( value == null )
                 {
-                    throw new ArgumentNullException( "value" );
+                    throw new ArgumentNullException( nameof( value ) );
                 }
                 _owner.Controls.Add( value );
             }
@@ -973,7 +971,7 @@ namespace Tabs
             {
                 if( tabs == null )
                 {
-                    throw new ArgumentNullException( "tabs" );
+                    throw new ArgumentNullException( nameof( tabs ) );
                 }
                 foreach( Tab tab in tabs )
                 {
@@ -985,7 +983,7 @@ namespace Tabs
             {
                 if( tab == null )
                 {
-                    throw new ArgumentNullException( "tab" );
+                    throw new ArgumentNullException( nameof( tab ) );
                 }
                 return IsValidIndex( IndexOf( tab ) );
             }
@@ -1004,7 +1002,7 @@ namespace Tabs
             {
                 if( tab == null )
                 {
-                    throw new ArgumentNullException( "tab" );
+                    throw new ArgumentNullException( nameof( tab ) );
                 }
 
                 for( int i = 0; i < this.Count; i++ )
@@ -1029,7 +1027,7 @@ namespace Tabs
                 {
                     return -1;
                 }
-                
+
                 for( int i = 0; i < this.Count; i++ )
                 {
                     if( this[ i ].Name == key )
@@ -1110,7 +1108,7 @@ namespace Tabs
                 }
                 else
                 {
-                    return new Tab[ 0 ].AsEnumerable().GetEnumerator();
+                    return Array.Empty<Tab>().AsEnumerable().GetEnumerator();
                 }
             }
 
@@ -1123,7 +1121,7 @@ namespace Tabs
             {
                 if( tab == null )
                 {
-                    throw new ArgumentNullException( "tab" );
+                    throw new ArgumentNullException( nameof( tab ) );
                 }
                 _owner.Controls.Remove( tab );
             }
@@ -1224,7 +1222,7 @@ namespace Tabs
                 return !_partialMatch;
             }
 
-            protected override bool GetItemFromPoint( TabControl parent, Point p, out Tab? item, out int itemIndex )
+            protected override bool GetItemFromPoint( TabControl parent, Point p, [MaybeNullWhen( false )] out Tab item, out int itemIndex )
             {
                 _partialMatch = false;
 
@@ -1235,7 +1233,7 @@ namespace Tabs
                         _partialMatch = true;
                         item = null;
                         itemIndex = 0;
-                        return true;
+                        return false;
                     }
                 }
 

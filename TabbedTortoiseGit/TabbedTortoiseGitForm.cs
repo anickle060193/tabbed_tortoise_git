@@ -1,6 +1,4 @@
-﻿#nullable enable
-
-using Common;
+﻿using Common;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -15,7 +13,6 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using TabbedTortoiseGit.Properties;
 using System.Configuration;
-using Microsoft.WindowsAPICodePack.Dialogs;
 using LibGit2Sharp;
 using Newtonsoft.Json;
 using log4net;
@@ -54,7 +51,6 @@ namespace TabbedTortoiseGit
         };
 
         private readonly Dictionary<int, TabControllerTag> _tags = new Dictionary<int, TabControllerTag>();
-        private readonly CommonOpenFileDialog _folderDialog;
         private readonly bool _showStartUpRepos;
         private readonly bool _skipUpdateCheck;
         private readonly Point? _createdAtPoint;
@@ -74,11 +70,6 @@ namespace TabbedTortoiseGit
             _showStartUpRepos = showStartUpRepos;
             _skipUpdateCheck = skipUpdateCheck;
             _createdAtPoint = createdAtPoint;
-
-            _folderDialog = new CommonOpenFileDialog
-            {
-                IsFolderPicker = true
-            };
 
             this.Icon = Resources.TortoiseIcon;
 
@@ -122,6 +113,8 @@ namespace TabbedTortoiseGit
                 UpdateWindowStateFromSettings();
             }
 
+            UpdateUiLayoutFromSettings();
+
             UpdateHitTestFromSettings();
 
             UpdateModifiedTabsStatusFromSettings();
@@ -157,6 +150,12 @@ namespace TabbedTortoiseGit
             {
                 this.WindowState = FormWindowState.Maximized;
             }
+        }
+
+        private void UpdateUiLayoutFromSettings()
+        {
+            SplitLayout.SplitterDistance = Settings.Default.SplitLayoutSplitterDistance;
+            SplitLayout.Panel1Collapsed = Settings.Default.HideReferencesDisplay;
         }
 
         private void UpdateHitTestFromSettings()
@@ -635,9 +634,9 @@ namespace TabbedTortoiseGit
         {
             LOG.Debug( nameof( FindRepo ) );
 
-            if( _folderDialog.ShowDialog() == CommonFileDialogResult.Ok )
+            if( folderDialog.ShowDialog() == DialogResult.OK )
             {
-                String path = _folderDialog.FileName;
+                String path = folderDialog.SelectedPath;
                 if( !Git.IsInRepo( path ) )
                 {
                     LOG.Debug( $"{nameof( FindRepo )} - Invalid repo: {path}" );
@@ -722,17 +721,10 @@ namespace TabbedTortoiseGit
             }
             else if( Settings.Default.ConfirmOnClose )
             {
-                using TaskDialog confirmationDialog = new TaskDialog()
+                using ConfirmationDialog dialog = new ConfirmationDialog( Text, "Are you sure you want to exit?" );
+                if( dialog.ShowDialog() == DialogResult.Yes )
                 {
-                    StandardButtons = TaskDialogStandardButtons.Yes | TaskDialogStandardButtons.No,
-                    Text = "Are you sure you want to exit?",
-                    Caption = "Tabbed TortoiseGit",
-                    FooterCheckBoxText = "Do not ask me again",
-                    FooterCheckBoxChecked = false
-                };
-                if( confirmationDialog.Show() == TaskDialogResult.Yes )
-                {
-                    if( confirmationDialog.FooterCheckBoxChecked ?? false )
+                    if( dialog.DoNotAskAgain )
                     {
                         Settings.Default.ConfirmOnClose = false;
                         Settings.Default.Save();
@@ -815,7 +807,7 @@ namespace TabbedTortoiseGit
                             for( int i = 0; i < path.Length - 1; i++ )
                             {
                                 var key = Tuple.Create( i, path[ i ] );
-                                if( !menus.TryGetValue( key, out ToolStripMenuItem item ) )
+                                if( !menus.TryGetValue( key, out ToolStripMenuItem? item ) )
                                 {
                                     item = new ToolStripMenuItem( path[ i ] );
                                     menus[ key ] = item;
@@ -824,7 +816,7 @@ namespace TabbedTortoiseGit
                                 parent = item.DropDownItems;
                             }
 
-                            ToolStripItem dropDownItem = parent.Add( path[ path.Length - 1 ] );
+                            ToolStripItem dropDownItem = parent.Add( path[ ^1 ] );
                             dropDownItem.Tag = Path.GetFullPath( Path.Combine( repo, submodule ) );
                             dropDownItem.Click += SubmoduleToolStripDropDownItem_Click;
                         }
@@ -900,7 +892,7 @@ namespace TabbedTortoiseGit
                 return ShortReference;
             }
 
-            public string ToString( String format, IFormatProvider formatProvider )
+            public string ToString( String? format, IFormatProvider? formatProvider )
             {
                 if( format == "long" )
                 {
@@ -912,7 +904,7 @@ namespace TabbedTortoiseGit
                 }
             }
 
-            public int CompareTo( DisplayReference other )
+            public int CompareTo( DisplayReference? other )
             {
                 return String.Compare( this.Reference, other?.Reference );
             }
@@ -948,7 +940,7 @@ namespace TabbedTortoiseGit
         private void AddReferencesTreeViewReference( String reference, String[] splitRef, int index, TreeNodeCollection parentNodes )
         {
             String splitRefPart = splitRef[ index ];
-            TreeNode node = parentNodes.Find( splitRefPart, false ).FirstOrDefault();
+            TreeNode? node = parentNodes.Find( splitRefPart, false ).FirstOrDefault();
             if( node == null )
             {
                 node = parentNodes.Add( splitRefPart, splitRefPart );
@@ -1006,7 +998,7 @@ namespace TabbedTortoiseGit
             LOG.Debug( $"{nameof( RunCustomAction )} - Action: {customAction} - Repo: {repoItem}" );
 
             String filename = repoItem;
-            String directory;
+            String? directory;
             if( Directory.Exists( repoItem ) )
             {
                 directory = repoItem;
@@ -1057,7 +1049,7 @@ namespace TabbedTortoiseGit
                     if( tag != null
                      && customAction.RefreshLogAfter )
                     {
-                        dialog.FormClosed += delegate ( Object sender, FormClosedEventArgs e )
+                        dialog.FormClosed += delegate ( object? sender, FormClosedEventArgs e )
                         {
                             if( !tag.Process.HasExited )
                             {
@@ -1074,7 +1066,7 @@ namespace TabbedTortoiseGit
                     if( tag != null
                      && customAction.RefreshLogAfter )
                     {
-                        p.Exited += delegate ( Object sender, EventArgs e )
+                        p.Exited += delegate ( object? sender, EventArgs e )
                         {
                             if( !tag.Process.HasExited )
                             {

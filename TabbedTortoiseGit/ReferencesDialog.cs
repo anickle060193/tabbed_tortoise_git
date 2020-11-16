@@ -1,6 +1,4 @@
-﻿#nullable enable
-
-using LibGit2Sharp;
+﻿using LibGit2Sharp;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -32,7 +30,7 @@ namespace TabbedTortoiseGit
                 return ShortReference;
             }
 
-            public string ToString( String format, IFormatProvider formatProvider )
+            public string ToString( String? format, IFormatProvider? formatProvider )
             {
                 if( format == "long" )
                 {
@@ -44,7 +42,7 @@ namespace TabbedTortoiseGit
                 }
             }
 
-            public int CompareTo( DisplayReference other )
+            public int CompareTo( DisplayReference? other )
             {
                 return String.Compare( this.Reference, other?.Reference );
             }
@@ -101,17 +99,17 @@ namespace TabbedTortoiseGit
             InitializeReferences();
         }
 
-        private void ReferencesTreeView_AfterSelect( object sender, TreeViewEventArgs e )
+        private void ReferencesTreeView_AfterSelect( object? sender, TreeViewEventArgs e )
         {
             UpdateDisplayedReferences();
         }
 
-        private void ReferencesFilterText_TextChanged( object sender, EventArgs e )
+        private void ReferencesFilterText_TextChanged( object? sender, EventArgs e )
         {
             UpdateDisplayedReferences();
         }
 
-        private void ReferencesListBox_MouseDoubleClick( object sender, MouseEventArgs e )
+        private void ReferencesListBox_MouseDoubleClick( object? sender, MouseEventArgs e )
         {
             int index = ReferencesListBox.IndexFromPoint( e.Location );
             if( index != ListBox.NoMatches )
@@ -122,7 +120,7 @@ namespace TabbedTortoiseGit
             }
         }
 
-        private void AddSelectedReferencesButton_Click( object sender, EventArgs e )
+        private void AddSelectedReferencesButton_Click( object? sender, EventArgs e )
         {
             foreach( DisplayReference reference in ReferencesListBox.SelectedItems.Cast<DisplayReference>() )
             {
@@ -132,7 +130,7 @@ namespace TabbedTortoiseGit
             ReferencesListBox.SelectedItems.Clear();
         }
 
-        private void SelectedReferencesListBox_KeyUp( object sender, KeyEventArgs e )
+        private void SelectedReferencesListBox_KeyUp( object? sender, KeyEventArgs e )
         {
             if( e.KeyCode == Keys.Delete
              || e.KeyCode == Keys.Back )
@@ -142,12 +140,12 @@ namespace TabbedTortoiseGit
             }
         }
 
-        private void RemoveSelectedReferencesButton_Click( object sender, EventArgs e )
+        private void RemoveSelectedReferencesButton_Click( object? sender, EventArgs e )
         {
             RemoveFromSelectedReferences();
         }
 
-        private void AddCurrentBranchButton_Click( object sender, EventArgs e )
+        private void AddCurrentBranchButton_Click( object? sender, EventArgs e )
         {
             if( _currentBranch != null )
             {
@@ -156,7 +154,7 @@ namespace TabbedTortoiseGit
             }
         }
 
-        private void Ok_Click( object sender, EventArgs e )
+        private void Ok_Click( object? sender, EventArgs e )
         {
             this.DialogResult = DialogResult.OK;
             this.Close();
@@ -200,7 +198,7 @@ namespace TabbedTortoiseGit
         private void AddReference( String reference, String[] splitRef, int index, TreeNodeCollection parentNodes )
         {
             String splitRefPart = splitRef[ index ];
-            TreeNode node = parentNodes.Find( splitRefPart, false ).FirstOrDefault();
+            TreeNode? node = parentNodes.Find( splitRefPart, false ).FirstOrDefault();
             if( node == null )
             {
                 node = parentNodes.Add( splitRefPart, splitRefPart );

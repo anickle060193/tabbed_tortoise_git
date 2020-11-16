@@ -1,6 +1,4 @@
-﻿#nullable enable
-
-using Common;
+﻿using Common;
 using log4net;
 using System;
 using System.Collections.Generic;
@@ -300,7 +298,7 @@ namespace TabbedTortoiseGit
                 if( m.Msg == WM_HOTKEY )
                 {
                     int hotkeyId = m.WParam.ToInt32();
-                    if( _hotKeys.TryGetValue( hotkeyId, out HotKey hotkey ) )
+                    if( _hotKeys.TryGetValue( hotkeyId, out HotKey? hotkey ) )
                     {
                         HotKeyPressedEventArgs e = new HotKeyPressedEventArgs();
                         hotkey.OnHotKeyPressed( e );

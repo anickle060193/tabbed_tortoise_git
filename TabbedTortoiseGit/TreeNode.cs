@@ -1,6 +1,4 @@
-﻿#nullable enable
-
-using Common;
+﻿using Common;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
@@ -285,7 +283,7 @@ namespace TabbedTortoiseGit
             {
                 if( nodes == null )
                 {
-                    throw new ArgumentException( nameof( nodes ) );
+                    throw new ArgumentNullException( nameof( nodes ) );
                 }
 
                 foreach( TreeNode<S> node in nodes )

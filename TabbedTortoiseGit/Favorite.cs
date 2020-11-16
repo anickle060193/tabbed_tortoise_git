@@ -1,6 +1,4 @@
-﻿#nullable enable
-
-using Newtonsoft.Json;
+﻿using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
 using System;
 using System.Collections.Generic;
@@ -367,7 +365,7 @@ namespace TabbedTortoiseGit
             {
                 if( nodes == null )
                 {
-                    throw new ArgumentException( nameof( nodes ) );
+                    throw new ArgumentNullException( nameof( nodes ) );
                 }
 
                 foreach( Favorite node in nodes )
