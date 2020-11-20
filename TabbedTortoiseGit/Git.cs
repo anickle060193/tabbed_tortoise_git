@@ -173,5 +173,20 @@ namespace TabbedTortoiseGit
                 return repository.Refs.Select( ( r ) => r.CanonicalName ).ToArray();
             } );
         }
+
+        public static Task<String?> GetCurrentBranch( String repo )
+        {
+            return Task.Run( () =>
+            {
+                using var repository = new Repository( Git.GetBaseRepoDirectory( repo ) );
+                var currentBranch = repository.Head.CanonicalName;
+                return currentBranch switch
+                {
+                    null => null,
+                    "(no branch)" => null,
+                    _ => currentBranch
+                };
+            } );
+        }
     }
 }

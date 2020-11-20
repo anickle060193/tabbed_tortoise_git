@@ -993,7 +993,7 @@ namespace TabbedTortoiseGit
             }
         }
 
-        private void RunCustomAction( TabControllerTag? tag, CustomAction customAction, String repoItem )
+        private async Task RunCustomAction( TabControllerTag? tag, CustomAction customAction, String repoItem )
         {
             LOG.Debug( $"{nameof( RunCustomAction )} - Action: {customAction} - Repo: {repoItem}" );
 
@@ -1007,11 +1007,33 @@ namespace TabbedTortoiseGit
             {
                 directory = Path.GetDirectoryName( filename );
             }
-            String repo = Git.GetBaseRepoDirectoryOrError( repoItem );
 
             String program = customAction.Program;
-            String arguments = customAction.Arguments.Replace( "%f", filename ).Replace( "%d", directory ).Replace( "%r", repo );
-            String workingDirectory = customAction.WorkingDirectory.Replace( "%f", filename ).Replace( "%d", directory ).Replace( "%r", repo );
+            String arguments = customAction.Arguments.Replace( "%f", filename ).Replace( "%d", directory );
+            String workingDirectory = customAction.WorkingDirectory.Replace( "%f", filename ).Replace( "%d", directory );
+
+            if( arguments.Contains( "%r" )
+             || workingDirectory.Contains( "%r" ) )
+            {
+                String repo = Git.GetBaseRepoDirectoryOrError( repoItem );
+                arguments = arguments.Replace( "%r", repo );
+                workingDirectory = workingDirectory.Replace( "%r", repo );
+            }
+
+            if( arguments.Contains( "%cb" )
+             || workingDirectory.Contains( "%cb" ) )
+            {
+                String? currentBranch = await Git.GetCurrentBranch( repoItem );
+
+                if( currentBranch == null )
+                {
+                    MessageBox.Show( $"Repo does not have a current branch: \"{repoItem}\"", "No Current Branch", MessageBoxButtons.OK, MessageBoxIcon.Error );
+                    return;
+                }
+
+                arguments = arguments.Replace( "%cb", currentBranch );
+                workingDirectory = workingDirectory.Replace( "%cb", currentBranch );
+            }
 
             if( Path.IsPathRooted( program )
              && !File.Exists( program ) )

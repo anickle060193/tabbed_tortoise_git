@@ -122,7 +122,8 @@
 %f: The file or folder of the selected log.
 %d: The directory of the file of the selected log
         (if the selected log is for a folder, this will evalute to the same folder).
-%r: The base repo folder for the selected log.</value>
+%r: The base repo folder for the selected log.
+%cb: The current branch of the repo</value>
   </data>
   <metadata name="ProgramBrowseDialog.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
     <value>17, 17</value>
