@@ -1,3 +1,7 @@
+# !!!ATTENTION!!!
+If you've updated Tabbed TortoiseGit but your settings were lost, go to Settings -> Restore Settings.
+This should restore your settings from the most recent settings file.
+
 # Version 0.36.0
 * Handle uninitialized submodules as modified submodules for Fast(er) Submodule Update.
 * Check for TortoiseGitProc.exe in default location before checking PATH.

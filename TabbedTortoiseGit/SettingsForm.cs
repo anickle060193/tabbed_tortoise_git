@@ -1,5 +1,6 @@
 ﻿using Common;
 using LibGit2Sharp;
+using log4net;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -17,6 +18,8 @@ namespace TabbedTortoiseGit
 {
     public partial class SettingsForm : Form
     {
+        private static readonly ILog LOG = LogManager.GetLogger( typeof( SettingsForm ) );
+
         public static bool ShowSettingsDialog()
         {
             using SettingsForm f = new SettingsForm
@@ -425,13 +428,15 @@ namespace TabbedTortoiseGit
         private readonly Dictionary<KeyboardShortcuts, TextBox> _shortcutTextboxes = new Dictionary<KeyboardShortcuts, TextBox>();
         private readonly BindingList<CustomAction> _customActions = new BindingList<CustomAction>();
 
-        public SettingsForm()
+        private SettingsForm()
         {
             InitializeComponent();
 
             this.Icon = Resources.TortoiseIcon;
 
             this.KeyPress += SettingsForm_KeyPress;
+
+            restoreSettingsButton.Click += RestoreSettingsButton_Click;
 
             this.AddDefaultRepo.Click += AddDefaultRepo_Click;
             this.RemoveDefaultRepo.Click += RemoveDefaultRepo_Click;
@@ -549,6 +554,28 @@ namespace TabbedTortoiseGit
             if( String.Join( "", _cheatCode ) == CHEAT_CODE )
             {
                 this.DeveloperSettingsEnabled = !this.DeveloperSettingsEnabled;
+            }
+        }
+
+        private void RestoreSettingsButton_Click( object? sender, EventArgs e )
+        {
+            var result = MessageBox.Show( "Are you sure you want to restore your settings from a previous installation? This will erase all current settings.", "Warning", MessageBoxButtons.YesNo );
+            if( result == DialogResult.Yes )
+            {
+                try
+                {
+                    LOG.Debug( "Manually restoring settings" );
+                    Settings.Restore();
+                    LOG.Debug( "Successfully restored settings" );
+
+                    MessageBox.Show( "Successfully restored settings!", "Settings Restored", MessageBoxButtons.OK );
+                    this.Close();
+                }
+                catch( Exception ex )
+                {
+                    LOG.Error( "Failed to restore settings:", ex );
+                    MessageBox.Show( $"Failed to restore settings:\n{ex}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error );
+                }
             }
         }
 

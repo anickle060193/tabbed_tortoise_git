@@ -61,19 +61,17 @@ namespace TabbedTortoiseGit.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to # Version 0.36.0
+        ///   Looks up a localized string similar to # !!!ATTENTION!!!
+        ///If you&apos;ve updated Tabbed TortoiseGit but your settings were lost, go to Settings -&gt; Restore Settings.
+        ///This should restore your settings from the most recent settings file.
+        ///
+        ///# Version 0.36.0
         ///* Handle uninitialized submodules as modified submodules for Fast(er) Submodule Update.
         ///* Check for TortoiseGitProc.exe in default location before checking PATH.
         ///* Add option to specify TortoiseGitProc.exe location manually.
         ///
         ///# Version 0.35.0
-        ///* Added keyboard shortcut to hide/show references display.
-        ///
-        ///# Version 0.34.0
-        ///* Added references display for current log (this can be disabled in the settings).
-        ///
-        ///# Version 0.33.0
-        ///* Correct issue with TabChanged event not firing when selected [rest of string was truncated]&quot;;.
+        ///* Added keyboard shortcut to hide/show references d [rest of string was truncated]&quot;;.
         /// </summary>
         internal static string Changelog {
             get {

@@ -1,4 +1,5 @@
 ﻿using Common;
+using GlobExpressions;
 using log4net;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
@@ -8,6 +9,7 @@ using System.ComponentModel;
 using System.Configuration;
 using System.Diagnostics;
 using System.Drawing;
+using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Windows.Forms;
@@ -17,6 +19,31 @@ namespace TabbedTortoiseGit.Properties
     internal sealed partial class Settings
     {
         private static readonly ILog LOG = LogManager.GetLogger( typeof( Settings ) );
+
+        public static void Restore()
+        {
+            LOG.Debug( "Restoring Settings" );
+            
+            var currentSettingsFile = ConfigurationManager.OpenExeConfiguration( ConfigurationUserLevel.PerUserRoamingAndLocal ).FilePath;
+            LOG.Debug( $"Current Settings File: {currentSettingsFile}" );
+
+            var localAppData = new DirectoryInfo( Environment.GetFolderPath( Environment.SpecialFolder.LocalApplicationData ) );
+            var settingsFile = Glob.Files( localAppData, "Tabbed*TortoiseGit/Tabbed*TortoiseGit*/*/user.config" )
+                .Where( ( f ) => f.FullName != currentSettingsFile )
+                .OrderBy( ( f ) => f.LastWriteTime )
+                .LastOrDefault();
+            LOG.Debug( $"Previous Settings File: {settingsFile?.FullName}" );
+
+            if( settingsFile != null )
+            {
+                LOG.Debug( "Copying previous settings file to current settings file" );
+                Directory.CreateDirectory( Path.GetDirectoryName( currentSettingsFile )! );
+                settingsFile.CopyTo( currentSettingsFile, true );
+
+                LOG.Debug( "Reloading settings" );
+                Settings.Default.Reload();
+            }
+        }
 
         [UserScopedSetting]
         [DebuggerNonUserCode]
@@ -291,6 +318,22 @@ namespace TabbedTortoiseGit.Properties
                 LOG.Debug( "Upgrading settings" );
                 Settings.Default.Upgrade();
                 Settings.Default.UpgradeRequired = false;
+
+                if( Settings.Default.LastVersion is null or "" )
+                {
+                    try
+                    {
+                        LOG.Debug( "Triggering automatic settings restore" );
+                        Settings.Restore();
+                        LOG.Debug( "Successfully restored settings" );
+                    }
+                    catch( Exception ex )
+                    {
+                        LOG.Error( "Failed to restore settings:", ex );
+                    }
+                }
+
+                Settings.Default.LastVersion = Assembly.GetExecutingAssembly().GetName().Version?.ToString() ?? "Unknown";
 
                 bool upgradedFavoriteReposString = false;
                 try

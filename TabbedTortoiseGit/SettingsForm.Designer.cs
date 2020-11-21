@@ -90,6 +90,7 @@ namespace TabbedTortoiseGit
             this.NormalTabFontDialog = new System.Windows.Forms.FontDialog();
             this.TortoiseGitProcExeLocationDialog = new System.Windows.Forms.OpenFileDialog();
             this.folderDialog = new System.Windows.Forms.FolderBrowserDialog();
+            this.restoreSettingsButton = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.MaxRecentReposNumeric)).BeginInit();
             this.SettingsTabs.SuspendLayout();
             this.KeyboardShortcutsPage.SuspendLayout();
@@ -831,6 +832,16 @@ namespace TabbedTortoiseGit
             // 
             this.TortoiseGitProcExeLocationDialog.FileName = "TortoiseGitProc.exe";
             // 
+            // restoreSettingsButton
+            // 
+            this.restoreSettingsButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.restoreSettingsButton.Location = new System.Drawing.Point(12, 436);
+            this.restoreSettingsButton.Name = "restoreSettingsButton";
+            this.restoreSettingsButton.Size = new System.Drawing.Size(120, 23);
+            this.restoreSettingsButton.TabIndex = 13;
+            this.restoreSettingsButton.Text = "Restore Settings";
+            this.restoreSettingsButton.UseVisualStyleBackColor = true;
+            // 
             // SettingsForm
             // 
             this.AcceptButton = this.OK;
@@ -838,6 +849,7 @@ namespace TabbedTortoiseGit
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.CancelButton = this.Cancel;
             this.ClientSize = new System.Drawing.Size(798, 474);
+            this.Controls.Add(this.restoreSettingsButton);
             this.Controls.Add(this.SettingsTabs);
             this.Controls.Add(this.Cancel);
             this.Controls.Add(this.OK);
@@ -935,5 +947,6 @@ namespace TabbedTortoiseGit
         private Label TortoiseGitProcExeLocationLabel;
         private OpenFileDialog TortoiseGitProcExeLocationDialog;
         private FolderBrowserDialog folderDialog;
+        private Button restoreSettingsButton;
     }
 }
