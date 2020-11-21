@@ -199,7 +199,7 @@
         "UseSystemSearchPath" = "11:TRUE"
         "TargetPlatform" = "3:0"
         "PreBuildEvent" = "8:rmdir /s /q $(ProjectDir)..\\publish"
-        "PostBuildEvent" = "8:\"C:\\Program Files (x86)\\Windows Kits\\10\\bin\\10.0.17763.0\\x86\\MsiInfo.exe\" \"$(BuiltOuputPath)\" -w 10"
+        "PostBuildEvent" = "8:\"$(ProjectDir)MsiInfo.exe\" \"$(BuiltOuputPath)\" -w 10 && cscript //nologo \"$(ProjectDir)WiRunSql.vbs\" \"$(BuiltOuputPath)\" \"INSERT INTO Property(Property, Value) VALUES ('DISABLEADVTSHORTCUTS', '1')\""
         "RunPostBuildEvent" = "3:0"
         }
         "Registry"
