@@ -175,8 +175,8 @@
         {
         "Name" = "8:Microsoft Visual Studio"
         "ProductName" = "8:TabbedTortoiseGit"
-        "ProductCode" = "8:{ECDBB71E-3A6D-422C-BD01-4CA212C2E94F}"
-        "PackageCode" = "8:{B1F96068-A678-490B-83F6-3D85ED1487BE}"
+        "ProductCode" = "8:{F7867BB1-9FDE-49E9-B1E5-1A086CB0817B}"
+        "PackageCode" = "8:{A1067DA3-1BC8-4843-B0D0-BCCC35AC0AC4}"
         "UpgradeCode" = "8:{3DE2617B-9A43-49DF-AE0C-4DD2428C49F0}"
         "AspNetVersion" = "8:"
         "RestartWWWService" = "11:FALSE"
@@ -331,7 +331,7 @@
         {
             "{5259A561-127C-4D43-A0A1-72F10C7B3BF8}:_9FCD50A87D274FF3A82E843BD4946E1A"
             {
-            "SourcePath" = "8:..\\TabbedTortoiseGit\\obj\\Release\\net5.0-windows\\win-x86\\apphost.exe"
+            "SourcePath" = "8:..\\TabbedTortoiseGit\\obj\\Release\\net5.0-windows\\win-x86\\TabbedTortoiseGit.exe"
             "TargetName" = "8:"
             "Tag" = "8:"
             "Folder" = "8:_19E2790DF4BA4982B3D6AB2FC2063A46"
