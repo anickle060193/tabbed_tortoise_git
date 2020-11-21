@@ -65,13 +65,15 @@ namespace TabbedTortoiseGit.Properties {
         ///If you&apos;ve updated Tabbed TortoiseGit but your settings were lost, go to Settings -&gt; Restore Settings.
         ///This should restore your settings from the most recent settings file.
         ///
+        ///# Version 0.37.0
+        ///* Improved installation process.
+        ///* Add current branch macro to custom actions.
+        ///* Improve update checking.
+        ///
         ///# Version 0.36.0
         ///* Handle uninitialized submodules as modified submodules for Fast(er) Submodule Update.
         ///* Check for TortoiseGitProc.exe in default location before checking PATH.
-        ///* Add option to specify TortoiseGitProc.exe location manually.
-        ///
-        ///# Version 0.35.0
-        ///* Added keyboard shortcut to hide/show references d [rest of string was truncated]&quot;;.
+        ///* Add  [rest of string was truncated]&quot;;.
         /// </summary>
         internal static string Changelog {
             get {
