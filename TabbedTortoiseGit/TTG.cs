@@ -12,6 +12,7 @@ using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using System.Xml.Linq;
 
 namespace TabbedTortoiseGit
 {
@@ -73,35 +74,33 @@ namespace TabbedTortoiseGit
             }
         }
 
-        class TagRef
-        {
-            public String Ref { get; set; }
-
-            [JsonConstructor]
-            public TagRef( String reference )
-            {
-                this.Ref = reference;
-            }
-        }
-
         public static async Task<Version?> IsUpToDate()
         {
             try
             {
                 ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12;
 
-                HttpWebRequest request = (HttpWebRequest)WebRequest.Create( "https://api.github.com/repos/anickle060193/tabbed_tortoise_git/git/refs/tags" );
-                request.ContentType = "text/json";
+                HttpWebRequest request = (HttpWebRequest)WebRequest.Create( "https://raw.githubusercontent.com/anickle060193/tabbed_tortoise_git/master/TabbedTortoiseGit/TabbedTortoiseGit.csproj" );
+                request.ContentType = "text/plain";
                 request.Method = "GET";
-                request.Accept = "application/vnd.github.v3+json";
                 AssemblyName a = Assembly.GetExecutingAssembly().GetName();
                 Version currentVersion = a.Version ?? new Version();
                 request.UserAgent = $"{a.Name} {currentVersion}";
+
                 using WebResponse response = await request.GetResponseAsync();
                 using StreamReader reader = new StreamReader( response.GetResponseStream() );
                 String responseText = reader.ReadToEnd();
-                List<TagRef> responseObject = JsonConvert.DeserializeObject<List<TagRef>>( responseText );
-                Version? newestVersion = responseObject.Select( o => Version.Parse( o.Ref.Replace( "refs/tags/", "" ) ) ).Max();
+
+                var versionText = XElement.Parse( responseText )
+                    ?.Element( "PropertyGroup" )
+                    ?.Element( "Version" )
+                    ?.Value;
+                if( versionText == null )
+                {
+                    return null;
+                }
+
+                var newestVersion = Version.Parse( versionText );
 
                 if( newestVersion != null
                  && newestVersion > currentVersion )
