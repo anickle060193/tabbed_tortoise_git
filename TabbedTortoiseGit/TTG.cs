@@ -22,6 +22,16 @@ namespace TabbedTortoiseGit
         private static readonly String RUN_ON_STARTUP_KEY_PATH = @"Software\Microsoft\Windows\CurrentVersion\Run";
         private static readonly String RUN_ON_STARTUP_KEY_NAME = "Tabbed TortoiseGit";
 
+        public static String GetExe()
+        {
+            return Process.GetCurrentProcess().MainModule?.FileName ?? throw new InvalidOperationException( "Cannot find Tabbed TortoiseGit EXE." );
+        }
+
+        private static String GetStartupKeyValue()
+        {
+            return $"\"{GetExe()}\" --startup";
+        }
+
         public static bool RunOnStartup
         {
             get
@@ -29,7 +39,8 @@ namespace TabbedTortoiseGit
                 try
                 {
                     using RegistryKey? run = Registry.CurrentUser.OpenSubKey( RUN_ON_STARTUP_KEY_PATH, false );
-                    return run?.GetValue( RUN_ON_STARTUP_KEY_NAME ) != null;
+                    var value = run?.GetValue( RUN_ON_STARTUP_KEY_NAME ) as String;
+                    return value == GetStartupKeyValue();
                 }
                 catch( Exception e )
                 {
@@ -45,8 +56,7 @@ namespace TabbedTortoiseGit
                     using RegistryKey? run = Registry.CurrentUser.OpenSubKey( RUN_ON_STARTUP_KEY_PATH, true );
                     if( value )
                     {
-                        String exe = new Uri( Assembly.GetExecutingAssembly().Location ).LocalPath;
-                        run?.SetValue( RUN_ON_STARTUP_KEY_NAME, $"\"{exe}\" --startup" );
+                        run?.SetValue( RUN_ON_STARTUP_KEY_NAME, GetStartupKeyValue() );
                     }
                     else
                     {

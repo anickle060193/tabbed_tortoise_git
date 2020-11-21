@@ -2,6 +2,7 @@ using CommandLine;
 using log4net;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Reflection;
 using System.Threading;
@@ -21,7 +22,7 @@ namespace TabbedTortoiseGit
         /// The main entry point for the application.
         /// </summary>
         [STAThread]
-        static void Main( String[] args )
+        static int Main( String[] args )
         {
             LOG.Debug( $"Application Startup - Args: {String.Join( ", ", args )}" );
             LOG.Debug( $"Version: {Assembly.GetExecutingAssembly().GetName().Version}" );
@@ -31,11 +32,17 @@ namespace TabbedTortoiseGit
 
             if( !TTG.VerifyAssemblyVersions() )
             {
-                return;
+                return 1;
             }
 
-            Parser.Default.ParseArguments<Arguments>( args )
-                .WithParsed( ( a ) =>
+            Parser.Default.ParseArguments<CommitInstallArguments, DefaultArguments>( args )
+                .WithParsed<CommitInstallArguments>( ( args ) =>
+                {
+                    var exe = TTG.GetExe();
+                    LOG.Debug( $"Starting application after install: {exe}" );
+                    Process.Start( exe );
+                } )
+                .WithParsed<DefaultArguments>( ( a ) =>
                 {
                     if( _mutex.WaitOne( TimeSpan.Zero, true ) )
                     {
@@ -51,9 +58,14 @@ namespace TabbedTortoiseGit
                         LOG.Debug( "Tabbed TortoiseGit instance already exists" );
                         Native.PostMessage( (IntPtr)Native.HWND_BROADCAST, ProgramForm.WM_SHOWME, IntPtr.Zero, IntPtr.Zero );
                     }
+                } )
+                .WithNotParsed( ( errors ) =>
+                {
+                    LOG.Error( "Invalid command line arguments:" + String.Join( "", errors.Select( ( e ) => $"\n\t{e}: {e.Tag}" ) ) );
                 } );
 
             LOG.Debug( "Application End" );
+            return 0;
         }
 
         private static void CurrentDomain_UnhandledException( object? sender, UnhandledExceptionEventArgs e )
