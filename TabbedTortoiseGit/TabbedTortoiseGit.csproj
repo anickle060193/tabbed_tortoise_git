@@ -8,7 +8,7 @@
     <WarningsAsErrors>CS8600;CS8602;CS8603;CS8714;CS8622;CS8604;CS8762</WarningsAsErrors>
     <Product>Tabbed TortoiseGit</Product>
     <Description>A simple tabbed wrapper for TortoiseGit to host multiple TortoiseGit logs within a single application.</Description>
-    <Version>0.37.0</Version>
+    <Version>0.37.1</Version>
     <ApplicationIcon>Resources\tortoise.ico</ApplicationIcon>
   </PropertyGroup>
 
