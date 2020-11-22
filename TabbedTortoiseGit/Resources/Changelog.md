@@ -2,6 +2,9 @@
 If you've updated Tabbed TortoiseGit but your settings were lost, go to Settings -> Restore Settings.
 This should restore your settings from the most recent settings file.
 
+# Version 0.37.1
+* Disabled advertised shortcuts for installation.
+
 # Version 0.37.0
 * Improved installation process.
 * Add current branch macro to custom actions.
