@@ -986,10 +986,7 @@ namespace TabbedTortoiseGit
         {
             if( await gitActionFunc.Invoke( tag.RepoItem ) )
             {
-                if( !tag.Process.HasExited )
-                {
-                    Native.SendKeyDown( tag.Process.MainWindowHandle, Keys.F5 );
-                }
+                await RefreshLog( tag );
             }
         }
 
@@ -1071,12 +1068,9 @@ namespace TabbedTortoiseGit
                     if( tag != null
                      && customAction.RefreshLogAfter )
                     {
-                        dialog.FormClosed += delegate ( object? sender, FormClosedEventArgs e )
+                        dialog.FormClosed += async delegate ( object? sender, FormClosedEventArgs e )
                         {
-                            if( !tag.Process.HasExited )
-                            {
-                                Native.SendKeyDown( tag.Process.MainWindowHandle, Keys.F5 );
-                            }
+                            await RefreshLog( tag );
                         };
                     }
 
@@ -1088,12 +1082,9 @@ namespace TabbedTortoiseGit
                     if( tag != null
                      && customAction.RefreshLogAfter )
                     {
-                        p.Exited += delegate ( object? sender, EventArgs e )
+                        p.Exited += async delegate ( object? sender, EventArgs e )
                         {
-                            if( !tag.Process.HasExited )
-                            {
-                                Native.SendKeyDown( tag.Process.MainWindowHandle, Keys.F5 );
-                            }
+                            await RefreshLog( tag );
                         };
                     }
 
@@ -1104,6 +1095,19 @@ namespace TabbedTortoiseGit
             {
                 LOG.Error( "Failed to run Custom Action: {program} {arguments}", e );
                 MessageBox.Show( $"The following error occurred while attempting to run Custom Action: {program} {arguments}\n{e}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error );
+            }
+        }
+
+        private async Task RefreshLog( TabControllerTag tag )
+        {
+            if( !tag.Process.HasExited )
+            {
+                Native.SendKeyDown( tag.Process.MainWindowHandle, Keys.F5 );
+            }
+
+            if( LogTabs.SelectedTab?.Tag == tag )
+            {
+                await UpdateReferencesTreeView();
             }
         }
     }
