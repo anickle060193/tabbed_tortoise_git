@@ -155,7 +155,7 @@ namespace TabbedTortoiseGit
                     {
                         LOG.Debug( $"Newest Version: {newestVersion}" );
 
-                        if( DialogResult.Yes == MessageBox.Show( "A new version of Tabbed TortoiseGit is available. Update now?\n\nNote: This will exit Tabbed TortoiseGit.", "New Update", MessageBoxButtons.YesNo ) )
+                        if( DialogResult.Yes == MessageBox.Show( $"Version {newestVersion} of Tabbed TortoiseGit is available. Update now?\n\nNote: This will exit Tabbed TortoiseGit.", "New Update", MessageBoxButtons.YesNo ) )
                         {
                             LOG.Debug( "Update Prompt: Yes" );
                             Settings.Default.LastUpdatePromptTime = DateTime.MinValue;

@@ -10,6 +10,7 @@ using System.Linq;
 using System.Net;
 using System.Reflection;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Xml.Linq;
@@ -22,6 +23,8 @@ namespace TabbedTortoiseGit
 
         private static readonly String RUN_ON_STARTUP_KEY_PATH = @"Software\Microsoft\Windows\CurrentVersion\Run";
         private static readonly String RUN_ON_STARTUP_KEY_NAME = "Tabbed TortoiseGit";
+
+        private static readonly Regex RELEASE_URL_RE = new Regex( ".*/(?<version>[0-9.]+)$" );
 
         public static String GetExe()
         {
@@ -76,68 +79,121 @@ namespace TabbedTortoiseGit
 
         public static async Task<Version?> IsUpToDate()
         {
+            var assembly = Assembly.GetExecutingAssembly().GetName();
+            var currentVersion = Assembly.GetExecutingAssembly().GetName().Version;
+
+            if( currentVersion == null )
+            {
+                LOG.Error( "Failed to retrieve current assembly version" );
+                return null;
+            }
+
+            Version? newestVersion = null;
+
+            ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12;
+
             try
             {
-                ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12;
+                var request = WebRequest.CreateHttp( "https://github.com/anickle060193/tabbed_tortoise_git/releases/latest" );
+                request.AllowAutoRedirect = true;
 
-                HttpWebRequest request = (HttpWebRequest)WebRequest.Create( "https://raw.githubusercontent.com/anickle060193/tabbed_tortoise_git/master/TabbedTortoiseGit/TabbedTortoiseGit.csproj" );
-                request.ContentType = "text/plain";
-                request.Method = "GET";
-                AssemblyName a = Assembly.GetExecutingAssembly().GetName();
-                Version currentVersion = a.Version ?? new Version();
-                request.UserAgent = $"{a.Name} {currentVersion}";
+                using var response = (HttpWebResponse)( await request.GetResponseAsync() );
 
-                using WebResponse response = await request.GetResponseAsync();
-                using StreamReader reader = new StreamReader( response.GetResponseStream() );
-                String responseText = reader.ReadToEnd();
-
-                var versionText = XElement.Parse( responseText )
-                    ?.Element( "PropertyGroup" )
-                    ?.Element( "Version" )
-                    ?.Value;
-                if( versionText == null )
+                var versionString = RELEASE_URL_RE.Match( response.ResponseUri.AbsoluteUri )?.Groups?[ "version" ].Value;
+                if( versionString != null )
                 {
-                    return null;
-                }
-
-                var newestVersion = Version.Parse( versionText );
-
-                if( newestVersion != null
-                 && newestVersion > currentVersion )
-                {
-                    return newestVersion;
-                }
-                else
-                {
-                    return null;
+                    newestVersion = new Version( versionString );
                 }
             }
             catch( Exception e )
             {
-                LOG.Error( "An error occured while trying to check if application is up to date.", e );
+                LOG.Error( "An error occured while trying to check if application is up to date using latest release method.", e );
             }
 
-            return null;
+            if( newestVersion == null )
+            {
+                try
+                {
+                    HttpWebRequest request = (HttpWebRequest)WebRequest.Create( "https://raw.githubusercontent.com/anickle060193/tabbed_tortoise_git/master/TabbedTortoiseGit/TabbedTortoiseGit.csproj" );
+                    request.ContentType = "text/plain";
+                    request.Method = "GET";
+                    request.UserAgent = $"{assembly.Name} {currentVersion}";
+
+                    using WebResponse response = await request.GetResponseAsync();
+                    using StreamReader reader = new StreamReader( response.GetResponseStream() );
+                    String responseText = reader.ReadToEnd();
+
+                    var versionText = XElement.Parse( responseText )
+                        ?.Element( "PropertyGroup" )
+                        ?.Element( "Version" )
+                        ?.Value;
+                    if( versionText == null )
+                    {
+                        return null;
+                    }
+
+                    newestVersion = Version.Parse( versionText );
+                }
+                catch( Exception e )
+                {
+                    LOG.Error( "An error occured while trying to check if application is up to date using assembly information method.", e );
+                }
+            }
+
+            if( newestVersion != null
+             && newestVersion > currentVersion )
+            {
+                return newestVersion;
+            }
+            else
+            {
+                return null;
+            }
         }
 
         public static async Task<bool> UpdateApplication( Version newestVersion )
         {
-            try
+            var version = newestVersion.ToString( 3 );
+            var updateUrls = new []
             {
-                String updateUrl = $"https://github.com/anickle060193/tabbed_tortoise_git/raw/{newestVersion.ToString( 3 )}/Setup/Output/Setup.msi";
-                String path = Path.GetTempPath();
-                String downloadLocation = Path.Combine( path, $"tabbed_tortoisegit_setup-{newestVersion.ToString( 3 )}.msi" );
+                $"https://github.com/anickle060193/tabbed_tortoise_git/releases/download/{version}/Setup.msi",
+                $"https://github.com/anickle060193/tabbed_tortoise_git/raw/{version}/Setup/Output/Setup.msi",
+            };
 
-                using WebClient client = new WebClient();
-                await client.DownloadFileTaskAsync( updateUrl, downloadLocation );
+            var downloadLocation = Path.Combine( Path.GetTempPath(), $"tabbed_tortoisegit_setup-{version}.msi" );
+            var downloaded = false;
 
-                Process.Start( downloadLocation );
-
-                return true;
+            foreach( var updateUrl in updateUrls )
+            {
+                try
+                {
+                    using WebClient client = new WebClient();
+                    await client.DownloadFileTaskAsync( updateUrl, downloadLocation );
+                    downloaded = true;
+                    break;
+                }
+                catch( Exception e )
+                {
+                    LOG.Error( $"An error has occurred while downloading the application update using {updateUrl}.", e );
+                }
             }
-            catch( Exception e )
+
+            if( downloaded )
             {
-                LOG.Error( "An error has occurred while updating the application.", e );
+                try
+                {
+                    Process.Start( new ProcessStartInfo( "msiexec" )
+                    {
+                        ArgumentList = { "/i", downloadLocation },
+                        UseShellExecute = false,
+                    } );
+
+                    return true;
+                }
+                catch( Exception e )
+                {
+                    LOG.Error( "An error has occurred while updating the application.", e );
+                }
             }
 
             return false;
