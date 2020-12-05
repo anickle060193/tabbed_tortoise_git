@@ -92,8 +92,8 @@ namespace TabbedTortoiseGit
                     UseShellExecute = false,
                     CreateNoWindow = true,
                 } )!;
-                
-                await Task.Run( () => p.WaitForExit() );
+
+                await p.WaitForExitAsync();
 
                 LOG.Debug( $"{nameof( CanAccessTortoiseGit )} - Exit Code: {p.ExitCode}" );
                 return p.ExitCode == 0;
@@ -117,7 +117,7 @@ namespace TabbedTortoiseGit
             } )!;
             if( waitForExit )
             {
-                await Task.Run( () => p.WaitForExit() );
+                await p.WaitForExitAsync();
                 LOG.Debug( $"{nameof( TortoiseGitCommand )} - Command: {command} - Working Directory: {workingDirectory} - Exit Code: {p.ExitCode}" );
             }
             return p;

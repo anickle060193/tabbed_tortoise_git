@@ -87,7 +87,7 @@ namespace TabbedTortoiseGit
             info.UseShellExecute = false;
             info.RedirectStandardOutput = true;
             Process p = Process.Start( info )!;
-            await Task.Run( () => p.WaitForExit() );
+            await p.WaitForExitAsync();
 
             if( p.ExitCode != 0 )
             {
@@ -136,7 +136,7 @@ namespace TabbedTortoiseGit
 
             ProcessStartInfo info = CreateGitProcessStartInfo( repo, $"diff-index --quiet HEAD -- \"{path}\"" );
             Process p = Process.Start( info )!;
-            await Task.Run( () => p.WaitForExit() );
+            await p.WaitForExitAsync();
 
             return p.ExitCode == 1;
         }
