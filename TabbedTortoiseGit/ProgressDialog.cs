@@ -445,12 +445,18 @@ namespace TabbedTortoiseGit
 
         private void Process_OutputDataReceived( object? sender, DataReceivedEventArgs e )
         {
-            Output( e.Data ?? "" );
+            if( e.Data != null )
+            {
+                Output( e.Data );
+            }
         }
 
         private void Process_ErrorDataReceived( object? sender, DataReceivedEventArgs e )
         {
-            Error( e.Data ?? "" );
+            if( e.Data != null )
+            {
+                Error( e.Data ?? "" );
+            }
         }
 
         private void Process_Exited( object? sender, EventArgs e )
