@@ -135,6 +135,8 @@ namespace TabbedTortoiseGit
 
         private async void TabbedTortoiseGitForm_Load( object? sender, EventArgs e )
         {
+            LOG.Debug( $"{nameof( TabbedTortoiseGitForm_Load )}" );
+
             await UpdateFromSettings( true );
         }
 

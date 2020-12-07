@@ -468,7 +468,7 @@
             this.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             this.MinimumSize = new System.Drawing.Size(767, 600);
             this.Name = "TabbedTortoiseGitForm";
-            this.StartPosition = System.Windows.Forms.FormStartPosition.Manual;
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Tabbed TortoiseGit";
             this.TabContextMenu.ResumeLayout(false);
             this.FavoriteRepoContextMenu.ResumeLayout(false);
