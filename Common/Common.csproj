@@ -3,7 +3,7 @@
   <PropertyGroup>
     <TargetFramework>net5.0-windows</TargetFramework>
     <UseWindowsForms>true</UseWindowsForms>
-    <Version>0.37.1</Version>
+    <Version>0.37.2</Version>
     <Nullable>enable</Nullable>
     <WarningsAsErrors>CS8600;CS8602;CS8603;CS8714;CS8622;CS8604;CS8762</WarningsAsErrors>
   </PropertyGroup>
