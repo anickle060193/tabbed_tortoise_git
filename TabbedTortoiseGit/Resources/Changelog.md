@@ -2,6 +2,15 @@
 If you've updated Tabbed TortoiseGit but your settings were lost, go to Settings -> Restore Settings.
 This should restore your settings from the most recent settings file.
 
+# Version 0.38.0
+* Increase maximum allowed processes for parallel operations.
+
+# Version 0.37.2
+* Fix extra output in progress dialog.
+* Improve update checking.
+* Refresh references after a git or custom action is performed.
+* Fix initial form positioning.
+
 # Version 0.37.1
 * Disabled advertised shortcuts for installation.
 
