@@ -31,6 +31,14 @@ namespace TabbedTortoiseGit
             return Process.GetCurrentProcess().MainModule?.FileName ?? throw new InvalidOperationException( "Cannot find Tabbed TortoiseGit EXE." );
         }
 
+        public static int DefaultMaxProcesses
+        {
+            get
+            {
+                return Math.Max( 1, Environment.ProcessorCount / 2 );
+            }
+        }
+
         private static String GetStartupKeyValue()
         {
             return $"\"{GetExe()}\" --startup";

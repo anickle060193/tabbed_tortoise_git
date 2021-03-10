@@ -36,7 +36,7 @@
       <Value Profile="(Default)">False</Value>
     </Setting>
     <Setting Name="FastSubmoduleUpdateMaxProcesses" Type="System.Int32" Scope="User">
-      <Value Profile="(Default)">6</Value>
+      <Value Profile="(Default)">-1</Value>
     </Setting>
     <Setting Name="OpenStartupReposOnReOpen" Type="System.Boolean" Scope="User">
       <Value Profile="(Default)">True</Value>
@@ -54,7 +54,7 @@
       <Value Profile="(Default)">True</Value>
     </Setting>
     <Setting Name="FastFetchMaxProcesses" Type="System.Int32" Scope="User">
-      <Value Profile="(Default)">6</Value>
+      <Value Profile="(Default)">-1</Value>
     </Setting>
     <Setting Name="FastFetchShowProgress" Type="System.Boolean" Scope="User">
       <Value Profile="(Default)">False</Value>
@@ -111,7 +111,7 @@
       <Value Profile="(Default)">False</Value>
     </Setting>
     <Setting Name="FasterSubmoduleUpdateMaxProcesses" Type="System.Int32" Scope="User">
-      <Value Profile="(Default)">6</Value>
+      <Value Profile="(Default)">-1</Value>
     </Setting>
     <Setting Name="FasterSubmoduleUpdateAllSubmodules" Type="System.Boolean" Scope="User">
       <Value Profile="(Default)">True</Value>

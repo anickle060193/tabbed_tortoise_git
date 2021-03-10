@@ -156,7 +156,7 @@ namespace TabbedTortoiseGit.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("6")]
+        [global::System.Configuration.DefaultSettingValueAttribute("-1")]
         public int FastSubmoduleUpdateMaxProcesses {
             get {
                 return ((int)(this["FastSubmoduleUpdateMaxProcesses"]));
@@ -228,7 +228,7 @@ namespace TabbedTortoiseGit.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("6")]
+        [global::System.Configuration.DefaultSettingValueAttribute("-1")]
         public int FastFetchMaxProcesses {
             get {
                 return ((int)(this["FastFetchMaxProcesses"]));
@@ -452,7 +452,7 @@ namespace TabbedTortoiseGit.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("6")]
+        [global::System.Configuration.DefaultSettingValueAttribute("-1")]
         public int FasterSubmoduleUpdateMaxProcesses {
             get {
                 return ((int)(this["FasterSubmoduleUpdateMaxProcesses"]));

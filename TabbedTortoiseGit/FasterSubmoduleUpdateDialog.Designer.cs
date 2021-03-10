@@ -32,6 +32,7 @@
             this.SubmodulesModifiedOnly = new System.Windows.Forms.RadioButton();
             this.SubmodulesAll = new System.Windows.Forms.RadioButton();
             this.OptionsGroupBox = new System.Windows.Forms.GroupBox();
+            this.TreatUninitializedSubmodulesAsModifiedCheck = new System.Windows.Forms.CheckBox();
             this.InitCheck = new System.Windows.Forms.CheckBox();
             this.RecursiveCheck = new System.Windows.Forms.CheckBox();
             this.MaxProcessCountLabel = new System.Windows.Forms.Label();
@@ -39,7 +40,6 @@
             this.MaxProcessCountNumeric = new System.Windows.Forms.NumericUpDown();
             this.UpdateSubmodulesButton = new System.Windows.Forms.Button();
             this.Cancel = new System.Windows.Forms.Button();
-            this.TreatUninitializedSubmodulesAsModifiedCheck = new System.Windows.Forms.CheckBox();
             this.SubmodulesGroupBox.SuspendLayout();
             this.OptionsGroupBox.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.MaxProcessCountNumeric)).BeginInit();
@@ -51,9 +51,11 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.SubmodulesGroupBox.Controls.Add(this.SubmodulesModifiedOnly);
             this.SubmodulesGroupBox.Controls.Add(this.SubmodulesAll);
-            this.SubmodulesGroupBox.Location = new System.Drawing.Point(12, 12);
+            this.SubmodulesGroupBox.Location = new System.Drawing.Point(14, 14);
+            this.SubmodulesGroupBox.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             this.SubmodulesGroupBox.Name = "SubmodulesGroupBox";
-            this.SubmodulesGroupBox.Size = new System.Drawing.Size(245, 46);
+            this.SubmodulesGroupBox.Padding = new System.Windows.Forms.Padding(4, 3, 4, 3);
+            this.SubmodulesGroupBox.Size = new System.Drawing.Size(286, 53);
             this.SubmodulesGroupBox.TabIndex = 0;
             this.SubmodulesGroupBox.TabStop = false;
             this.SubmodulesGroupBox.Text = "Submodules";
@@ -61,9 +63,10 @@
             // SubmodulesModifiedOnly
             // 
             this.SubmodulesModifiedOnly.AutoSize = true;
-            this.SubmodulesModifiedOnly.Location = new System.Drawing.Point(48, 19);
+            this.SubmodulesModifiedOnly.Location = new System.Drawing.Point(56, 22);
+            this.SubmodulesModifiedOnly.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             this.SubmodulesModifiedOnly.Name = "SubmodulesModifiedOnly";
-            this.SubmodulesModifiedOnly.Size = new System.Drawing.Size(89, 17);
+            this.SubmodulesModifiedOnly.Size = new System.Drawing.Size(101, 19);
             this.SubmodulesModifiedOnly.TabIndex = 1;
             this.SubmodulesModifiedOnly.TabStop = true;
             this.SubmodulesModifiedOnly.Text = "Modified Only";
@@ -72,9 +75,10 @@
             // SubmodulesAll
             // 
             this.SubmodulesAll.AutoSize = true;
-            this.SubmodulesAll.Location = new System.Drawing.Point(6, 19);
+            this.SubmodulesAll.Location = new System.Drawing.Point(7, 22);
+            this.SubmodulesAll.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             this.SubmodulesAll.Name = "SubmodulesAll";
-            this.SubmodulesAll.Size = new System.Drawing.Size(36, 17);
+            this.SubmodulesAll.Size = new System.Drawing.Size(39, 19);
             this.SubmodulesAll.TabIndex = 0;
             this.SubmodulesAll.TabStop = true;
             this.SubmodulesAll.Text = "All";
@@ -91,20 +95,34 @@
             this.OptionsGroupBox.Controls.Add(this.MaxProcessCountLabel);
             this.OptionsGroupBox.Controls.Add(this.ForceCheck);
             this.OptionsGroupBox.Controls.Add(this.MaxProcessCountNumeric);
-            this.OptionsGroupBox.Location = new System.Drawing.Point(12, 64);
+            this.OptionsGroupBox.Location = new System.Drawing.Point(14, 74);
+            this.OptionsGroupBox.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             this.OptionsGroupBox.Name = "OptionsGroupBox";
-            this.OptionsGroupBox.Size = new System.Drawing.Size(245, 93);
+            this.OptionsGroupBox.Padding = new System.Windows.Forms.Padding(4, 3, 4, 3);
+            this.OptionsGroupBox.Size = new System.Drawing.Size(286, 107);
             this.OptionsGroupBox.TabIndex = 1;
             this.OptionsGroupBox.TabStop = false;
             this.OptionsGroupBox.Text = "Options";
+            // 
+            // TreatUninitializedSubmodulesAsModifiedCheck
+            // 
+            this.TreatUninitializedSubmodulesAsModifiedCheck.AutoSize = true;
+            this.TreatUninitializedSubmodulesAsModifiedCheck.Location = new System.Drawing.Point(7, 78);
+            this.TreatUninitializedSubmodulesAsModifiedCheck.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
+            this.TreatUninitializedSubmodulesAsModifiedCheck.Name = "TreatUninitializedSubmodulesAsModifiedCheck";
+            this.TreatUninitializedSubmodulesAsModifiedCheck.Size = new System.Drawing.Size(251, 19);
+            this.TreatUninitializedSubmodulesAsModifiedCheck.TabIndex = 18;
+            this.TreatUninitializedSubmodulesAsModifiedCheck.Text = "Treat uninitialized submodules as modified";
+            this.TreatUninitializedSubmodulesAsModifiedCheck.UseVisualStyleBackColor = true;
             // 
             // InitCheck
             // 
             this.InitCheck.AutoSize = true;
             this.InitCheck.Checked = true;
             this.InitCheck.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.InitCheck.Font = new System.Drawing.Font("Consolas", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.InitCheck.Location = new System.Drawing.Point(6, 19);
+            this.InitCheck.Font = new System.Drawing.Font("Consolas", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            this.InitCheck.Location = new System.Drawing.Point(7, 22);
+            this.InitCheck.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             this.InitCheck.Name = "InitCheck";
             this.InitCheck.Size = new System.Drawing.Size(62, 17);
             this.InitCheck.TabIndex = 13;
@@ -116,8 +134,9 @@
             this.RecursiveCheck.AutoSize = true;
             this.RecursiveCheck.Checked = true;
             this.RecursiveCheck.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.RecursiveCheck.Font = new System.Drawing.Font("Consolas", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.RecursiveCheck.Location = new System.Drawing.Point(74, 19);
+            this.RecursiveCheck.Font = new System.Drawing.Font("Consolas", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            this.RecursiveCheck.Location = new System.Drawing.Point(86, 22);
+            this.RecursiveCheck.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             this.RecursiveCheck.Name = "RecursiveCheck";
             this.RecursiveCheck.Size = new System.Drawing.Size(92, 17);
             this.RecursiveCheck.TabIndex = 14;
@@ -127,9 +146,10 @@
             // MaxProcessCountLabel
             // 
             this.MaxProcessCountLabel.AutoSize = true;
-            this.MaxProcessCountLabel.Location = new System.Drawing.Point(6, 44);
+            this.MaxProcessCountLabel.Location = new System.Drawing.Point(7, 51);
+            this.MaxProcessCountLabel.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.MaxProcessCountLabel.Name = "MaxProcessCountLabel";
-            this.MaxProcessCountLabel.Size = new System.Drawing.Size(82, 13);
+            this.MaxProcessCountLabel.Size = new System.Drawing.Size(87, 15);
             this.MaxProcessCountLabel.TabIndex = 17;
             this.MaxProcessCountLabel.Text = "Max Processes:";
             // 
@@ -138,8 +158,9 @@
             this.ForceCheck.AutoSize = true;
             this.ForceCheck.Checked = true;
             this.ForceCheck.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.ForceCheck.Font = new System.Drawing.Font("Consolas", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.ForceCheck.Location = new System.Drawing.Point(172, 19);
+            this.ForceCheck.Font = new System.Drawing.Font("Consolas", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            this.ForceCheck.Location = new System.Drawing.Point(201, 22);
+            this.ForceCheck.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             this.ForceCheck.Name = "ForceCheck";
             this.ForceCheck.Size = new System.Drawing.Size(68, 17);
             this.ForceCheck.TabIndex = 15;
@@ -148,9 +169,10 @@
             // 
             // MaxProcessCountNumeric
             // 
-            this.MaxProcessCountNumeric.Location = new System.Drawing.Point(94, 42);
+            this.MaxProcessCountNumeric.Location = new System.Drawing.Point(110, 48);
+            this.MaxProcessCountNumeric.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             this.MaxProcessCountNumeric.Maximum = new decimal(new int[] {
-            16,
+            64,
             0,
             0,
             0});
@@ -160,7 +182,7 @@
             0,
             0});
             this.MaxProcessCountNumeric.Name = "MaxProcessCountNumeric";
-            this.MaxProcessCountNumeric.Size = new System.Drawing.Size(42, 20);
+            this.MaxProcessCountNumeric.Size = new System.Drawing.Size(49, 23);
             this.MaxProcessCountNumeric.TabIndex = 16;
             this.MaxProcessCountNumeric.Value = new decimal(new int[] {
             1,
@@ -171,9 +193,10 @@
             // UpdateSubmodulesButton
             // 
             this.UpdateSubmodulesButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.UpdateSubmodulesButton.Location = new System.Drawing.Point(50, 163);
+            this.UpdateSubmodulesButton.Location = new System.Drawing.Point(58, 188);
+            this.UpdateSubmodulesButton.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             this.UpdateSubmodulesButton.Name = "UpdateSubmodulesButton";
-            this.UpdateSubmodulesButton.Size = new System.Drawing.Size(126, 23);
+            this.UpdateSubmodulesButton.Size = new System.Drawing.Size(147, 27);
             this.UpdateSubmodulesButton.TabIndex = 2;
             this.UpdateSubmodulesButton.Text = "Update Submodules";
             this.UpdateSubmodulesButton.UseVisualStyleBackColor = true;
@@ -182,35 +205,27 @@
             // 
             this.Cancel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.Cancel.DialogResult = System.Windows.Forms.DialogResult.Cancel;
-            this.Cancel.Location = new System.Drawing.Point(182, 163);
+            this.Cancel.Location = new System.Drawing.Point(212, 188);
+            this.Cancel.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             this.Cancel.Name = "Cancel";
-            this.Cancel.Size = new System.Drawing.Size(75, 23);
+            this.Cancel.Size = new System.Drawing.Size(88, 27);
             this.Cancel.TabIndex = 3;
             this.Cancel.Text = "Cancel";
             this.Cancel.UseVisualStyleBackColor = true;
             // 
-            // TreatUninitializedSubmodulesAsModifiedCheck
-            // 
-            this.TreatUninitializedSubmodulesAsModifiedCheck.AutoSize = true;
-            this.TreatUninitializedSubmodulesAsModifiedCheck.Location = new System.Drawing.Point(6, 68);
-            this.TreatUninitializedSubmodulesAsModifiedCheck.Name = "TreatUninitializedSubmodulesAsModifiedCheck";
-            this.TreatUninitializedSubmodulesAsModifiedCheck.Size = new System.Drawing.Size(223, 17);
-            this.TreatUninitializedSubmodulesAsModifiedCheck.TabIndex = 18;
-            this.TreatUninitializedSubmodulesAsModifiedCheck.Text = "Treat uninitialized submodules as modified";
-            this.TreatUninitializedSubmodulesAsModifiedCheck.UseVisualStyleBackColor = true;
-            // 
             // FasterSubmoduleUpdateDialog
             // 
             this.AcceptButton = this.UpdateSubmodulesButton;
-            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.CancelButton = this.Cancel;
-            this.ClientSize = new System.Drawing.Size(269, 198);
+            this.ClientSize = new System.Drawing.Size(314, 228);
             this.Controls.Add(this.Cancel);
             this.Controls.Add(this.UpdateSubmodulesButton);
             this.Controls.Add(this.OptionsGroupBox);
             this.Controls.Add(this.SubmodulesGroupBox);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.Fixed3D;
+            this.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             this.MaximizeBox = false;
             this.MinimizeBox = false;
             this.Name = "FasterSubmoduleUpdateDialog";

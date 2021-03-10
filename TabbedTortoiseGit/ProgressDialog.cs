@@ -98,7 +98,7 @@ namespace TabbedTortoiseGit
             InitializeComponent();
             this.Icon = Resources.TortoiseIcon;
 
-            MaxTasks = 6;
+            MaxTasks = TTG.DefaultMaxProcesses;
 
             CommandTextColor = Color.Green;
             ErrorTextColor = Color.DarkRed;

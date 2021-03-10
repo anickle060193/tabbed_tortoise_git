@@ -291,6 +291,15 @@ namespace TabbedTortoiseGit.Properties
                     e.Cancel = true;
                 }
             }
+            else if( e.SettingName == nameof( Settings.Default.FasterSubmoduleUpdateMaxProcesses ) )
+            {
+                int maxProcesses = (int)e.NewValue;
+                if( maxProcesses <= 0 )
+                {
+                    LOG.Debug( $"{nameof( Settings_SettingChanging )} - Invalid Max Faster Submodule Update Processes: {maxProcesses}" );
+                    e.Cancel = true;
+                }
+            }
             else if( e.SettingName == nameof( Settings.Default.FastFetchMaxProcesses ) )
             {
                 int maxProcesses = (int)e.NewValue;
@@ -505,14 +514,20 @@ namespace TabbedTortoiseGit.Properties
 
             if( Settings.Default.FastSubmoduleUpdateMaxProcesses <= 0 )
             {
-                LOG.Debug( $"{nameof( Settings_SettingsLoaded )} - Invalid Max Fast Submodule Update Processes: {Settings.Default.FastSubmoduleUpdateMaxProcesses}" );
-                Settings.Default.FastSubmoduleUpdateMaxProcesses = 6;
+                LOG.Debug( $"{nameof( Settings_SettingsLoaded )} - Invalid Max Fast Submodule Update Processes: {Settings.Default.FastSubmoduleUpdateMaxProcesses} -> {TTG.DefaultMaxProcesses}" );
+                Settings.Default.FastSubmoduleUpdateMaxProcesses = TTG.DefaultMaxProcesses;
+            }
+
+            if( Settings.Default.FasterSubmoduleUpdateMaxProcesses <= 0 )
+            {
+                LOG.Debug( $"{nameof( Settings_SettingsLoaded )} - Invalid Max Faster Submodule Update Processes: {Settings.Default.FasterSubmoduleUpdateMaxProcesses} -> {TTG.DefaultMaxProcesses}" );
+                Settings.Default.FasterSubmoduleUpdateMaxProcesses = TTG.DefaultMaxProcesses;
             }
 
             if( Settings.Default.FastFetchMaxProcesses <= 0 )
             {
-                LOG.Debug( $"{nameof( Settings_SettingsLoaded )} - Invalid Max Fast Fetch Processes: {Settings.Default.FastFetchMaxProcesses}" );
-                Settings.Default.FastFetchMaxProcesses = 6;
+                LOG.Debug( $"{nameof( Settings_SettingsLoaded )} - Invalid Max Fast Fetch Processes: {Settings.Default.FastFetchMaxProcesses} -> {TTG.DefaultMaxProcesses}" );
+                Settings.Default.FastFetchMaxProcesses = TTG.DefaultMaxProcesses;
             }
 
             if( Settings.Default.NormalTabFont == null )
