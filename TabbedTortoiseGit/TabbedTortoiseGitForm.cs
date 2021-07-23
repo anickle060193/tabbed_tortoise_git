@@ -797,7 +797,7 @@ namespace TabbedTortoiseGit
                         SubmodulesToolStripDropDown.Enabled = true;
                         SubmodulesToolStripDropDown.DropDownItems.Clear();
 
-                        var menus = new Dictionary<Tuple<int, String>, ToolStripMenuItem>();
+                        var menus = new Dictionary<String, ToolStripMenuItem>();
 
                         foreach( String submodule in currentTab.Submodules )
                         {
@@ -806,7 +806,7 @@ namespace TabbedTortoiseGit
                             var parent = SubmodulesToolStripDropDown.DropDownItems;
                             for( int i = 0; i < path.Length - 1; i++ )
                             {
-                                var key = Tuple.Create( i, path[ i ] );
+                                var key = String.Join( Path.DirectorySeparatorChar, path.Take( i + 1 ) );
                                 if( !menus.TryGetValue( key, out ToolStripMenuItem? item ) )
                                 {
                                     item = new ToolStripMenuItem( path[ i ] );
