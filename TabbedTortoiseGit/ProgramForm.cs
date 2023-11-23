@@ -77,7 +77,7 @@ namespace TabbedTortoiseGit
         {
             _startup = startup;
 
-            _watcher = new ManagementEventWatcher( new WqlEventQuery( "__InstanceCreationEvent", new TimeSpan( 10 ), TORTOISE_GIT_EVENT_QUERY ) );
+            _watcher = new ManagementEventWatcher( new WqlEventQuery( "__InstanceCreationEvent", TimeSpan.FromSeconds( 1 ), TORTOISE_GIT_EVENT_QUERY ) );
             _watcher.Options.Timeout = new TimeSpan( 0, 1, 0 );
             _watcher.EventArrived += Watcher_EventArrived;
             _watcher.Start();
