@@ -7,7 +7,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
-using System.Net;
+using System.Net.Http;
 using System.Reflection;
 using System.Text;
 using System.Text.RegularExpressions;
@@ -25,6 +25,18 @@ namespace TabbedTortoiseGit
         private static readonly String RUN_ON_STARTUP_KEY_NAME = "Tabbed TortoiseGit";
 
         private static readonly Regex RELEASE_URL_RE = new Regex( ".*/(?<version>[0-9.]+)$" );
+
+        private static readonly HttpClient httpClient;
+
+        static TTG()
+        {
+            httpClient = new( new HttpClientHandler()
+            {
+                AllowAutoRedirect = true,
+            } );
+            AssemblyName assembly = Assembly.GetExecutingAssembly().GetName();
+            httpClient.DefaultRequestHeaders.UserAgent.ParseAdd( $"{assembly.Name} {assembly.Version}" );
+        }
 
         public static String GetExe()
         {
@@ -87,7 +99,6 @@ namespace TabbedTortoiseGit
 
         public static async Task<Version?> IsUpToDate()
         {
-            var assembly = Assembly.GetExecutingAssembly().GetName();
             var currentVersion = Assembly.GetExecutingAssembly().GetName().Version;
 
             if( currentVersion == null )
@@ -98,19 +109,19 @@ namespace TabbedTortoiseGit
 
             Version? newestVersion = null;
 
-            ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12;
-
             try
             {
-                var request = WebRequest.CreateHttp( "https://github.com/anickle060193/tabbed_tortoise_git/releases/latest" );
-                request.AllowAutoRedirect = true;
+                using HttpResponseMessage response = await httpClient.GetAsync( "https://github.com/anickle060193/tabbed_tortoise_git/releases/latest" );
+                response.EnsureSuccessStatusCode();
 
-                using var response = (HttpWebResponse)( await request.GetResponseAsync() );
-
-                var versionString = RELEASE_URL_RE.Match( response.ResponseUri.AbsoluteUri )?.Groups?[ "version" ].Value;
-                if( versionString != null )
+                string? requestUrl = response.RequestMessage?.RequestUri?.AbsoluteUri;
+                if( requestUrl != null )
                 {
-                    newestVersion = new Version( versionString );
+                    string? versionString = RELEASE_URL_RE.Match( requestUrl )?.Groups?[ "version" ].Value;
+                    if( versionString != null )
+                    {
+                        newestVersion = new Version( versionString );
+                    }
                 }
             }
             catch( Exception e )
@@ -122,14 +133,7 @@ namespace TabbedTortoiseGit
             {
                 try
                 {
-                    HttpWebRequest request = (HttpWebRequest)WebRequest.Create( "https://raw.githubusercontent.com/anickle060193/tabbed_tortoise_git/master/TabbedTortoiseGit/TabbedTortoiseGit.csproj" );
-                    request.ContentType = "text/plain";
-                    request.Method = "GET";
-                    request.UserAgent = $"{assembly.Name} {currentVersion}";
-
-                    using WebResponse response = await request.GetResponseAsync();
-                    using StreamReader reader = new StreamReader( response.GetResponseStream() );
-                    String responseText = reader.ReadToEnd();
+                    string responseText = await httpClient.GetStringAsync( "https://raw.githubusercontent.com/anickle060193/tabbed_tortoise_git/master/TabbedTortoiseGit/TabbedTortoiseGit.csproj" );
 
                     var versionText = XElement.Parse( responseText )
                         ?.Element( "PropertyGroup" )
@@ -175,8 +179,10 @@ namespace TabbedTortoiseGit
             {
                 try
                 {
-                    using WebClient client = new WebClient();
-                    await client.DownloadFileTaskAsync( updateUrl, downloadLocation );
+                    using Stream downloadStream = await httpClient.GetStreamAsync( updateUrl );
+                    using FileStream fileStream = File.Open( downloadLocation, FileMode.OpenOrCreate );
+                    await downloadStream.CopyToAsync( fileStream );
+
                     downloaded = true;
                     break;
                 }
