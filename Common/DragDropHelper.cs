@@ -204,9 +204,9 @@ namespace Common
             try
             {
                 if( sender is TControl pointedParent
-                 && e.Data.GetDataPresent( typeof( DragDropItem<TControl, T> ) ) )
+                 && e.Data?.GetDataPresent( typeof( DragDropItem<TControl, T> ) ) == true )
                 {
-                    DragDropItem<TControl, T> d = (DragDropItem<TControl, T>)e.Data.GetData( typeof( DragDropItem<TControl, T> ) );
+                    DragDropItem<TControl, T> d = (DragDropItem<TControl, T>)e.Data.GetData( typeof( DragDropItem<TControl, T> ) )!;
 
                     OnDragMove( new DragMoveEventArgs<TControl, T>( d.DragParent, d.DragItem, d.DragItemIndex, d.DragStart, new Point( e.X, e.Y ) ) );
 
@@ -224,9 +224,9 @@ namespace Common
             try
             {
                 if( sender is TControl pointedParent
-                 && e.Data.GetDataPresent( typeof( DragDropItem<TControl, T> ) ) )
+                 && e.Data?.GetDataPresent( typeof( DragDropItem<TControl, T> ) ) == true )
                 {
-                    DragDropItem<TControl, T> d = (DragDropItem<TControl, T>)e.Data.GetData( typeof( DragDropItem<TControl, T> ) );
+                    DragDropItem<TControl, T> d = (DragDropItem<TControl, T>)e.Data.GetData( typeof( DragDropItem<TControl, T> ) )!;
 
                     MoveItemInternal( pointedParent, d, e, true );
                 }

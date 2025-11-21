@@ -947,7 +947,7 @@ namespace TabbedTortoiseGit
                 node.Tag = new List<DisplayReference>();
             }
 
-            List<DisplayReference> refs = (List<DisplayReference>)node.Tag;
+            List<DisplayReference> refs = (List<DisplayReference>)node.Tag!;
             DisplayReference displayRef = new DisplayReference( reference, String.Join( "/", splitRef, index + 1, splitRef.Length - index - 1 ) );
             refs.Add( displayRef );
 
@@ -967,7 +967,7 @@ namespace TabbedTortoiseGit
 
             if( selectedNode != null )
             {
-                IEnumerable<DisplayReference> references = (IEnumerable<DisplayReference>)selectedNode.Tag;
+                IEnumerable<DisplayReference> references = (IEnumerable<DisplayReference>)selectedNode.Tag!;
 
                 String filter = ReferencesFilter.Text;
                 if( !String.IsNullOrWhiteSpace( filter ) )

@@ -167,7 +167,7 @@ namespace Tabs
 
         protected override void SetBoundsCore( int x, int y, int width, int height, BoundsSpecified specified )
         {
-            Control parent = this.Parent;
+            Control? parent = this.Parent;
             if( parent is TabControl && parent.IsHandleCreated )
             {
                 Rectangle r = parent.DisplayRectangle;

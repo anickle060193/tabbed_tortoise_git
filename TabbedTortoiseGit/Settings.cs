@@ -349,7 +349,7 @@ namespace TabbedTortoiseGit.Properties
                 {
                     if( Settings.Default.GetPreviousVersion( "FavoriteReposString" ) is String reposString )
                     {
-                        Dictionary<String, String> favoritedRepos = JsonConvert.DeserializeObject<Dictionary<String, String>>( reposString );
+                        Dictionary<String, String>? favoritedRepos = JsonConvert.DeserializeObject<Dictionary<String, String>>( reposString );
 
                         FavoriteFolder root = Settings.Default.DefaultFavoriteRepos;
 
@@ -381,7 +381,7 @@ namespace TabbedTortoiseGit.Properties
                     {
                         if( Settings.Default.GetPreviousVersion( "FavoritedRepos" ) is String reposString )
                         {
-                            Dictionary<String, String> favoritedRepos = JsonConvert.DeserializeObject<Dictionary<String, String>>( reposString );
+                            Dictionary<String, String>? favoritedRepos = JsonConvert.DeserializeObject<Dictionary<String, String>>( reposString );
 
                             FavoriteFolder root = Settings.Default.DefaultFavoriteRepos;
 

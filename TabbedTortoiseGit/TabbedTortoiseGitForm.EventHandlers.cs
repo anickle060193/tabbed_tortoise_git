@@ -220,7 +220,7 @@ namespace TabbedTortoiseGit
 
         private void TabbedTortoiseGitForm_DragOver( object? sender, DragEventArgs e )
         {
-            if( e.Data.GetDataPresent( DataFormats.FileDrop ) )
+            if( e.Data?.GetDataPresent( DataFormats.FileDrop ) == true )
             {
                 if( e.Data.GetData( DataFormats.FileDrop ) is String[] files )
                 {
@@ -237,7 +237,7 @@ namespace TabbedTortoiseGit
 
         private async void TabbedTortoiseGitForm_DragDrop( object? sender, DragEventArgs e )
         {
-            if( e.Data.GetDataPresent( DataFormats.FileDrop ) )
+            if( e.Data?.GetDataPresent( DataFormats.FileDrop ) == true )
             {
                 if( e.Data.GetData( DataFormats.FileDrop ) is String[] files )
                 {
@@ -359,7 +359,7 @@ namespace TabbedTortoiseGit
         {
             if( e.Button == MouseButtons.Right )
             {
-                ToolStripItem favoriteItem = FavoritesMenuStrip.GetItemAt( e.Location );
+                ToolStripItem? favoriteItem = FavoritesMenuStrip.GetItemAt( e.Location );
                 if( favoriteItem == null )
                 {
                     FavoritesMenuContextMenu.Show( FavoritesMenuStrip, e.Location );
@@ -409,7 +409,7 @@ namespace TabbedTortoiseGit
 
                 _favoriteContextMenuOpen = true;
                 favoriteContextMenu.Tag = favorite;
-                favoriteContextMenu.Show( favoriteMenuItem.Owner, p );
+                favoriteContextMenu.Show( favoriteMenuItem.Owner!, p );
             }
             else if( e.Button == MouseButtons.Middle )
             {
@@ -434,7 +434,7 @@ namespace TabbedTortoiseGit
         private void OpenFavoriteRepoLocationContextMenuItem_Click( object? sender, EventArgs e )
         {
             if( sender is not ToolStripMenuItem contextMenuItem
-             || contextMenuItem.Owner.Tag is not Favorite favorite )
+             || contextMenuItem.Owner?.Tag is not Favorite favorite )
             {
                 return;
             }
@@ -463,7 +463,7 @@ namespace TabbedTortoiseGit
         private async void OpenFavoriteWithReferencesContextMenuItem_Click( object? sender, EventArgs e )
         {
             if( sender is not ToolStripMenuItem contextMenuItem
-             || contextMenuItem.Owner.Tag is not Favorite favorite )
+             || contextMenuItem.Owner?.Tag is not Favorite favorite )
             {
                 return;
             }
@@ -492,7 +492,7 @@ namespace TabbedTortoiseGit
         private async void GitCommandFavoriteContextMenuItem_Click( object? sender, EventArgs e )
         {
             if( sender is not ToolStripMenuItem contextMenuItem
-             || contextMenuItem.Owner.Tag is not Favorite favorite
+             || contextMenuItem.Owner?.Tag is not Favorite favorite
              || contextMenuItem.Tag is not GitActionFunc gitActionFunc )
             {
                 return;
@@ -518,7 +518,7 @@ namespace TabbedTortoiseGit
         private async void CustomActionFavoriteContextMenuItem_Click( object? sender, EventArgs e )
         {
             if( sender is not ToolStripMenuItem contextMenuItem
-             || contextMenuItem.Owner.Tag is not Favorite favorite
+             || contextMenuItem.Owner?.Tag is not Favorite favorite
              || contextMenuItem.Tag is not CustomAction customAction )
             {
                 return;
@@ -550,7 +550,7 @@ namespace TabbedTortoiseGit
             }
 
             if( sender is not ToolStripMenuItem contextMenuItem
-             || contextMenuItem.Owner.Tag is not Favorite favorite )
+             || contextMenuItem.Owner?.Tag is not Favorite favorite )
             {
                 return;
             }
@@ -601,7 +601,7 @@ namespace TabbedTortoiseGit
         private void RemoveFavoriteItemContextMenuItem_Click( object? sender, EventArgs e )
         {
             if( sender is not ToolStripMenuItem contextMenuItem
-             || contextMenuItem.Owner.Tag is not Favorite favorite )
+             || contextMenuItem.Owner?.Tag is not Favorite favorite )
             {
                 return;
             }
@@ -627,7 +627,8 @@ namespace TabbedTortoiseGit
         private void ShowDebugLogMenuItem_Click( object? sender, EventArgs e )
         {
             FileAppender? rootAppender = ( (Hierarchy)LogManager.GetRepository() ).Root.Appenders.OfType<FileAppender>().FirstOrDefault();
-            if( rootAppender != null )
+            if( rootAppender != null
+             && rootAppender.File != null )
             {
                 Util.OpenInExplorer( rootAppender.File );
             }
@@ -650,7 +651,7 @@ namespace TabbedTortoiseGit
                 return;
             }
 
-            await OpenLog( item.Text );
+            await OpenLog( item.Text! );
         }
 
         private void OpenRepoLocationTabMenuItem_Click( object? sender, EventArgs e )
@@ -811,7 +812,7 @@ namespace TabbedTortoiseGit
                 return;
             }
 
-            DisplayReference reference = (DisplayReference)ReferencesListBox.SelectedItem;
+            DisplayReference reference = (DisplayReference)ReferencesListBox.SelectedItem!;
 
             await OpenLog( controller.RepoItem, new[] { reference.Reference } );
         }
@@ -825,7 +826,7 @@ namespace TabbedTortoiseGit
                 return;
             }
 
-            DisplayReference reference = (DisplayReference)ReferencesListBox.SelectedItem;
+            DisplayReference reference = (DisplayReference)ReferencesListBox.SelectedItem!;
 
             ReferencesListBoxReferenceContextMenu.Tag = reference.Reference;
             ReferencesListBoxReferenceContextMenu.Show( ReferencesListBox, e.X, e.Y );

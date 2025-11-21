@@ -102,12 +102,12 @@ namespace TabbedTortoiseGit
         {
             get
             {
-                return _shortcutTextboxes.ToDictionary( pair => pair.Key, pair => (Shortcut)pair.Value.Tag );
+                return _shortcutTextboxes.ToDictionary( pair => pair.Key, pair => (Shortcut)pair.Value.Tag! );
             }
 
             set
             {
-                foreach( KeyboardShortcuts keyboardShortcut in Enum.GetValues( typeof( KeyboardShortcuts ) ) )
+                foreach( KeyboardShortcuts keyboardShortcut in Enum.GetValues<KeyboardShortcuts>() )
                 {
                     if( value.TryGetValue( keyboardShortcut, out Shortcut? shortcut ) )
                     {

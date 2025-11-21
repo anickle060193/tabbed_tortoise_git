@@ -93,12 +93,12 @@ namespace TabbedTortoiseGit
 
     class ShortcutConverter : TypeConverter
     {
-        public override bool CanConvertFrom( ITypeDescriptorContext context, Type sourceType )
+        public override bool CanConvertFrom( ITypeDescriptorContext? context, Type sourceType )
         {
             return sourceType == typeof( String );
         }
 
-        public override object ConvertFrom( ITypeDescriptorContext context, CultureInfo culture, object value )
+        public override object? ConvertFrom( ITypeDescriptorContext? context, CultureInfo? culture, object value )
         {
             if( value is String s )
             {
@@ -110,12 +110,12 @@ namespace TabbedTortoiseGit
             }
         }
 
-        public override bool CanConvertTo( ITypeDescriptorContext context, Type destinationType )
+        public override bool CanConvertTo( ITypeDescriptorContext? context, Type? destinationType )
         {
             return destinationType == typeof( String );
         }
 
-        public override object ConvertTo( ITypeDescriptorContext context, CultureInfo culture, object value, Type destinationType )
+        public override object? ConvertTo( ITypeDescriptorContext? context, CultureInfo? culture, object? value, Type destinationType )
         {
             if( destinationType == typeof( String ) )
             {

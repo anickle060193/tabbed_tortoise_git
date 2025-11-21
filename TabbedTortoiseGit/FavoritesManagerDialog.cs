@@ -69,7 +69,7 @@ namespace TabbedTortoiseGit
         {
             if( e.Button == MouseButtons.Right )
             {
-                TreeNode node = FavoritesTree.GetNodeAt( e.Location );
+                TreeNode? node = FavoritesTree.GetNodeAt( e.Location );
                 FavoritesTree.SelectedNode = node;
                 _selectedFavoriteItem = node?.Tag as Favorite ?? Favorites;
                 if( _selectedFavoriteItem != null )
@@ -417,7 +417,7 @@ namespace TabbedTortoiseGit
                 }
                 else
                 {
-                    Favorite favorite = (Favorite)treeNode.Tag;
+                    Favorite favorite = (Favorite)treeNode.Tag!;
                     item = new FavoritesDraggingItem( favorite, IsBefore( treeNode.Bounds, p ) );
                     itemIndex = favorite.NestedIndex;
                     return true;

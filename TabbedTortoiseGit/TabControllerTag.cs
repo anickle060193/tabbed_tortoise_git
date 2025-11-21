@@ -180,7 +180,7 @@ namespace TabbedTortoiseGit
         {
             Size sizeDiff = Native.ResizeToParent( this.Process.MainWindowHandle, this.Tab );
 
-            Form form = this.Tab.FindForm();
+            Form? form = this.Tab.FindForm();
 
             if( form != null )
             {
@@ -216,7 +216,7 @@ namespace TabbedTortoiseGit
     {
         public static TabControllerTag Controller( this Tab tab )
         {
-            return (TabControllerTag)tab.Tag;
+            return (TabControllerTag)tab.Tag!;
         }
     }
 }
