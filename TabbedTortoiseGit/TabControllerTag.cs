@@ -108,15 +108,32 @@ namespace TabbedTortoiseGit
 
         public void UpdateTabDisplay()
         {
+            Font font;
+            Color color;
             if( Settings.Default.IndicateModifiedTabs && this.Modified )
             {
-                this.Tab.Font = Settings.Default.ModifiedTabFont;
-                this.Tab.ForeColor = Settings.Default.ModifiedTabFontColor;
+                font = Settings.Default.ModifiedTabFont;
+                color = Settings.Default.ModifiedTabFontColor;
             }
             else
             {
-                this.Tab.Font = Settings.Default.NormalTabFont;
-                this.Tab.ForeColor = Settings.Default.NormalTabFontColor;
+                font = Settings.Default.NormalTabFont;
+                color = Settings.Default.NormalTabFontColor;
+            }
+
+            Tab tab = this.Tab;
+            if( tab.InvokeRequired )
+            {
+                tab.InvokeAsync( () =>
+                {
+                    tab.Font = font;
+                    tab.ForeColor = color;
+                } );
+            }
+            else
+            {
+                tab.Font = font;
+                tab.ForeColor = color;
             }
         }
 
