@@ -28,130 +28,128 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.FavoriteColorDialog = new System.Windows.Forms.ColorDialog();
-            this.ChangeFavoriteColorButton = new System.Windows.Forms.Button();
-            this.FavoriteNameText = new System.Windows.Forms.TextBox();
-            this.Ok = new System.Windows.Forms.Button();
-            this.Cancel = new System.Windows.Forms.Button();
-            this.FavoriteNameLabel = new System.Windows.Forms.Label();
-            this.BrowseButton = new System.Windows.Forms.Button();
-            this.FavoriteDirectoryText = new System.Windows.Forms.TextBox();
-            this.FavoriteDirectoryLabel = new System.Windows.Forms.Label();
-            this.favoriteReposFolderDialog = new System.Windows.Forms.FolderBrowserDialog();
-            this.SuspendLayout();
+            FavoriteColorDialog = new System.Windows.Forms.ColorDialog();
+            ChangeFavoriteColorButton = new System.Windows.Forms.Button();
+            FavoriteNameText = new System.Windows.Forms.TextBox();
+            Ok = new System.Windows.Forms.Button();
+            Cancel = new System.Windows.Forms.Button();
+            FavoriteNameLabel = new System.Windows.Forms.Label();
+            BrowseButton = new System.Windows.Forms.Button();
+            FavoriteDirectoryText = new System.Windows.Forms.TextBox();
+            FavoriteDirectoryLabel = new System.Windows.Forms.Label();
+            favoriteReposFolderDialog = new System.Windows.Forms.FolderBrowserDialog();
+            SuspendLayout();
             // 
             // FavoriteColorDialog
             // 
-            this.FavoriteColorDialog.AnyColor = true;
+            FavoriteColorDialog.AnyColor = true;
             // 
             // ChangeFavoriteColorButton
             // 
-            this.ChangeFavoriteColorButton.Location = new System.Drawing.Point(14, 77);
-            this.ChangeFavoriteColorButton.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
-            this.ChangeFavoriteColorButton.Name = "ChangeFavoriteColorButton";
-            this.ChangeFavoriteColorButton.Size = new System.Drawing.Size(35, 35);
-            this.ChangeFavoriteColorButton.TabIndex = 3;
-            this.ChangeFavoriteColorButton.UseVisualStyleBackColor = false;
+            ChangeFavoriteColorButton.Location = new System.Drawing.Point( 14, 77 );
+            ChangeFavoriteColorButton.Margin = new System.Windows.Forms.Padding( 4, 3, 4, 3 );
+            ChangeFavoriteColorButton.Name = "ChangeFavoriteColorButton";
+            ChangeFavoriteColorButton.Size = new System.Drawing.Size( 35, 35 );
+            ChangeFavoriteColorButton.TabIndex = 3;
+            ChangeFavoriteColorButton.UseVisualStyleBackColor = false;
             // 
             // FavoriteNameText
             // 
-            this.FavoriteNameText.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.FavoriteNameText.Location = new System.Drawing.Point(66, 44);
-            this.FavoriteNameText.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
-            this.FavoriteNameText.Name = "FavoriteNameText";
-            this.FavoriteNameText.Size = new System.Drawing.Size(420, 23);
-            this.FavoriteNameText.TabIndex = 2;
+            FavoriteNameText.Anchor =   System.Windows.Forms.AnchorStyles.Top  |  System.Windows.Forms.AnchorStyles.Left   |  System.Windows.Forms.AnchorStyles.Right ;
+            FavoriteNameText.Location = new System.Drawing.Point( 66, 44 );
+            FavoriteNameText.Margin = new System.Windows.Forms.Padding( 4, 3, 4, 3 );
+            FavoriteNameText.Name = "FavoriteNameText";
+            FavoriteNameText.Size = new System.Drawing.Size( 420, 23 );
+            FavoriteNameText.TabIndex = 2;
             // 
             // Ok
             // 
-            this.Ok.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.Ok.Location = new System.Drawing.Point(306, 85);
-            this.Ok.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
-            this.Ok.Name = "Ok";
-            this.Ok.Size = new System.Drawing.Size(88, 27);
-            this.Ok.TabIndex = 4;
-            this.Ok.Text = "OK";
-            this.Ok.UseVisualStyleBackColor = true;
+            Ok.Anchor =  System.Windows.Forms.AnchorStyles.Top  |  System.Windows.Forms.AnchorStyles.Right ;
+            Ok.Location = new System.Drawing.Point( 306, 85 );
+            Ok.Margin = new System.Windows.Forms.Padding( 4, 3, 4, 3 );
+            Ok.Name = "Ok";
+            Ok.Size = new System.Drawing.Size( 88, 27 );
+            Ok.TabIndex = 4;
+            Ok.Text = "OK";
+            Ok.UseVisualStyleBackColor = true;
             // 
             // Cancel
             // 
-            this.Cancel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.Cancel.DialogResult = System.Windows.Forms.DialogResult.Cancel;
-            this.Cancel.Location = new System.Drawing.Point(400, 85);
-            this.Cancel.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
-            this.Cancel.Name = "Cancel";
-            this.Cancel.Size = new System.Drawing.Size(88, 27);
-            this.Cancel.TabIndex = 5;
-            this.Cancel.Text = "Cancel";
-            this.Cancel.UseVisualStyleBackColor = true;
+            Cancel.Anchor =  System.Windows.Forms.AnchorStyles.Top  |  System.Windows.Forms.AnchorStyles.Right ;
+            Cancel.DialogResult = System.Windows.Forms.DialogResult.Cancel;
+            Cancel.Location = new System.Drawing.Point( 400, 85 );
+            Cancel.Margin = new System.Windows.Forms.Padding( 4, 3, 4, 3 );
+            Cancel.Name = "Cancel";
+            Cancel.Size = new System.Drawing.Size( 88, 27 );
+            Cancel.TabIndex = 5;
+            Cancel.Text = "Cancel";
+            Cancel.UseVisualStyleBackColor = true;
             // 
             // FavoriteNameLabel
             // 
-            this.FavoriteNameLabel.AutoSize = true;
-            this.FavoriteNameLabel.Location = new System.Drawing.Point(14, 47);
-            this.FavoriteNameLabel.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
-            this.FavoriteNameLabel.Name = "FavoriteNameLabel";
-            this.FavoriteNameLabel.Size = new System.Drawing.Size(42, 15);
-            this.FavoriteNameLabel.TabIndex = 4;
-            this.FavoriteNameLabel.Text = "Name:";
+            FavoriteNameLabel.AutoSize = true;
+            FavoriteNameLabel.Location = new System.Drawing.Point( 14, 47 );
+            FavoriteNameLabel.Margin = new System.Windows.Forms.Padding( 4, 0, 4, 0 );
+            FavoriteNameLabel.Name = "FavoriteNameLabel";
+            FavoriteNameLabel.Size = new System.Drawing.Size( 42, 15 );
+            FavoriteNameLabel.TabIndex = 4;
+            FavoriteNameLabel.Text = "Name:";
             // 
             // BrowseButton
             // 
-            this.BrowseButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.BrowseButton.Location = new System.Drawing.Point(458, 13);
-            this.BrowseButton.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
-            this.BrowseButton.Name = "BrowseButton";
-            this.BrowseButton.Size = new System.Drawing.Size(29, 24);
-            this.BrowseButton.TabIndex = 1;
-            this.BrowseButton.Text = "...";
-            this.BrowseButton.UseVisualStyleBackColor = true;
+            BrowseButton.Anchor =  System.Windows.Forms.AnchorStyles.Top  |  System.Windows.Forms.AnchorStyles.Right ;
+            BrowseButton.Location = new System.Drawing.Point( 458, 13 );
+            BrowseButton.Margin = new System.Windows.Forms.Padding( 4, 3, 4, 3 );
+            BrowseButton.Name = "BrowseButton";
+            BrowseButton.Size = new System.Drawing.Size( 29, 24 );
+            BrowseButton.TabIndex = 1;
+            BrowseButton.Text = "...";
+            BrowseButton.UseVisualStyleBackColor = true;
             // 
             // FavoriteDirectoryText
             // 
-            this.FavoriteDirectoryText.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.FavoriteDirectoryText.Location = new System.Drawing.Point(66, 14);
-            this.FavoriteDirectoryText.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
-            this.FavoriteDirectoryText.Name = "FavoriteDirectoryText";
-            this.FavoriteDirectoryText.Size = new System.Drawing.Size(384, 23);
-            this.FavoriteDirectoryText.TabIndex = 0;
+            FavoriteDirectoryText.Anchor =   System.Windows.Forms.AnchorStyles.Top  |  System.Windows.Forms.AnchorStyles.Left   |  System.Windows.Forms.AnchorStyles.Right ;
+            FavoriteDirectoryText.Location = new System.Drawing.Point( 66, 14 );
+            FavoriteDirectoryText.Margin = new System.Windows.Forms.Padding( 4, 3, 4, 3 );
+            FavoriteDirectoryText.Name = "FavoriteDirectoryText";
+            FavoriteDirectoryText.Size = new System.Drawing.Size( 384, 23 );
+            FavoriteDirectoryText.TabIndex = 0;
             // 
             // FavoriteDirectoryLabel
             // 
-            this.FavoriteDirectoryLabel.AutoSize = true;
-            this.FavoriteDirectoryLabel.Location = new System.Drawing.Point(14, 17);
-            this.FavoriteDirectoryLabel.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
-            this.FavoriteDirectoryLabel.Name = "FavoriteDirectoryLabel";
-            this.FavoriteDirectoryLabel.Size = new System.Drawing.Size(43, 15);
-            this.FavoriteDirectoryLabel.TabIndex = 8;
-            this.FavoriteDirectoryLabel.Text = "Folder:";
+            FavoriteDirectoryLabel.AutoSize = true;
+            FavoriteDirectoryLabel.Location = new System.Drawing.Point( 14, 17 );
+            FavoriteDirectoryLabel.Margin = new System.Windows.Forms.Padding( 4, 0, 4, 0 );
+            FavoriteDirectoryLabel.Name = "FavoriteDirectoryLabel";
+            FavoriteDirectoryLabel.Size = new System.Drawing.Size( 43, 15 );
+            FavoriteDirectoryLabel.TabIndex = 8;
+            FavoriteDirectoryLabel.Text = "Folder:";
             // 
             // FavoriteReposDirectoryCreatorDialog
             // 
-            this.AcceptButton = this.Ok;
-            this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
-            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.CancelButton = this.Cancel;
-            this.ClientSize = new System.Drawing.Size(502, 123);
-            this.Controls.Add(this.FavoriteDirectoryLabel);
-            this.Controls.Add(this.FavoriteDirectoryText);
-            this.Controls.Add(this.BrowseButton);
-            this.Controls.Add(this.FavoriteNameLabel);
-            this.Controls.Add(this.FavoriteNameText);
-            this.Controls.Add(this.Ok);
-            this.Controls.Add(this.Cancel);
-            this.Controls.Add(this.ChangeFavoriteColorButton);
-            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.Fixed3D;
-            this.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
-            this.MaximizeBox = false;
-            this.MinimizeBox = false;
-            this.Name = "FavoriteReposDirectoryCreatorDialog";
-            this.ShowInTaskbar = false;
-            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
-            this.Text = "Favorite Repos Folder";
-            this.ResumeLayout(false);
-            this.PerformLayout();
+            AcceptButton = Ok;
+            AutoScaleDimensions = new System.Drawing.SizeF( 7F, 15F );
+            AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            CancelButton = Cancel;
+            ClientSize = new System.Drawing.Size( 502, 123 );
+            Controls.Add( FavoriteDirectoryLabel );
+            Controls.Add( FavoriteDirectoryText );
+            Controls.Add( BrowseButton );
+            Controls.Add( FavoriteNameLabel );
+            Controls.Add( FavoriteNameText );
+            Controls.Add( Ok );
+            Controls.Add( Cancel );
+            Controls.Add( ChangeFavoriteColorButton );
+            FormBorderStyle = System.Windows.Forms.FormBorderStyle.Fixed3D;
+            Margin = new System.Windows.Forms.Padding( 4, 3, 4, 3 );
+            MaximizeBox = false;
+            MinimizeBox = false;
+            Name = "FavoriteReposDirectoryCreatorDialog";
+            ShowInTaskbar = false;
+            StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
+            Text = "Favorite Repos Folder";
+            ResumeLayout( false );
+            PerformLayout();
 
         }
 

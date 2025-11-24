@@ -29,89 +29,87 @@ namespace TabbedTortoiseGit
         /// </summary>
         private void InitializeComponent()
         {
-            this.actionsPanel = new System.Windows.Forms.Panel();
-            this.yesButton = new System.Windows.Forms.Button();
-            this.noButton = new System.Windows.Forms.Button();
-            this.doNotAskAgainCheckBox = new System.Windows.Forms.CheckBox();
-            this.messageLabel = new System.Windows.Forms.Label();
-            this.actionsPanel.SuspendLayout();
-            this.SuspendLayout();
+            actionsPanel = new System.Windows.Forms.Panel();
+            yesButton = new System.Windows.Forms.Button();
+            noButton = new System.Windows.Forms.Button();
+            doNotAskAgainCheckBox = new System.Windows.Forms.CheckBox();
+            messageLabel = new System.Windows.Forms.Label();
+            actionsPanel.SuspendLayout();
+            SuspendLayout();
             // 
             // actionsPanel
             // 
-            this.actionsPanel.BackColor = System.Drawing.SystemColors.ControlLight;
-            this.actionsPanel.Controls.Add(this.yesButton);
-            this.actionsPanel.Controls.Add(this.noButton);
-            this.actionsPanel.Controls.Add(this.doNotAskAgainCheckBox);
-            this.actionsPanel.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.actionsPanel.Location = new System.Drawing.Point(0, 84);
-            this.actionsPanel.Name = "actionsPanel";
-            this.actionsPanel.Size = new System.Drawing.Size(379, 47);
-            this.actionsPanel.TabIndex = 0;
+            actionsPanel.BackColor = System.Drawing.SystemColors.ControlLight;
+            actionsPanel.Controls.Add( yesButton );
+            actionsPanel.Controls.Add( noButton );
+            actionsPanel.Controls.Add( doNotAskAgainCheckBox );
+            actionsPanel.Dock = System.Windows.Forms.DockStyle.Bottom;
+            actionsPanel.Location = new System.Drawing.Point( 0, 84 );
+            actionsPanel.Name = "actionsPanel";
+            actionsPanel.Size = new System.Drawing.Size( 379, 47 );
+            actionsPanel.TabIndex = 0;
             // 
             // yesButton
             // 
-            this.yesButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.yesButton.DialogResult = System.Windows.Forms.DialogResult.Yes;
-            this.yesButton.Location = new System.Drawing.Point(211, 12);
-            this.yesButton.Name = "yesButton";
-            this.yesButton.Size = new System.Drawing.Size(75, 23);
-            this.yesButton.TabIndex = 2;
-            this.yesButton.Text = "Yes";
-            this.yesButton.UseVisualStyleBackColor = true;
+            yesButton.Anchor =  System.Windows.Forms.AnchorStyles.Bottom  |  System.Windows.Forms.AnchorStyles.Right ;
+            yesButton.DialogResult = System.Windows.Forms.DialogResult.Yes;
+            yesButton.Location = new System.Drawing.Point( 211, 12 );
+            yesButton.Name = "yesButton";
+            yesButton.Size = new System.Drawing.Size( 75, 23 );
+            yesButton.TabIndex = 2;
+            yesButton.Text = "Yes";
+            yesButton.UseVisualStyleBackColor = true;
             // 
             // noButton
             // 
-            this.noButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.noButton.DialogResult = System.Windows.Forms.DialogResult.No;
-            this.noButton.Location = new System.Drawing.Point(292, 12);
-            this.noButton.Name = "noButton";
-            this.noButton.Size = new System.Drawing.Size(75, 23);
-            this.noButton.TabIndex = 1;
-            this.noButton.Text = "No";
-            this.noButton.UseVisualStyleBackColor = true;
+            noButton.Anchor =  System.Windows.Forms.AnchorStyles.Bottom  |  System.Windows.Forms.AnchorStyles.Right ;
+            noButton.DialogResult = System.Windows.Forms.DialogResult.No;
+            noButton.Location = new System.Drawing.Point( 292, 12 );
+            noButton.Name = "noButton";
+            noButton.Size = new System.Drawing.Size( 75, 23 );
+            noButton.TabIndex = 1;
+            noButton.Text = "No";
+            noButton.UseVisualStyleBackColor = true;
             // 
             // doNotAskAgainCheckBox
             // 
-            this.doNotAskAgainCheckBox.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.doNotAskAgainCheckBox.AutoSize = true;
-            this.doNotAskAgainCheckBox.Location = new System.Drawing.Point(12, 15);
-            this.doNotAskAgainCheckBox.Name = "doNotAskAgainCheckBox";
-            this.doNotAskAgainCheckBox.Size = new System.Drawing.Size(134, 19);
-            this.doNotAskAgainCheckBox.TabIndex = 0;
-            this.doNotAskAgainCheckBox.Text = "Do not ask me again";
-            this.doNotAskAgainCheckBox.UseVisualStyleBackColor = true;
+            doNotAskAgainCheckBox.Anchor =  System.Windows.Forms.AnchorStyles.Bottom  |  System.Windows.Forms.AnchorStyles.Left ;
+            doNotAskAgainCheckBox.AutoSize = true;
+            doNotAskAgainCheckBox.Location = new System.Drawing.Point( 12, 15 );
+            doNotAskAgainCheckBox.Name = "doNotAskAgainCheckBox";
+            doNotAskAgainCheckBox.Size = new System.Drawing.Size( 134, 19 );
+            doNotAskAgainCheckBox.TabIndex = 0;
+            doNotAskAgainCheckBox.Text = "Do not ask me again";
+            doNotAskAgainCheckBox.UseVisualStyleBackColor = true;
             // 
             // messageLabel
             // 
-            this.messageLabel.AutoEllipsis = true;
-            this.messageLabel.Location = new System.Drawing.Point(12, 9);
-            this.messageLabel.Name = "messageLabel";
-            this.messageLabel.Size = new System.Drawing.Size(355, 72);
-            this.messageLabel.TabIndex = 1;
-            this.messageLabel.Text = "Message";
-            this.messageLabel.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            messageLabel.Location = new System.Drawing.Point( 12, 9 );
+            messageLabel.Name = "messageLabel";
+            messageLabel.Size = new System.Drawing.Size( 355, 72 );
+            messageLabel.TabIndex = 1;
+            messageLabel.Text = "Message";
+            messageLabel.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
             // ConfirmationDialog
             // 
-            this.AcceptButton = this.yesButton;
-            this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
-            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.CancelButton = this.noButton;
-            this.ClientSize = new System.Drawing.Size(379, 131);
-            this.ControlBox = false;
-            this.Controls.Add(this.messageLabel);
-            this.Controls.Add(this.actionsPanel);
-            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedToolWindow;
-            this.MaximizeBox = false;
-            this.MinimizeBox = false;
-            this.Name = "ConfirmationDialog";
-            this.SizeGripStyle = System.Windows.Forms.SizeGripStyle.Hide;
-            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
-            this.Text = "Title";
-            this.actionsPanel.ResumeLayout(false);
-            this.actionsPanel.PerformLayout();
-            this.ResumeLayout(false);
+            AcceptButton = yesButton;
+            AutoScaleDimensions = new System.Drawing.SizeF( 7F, 15F );
+            AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            CancelButton = noButton;
+            ClientSize = new System.Drawing.Size( 379, 131 );
+            ControlBox = false;
+            Controls.Add( messageLabel );
+            Controls.Add( actionsPanel );
+            MaximizeBox = false;
+            MinimizeBox = false;
+            Name = "ConfirmationDialog";
+            SizeGripStyle = System.Windows.Forms.SizeGripStyle.Hide;
+            StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
+            Text = "Title";
+            actionsPanel.ResumeLayout( false );
+            actionsPanel.PerformLayout();
+            ResumeLayout( false );
 
         }
 

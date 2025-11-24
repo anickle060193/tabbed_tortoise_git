@@ -40,6 +40,7 @@ namespace TabbedTortoiseGit
         public ConfirmationDialog( String title, String message)
         {
             InitializeComponent();
+            FormBorderStyle = FormBorderStyle.FixedSingle;
 
             Icon = Resources.TortoiseIcon;
 

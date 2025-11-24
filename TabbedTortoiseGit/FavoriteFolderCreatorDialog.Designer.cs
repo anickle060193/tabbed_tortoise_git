@@ -28,86 +28,91 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.FavoriteColorDialog = new System.Windows.Forms.ColorDialog();
-            this.ChangeFavoriteColorButton = new System.Windows.Forms.Button();
-            this.FavoriteNameText = new System.Windows.Forms.TextBox();
-            this.Ok = new System.Windows.Forms.Button();
-            this.Cancel = new System.Windows.Forms.Button();
-            this.FavoriteNameLabel = new System.Windows.Forms.Label();
-            this.SuspendLayout();
+            FavoriteColorDialog = new System.Windows.Forms.ColorDialog();
+            ChangeFavoriteColorButton = new System.Windows.Forms.Button();
+            FavoriteNameText = new System.Windows.Forms.TextBox();
+            Ok = new System.Windows.Forms.Button();
+            Cancel = new System.Windows.Forms.Button();
+            FavoriteNameLabel = new System.Windows.Forms.Label();
+            SuspendLayout();
             // 
             // FavoriteColorDialog
             // 
-            this.FavoriteColorDialog.AnyColor = true;
+            FavoriteColorDialog.AnyColor = true;
             // 
             // ChangeFavoriteColorButton
             // 
-            this.ChangeFavoriteColorButton.Location = new System.Drawing.Point(15, 38);
-            this.ChangeFavoriteColorButton.Name = "ChangeFavoriteColorButton";
-            this.ChangeFavoriteColorButton.Size = new System.Drawing.Size(30, 30);
-            this.ChangeFavoriteColorButton.TabIndex = 1;
-            this.ChangeFavoriteColorButton.UseVisualStyleBackColor = false;
+            ChangeFavoriteColorButton.Location = new System.Drawing.Point( 18, 44 );
+            ChangeFavoriteColorButton.Margin = new System.Windows.Forms.Padding( 4, 3, 4, 3 );
+            ChangeFavoriteColorButton.Name = "ChangeFavoriteColorButton";
+            ChangeFavoriteColorButton.Size = new System.Drawing.Size( 35, 35 );
+            ChangeFavoriteColorButton.TabIndex = 1;
+            ChangeFavoriteColorButton.UseVisualStyleBackColor = false;
             // 
             // FavoriteNameText
             // 
-            this.FavoriteNameText.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.FavoriteNameText.Location = new System.Drawing.Point(56, 12);
-            this.FavoriteNameText.Name = "FavoriteNameText";
-            this.FavoriteNameText.Size = new System.Drawing.Size(362, 20);
-            this.FavoriteNameText.TabIndex = 0;
+            FavoriteNameText.Anchor =   System.Windows.Forms.AnchorStyles.Top  |  System.Windows.Forms.AnchorStyles.Left   |  System.Windows.Forms.AnchorStyles.Right ;
+            FavoriteNameText.Location = new System.Drawing.Point( 65, 14 );
+            FavoriteNameText.Margin = new System.Windows.Forms.Padding( 4, 3, 4, 3 );
+            FavoriteNameText.Name = "FavoriteNameText";
+            FavoriteNameText.Size = new System.Drawing.Size( 422, 23 );
+            FavoriteNameText.TabIndex = 0;
             // 
             // Ok
             // 
-            this.Ok.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.Ok.Location = new System.Drawing.Point(262, 45);
-            this.Ok.Name = "Ok";
-            this.Ok.Size = new System.Drawing.Size(75, 23);
-            this.Ok.TabIndex = 2;
-            this.Ok.Text = "OK";
-            this.Ok.UseVisualStyleBackColor = true;
+            Ok.Anchor =  System.Windows.Forms.AnchorStyles.Top  |  System.Windows.Forms.AnchorStyles.Right ;
+            Ok.Location = new System.Drawing.Point( 306, 52 );
+            Ok.Margin = new System.Windows.Forms.Padding( 4, 3, 4, 3 );
+            Ok.Name = "Ok";
+            Ok.Size = new System.Drawing.Size( 88, 27 );
+            Ok.TabIndex = 2;
+            Ok.Text = "OK";
+            Ok.UseVisualStyleBackColor = true;
             // 
             // Cancel
             // 
-            this.Cancel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.Cancel.DialogResult = System.Windows.Forms.DialogResult.Cancel;
-            this.Cancel.Location = new System.Drawing.Point(343, 45);
-            this.Cancel.Name = "Cancel";
-            this.Cancel.Size = new System.Drawing.Size(75, 23);
-            this.Cancel.TabIndex = 3;
-            this.Cancel.Text = "Cancel";
-            this.Cancel.UseVisualStyleBackColor = true;
+            Cancel.Anchor =  System.Windows.Forms.AnchorStyles.Top  |  System.Windows.Forms.AnchorStyles.Right ;
+            Cancel.DialogResult = System.Windows.Forms.DialogResult.Cancel;
+            Cancel.Location = new System.Drawing.Point( 400, 52 );
+            Cancel.Margin = new System.Windows.Forms.Padding( 4, 3, 4, 3 );
+            Cancel.Name = "Cancel";
+            Cancel.Size = new System.Drawing.Size( 88, 27 );
+            Cancel.TabIndex = 3;
+            Cancel.Text = "Cancel";
+            Cancel.UseVisualStyleBackColor = true;
             // 
             // FavoriteNameLabel
             // 
-            this.FavoriteNameLabel.AutoSize = true;
-            this.FavoriteNameLabel.Location = new System.Drawing.Point(12, 15);
-            this.FavoriteNameLabel.Name = "FavoriteNameLabel";
-            this.FavoriteNameLabel.Size = new System.Drawing.Size(38, 13);
-            this.FavoriteNameLabel.TabIndex = 4;
-            this.FavoriteNameLabel.Text = "Name:";
+            FavoriteNameLabel.AutoSize = true;
+            FavoriteNameLabel.Location = new System.Drawing.Point( 14, 17 );
+            FavoriteNameLabel.Margin = new System.Windows.Forms.Padding( 4, 0, 4, 0 );
+            FavoriteNameLabel.Name = "FavoriteNameLabel";
+            FavoriteNameLabel.Size = new System.Drawing.Size( 42, 15 );
+            FavoriteNameLabel.TabIndex = 4;
+            FavoriteNameLabel.Text = "Name:";
             // 
             // FavoriteFolderCreatorDialog
             // 
-            this.AcceptButton = this.Ok;
-            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
-            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.CancelButton = this.Cancel;
-            this.ClientSize = new System.Drawing.Size(430, 77);
-            this.Controls.Add(this.FavoriteNameLabel);
-            this.Controls.Add(this.Ok);
-            this.Controls.Add(this.FavoriteNameText);
-            this.Controls.Add(this.Cancel);
-            this.Controls.Add(this.ChangeFavoriteColorButton);
-            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.Fixed3D;
-            this.MaximizeBox = false;
-            this.MinimizeBox = false;
-            this.Name = "FavoriteFolderCreatorDialog";
-            this.ShowInTaskbar = false;
-            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
-            this.Text = "Favorite Folder";
-            this.ResumeLayout(false);
-            this.PerformLayout();
+            AcceptButton = Ok;
+            AutoScaleDimensions = new System.Drawing.SizeF( 7F, 15F );
+            AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            CancelButton = Cancel;
+            ClientSize = new System.Drawing.Size( 502, 89 );
+            Controls.Add( FavoriteNameLabel );
+            Controls.Add( Ok );
+            Controls.Add( FavoriteNameText );
+            Controls.Add( Cancel );
+            Controls.Add( ChangeFavoriteColorButton );
+            FormBorderStyle = System.Windows.Forms.FormBorderStyle.Fixed3D;
+            Margin = new System.Windows.Forms.Padding( 4, 3, 4, 3 );
+            MaximizeBox = false;
+            MinimizeBox = false;
+            Name = "FavoriteFolderCreatorDialog";
+            ShowInTaskbar = false;
+            StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
+            Text = "Favorite Folder";
+            ResumeLayout( false );
+            PerformLayout();
 
         }
 

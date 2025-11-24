@@ -30,860 +30,816 @@ namespace TabbedTortoiseGit
         /// </summary>
         private void InitializeComponent()
         {
-            this.components = new System.ComponentModel.Container();
-            this.StartupReposList = new System.Windows.Forms.ListBox();
-            this.AddDefaultRepo = new System.Windows.Forms.Button();
-            this.OK = new System.Windows.Forms.Button();
-            this.Cancel = new System.Windows.Forms.Button();
-            this.RemoveDefaultRepo = new System.Windows.Forms.Button();
-            this.OpenStartupReposOnReOpenCheck = new System.Windows.Forms.CheckBox();
-            this.RunOnStartupCheck = new System.Windows.Forms.CheckBox();
-            this.ConfirmOnCloseCheck = new System.Windows.Forms.CheckBox();
-            this.MaxRecentReposNumeric = new System.Windows.Forms.NumericUpDown();
-            this.MaxRecentReposLabel = new System.Windows.Forms.Label();
-            this.GitActionsLabel = new System.Windows.Forms.Label();
-            this.GitActionsCheckList = new System.Windows.Forms.CheckedListBox();
-            this.SettingsToolTip = new System.Windows.Forms.ToolTip(this.components);
-            this.SettingsTabs = new System.Windows.Forms.TabControl();
-            this.KeyboardShortcutsPage = new System.Windows.Forms.TabPage();
-            this.KeyBoardShortcutsTableLayout = new System.Windows.Forms.TableLayoutPanel();
-            this.StartupReposTab = new System.Windows.Forms.TabPage();
-            this.GitActionsTab = new System.Windows.Forms.TabPage();
-            this.GitActionsOptionsGroup = new System.Windows.Forms.GroupBox();
-            this.ConfirmFasterFetchCheck = new System.Windows.Forms.CheckBox();
-            this.CustomActionsTab = new System.Windows.Forms.TabPage();
-            this.EditCustomAction = new System.Windows.Forms.Button();
-            this.RemoveCustomAction = new System.Windows.Forms.Button();
-            this.CreateCustomAction = new System.Windows.Forms.Button();
-            this.CustomActionsDataGridView = new System.Windows.Forms.DataGridView();
-            this.CustomActionNameColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.CustomActionProgramColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.CustomActionArgumentsColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.WorkingDirectory = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.RefreshLogAfter = new System.Windows.Forms.DataGridViewCheckBoxColumn();
-            this.ShowProgressDialog = new System.Windows.Forms.DataGridViewCheckBoxColumn();
-            this.CreateNoWindow = new System.Windows.Forms.DataGridViewCheckBoxColumn();
-            this.DisplaySettingsTab = new System.Windows.Forms.TabPage();
-            this.HideReferencesDisplayCheck = new System.Windows.Forms.CheckBox();
-            this.ResetNormalTabFontButton = new System.Windows.Forms.Button();
-            this.ChangeNormalTabFontButton = new System.Windows.Forms.Button();
-            this.NormalTabFontGroup = new System.Windows.Forms.GroupBox();
-            this.NormalTabFontSample = new System.Windows.Forms.Label();
-            this.CheckForModifiedTabsIntervalLabel = new System.Windows.Forms.Label();
-            this.CheckForModifiedTabsIntervalNumeric = new System.Windows.Forms.NumericUpDown();
-            this.IndicateModifiedTabsCheck = new System.Windows.Forms.CheckBox();
-            this.ResetModifiedTabFontButton = new System.Windows.Forms.Button();
-            this.ChangeModifiedTabFontButton = new System.Windows.Forms.Button();
-            this.ModifiedTabFontGroup = new System.Windows.Forms.GroupBox();
-            this.ModifiedTabFontSample = new System.Windows.Forms.Label();
-            this.OtherSettingsTab = new System.Windows.Forms.TabPage();
-            this.TortoiseGitProcExeLocationBrowse = new System.Windows.Forms.Button();
-            this.TortoiseGitProcExeLocationText = new System.Windows.Forms.TextBox();
-            this.TortoiseGitProcExeLocationLabel = new System.Windows.Forms.Label();
-            this.ShowChangelogOnUpdateCheck = new System.Windows.Forms.CheckBox();
-            this.CheckTortoiseGitOnPathCheck = new System.Windows.Forms.CheckBox();
-            this.CloseWindowOnLastTabClosedCheck = new System.Windows.Forms.CheckBox();
-            this.CloseToSystemTrayCheck = new System.Windows.Forms.CheckBox();
-            this.DeveloperSettingsPage = new System.Windows.Forms.TabPage();
-            this.ShowHitTestCheck = new System.Windows.Forms.CheckBox();
-            this.ModifiedTabFontDialog = new System.Windows.Forms.FontDialog();
-            this.NormalTabFontDialog = new System.Windows.Forms.FontDialog();
-            this.TortoiseGitProcExeLocationDialog = new System.Windows.Forms.OpenFileDialog();
-            this.folderDialog = new System.Windows.Forms.FolderBrowserDialog();
-            this.restoreSettingsButton = new System.Windows.Forms.Button();
-            ((System.ComponentModel.ISupportInitialize)(this.MaxRecentReposNumeric)).BeginInit();
-            this.SettingsTabs.SuspendLayout();
-            this.KeyboardShortcutsPage.SuspendLayout();
-            this.StartupReposTab.SuspendLayout();
-            this.GitActionsTab.SuspendLayout();
-            this.GitActionsOptionsGroup.SuspendLayout();
-            this.CustomActionsTab.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.CustomActionsDataGridView)).BeginInit();
-            this.DisplaySettingsTab.SuspendLayout();
-            this.NormalTabFontGroup.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.CheckForModifiedTabsIntervalNumeric)).BeginInit();
-            this.ModifiedTabFontGroup.SuspendLayout();
-            this.OtherSettingsTab.SuspendLayout();
-            this.DeveloperSettingsPage.SuspendLayout();
-            this.SuspendLayout();
+            components = new System.ComponentModel.Container();
+            StartupReposList = new ListBox();
+            AddDefaultRepo = new Button();
+            OK = new Button();
+            Cancel = new Button();
+            RemoveDefaultRepo = new Button();
+            OpenStartupReposOnReOpenCheck = new CheckBox();
+            RunOnStartupCheck = new CheckBox();
+            ConfirmOnCloseCheck = new CheckBox();
+            MaxRecentReposNumeric = new NumericUpDown();
+            MaxRecentReposLabel = new Label();
+            GitActionsLabel = new Label();
+            GitActionsCheckList = new CheckedListBox();
+            SettingsToolTip = new ToolTip( components );
+            SettingsTabs = new TabControl();
+            KeyboardShortcutsPage = new TabPage();
+            KeyBoardShortcutsTableLayout = new TableLayoutPanel();
+            StartupReposTab = new TabPage();
+            GitActionsTab = new TabPage();
+            GitActionsOptionsGroup = new GroupBox();
+            ConfirmFasterFetchCheck = new CheckBox();
+            CustomActionsTab = new TabPage();
+            EditCustomAction = new Button();
+            RemoveCustomAction = new Button();
+            CreateCustomAction = new Button();
+            CustomActionsDataGridView = new DataGridView();
+            CustomActionNameColumn = new DataGridViewTextBoxColumn();
+            CustomActionProgramColumn = new DataGridViewTextBoxColumn();
+            CustomActionArgumentsColumn = new DataGridViewTextBoxColumn();
+            WorkingDirectory = new DataGridViewTextBoxColumn();
+            RefreshLogAfter = new DataGridViewCheckBoxColumn();
+            ShowProgressDialog = new DataGridViewCheckBoxColumn();
+            CreateNoWindow = new DataGridViewCheckBoxColumn();
+            DisplaySettingsTab = new TabPage();
+            HideReferencesDisplayCheck = new CheckBox();
+            ResetNormalTabFontButton = new Button();
+            ChangeNormalTabFontButton = new Button();
+            NormalTabFontGroup = new GroupBox();
+            NormalTabFontSample = new Label();
+            CheckForModifiedTabsIntervalLabel = new Label();
+            CheckForModifiedTabsIntervalNumeric = new NumericUpDown();
+            IndicateModifiedTabsCheck = new CheckBox();
+            ResetModifiedTabFontButton = new Button();
+            ChangeModifiedTabFontButton = new Button();
+            ModifiedTabFontGroup = new GroupBox();
+            ModifiedTabFontSample = new Label();
+            OtherSettingsTab = new TabPage();
+            TortoiseGitProcExeLocationBrowse = new Button();
+            TortoiseGitProcExeLocationText = new TextBox();
+            TortoiseGitProcExeLocationLabel = new Label();
+            ShowChangelogOnUpdateCheck = new CheckBox();
+            CheckTortoiseGitOnPathCheck = new CheckBox();
+            CloseWindowOnLastTabClosedCheck = new CheckBox();
+            CloseToSystemTrayCheck = new CheckBox();
+            DeveloperSettingsPage = new TabPage();
+            ShowHitTestCheck = new CheckBox();
+            ModifiedTabFontDialog = new FontDialog();
+            NormalTabFontDialog = new FontDialog();
+            TortoiseGitProcExeLocationDialog = new OpenFileDialog();
+            folderDialog = new FolderBrowserDialog();
+            restoreSettingsButton = new Button();
+            ( (System.ComponentModel.ISupportInitialize)MaxRecentReposNumeric ).BeginInit();
+            SettingsTabs.SuspendLayout();
+            KeyboardShortcutsPage.SuspendLayout();
+            StartupReposTab.SuspendLayout();
+            GitActionsTab.SuspendLayout();
+            GitActionsOptionsGroup.SuspendLayout();
+            CustomActionsTab.SuspendLayout();
+            ( (System.ComponentModel.ISupportInitialize)CustomActionsDataGridView ).BeginInit();
+            DisplaySettingsTab.SuspendLayout();
+            NormalTabFontGroup.SuspendLayout();
+            ( (System.ComponentModel.ISupportInitialize)CheckForModifiedTabsIntervalNumeric ).BeginInit();
+            ModifiedTabFontGroup.SuspendLayout();
+            OtherSettingsTab.SuspendLayout();
+            DeveloperSettingsPage.SuspendLayout();
+            SuspendLayout();
             // 
             // StartupReposList
             // 
-            this.StartupReposList.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.StartupReposList.FormattingEnabled = true;
-            this.StartupReposList.IntegralHeight = false;
-            this.StartupReposList.ItemHeight = 15;
-            this.StartupReposList.Location = new System.Drawing.Point(7, 7);
-            this.StartupReposList.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
-            this.StartupReposList.Name = "StartupReposList";
-            this.StartupReposList.SelectionMode = System.Windows.Forms.SelectionMode.MultiSimple;
-            this.StartupReposList.Size = new System.Drawing.Size(746, 304);
-            this.StartupReposList.TabIndex = 1;
+            StartupReposList.Anchor =    AnchorStyles.Top  |  AnchorStyles.Bottom   |  AnchorStyles.Left   |  AnchorStyles.Right ;
+            StartupReposList.FormattingEnabled = true;
+            StartupReposList.IntegralHeight = false;
+            StartupReposList.Location = new System.Drawing.Point( 7, 7 );
+            StartupReposList.Margin = new Padding( 4, 3, 4, 3 );
+            StartupReposList.Name = "StartupReposList";
+            StartupReposList.SelectionMode = SelectionMode.MultiSimple;
+            StartupReposList.Size = new System.Drawing.Size( 746, 304 );
+            StartupReposList.TabIndex = 1;
             // 
             // AddDefaultRepo
             // 
-            this.AddDefaultRepo.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.AddDefaultRepo.Location = new System.Drawing.Point(113, 318);
-            this.AddDefaultRepo.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
-            this.AddDefaultRepo.Name = "AddDefaultRepo";
-            this.AddDefaultRepo.Size = new System.Drawing.Size(99, 27);
-            this.AddDefaultRepo.TabIndex = 2;
-            this.AddDefaultRepo.Text = "Add Repo";
-            this.AddDefaultRepo.UseVisualStyleBackColor = true;
+            AddDefaultRepo.Anchor =  AnchorStyles.Bottom  |  AnchorStyles.Left ;
+            AddDefaultRepo.Location = new System.Drawing.Point( 113, 318 );
+            AddDefaultRepo.Margin = new Padding( 4, 3, 4, 3 );
+            AddDefaultRepo.Name = "AddDefaultRepo";
+            AddDefaultRepo.Size = new System.Drawing.Size( 99, 27 );
+            AddDefaultRepo.TabIndex = 2;
+            AddDefaultRepo.Text = "Add Repo";
+            AddDefaultRepo.UseVisualStyleBackColor = true;
             // 
             // OK
             // 
-            this.OK.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.OK.DialogResult = System.Windows.Forms.DialogResult.OK;
-            this.OK.Location = new System.Drawing.Point(602, 434);
-            this.OK.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
-            this.OK.Name = "OK";
-            this.OK.Size = new System.Drawing.Size(88, 27);
-            this.OK.TabIndex = 3;
-            this.OK.Text = "OK";
-            this.OK.UseVisualStyleBackColor = true;
+            OK.Anchor =  AnchorStyles.Bottom  |  AnchorStyles.Right ;
+            OK.DialogResult = DialogResult.OK;
+            OK.Location = new System.Drawing.Point( 602, 434 );
+            OK.Margin = new Padding( 4, 3, 4, 3 );
+            OK.Name = "OK";
+            OK.Size = new System.Drawing.Size( 88, 27 );
+            OK.TabIndex = 3;
+            OK.Text = "OK";
+            OK.UseVisualStyleBackColor = true;
             // 
             // Cancel
             // 
-            this.Cancel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.Cancel.DialogResult = System.Windows.Forms.DialogResult.Cancel;
-            this.Cancel.Location = new System.Drawing.Point(696, 434);
-            this.Cancel.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
-            this.Cancel.Name = "Cancel";
-            this.Cancel.Size = new System.Drawing.Size(88, 27);
-            this.Cancel.TabIndex = 4;
-            this.Cancel.Text = "Cancel";
-            this.Cancel.UseVisualStyleBackColor = true;
+            Cancel.Anchor =  AnchorStyles.Bottom  |  AnchorStyles.Right ;
+            Cancel.DialogResult = DialogResult.Cancel;
+            Cancel.Location = new System.Drawing.Point( 696, 434 );
+            Cancel.Margin = new Padding( 4, 3, 4, 3 );
+            Cancel.Name = "Cancel";
+            Cancel.Size = new System.Drawing.Size( 88, 27 );
+            Cancel.TabIndex = 4;
+            Cancel.Text = "Cancel";
+            Cancel.UseVisualStyleBackColor = true;
             // 
             // RemoveDefaultRepo
             // 
-            this.RemoveDefaultRepo.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.RemoveDefaultRepo.Location = new System.Drawing.Point(7, 318);
-            this.RemoveDefaultRepo.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
-            this.RemoveDefaultRepo.Name = "RemoveDefaultRepo";
-            this.RemoveDefaultRepo.Size = new System.Drawing.Size(99, 27);
-            this.RemoveDefaultRepo.TabIndex = 5;
-            this.RemoveDefaultRepo.Text = "Remove Repo";
-            this.RemoveDefaultRepo.UseVisualStyleBackColor = true;
+            RemoveDefaultRepo.Anchor =  AnchorStyles.Bottom  |  AnchorStyles.Left ;
+            RemoveDefaultRepo.Location = new System.Drawing.Point( 7, 318 );
+            RemoveDefaultRepo.Margin = new Padding( 4, 3, 4, 3 );
+            RemoveDefaultRepo.Name = "RemoveDefaultRepo";
+            RemoveDefaultRepo.Size = new System.Drawing.Size( 99, 27 );
+            RemoveDefaultRepo.TabIndex = 5;
+            RemoveDefaultRepo.Text = "Remove Repo";
+            RemoveDefaultRepo.UseVisualStyleBackColor = true;
             // 
             // OpenStartupReposOnReOpenCheck
             // 
-            this.OpenStartupReposOnReOpenCheck.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.OpenStartupReposOnReOpenCheck.AutoSize = true;
-            this.OpenStartupReposOnReOpenCheck.Location = new System.Drawing.Point(7, 353);
-            this.OpenStartupReposOnReOpenCheck.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
-            this.OpenStartupReposOnReOpenCheck.Name = "OpenStartupReposOnReOpenCheck";
-            this.OpenStartupReposOnReOpenCheck.Size = new System.Drawing.Size(299, 19);
-            this.OpenStartupReposOnReOpenCheck.TabIndex = 6;
-            this.OpenStartupReposOnReOpenCheck.Text = "Open Startup Repos when re-opened from Task Tray";
-            this.SettingsToolTip.SetToolTip(this.OpenStartupReposOnReOpenCheck, "Only valid when \"Retain Logs on Close\" is disabled.");
-            this.OpenStartupReposOnReOpenCheck.UseVisualStyleBackColor = true;
+            OpenStartupReposOnReOpenCheck.Anchor =  AnchorStyles.Bottom  |  AnchorStyles.Left ;
+            OpenStartupReposOnReOpenCheck.AutoSize = true;
+            OpenStartupReposOnReOpenCheck.Location = new System.Drawing.Point( 7, 353 );
+            OpenStartupReposOnReOpenCheck.Margin = new Padding( 4, 3, 4, 3 );
+            OpenStartupReposOnReOpenCheck.Name = "OpenStartupReposOnReOpenCheck";
+            OpenStartupReposOnReOpenCheck.Size = new System.Drawing.Size( 301, 19 );
+            OpenStartupReposOnReOpenCheck.TabIndex = 6;
+            OpenStartupReposOnReOpenCheck.Text = "Open Startup Repos when re-opened from Task Tray";
+            SettingsToolTip.SetToolTip( OpenStartupReposOnReOpenCheck, "Only valid when \"Retain Logs on Close\" is disabled." );
+            OpenStartupReposOnReOpenCheck.UseVisualStyleBackColor = true;
             // 
             // RunOnStartupCheck
             // 
-            this.RunOnStartupCheck.AutoSize = true;
-            this.RunOnStartupCheck.CheckAlign = System.Drawing.ContentAlignment.MiddleRight;
-            this.RunOnStartupCheck.Location = new System.Drawing.Point(7, 147);
-            this.RunOnStartupCheck.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
-            this.RunOnStartupCheck.Name = "RunOnStartupCheck";
-            this.RunOnStartupCheck.Size = new System.Drawing.Size(107, 19);
-            this.RunOnStartupCheck.TabIndex = 11;
-            this.RunOnStartupCheck.Text = "Run on startup:";
-            this.RunOnStartupCheck.UseVisualStyleBackColor = true;
+            RunOnStartupCheck.AutoSize = true;
+            RunOnStartupCheck.CheckAlign = System.Drawing.ContentAlignment.MiddleRight;
+            RunOnStartupCheck.Location = new System.Drawing.Point( 7, 147 );
+            RunOnStartupCheck.Margin = new Padding( 4, 3, 4, 3 );
+            RunOnStartupCheck.Name = "RunOnStartupCheck";
+            RunOnStartupCheck.Size = new System.Drawing.Size( 107, 19 );
+            RunOnStartupCheck.TabIndex = 11;
+            RunOnStartupCheck.Text = "Run on startup:";
+            RunOnStartupCheck.UseVisualStyleBackColor = true;
             // 
             // ConfirmOnCloseCheck
             // 
-            this.ConfirmOnCloseCheck.AutoSize = true;
-            this.ConfirmOnCloseCheck.CheckAlign = System.Drawing.ContentAlignment.MiddleRight;
-            this.ConfirmOnCloseCheck.Location = new System.Drawing.Point(7, 67);
-            this.ConfirmOnCloseCheck.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
-            this.ConfirmOnCloseCheck.Name = "ConfirmOnCloseCheck";
-            this.ConfirmOnCloseCheck.Size = new System.Drawing.Size(149, 19);
-            this.ConfirmOnCloseCheck.TabIndex = 10;
-            this.ConfirmOnCloseCheck.Text = "Prompt Before Closing:";
-            this.ConfirmOnCloseCheck.UseVisualStyleBackColor = true;
+            ConfirmOnCloseCheck.AutoSize = true;
+            ConfirmOnCloseCheck.CheckAlign = System.Drawing.ContentAlignment.MiddleRight;
+            ConfirmOnCloseCheck.Location = new System.Drawing.Point( 7, 67 );
+            ConfirmOnCloseCheck.Margin = new Padding( 4, 3, 4, 3 );
+            ConfirmOnCloseCheck.Name = "ConfirmOnCloseCheck";
+            ConfirmOnCloseCheck.Size = new System.Drawing.Size( 149, 19 );
+            ConfirmOnCloseCheck.TabIndex = 10;
+            ConfirmOnCloseCheck.Text = "Prompt Before Closing:";
+            ConfirmOnCloseCheck.UseVisualStyleBackColor = true;
             // 
             // MaxRecentReposNumeric
             // 
-            this.MaxRecentReposNumeric.Location = new System.Drawing.Point(133, 37);
-            this.MaxRecentReposNumeric.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
-            this.MaxRecentReposNumeric.Minimum = new decimal(new int[] {
-            1,
-            0,
-            0,
-            0});
-            this.MaxRecentReposNumeric.Name = "MaxRecentReposNumeric";
-            this.MaxRecentReposNumeric.Size = new System.Drawing.Size(51, 23);
-            this.MaxRecentReposNumeric.TabIndex = 9;
-            this.MaxRecentReposNumeric.Value = new decimal(new int[] {
-            1,
-            0,
-            0,
-            0});
+            MaxRecentReposNumeric.Location = new System.Drawing.Point( 133, 37 );
+            MaxRecentReposNumeric.Margin = new Padding( 4, 3, 4, 3 );
+            MaxRecentReposNumeric.Minimum = new decimal( new int[] { 1, 0, 0, 0 } );
+            MaxRecentReposNumeric.Name = "MaxRecentReposNumeric";
+            MaxRecentReposNumeric.Size = new System.Drawing.Size( 51, 23 );
+            MaxRecentReposNumeric.TabIndex = 9;
+            MaxRecentReposNumeric.Value = new decimal( new int[] { 1, 0, 0, 0 } );
             // 
             // MaxRecentReposLabel
             // 
-            this.MaxRecentReposLabel.AutoSize = true;
-            this.MaxRecentReposLabel.Location = new System.Drawing.Point(7, 39);
-            this.MaxRecentReposLabel.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
-            this.MaxRecentReposLabel.Name = "MaxRecentReposLabel";
-            this.MaxRecentReposLabel.Size = new System.Drawing.Size(107, 15);
-            this.MaxRecentReposLabel.TabIndex = 8;
-            this.MaxRecentReposLabel.Text = "Max Recent Repos:";
+            MaxRecentReposLabel.AutoSize = true;
+            MaxRecentReposLabel.Location = new System.Drawing.Point( 7, 39 );
+            MaxRecentReposLabel.Margin = new Padding( 4, 0, 4, 0 );
+            MaxRecentReposLabel.Name = "MaxRecentReposLabel";
+            MaxRecentReposLabel.Size = new System.Drawing.Size( 106, 15 );
+            MaxRecentReposLabel.TabIndex = 8;
+            MaxRecentReposLabel.Text = "Max Recent Repos:";
             // 
             // GitActionsLabel
             // 
-            this.GitActionsLabel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.GitActionsLabel.AutoSize = true;
-            this.GitActionsLabel.Location = new System.Drawing.Point(7, 302);
-            this.GitActionsLabel.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
-            this.GitActionsLabel.Name = "GitActionsLabel";
-            this.GitActionsLabel.Size = new System.Drawing.Size(314, 15);
-            this.GitActionsLabel.TabIndex = 1;
-            this.GitActionsLabel.Text = "Note: Drag and drop items to change context menu order.";
+            GitActionsLabel.Anchor =  AnchorStyles.Bottom  |  AnchorStyles.Left ;
+            GitActionsLabel.AutoSize = true;
+            GitActionsLabel.Location = new System.Drawing.Point( 7, 302 );
+            GitActionsLabel.Margin = new Padding( 4, 0, 4, 0 );
+            GitActionsLabel.Name = "GitActionsLabel";
+            GitActionsLabel.Size = new System.Drawing.Size( 313, 15 );
+            GitActionsLabel.TabIndex = 1;
+            GitActionsLabel.Text = "Note: Drag and drop items to change context menu order.";
             // 
             // GitActionsCheckList
             // 
-            this.GitActionsCheckList.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.GitActionsCheckList.FormattingEnabled = true;
-            this.GitActionsCheckList.IntegralHeight = false;
-            this.GitActionsCheckList.Location = new System.Drawing.Point(7, 7);
-            this.GitActionsCheckList.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
-            this.GitActionsCheckList.Name = "GitActionsCheckList";
-            this.GitActionsCheckList.Size = new System.Drawing.Size(746, 291);
-            this.GitActionsCheckList.TabIndex = 0;
-            this.SettingsToolTip.SetToolTip(this.GitActionsCheckList, "Only valid when \"Retain Logs on Close\" is disabled.\r\n");
+            GitActionsCheckList.Anchor =    AnchorStyles.Top  |  AnchorStyles.Bottom   |  AnchorStyles.Left   |  AnchorStyles.Right ;
+            GitActionsCheckList.FormattingEnabled = true;
+            GitActionsCheckList.IntegralHeight = false;
+            GitActionsCheckList.Location = new System.Drawing.Point( 7, 7 );
+            GitActionsCheckList.Margin = new Padding( 4, 3, 4, 3 );
+            GitActionsCheckList.Name = "GitActionsCheckList";
+            GitActionsCheckList.Size = new System.Drawing.Size( 746, 291 );
+            GitActionsCheckList.TabIndex = 0;
+            SettingsToolTip.SetToolTip( GitActionsCheckList, "Only valid when \"Retain Logs on Close\" is disabled.\r\n" );
             // 
             // SettingsTabs
             // 
-            this.SettingsTabs.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.SettingsTabs.Controls.Add(this.KeyboardShortcutsPage);
-            this.SettingsTabs.Controls.Add(this.StartupReposTab);
-            this.SettingsTabs.Controls.Add(this.GitActionsTab);
-            this.SettingsTabs.Controls.Add(this.CustomActionsTab);
-            this.SettingsTabs.Controls.Add(this.DisplaySettingsTab);
-            this.SettingsTabs.Controls.Add(this.OtherSettingsTab);
-            this.SettingsTabs.Controls.Add(this.DeveloperSettingsPage);
-            this.SettingsTabs.Location = new System.Drawing.Point(14, 14);
-            this.SettingsTabs.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
-            this.SettingsTabs.Name = "SettingsTabs";
-            this.SettingsTabs.SelectedIndex = 0;
-            this.SettingsTabs.Size = new System.Drawing.Size(770, 413);
-            this.SettingsTabs.TabIndex = 12;
+            SettingsTabs.Anchor =    AnchorStyles.Top  |  AnchorStyles.Bottom   |  AnchorStyles.Left   |  AnchorStyles.Right ;
+            SettingsTabs.Controls.Add( KeyboardShortcutsPage );
+            SettingsTabs.Controls.Add( StartupReposTab );
+            SettingsTabs.Controls.Add( GitActionsTab );
+            SettingsTabs.Controls.Add( CustomActionsTab );
+            SettingsTabs.Controls.Add( DisplaySettingsTab );
+            SettingsTabs.Controls.Add( OtherSettingsTab );
+            SettingsTabs.Controls.Add( DeveloperSettingsPage );
+            SettingsTabs.Location = new System.Drawing.Point( 14, 14 );
+            SettingsTabs.Margin = new Padding( 4, 3, 4, 3 );
+            SettingsTabs.Name = "SettingsTabs";
+            SettingsTabs.SelectedIndex = 0;
+            SettingsTabs.Size = new System.Drawing.Size( 770, 413 );
+            SettingsTabs.TabIndex = 12;
             // 
             // KeyboardShortcutsPage
             // 
-            this.KeyboardShortcutsPage.AutoScroll = true;
-            this.KeyboardShortcutsPage.Controls.Add(this.KeyBoardShortcutsTableLayout);
-            this.KeyboardShortcutsPage.Location = new System.Drawing.Point(4, 24);
-            this.KeyboardShortcutsPage.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
-            this.KeyboardShortcutsPage.Name = "KeyboardShortcutsPage";
-            this.KeyboardShortcutsPage.Padding = new System.Windows.Forms.Padding(4, 3, 4, 3);
-            this.KeyboardShortcutsPage.Size = new System.Drawing.Size(762, 385);
-            this.KeyboardShortcutsPage.TabIndex = 5;
-            this.KeyboardShortcutsPage.Text = "Keyboard Shortcuts";
-            this.KeyboardShortcutsPage.UseVisualStyleBackColor = true;
+            KeyboardShortcutsPage.AutoScroll = true;
+            KeyboardShortcutsPage.Controls.Add( KeyBoardShortcutsTableLayout );
+            KeyboardShortcutsPage.Location = new System.Drawing.Point( 4, 24 );
+            KeyboardShortcutsPage.Margin = new Padding( 4, 3, 4, 3 );
+            KeyboardShortcutsPage.Name = "KeyboardShortcutsPage";
+            KeyboardShortcutsPage.Padding = new Padding( 4, 3, 4, 3 );
+            KeyboardShortcutsPage.Size = new System.Drawing.Size( 762, 385 );
+            KeyboardShortcutsPage.TabIndex = 5;
+            KeyboardShortcutsPage.Text = "Keyboard Shortcuts";
+            KeyboardShortcutsPage.UseVisualStyleBackColor = true;
             // 
             // KeyBoardShortcutsTableLayout
             // 
-            this.KeyBoardShortcutsTableLayout.AutoSize = true;
-            this.KeyBoardShortcutsTableLayout.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
-            this.KeyBoardShortcutsTableLayout.ColumnCount = 2;
-            this.KeyBoardShortcutsTableLayout.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
-            this.KeyBoardShortcutsTableLayout.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.KeyBoardShortcutsTableLayout.Dock = System.Windows.Forms.DockStyle.Top;
-            this.KeyBoardShortcutsTableLayout.Location = new System.Drawing.Point(4, 3);
-            this.KeyBoardShortcutsTableLayout.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
-            this.KeyBoardShortcutsTableLayout.Name = "KeyBoardShortcutsTableLayout";
-            this.KeyBoardShortcutsTableLayout.RowCount = 1;
-            this.KeyBoardShortcutsTableLayout.RowStyles.Add(new System.Windows.Forms.RowStyle());
-            this.KeyBoardShortcutsTableLayout.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 1F));
-            this.KeyBoardShortcutsTableLayout.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 1F));
-            this.KeyBoardShortcutsTableLayout.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 1F));
-            this.KeyBoardShortcutsTableLayout.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 1F));
-            this.KeyBoardShortcutsTableLayout.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 1F));
-            this.KeyBoardShortcutsTableLayout.Size = new System.Drawing.Size(754, 0);
-            this.KeyBoardShortcutsTableLayout.TabIndex = 2;
+            KeyBoardShortcutsTableLayout.AutoSize = true;
+            KeyBoardShortcutsTableLayout.AutoSizeMode = AutoSizeMode.GrowAndShrink;
+            KeyBoardShortcutsTableLayout.ColumnCount = 2;
+            KeyBoardShortcutsTableLayout.ColumnStyles.Add( new ColumnStyle() );
+            KeyBoardShortcutsTableLayout.ColumnStyles.Add( new ColumnStyle( SizeType.Percent, 100F ) );
+            KeyBoardShortcutsTableLayout.Dock = DockStyle.Top;
+            KeyBoardShortcutsTableLayout.Location = new System.Drawing.Point( 4, 3 );
+            KeyBoardShortcutsTableLayout.Margin = new Padding( 4, 3, 4, 3 );
+            KeyBoardShortcutsTableLayout.Name = "KeyBoardShortcutsTableLayout";
+            KeyBoardShortcutsTableLayout.RowCount = 1;
+            KeyBoardShortcutsTableLayout.RowStyles.Add( new RowStyle() );
+            KeyBoardShortcutsTableLayout.RowStyles.Add( new RowStyle( SizeType.Absolute, 1F ) );
+            KeyBoardShortcutsTableLayout.RowStyles.Add( new RowStyle( SizeType.Absolute, 1F ) );
+            KeyBoardShortcutsTableLayout.RowStyles.Add( new RowStyle( SizeType.Absolute, 1F ) );
+            KeyBoardShortcutsTableLayout.RowStyles.Add( new RowStyle( SizeType.Absolute, 1F ) );
+            KeyBoardShortcutsTableLayout.RowStyles.Add( new RowStyle( SizeType.Absolute, 1F ) );
+            KeyBoardShortcutsTableLayout.Size = new System.Drawing.Size( 754, 0 );
+            KeyBoardShortcutsTableLayout.TabIndex = 2;
             // 
             // StartupReposTab
             // 
-            this.StartupReposTab.Controls.Add(this.OpenStartupReposOnReOpenCheck);
-            this.StartupReposTab.Controls.Add(this.StartupReposList);
-            this.StartupReposTab.Controls.Add(this.AddDefaultRepo);
-            this.StartupReposTab.Controls.Add(this.RemoveDefaultRepo);
-            this.StartupReposTab.Location = new System.Drawing.Point(4, 24);
-            this.StartupReposTab.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
-            this.StartupReposTab.Name = "StartupReposTab";
-            this.StartupReposTab.Padding = new System.Windows.Forms.Padding(4, 3, 4, 3);
-            this.StartupReposTab.Size = new System.Drawing.Size(762, 385);
-            this.StartupReposTab.TabIndex = 0;
-            this.StartupReposTab.Text = "Startup Repos";
-            this.StartupReposTab.UseVisualStyleBackColor = true;
+            StartupReposTab.Controls.Add( OpenStartupReposOnReOpenCheck );
+            StartupReposTab.Controls.Add( StartupReposList );
+            StartupReposTab.Controls.Add( AddDefaultRepo );
+            StartupReposTab.Controls.Add( RemoveDefaultRepo );
+            StartupReposTab.Location = new System.Drawing.Point( 4, 24 );
+            StartupReposTab.Margin = new Padding( 4, 3, 4, 3 );
+            StartupReposTab.Name = "StartupReposTab";
+            StartupReposTab.Padding = new Padding( 4, 3, 4, 3 );
+            StartupReposTab.Size = new System.Drawing.Size( 762, 385 );
+            StartupReposTab.TabIndex = 0;
+            StartupReposTab.Text = "Startup Repos";
+            StartupReposTab.UseVisualStyleBackColor = true;
             // 
             // GitActionsTab
             // 
-            this.GitActionsTab.Controls.Add(this.GitActionsOptionsGroup);
-            this.GitActionsTab.Controls.Add(this.GitActionsLabel);
-            this.GitActionsTab.Controls.Add(this.GitActionsCheckList);
-            this.GitActionsTab.Location = new System.Drawing.Point(4, 24);
-            this.GitActionsTab.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
-            this.GitActionsTab.Name = "GitActionsTab";
-            this.GitActionsTab.Padding = new System.Windows.Forms.Padding(4, 3, 4, 3);
-            this.GitActionsTab.Size = new System.Drawing.Size(762, 385);
-            this.GitActionsTab.TabIndex = 1;
-            this.GitActionsTab.Text = "Git Actions";
-            this.GitActionsTab.UseVisualStyleBackColor = true;
+            GitActionsTab.Controls.Add( GitActionsOptionsGroup );
+            GitActionsTab.Controls.Add( GitActionsLabel );
+            GitActionsTab.Controls.Add( GitActionsCheckList );
+            GitActionsTab.Location = new System.Drawing.Point( 4, 24 );
+            GitActionsTab.Margin = new Padding( 4, 3, 4, 3 );
+            GitActionsTab.Name = "GitActionsTab";
+            GitActionsTab.Padding = new Padding( 4, 3, 4, 3 );
+            GitActionsTab.Size = new System.Drawing.Size( 762, 385 );
+            GitActionsTab.TabIndex = 1;
+            GitActionsTab.Text = "Git Actions";
+            GitActionsTab.UseVisualStyleBackColor = true;
             // 
             // GitActionsOptionsGroup
             // 
-            this.GitActionsOptionsGroup.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.GitActionsOptionsGroup.Controls.Add(this.ConfirmFasterFetchCheck);
-            this.GitActionsOptionsGroup.Location = new System.Drawing.Point(7, 321);
-            this.GitActionsOptionsGroup.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
-            this.GitActionsOptionsGroup.Name = "GitActionsOptionsGroup";
-            this.GitActionsOptionsGroup.Padding = new System.Windows.Forms.Padding(4, 3, 4, 3);
-            this.GitActionsOptionsGroup.Size = new System.Drawing.Size(747, 55);
-            this.GitActionsOptionsGroup.TabIndex = 3;
-            this.GitActionsOptionsGroup.TabStop = false;
-            this.GitActionsOptionsGroup.Text = "Git Actions Options";
+            GitActionsOptionsGroup.Anchor =   AnchorStyles.Bottom  |  AnchorStyles.Left   |  AnchorStyles.Right ;
+            GitActionsOptionsGroup.Controls.Add( ConfirmFasterFetchCheck );
+            GitActionsOptionsGroup.Location = new System.Drawing.Point( 7, 321 );
+            GitActionsOptionsGroup.Margin = new Padding( 4, 3, 4, 3 );
+            GitActionsOptionsGroup.Name = "GitActionsOptionsGroup";
+            GitActionsOptionsGroup.Padding = new Padding( 4, 3, 4, 3 );
+            GitActionsOptionsGroup.Size = new System.Drawing.Size( 747, 55 );
+            GitActionsOptionsGroup.TabIndex = 3;
+            GitActionsOptionsGroup.TabStop = false;
+            GitActionsOptionsGroup.Text = "Git Actions Options";
             // 
             // ConfirmFasterFetchCheck
             // 
-            this.ConfirmFasterFetchCheck.AutoSize = true;
-            this.ConfirmFasterFetchCheck.Location = new System.Drawing.Point(7, 23);
-            this.ConfirmFasterFetchCheck.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
-            this.ConfirmFasterFetchCheck.Name = "ConfirmFasterFetchCheck";
-            this.ConfirmFasterFetchCheck.Size = new System.Drawing.Size(173, 19);
-            this.ConfirmFasterFetchCheck.TabIndex = 2;
-            this.ConfirmFasterFetchCheck.Text = "Confirm before Faster Fetch";
-            this.ConfirmFasterFetchCheck.UseVisualStyleBackColor = true;
+            ConfirmFasterFetchCheck.AutoSize = true;
+            ConfirmFasterFetchCheck.Location = new System.Drawing.Point( 7, 23 );
+            ConfirmFasterFetchCheck.Margin = new Padding( 4, 3, 4, 3 );
+            ConfirmFasterFetchCheck.Name = "ConfirmFasterFetchCheck";
+            ConfirmFasterFetchCheck.Size = new System.Drawing.Size( 173, 19 );
+            ConfirmFasterFetchCheck.TabIndex = 2;
+            ConfirmFasterFetchCheck.Text = "Confirm before Faster Fetch";
+            ConfirmFasterFetchCheck.UseVisualStyleBackColor = true;
             // 
             // CustomActionsTab
             // 
-            this.CustomActionsTab.Controls.Add(this.EditCustomAction);
-            this.CustomActionsTab.Controls.Add(this.RemoveCustomAction);
-            this.CustomActionsTab.Controls.Add(this.CreateCustomAction);
-            this.CustomActionsTab.Controls.Add(this.CustomActionsDataGridView);
-            this.CustomActionsTab.Location = new System.Drawing.Point(4, 24);
-            this.CustomActionsTab.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
-            this.CustomActionsTab.Name = "CustomActionsTab";
-            this.CustomActionsTab.Padding = new System.Windows.Forms.Padding(4, 3, 4, 3);
-            this.CustomActionsTab.Size = new System.Drawing.Size(762, 385);
-            this.CustomActionsTab.TabIndex = 6;
-            this.CustomActionsTab.Text = "Custom Actions";
-            this.CustomActionsTab.UseVisualStyleBackColor = true;
+            CustomActionsTab.Controls.Add( EditCustomAction );
+            CustomActionsTab.Controls.Add( RemoveCustomAction );
+            CustomActionsTab.Controls.Add( CreateCustomAction );
+            CustomActionsTab.Controls.Add( CustomActionsDataGridView );
+            CustomActionsTab.Location = new System.Drawing.Point( 4, 24 );
+            CustomActionsTab.Margin = new Padding( 4, 3, 4, 3 );
+            CustomActionsTab.Name = "CustomActionsTab";
+            CustomActionsTab.Padding = new Padding( 4, 3, 4, 3 );
+            CustomActionsTab.Size = new System.Drawing.Size( 762, 385 );
+            CustomActionsTab.TabIndex = 6;
+            CustomActionsTab.Text = "Custom Actions";
+            CustomActionsTab.UseVisualStyleBackColor = true;
             // 
             // EditCustomAction
             // 
-            this.EditCustomAction.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.EditCustomAction.Enabled = false;
-            this.EditCustomAction.Location = new System.Drawing.Point(125, 350);
-            this.EditCustomAction.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
-            this.EditCustomAction.Name = "EditCustomAction";
-            this.EditCustomAction.Size = new System.Drawing.Size(111, 27);
-            this.EditCustomAction.TabIndex = 3;
-            this.EditCustomAction.Text = "Edit Action";
-            this.EditCustomAction.UseVisualStyleBackColor = true;
-            this.EditCustomAction.Click += new System.EventHandler(this.EditCustomAction_Click);
+            EditCustomAction.Anchor =  AnchorStyles.Bottom  |  AnchorStyles.Left ;
+            EditCustomAction.Enabled = false;
+            EditCustomAction.Location = new System.Drawing.Point( 125, 350 );
+            EditCustomAction.Margin = new Padding( 4, 3, 4, 3 );
+            EditCustomAction.Name = "EditCustomAction";
+            EditCustomAction.Size = new System.Drawing.Size( 111, 27 );
+            EditCustomAction.TabIndex = 3;
+            EditCustomAction.Text = "Edit Action";
+            EditCustomAction.UseVisualStyleBackColor = true;
+            EditCustomAction.Click +=  EditCustomAction_Click ;
             // 
             // RemoveCustomAction
             // 
-            this.RemoveCustomAction.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.RemoveCustomAction.Enabled = false;
-            this.RemoveCustomAction.Location = new System.Drawing.Point(243, 350);
-            this.RemoveCustomAction.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
-            this.RemoveCustomAction.Name = "RemoveCustomAction";
-            this.RemoveCustomAction.Size = new System.Drawing.Size(111, 27);
-            this.RemoveCustomAction.TabIndex = 2;
-            this.RemoveCustomAction.Text = "Remove Action";
-            this.RemoveCustomAction.UseVisualStyleBackColor = true;
-            this.RemoveCustomAction.Click += new System.EventHandler(this.RemoveCustomAction_Click);
+            RemoveCustomAction.Anchor =  AnchorStyles.Bottom  |  AnchorStyles.Left ;
+            RemoveCustomAction.Enabled = false;
+            RemoveCustomAction.Location = new System.Drawing.Point( 243, 350 );
+            RemoveCustomAction.Margin = new Padding( 4, 3, 4, 3 );
+            RemoveCustomAction.Name = "RemoveCustomAction";
+            RemoveCustomAction.Size = new System.Drawing.Size( 111, 27 );
+            RemoveCustomAction.TabIndex = 2;
+            RemoveCustomAction.Text = "Remove Action";
+            RemoveCustomAction.UseVisualStyleBackColor = true;
+            RemoveCustomAction.Click +=  RemoveCustomAction_Click ;
             // 
             // CreateCustomAction
             // 
-            this.CreateCustomAction.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.CreateCustomAction.Location = new System.Drawing.Point(7, 350);
-            this.CreateCustomAction.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
-            this.CreateCustomAction.Name = "CreateCustomAction";
-            this.CreateCustomAction.Size = new System.Drawing.Size(111, 27);
-            this.CreateCustomAction.TabIndex = 1;
-            this.CreateCustomAction.Text = "Create Action";
-            this.CreateCustomAction.UseVisualStyleBackColor = true;
-            this.CreateCustomAction.Click += new System.EventHandler(this.CreateCustomAction_Click);
+            CreateCustomAction.Anchor =  AnchorStyles.Bottom  |  AnchorStyles.Left ;
+            CreateCustomAction.Location = new System.Drawing.Point( 7, 350 );
+            CreateCustomAction.Margin = new Padding( 4, 3, 4, 3 );
+            CreateCustomAction.Name = "CreateCustomAction";
+            CreateCustomAction.Size = new System.Drawing.Size( 111, 27 );
+            CreateCustomAction.TabIndex = 1;
+            CreateCustomAction.Text = "Create Action";
+            CreateCustomAction.UseVisualStyleBackColor = true;
+            CreateCustomAction.Click +=  CreateCustomAction_Click ;
             // 
             // CustomActionsDataGridView
             // 
-            this.CustomActionsDataGridView.AllowUserToAddRows = false;
-            this.CustomActionsDataGridView.AllowUserToDeleteRows = false;
-            this.CustomActionsDataGridView.AllowUserToResizeRows = false;
-            this.CustomActionsDataGridView.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.CustomActionsDataGridView.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.AllCells;
-            this.CustomActionsDataGridView.AutoSizeRowsMode = System.Windows.Forms.DataGridViewAutoSizeRowsMode.AllCells;
-            this.CustomActionsDataGridView.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.CustomActionsDataGridView.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
-            this.CustomActionNameColumn,
-            this.CustomActionProgramColumn,
-            this.CustomActionArgumentsColumn,
-            this.WorkingDirectory,
-            this.RefreshLogAfter,
-            this.ShowProgressDialog,
-            this.CreateNoWindow});
-            this.CustomActionsDataGridView.Location = new System.Drawing.Point(7, 7);
-            this.CustomActionsDataGridView.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
-            this.CustomActionsDataGridView.MultiSelect = false;
-            this.CustomActionsDataGridView.Name = "CustomActionsDataGridView";
-            this.CustomActionsDataGridView.ReadOnly = true;
-            this.CustomActionsDataGridView.RowHeadersVisible = false;
-            this.CustomActionsDataGridView.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.CustomActionsDataGridView.Size = new System.Drawing.Size(747, 336);
-            this.CustomActionsDataGridView.TabIndex = 0;
-            this.CustomActionsDataGridView.SelectionChanged += new System.EventHandler(this.CustomActionsDataGridView_SelectionChanged);
+            CustomActionsDataGridView.AllowUserToAddRows = false;
+            CustomActionsDataGridView.AllowUserToDeleteRows = false;
+            CustomActionsDataGridView.AllowUserToResizeRows = false;
+            CustomActionsDataGridView.Anchor =    AnchorStyles.Top  |  AnchorStyles.Bottom   |  AnchorStyles.Left   |  AnchorStyles.Right ;
+            CustomActionsDataGridView.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.AllCells;
+            CustomActionsDataGridView.AutoSizeRowsMode = DataGridViewAutoSizeRowsMode.AllCells;
+            CustomActionsDataGridView.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            CustomActionsDataGridView.Columns.AddRange( new DataGridViewColumn[] { CustomActionNameColumn, CustomActionProgramColumn, CustomActionArgumentsColumn, WorkingDirectory, RefreshLogAfter, ShowProgressDialog, CreateNoWindow } );
+            CustomActionsDataGridView.Location = new System.Drawing.Point( 7, 7 );
+            CustomActionsDataGridView.Margin = new Padding( 4, 3, 4, 3 );
+            CustomActionsDataGridView.MultiSelect = false;
+            CustomActionsDataGridView.Name = "CustomActionsDataGridView";
+            CustomActionsDataGridView.ReadOnly = true;
+            CustomActionsDataGridView.RowHeadersVisible = false;
+            CustomActionsDataGridView.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
+            CustomActionsDataGridView.Size = new System.Drawing.Size( 747, 336 );
+            CustomActionsDataGridView.TabIndex = 0;
+            CustomActionsDataGridView.SelectionChanged +=  CustomActionsDataGridView_SelectionChanged ;
             // 
             // CustomActionNameColumn
             // 
-            this.CustomActionNameColumn.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
-            this.CustomActionNameColumn.DataPropertyName = "Name";
-            this.CustomActionNameColumn.HeaderText = "Name";
-            this.CustomActionNameColumn.Name = "CustomActionNameColumn";
-            this.CustomActionNameColumn.ReadOnly = true;
-            this.CustomActionNameColumn.Width = 64;
+            CustomActionNameColumn.AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
+            CustomActionNameColumn.DataPropertyName = "Name";
+            CustomActionNameColumn.HeaderText = "Name";
+            CustomActionNameColumn.Name = "CustomActionNameColumn";
+            CustomActionNameColumn.ReadOnly = true;
+            CustomActionNameColumn.Width = 64;
             // 
             // CustomActionProgramColumn
             // 
-            this.CustomActionProgramColumn.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
-            this.CustomActionProgramColumn.DataPropertyName = "Program";
-            this.CustomActionProgramColumn.HeaderText = "Program";
-            this.CustomActionProgramColumn.Name = "CustomActionProgramColumn";
-            this.CustomActionProgramColumn.ReadOnly = true;
-            this.CustomActionProgramColumn.Width = 78;
+            CustomActionProgramColumn.AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
+            CustomActionProgramColumn.DataPropertyName = "Program";
+            CustomActionProgramColumn.HeaderText = "Program";
+            CustomActionProgramColumn.Name = "CustomActionProgramColumn";
+            CustomActionProgramColumn.ReadOnly = true;
+            CustomActionProgramColumn.Width = 78;
             // 
             // CustomActionArgumentsColumn
             // 
-            this.CustomActionArgumentsColumn.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
-            this.CustomActionArgumentsColumn.DataPropertyName = "Arguments";
-            this.CustomActionArgumentsColumn.HeaderText = "Arguments";
-            this.CustomActionArgumentsColumn.Name = "CustomActionArgumentsColumn";
-            this.CustomActionArgumentsColumn.ReadOnly = true;
-            this.CustomActionArgumentsColumn.Width = 91;
+            CustomActionArgumentsColumn.AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
+            CustomActionArgumentsColumn.DataPropertyName = "Arguments";
+            CustomActionArgumentsColumn.HeaderText = "Arguments";
+            CustomActionArgumentsColumn.Name = "CustomActionArgumentsColumn";
+            CustomActionArgumentsColumn.ReadOnly = true;
+            CustomActionArgumentsColumn.Width = 91;
             // 
             // WorkingDirectory
             // 
-            this.WorkingDirectory.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
-            this.WorkingDirectory.DataPropertyName = "WorkingDirectory";
-            this.WorkingDirectory.HeaderText = "Working Directory";
-            this.WorkingDirectory.Name = "WorkingDirectory";
-            this.WorkingDirectory.ReadOnly = true;
-            this.WorkingDirectory.Width = 117;
+            WorkingDirectory.AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
+            WorkingDirectory.DataPropertyName = "WorkingDirectory";
+            WorkingDirectory.HeaderText = "Working Directory";
+            WorkingDirectory.Name = "WorkingDirectory";
+            WorkingDirectory.ReadOnly = true;
+            WorkingDirectory.Width = 117;
             // 
             // RefreshLogAfter
             // 
-            this.RefreshLogAfter.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
-            this.RefreshLogAfter.DataPropertyName = "RefreshLogAfter";
-            this.RefreshLogAfter.HeaderText = "Refresh Log After";
-            this.RefreshLogAfter.Name = "RefreshLogAfter";
-            this.RefreshLogAfter.ReadOnly = true;
-            this.RefreshLogAfter.Resizable = System.Windows.Forms.DataGridViewTriState.False;
-            this.RefreshLogAfter.Width = 70;
+            RefreshLogAfter.AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
+            RefreshLogAfter.DataPropertyName = "RefreshLogAfter";
+            RefreshLogAfter.HeaderText = "Refresh Log After";
+            RefreshLogAfter.Name = "RefreshLogAfter";
+            RefreshLogAfter.ReadOnly = true;
+            RefreshLogAfter.Resizable = DataGridViewTriState.False;
+            RefreshLogAfter.Width = 70;
             // 
             // ShowProgressDialog
             // 
-            this.ShowProgressDialog.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
-            this.ShowProgressDialog.DataPropertyName = "ShowProgressDialog";
-            this.ShowProgressDialog.HeaderText = "Show Progress Dialog";
-            this.ShowProgressDialog.Name = "ShowProgressDialog";
-            this.ShowProgressDialog.ReadOnly = true;
-            this.ShowProgressDialog.Resizable = System.Windows.Forms.DataGridViewTriState.False;
-            this.ShowProgressDialog.Width = 114;
+            ShowProgressDialog.AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
+            ShowProgressDialog.DataPropertyName = "ShowProgressDialog";
+            ShowProgressDialog.HeaderText = "Show Progress Dialog";
+            ShowProgressDialog.Name = "ShowProgressDialog";
+            ShowProgressDialog.ReadOnly = true;
+            ShowProgressDialog.Resizable = DataGridViewTriState.False;
+            ShowProgressDialog.Width = 114;
             // 
             // CreateNoWindow
             // 
-            this.CreateNoWindow.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
-            this.CreateNoWindow.DataPropertyName = "CreateNoWindow";
-            this.CreateNoWindow.HeaderText = "Create No Window";
-            this.CreateNoWindow.Name = "CreateNoWindow";
-            this.CreateNoWindow.ReadOnly = true;
-            this.CreateNoWindow.Resizable = System.Windows.Forms.DataGridViewTriState.False;
-            this.CreateNoWindow.Width = 102;
+            CreateNoWindow.AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
+            CreateNoWindow.DataPropertyName = "CreateNoWindow";
+            CreateNoWindow.HeaderText = "Create No Window";
+            CreateNoWindow.Name = "CreateNoWindow";
+            CreateNoWindow.ReadOnly = true;
+            CreateNoWindow.Resizable = DataGridViewTriState.False;
+            CreateNoWindow.Width = 102;
             // 
             // DisplaySettingsTab
             // 
-            this.DisplaySettingsTab.Controls.Add(this.HideReferencesDisplayCheck);
-            this.DisplaySettingsTab.Controls.Add(this.ResetNormalTabFontButton);
-            this.DisplaySettingsTab.Controls.Add(this.ChangeNormalTabFontButton);
-            this.DisplaySettingsTab.Controls.Add(this.NormalTabFontGroup);
-            this.DisplaySettingsTab.Controls.Add(this.CheckForModifiedTabsIntervalLabel);
-            this.DisplaySettingsTab.Controls.Add(this.CheckForModifiedTabsIntervalNumeric);
-            this.DisplaySettingsTab.Controls.Add(this.IndicateModifiedTabsCheck);
-            this.DisplaySettingsTab.Controls.Add(this.ResetModifiedTabFontButton);
-            this.DisplaySettingsTab.Controls.Add(this.ChangeModifiedTabFontButton);
-            this.DisplaySettingsTab.Controls.Add(this.ModifiedTabFontGroup);
-            this.DisplaySettingsTab.Location = new System.Drawing.Point(4, 24);
-            this.DisplaySettingsTab.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
-            this.DisplaySettingsTab.Name = "DisplaySettingsTab";
-            this.DisplaySettingsTab.Padding = new System.Windows.Forms.Padding(4, 3, 4, 3);
-            this.DisplaySettingsTab.Size = new System.Drawing.Size(762, 385);
-            this.DisplaySettingsTab.TabIndex = 4;
-            this.DisplaySettingsTab.Text = "Display";
-            this.DisplaySettingsTab.UseVisualStyleBackColor = true;
+            DisplaySettingsTab.Controls.Add( HideReferencesDisplayCheck );
+            DisplaySettingsTab.Controls.Add( ResetNormalTabFontButton );
+            DisplaySettingsTab.Controls.Add( ChangeNormalTabFontButton );
+            DisplaySettingsTab.Controls.Add( NormalTabFontGroup );
+            DisplaySettingsTab.Controls.Add( CheckForModifiedTabsIntervalLabel );
+            DisplaySettingsTab.Controls.Add( CheckForModifiedTabsIntervalNumeric );
+            DisplaySettingsTab.Controls.Add( IndicateModifiedTabsCheck );
+            DisplaySettingsTab.Controls.Add( ResetModifiedTabFontButton );
+            DisplaySettingsTab.Controls.Add( ChangeModifiedTabFontButton );
+            DisplaySettingsTab.Controls.Add( ModifiedTabFontGroup );
+            DisplaySettingsTab.Location = new System.Drawing.Point( 4, 24 );
+            DisplaySettingsTab.Margin = new Padding( 4, 3, 4, 3 );
+            DisplaySettingsTab.Name = "DisplaySettingsTab";
+            DisplaySettingsTab.Padding = new Padding( 4, 3, 4, 3 );
+            DisplaySettingsTab.Size = new System.Drawing.Size( 762, 385 );
+            DisplaySettingsTab.TabIndex = 4;
+            DisplaySettingsTab.Text = "Display";
+            DisplaySettingsTab.UseVisualStyleBackColor = true;
             // 
             // HideReferencesDisplayCheck
             // 
-            this.HideReferencesDisplayCheck.AutoSize = true;
-            this.HideReferencesDisplayCheck.Location = new System.Drawing.Point(7, 282);
-            this.HideReferencesDisplayCheck.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
-            this.HideReferencesDisplayCheck.Name = "HideReferencesDisplayCheck";
-            this.HideReferencesDisplayCheck.Size = new System.Drawing.Size(148, 19);
-            this.HideReferencesDisplayCheck.TabIndex = 10;
-            this.HideReferencesDisplayCheck.Text = "Hide references display";
-            this.HideReferencesDisplayCheck.UseVisualStyleBackColor = true;
+            HideReferencesDisplayCheck.AutoSize = true;
+            HideReferencesDisplayCheck.Location = new System.Drawing.Point( 7, 282 );
+            HideReferencesDisplayCheck.Margin = new Padding( 4, 3, 4, 3 );
+            HideReferencesDisplayCheck.Name = "HideReferencesDisplayCheck";
+            HideReferencesDisplayCheck.Size = new System.Drawing.Size( 148, 19 );
+            HideReferencesDisplayCheck.TabIndex = 10;
+            HideReferencesDisplayCheck.Text = "Hide references display";
+            HideReferencesDisplayCheck.UseVisualStyleBackColor = true;
             // 
             // ResetNormalTabFontButton
             // 
-            this.ResetNormalTabFontButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.ResetNormalTabFontButton.Location = new System.Drawing.Point(572, 82);
-            this.ResetNormalTabFontButton.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
-            this.ResetNormalTabFontButton.Name = "ResetNormalTabFontButton";
-            this.ResetNormalTabFontButton.Size = new System.Drawing.Size(88, 27);
-            this.ResetNormalTabFontButton.TabIndex = 8;
-            this.ResetNormalTabFontButton.Text = "Reset";
-            this.ResetNormalTabFontButton.UseVisualStyleBackColor = true;
+            ResetNormalTabFontButton.Anchor =  AnchorStyles.Top  |  AnchorStyles.Right ;
+            ResetNormalTabFontButton.Location = new System.Drawing.Point( 572, 82 );
+            ResetNormalTabFontButton.Margin = new Padding( 4, 3, 4, 3 );
+            ResetNormalTabFontButton.Name = "ResetNormalTabFontButton";
+            ResetNormalTabFontButton.Size = new System.Drawing.Size( 88, 27 );
+            ResetNormalTabFontButton.TabIndex = 8;
+            ResetNormalTabFontButton.Text = "Reset";
+            ResetNormalTabFontButton.UseVisualStyleBackColor = true;
             // 
             // ChangeNormalTabFontButton
             // 
-            this.ChangeNormalTabFontButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.ChangeNormalTabFontButton.Location = new System.Drawing.Point(666, 82);
-            this.ChangeNormalTabFontButton.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
-            this.ChangeNormalTabFontButton.Name = "ChangeNormalTabFontButton";
-            this.ChangeNormalTabFontButton.Size = new System.Drawing.Size(88, 27);
-            this.ChangeNormalTabFontButton.TabIndex = 7;
-            this.ChangeNormalTabFontButton.Text = "Change";
-            this.ChangeNormalTabFontButton.UseVisualStyleBackColor = true;
+            ChangeNormalTabFontButton.Anchor =  AnchorStyles.Top  |  AnchorStyles.Right ;
+            ChangeNormalTabFontButton.Location = new System.Drawing.Point( 666, 82 );
+            ChangeNormalTabFontButton.Margin = new Padding( 4, 3, 4, 3 );
+            ChangeNormalTabFontButton.Name = "ChangeNormalTabFontButton";
+            ChangeNormalTabFontButton.Size = new System.Drawing.Size( 88, 27 );
+            ChangeNormalTabFontButton.TabIndex = 7;
+            ChangeNormalTabFontButton.Text = "Change";
+            ChangeNormalTabFontButton.UseVisualStyleBackColor = true;
             // 
             // NormalTabFontGroup
             // 
-            this.NormalTabFontGroup.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.NormalTabFontGroup.Controls.Add(this.NormalTabFontSample);
-            this.NormalTabFontGroup.Location = new System.Drawing.Point(7, 7);
-            this.NormalTabFontGroup.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
-            this.NormalTabFontGroup.Name = "NormalTabFontGroup";
-            this.NormalTabFontGroup.Padding = new System.Windows.Forms.Padding(4, 3, 4, 3);
-            this.NormalTabFontGroup.Size = new System.Drawing.Size(747, 68);
-            this.NormalTabFontGroup.TabIndex = 6;
-            this.NormalTabFontGroup.TabStop = false;
-            this.NormalTabFontGroup.Text = "Normal Tab Font";
+            NormalTabFontGroup.Anchor =   AnchorStyles.Top  |  AnchorStyles.Left   |  AnchorStyles.Right ;
+            NormalTabFontGroup.Controls.Add( NormalTabFontSample );
+            NormalTabFontGroup.Location = new System.Drawing.Point( 7, 7 );
+            NormalTabFontGroup.Margin = new Padding( 4, 3, 4, 3 );
+            NormalTabFontGroup.Name = "NormalTabFontGroup";
+            NormalTabFontGroup.Padding = new Padding( 4, 3, 4, 3 );
+            NormalTabFontGroup.Size = new System.Drawing.Size( 747, 68 );
+            NormalTabFontGroup.TabIndex = 6;
+            NormalTabFontGroup.TabStop = false;
+            NormalTabFontGroup.Text = "Normal Tab Font";
             // 
             // NormalTabFontSample
             // 
-            this.NormalTabFontSample.AutoEllipsis = true;
-            this.NormalTabFontSample.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.NormalTabFontSample.Location = new System.Drawing.Point(4, 19);
-            this.NormalTabFontSample.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
-            this.NormalTabFontSample.Name = "NormalTabFontSample";
-            this.NormalTabFontSample.Size = new System.Drawing.Size(739, 46);
-            this.NormalTabFontSample.TabIndex = 0;
-            this.NormalTabFontSample.Text = "C:\\sample\\font.git";
-            this.NormalTabFontSample.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            NormalTabFontSample.AutoEllipsis = true;
+            NormalTabFontSample.Dock = DockStyle.Fill;
+            NormalTabFontSample.Location = new System.Drawing.Point( 4, 19 );
+            NormalTabFontSample.Margin = new Padding( 4, 0, 4, 0 );
+            NormalTabFontSample.Name = "NormalTabFontSample";
+            NormalTabFontSample.Size = new System.Drawing.Size( 739, 46 );
+            NormalTabFontSample.TabIndex = 0;
+            NormalTabFontSample.Text = "C:\\sample\\font.git";
+            NormalTabFontSample.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // CheckForModifiedTabsIntervalLabel
             // 
-            this.CheckForModifiedTabsIntervalLabel.AutoSize = true;
-            this.CheckForModifiedTabsIntervalLabel.Location = new System.Drawing.Point(9, 145);
-            this.CheckForModifiedTabsIntervalLabel.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
-            this.CheckForModifiedTabsIntervalLabel.Name = "CheckForModifiedTabsIntervalLabel";
-            this.CheckForModifiedTabsIntervalLabel.Size = new System.Drawing.Size(257, 15);
-            this.CheckForModifiedTabsIntervalLabel.TabIndex = 5;
-            this.CheckForModifiedTabsIntervalLabel.Text = "Check for Modified Tabs Interval (milliseconds):";
+            CheckForModifiedTabsIntervalLabel.AutoSize = true;
+            CheckForModifiedTabsIntervalLabel.Location = new System.Drawing.Point( 9, 145 );
+            CheckForModifiedTabsIntervalLabel.Margin = new Padding( 4, 0, 4, 0 );
+            CheckForModifiedTabsIntervalLabel.Name = "CheckForModifiedTabsIntervalLabel";
+            CheckForModifiedTabsIntervalLabel.Size = new System.Drawing.Size( 258, 15 );
+            CheckForModifiedTabsIntervalLabel.TabIndex = 5;
+            CheckForModifiedTabsIntervalLabel.Text = "Check for Modified Tabs Interval (milliseconds):";
             // 
             // CheckForModifiedTabsIntervalNumeric
             // 
-            this.CheckForModifiedTabsIntervalNumeric.Increment = new decimal(new int[] {
-            500,
-            0,
-            0,
-            0});
-            this.CheckForModifiedTabsIntervalNumeric.Location = new System.Drawing.Point(286, 142);
-            this.CheckForModifiedTabsIntervalNumeric.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
-            this.CheckForModifiedTabsIntervalNumeric.Maximum = new decimal(new int[] {
-            100000,
-            0,
-            0,
-            0});
-            this.CheckForModifiedTabsIntervalNumeric.Minimum = new decimal(new int[] {
-            1000,
-            0,
-            0,
-            0});
-            this.CheckForModifiedTabsIntervalNumeric.Name = "CheckForModifiedTabsIntervalNumeric";
-            this.CheckForModifiedTabsIntervalNumeric.Size = new System.Drawing.Size(85, 23);
-            this.CheckForModifiedTabsIntervalNumeric.TabIndex = 4;
-            this.CheckForModifiedTabsIntervalNumeric.Value = new decimal(new int[] {
-            1000,
-            0,
-            0,
-            0});
+            CheckForModifiedTabsIntervalNumeric.Increment = new decimal( new int[] { 500, 0, 0, 0 } );
+            CheckForModifiedTabsIntervalNumeric.Location = new System.Drawing.Point( 286, 142 );
+            CheckForModifiedTabsIntervalNumeric.Margin = new Padding( 4, 3, 4, 3 );
+            CheckForModifiedTabsIntervalNumeric.Maximum = new decimal( new int[] { 100000, 0, 0, 0 } );
+            CheckForModifiedTabsIntervalNumeric.Minimum = new decimal( new int[] { 1000, 0, 0, 0 } );
+            CheckForModifiedTabsIntervalNumeric.Name = "CheckForModifiedTabsIntervalNumeric";
+            CheckForModifiedTabsIntervalNumeric.Size = new System.Drawing.Size( 85, 23 );
+            CheckForModifiedTabsIntervalNumeric.TabIndex = 4;
+            CheckForModifiedTabsIntervalNumeric.Value = new decimal( new int[] { 1000, 0, 0, 0 } );
             // 
             // IndicateModifiedTabsCheck
             // 
-            this.IndicateModifiedTabsCheck.AutoSize = true;
-            this.IndicateModifiedTabsCheck.CheckAlign = System.Drawing.ContentAlignment.MiddleRight;
-            this.IndicateModifiedTabsCheck.Location = new System.Drawing.Point(7, 122);
-            this.IndicateModifiedTabsCheck.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
-            this.IndicateModifiedTabsCheck.Name = "IndicateModifiedTabsCheck";
-            this.IndicateModifiedTabsCheck.Size = new System.Drawing.Size(145, 19);
-            this.IndicateModifiedTabsCheck.TabIndex = 3;
-            this.IndicateModifiedTabsCheck.Text = "Indicate Modified Tabs";
-            this.IndicateModifiedTabsCheck.UseVisualStyleBackColor = true;
+            IndicateModifiedTabsCheck.AutoSize = true;
+            IndicateModifiedTabsCheck.CheckAlign = System.Drawing.ContentAlignment.MiddleRight;
+            IndicateModifiedTabsCheck.Location = new System.Drawing.Point( 7, 122 );
+            IndicateModifiedTabsCheck.Margin = new Padding( 4, 3, 4, 3 );
+            IndicateModifiedTabsCheck.Name = "IndicateModifiedTabsCheck";
+            IndicateModifiedTabsCheck.Size = new System.Drawing.Size( 146, 19 );
+            IndicateModifiedTabsCheck.TabIndex = 3;
+            IndicateModifiedTabsCheck.Text = "Indicate Modified Tabs";
+            IndicateModifiedTabsCheck.UseVisualStyleBackColor = true;
             // 
             // ResetModifiedTabFontButton
             // 
-            this.ResetModifiedTabFontButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.ResetModifiedTabFontButton.Location = new System.Drawing.Point(572, 248);
-            this.ResetModifiedTabFontButton.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
-            this.ResetModifiedTabFontButton.Name = "ResetModifiedTabFontButton";
-            this.ResetModifiedTabFontButton.Size = new System.Drawing.Size(88, 27);
-            this.ResetModifiedTabFontButton.TabIndex = 2;
-            this.ResetModifiedTabFontButton.Text = "Reset";
-            this.ResetModifiedTabFontButton.UseVisualStyleBackColor = true;
+            ResetModifiedTabFontButton.Anchor =  AnchorStyles.Top  |  AnchorStyles.Right ;
+            ResetModifiedTabFontButton.Location = new System.Drawing.Point( 572, 248 );
+            ResetModifiedTabFontButton.Margin = new Padding( 4, 3, 4, 3 );
+            ResetModifiedTabFontButton.Name = "ResetModifiedTabFontButton";
+            ResetModifiedTabFontButton.Size = new System.Drawing.Size( 88, 27 );
+            ResetModifiedTabFontButton.TabIndex = 2;
+            ResetModifiedTabFontButton.Text = "Reset";
+            ResetModifiedTabFontButton.UseVisualStyleBackColor = true;
             // 
             // ChangeModifiedTabFontButton
             // 
-            this.ChangeModifiedTabFontButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.ChangeModifiedTabFontButton.Location = new System.Drawing.Point(666, 248);
-            this.ChangeModifiedTabFontButton.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
-            this.ChangeModifiedTabFontButton.Name = "ChangeModifiedTabFontButton";
-            this.ChangeModifiedTabFontButton.Size = new System.Drawing.Size(88, 27);
-            this.ChangeModifiedTabFontButton.TabIndex = 1;
-            this.ChangeModifiedTabFontButton.Text = "Change";
-            this.ChangeModifiedTabFontButton.UseVisualStyleBackColor = true;
+            ChangeModifiedTabFontButton.Anchor =  AnchorStyles.Top  |  AnchorStyles.Right ;
+            ChangeModifiedTabFontButton.Location = new System.Drawing.Point( 666, 248 );
+            ChangeModifiedTabFontButton.Margin = new Padding( 4, 3, 4, 3 );
+            ChangeModifiedTabFontButton.Name = "ChangeModifiedTabFontButton";
+            ChangeModifiedTabFontButton.Size = new System.Drawing.Size( 88, 27 );
+            ChangeModifiedTabFontButton.TabIndex = 1;
+            ChangeModifiedTabFontButton.Text = "Change";
+            ChangeModifiedTabFontButton.UseVisualStyleBackColor = true;
             // 
             // ModifiedTabFontGroup
             // 
-            this.ModifiedTabFontGroup.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.ModifiedTabFontGroup.Controls.Add(this.ModifiedTabFontSample);
-            this.ModifiedTabFontGroup.Location = new System.Drawing.Point(7, 173);
-            this.ModifiedTabFontGroup.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
-            this.ModifiedTabFontGroup.Name = "ModifiedTabFontGroup";
-            this.ModifiedTabFontGroup.Padding = new System.Windows.Forms.Padding(4, 3, 4, 3);
-            this.ModifiedTabFontGroup.Size = new System.Drawing.Size(743, 68);
-            this.ModifiedTabFontGroup.TabIndex = 0;
-            this.ModifiedTabFontGroup.TabStop = false;
-            this.ModifiedTabFontGroup.Text = "Modified Tab Font";
+            ModifiedTabFontGroup.Anchor =   AnchorStyles.Top  |  AnchorStyles.Left   |  AnchorStyles.Right ;
+            ModifiedTabFontGroup.Controls.Add( ModifiedTabFontSample );
+            ModifiedTabFontGroup.Location = new System.Drawing.Point( 7, 173 );
+            ModifiedTabFontGroup.Margin = new Padding( 4, 3, 4, 3 );
+            ModifiedTabFontGroup.Name = "ModifiedTabFontGroup";
+            ModifiedTabFontGroup.Padding = new Padding( 4, 3, 4, 3 );
+            ModifiedTabFontGroup.Size = new System.Drawing.Size( 743, 68 );
+            ModifiedTabFontGroup.TabIndex = 0;
+            ModifiedTabFontGroup.TabStop = false;
+            ModifiedTabFontGroup.Text = "Modified Tab Font";
             // 
             // ModifiedTabFontSample
             // 
-            this.ModifiedTabFontSample.AutoEllipsis = true;
-            this.ModifiedTabFontSample.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.ModifiedTabFontSample.Location = new System.Drawing.Point(4, 19);
-            this.ModifiedTabFontSample.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
-            this.ModifiedTabFontSample.Name = "ModifiedTabFontSample";
-            this.ModifiedTabFontSample.Size = new System.Drawing.Size(735, 46);
-            this.ModifiedTabFontSample.TabIndex = 0;
-            this.ModifiedTabFontSample.Text = "C:\\sample\\font.git";
-            this.ModifiedTabFontSample.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            ModifiedTabFontSample.AutoEllipsis = true;
+            ModifiedTabFontSample.Dock = DockStyle.Fill;
+            ModifiedTabFontSample.Location = new System.Drawing.Point( 4, 19 );
+            ModifiedTabFontSample.Margin = new Padding( 4, 0, 4, 0 );
+            ModifiedTabFontSample.Name = "ModifiedTabFontSample";
+            ModifiedTabFontSample.Size = new System.Drawing.Size( 735, 46 );
+            ModifiedTabFontSample.TabIndex = 0;
+            ModifiedTabFontSample.Text = "C:\\sample\\font.git";
+            ModifiedTabFontSample.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // OtherSettingsTab
             // 
-            this.OtherSettingsTab.Controls.Add(this.TortoiseGitProcExeLocationBrowse);
-            this.OtherSettingsTab.Controls.Add(this.TortoiseGitProcExeLocationText);
-            this.OtherSettingsTab.Controls.Add(this.TortoiseGitProcExeLocationLabel);
-            this.OtherSettingsTab.Controls.Add(this.ShowChangelogOnUpdateCheck);
-            this.OtherSettingsTab.Controls.Add(this.CheckTortoiseGitOnPathCheck);
-            this.OtherSettingsTab.Controls.Add(this.CloseWindowOnLastTabClosedCheck);
-            this.OtherSettingsTab.Controls.Add(this.CloseToSystemTrayCheck);
-            this.OtherSettingsTab.Controls.Add(this.RunOnStartupCheck);
-            this.OtherSettingsTab.Controls.Add(this.ConfirmOnCloseCheck);
-            this.OtherSettingsTab.Controls.Add(this.MaxRecentReposLabel);
-            this.OtherSettingsTab.Controls.Add(this.MaxRecentReposNumeric);
-            this.OtherSettingsTab.Location = new System.Drawing.Point(4, 24);
-            this.OtherSettingsTab.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
-            this.OtherSettingsTab.Name = "OtherSettingsTab";
-            this.OtherSettingsTab.Padding = new System.Windows.Forms.Padding(4, 3, 4, 3);
-            this.OtherSettingsTab.Size = new System.Drawing.Size(762, 385);
-            this.OtherSettingsTab.TabIndex = 2;
-            this.OtherSettingsTab.Text = "Other";
-            this.OtherSettingsTab.UseVisualStyleBackColor = true;
+            OtherSettingsTab.Controls.Add( TortoiseGitProcExeLocationBrowse );
+            OtherSettingsTab.Controls.Add( TortoiseGitProcExeLocationText );
+            OtherSettingsTab.Controls.Add( TortoiseGitProcExeLocationLabel );
+            OtherSettingsTab.Controls.Add( ShowChangelogOnUpdateCheck );
+            OtherSettingsTab.Controls.Add( CheckTortoiseGitOnPathCheck );
+            OtherSettingsTab.Controls.Add( CloseWindowOnLastTabClosedCheck );
+            OtherSettingsTab.Controls.Add( CloseToSystemTrayCheck );
+            OtherSettingsTab.Controls.Add( RunOnStartupCheck );
+            OtherSettingsTab.Controls.Add( ConfirmOnCloseCheck );
+            OtherSettingsTab.Controls.Add( MaxRecentReposLabel );
+            OtherSettingsTab.Controls.Add( MaxRecentReposNumeric );
+            OtherSettingsTab.Location = new System.Drawing.Point( 4, 24 );
+            OtherSettingsTab.Margin = new Padding( 4, 3, 4, 3 );
+            OtherSettingsTab.Name = "OtherSettingsTab";
+            OtherSettingsTab.Padding = new Padding( 4, 3, 4, 3 );
+            OtherSettingsTab.Size = new System.Drawing.Size( 762, 385 );
+            OtherSettingsTab.TabIndex = 2;
+            OtherSettingsTab.Text = "Other";
+            OtherSettingsTab.UseVisualStyleBackColor = true;
             // 
             // TortoiseGitProcExeLocationBrowse
             // 
-            this.TortoiseGitProcExeLocationBrowse.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.TortoiseGitProcExeLocationBrowse.Location = new System.Drawing.Point(666, 6);
-            this.TortoiseGitProcExeLocationBrowse.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
-            this.TortoiseGitProcExeLocationBrowse.Name = "TortoiseGitProcExeLocationBrowse";
-            this.TortoiseGitProcExeLocationBrowse.Size = new System.Drawing.Size(88, 27);
-            this.TortoiseGitProcExeLocationBrowse.TabIndex = 18;
-            this.TortoiseGitProcExeLocationBrowse.Text = "Browse";
-            this.TortoiseGitProcExeLocationBrowse.UseVisualStyleBackColor = true;
+            TortoiseGitProcExeLocationBrowse.Anchor =  AnchorStyles.Top  |  AnchorStyles.Right ;
+            TortoiseGitProcExeLocationBrowse.Location = new System.Drawing.Point( 666, 6 );
+            TortoiseGitProcExeLocationBrowse.Margin = new Padding( 4, 3, 4, 3 );
+            TortoiseGitProcExeLocationBrowse.Name = "TortoiseGitProcExeLocationBrowse";
+            TortoiseGitProcExeLocationBrowse.Size = new System.Drawing.Size( 88, 27 );
+            TortoiseGitProcExeLocationBrowse.TabIndex = 18;
+            TortoiseGitProcExeLocationBrowse.Text = "Browse";
+            TortoiseGitProcExeLocationBrowse.UseVisualStyleBackColor = true;
             // 
             // TortoiseGitProcExeLocationText
             // 
-            this.TortoiseGitProcExeLocationText.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.TortoiseGitProcExeLocationText.Location = new System.Drawing.Point(186, 7);
-            this.TortoiseGitProcExeLocationText.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
-            this.TortoiseGitProcExeLocationText.Name = "TortoiseGitProcExeLocationText";
-            this.TortoiseGitProcExeLocationText.Size = new System.Drawing.Size(473, 23);
-            this.TortoiseGitProcExeLocationText.TabIndex = 17;
+            TortoiseGitProcExeLocationText.Anchor =   AnchorStyles.Top  |  AnchorStyles.Left   |  AnchorStyles.Right ;
+            TortoiseGitProcExeLocationText.Location = new System.Drawing.Point( 186, 7 );
+            TortoiseGitProcExeLocationText.Margin = new Padding( 4, 3, 4, 3 );
+            TortoiseGitProcExeLocationText.Name = "TortoiseGitProcExeLocationText";
+            TortoiseGitProcExeLocationText.Size = new System.Drawing.Size( 473, 23 );
+            TortoiseGitProcExeLocationText.TabIndex = 17;
             // 
             // TortoiseGitProcExeLocationLabel
             // 
-            this.TortoiseGitProcExeLocationLabel.AutoSize = true;
-            this.TortoiseGitProcExeLocationLabel.Location = new System.Drawing.Point(7, 10);
-            this.TortoiseGitProcExeLocationLabel.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
-            this.TortoiseGitProcExeLocationLabel.Name = "TortoiseGitProcExeLocationLabel";
-            this.TortoiseGitProcExeLocationLabel.Size = new System.Drawing.Size(160, 15);
-            this.TortoiseGitProcExeLocationLabel.TabIndex = 16;
-            this.TortoiseGitProcExeLocationLabel.Text = "TortoiseGitProc.exe Location:";
+            TortoiseGitProcExeLocationLabel.AutoSize = true;
+            TortoiseGitProcExeLocationLabel.Location = new System.Drawing.Point( 7, 10 );
+            TortoiseGitProcExeLocationLabel.Margin = new Padding( 4, 0, 4, 0 );
+            TortoiseGitProcExeLocationLabel.Name = "TortoiseGitProcExeLocationLabel";
+            TortoiseGitProcExeLocationLabel.Size = new System.Drawing.Size( 160, 15 );
+            TortoiseGitProcExeLocationLabel.TabIndex = 16;
+            TortoiseGitProcExeLocationLabel.Text = "TortoiseGitProc.exe Location:";
             // 
             // ShowChangelogOnUpdateCheck
             // 
-            this.ShowChangelogOnUpdateCheck.AutoSize = true;
-            this.ShowChangelogOnUpdateCheck.CheckAlign = System.Drawing.ContentAlignment.MiddleRight;
-            this.ShowChangelogOnUpdateCheck.Location = new System.Drawing.Point(7, 200);
-            this.ShowChangelogOnUpdateCheck.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
-            this.ShowChangelogOnUpdateCheck.Name = "ShowChangelogOnUpdateCheck";
-            this.ShowChangelogOnUpdateCheck.Size = new System.Drawing.Size(174, 19);
-            this.ShowChangelogOnUpdateCheck.TabIndex = 15;
-            this.ShowChangelogOnUpdateCheck.Text = "Show changelog on update:";
-            this.ShowChangelogOnUpdateCheck.UseVisualStyleBackColor = true;
+            ShowChangelogOnUpdateCheck.AutoSize = true;
+            ShowChangelogOnUpdateCheck.CheckAlign = System.Drawing.ContentAlignment.MiddleRight;
+            ShowChangelogOnUpdateCheck.Location = new System.Drawing.Point( 7, 200 );
+            ShowChangelogOnUpdateCheck.Margin = new Padding( 4, 3, 4, 3 );
+            ShowChangelogOnUpdateCheck.Name = "ShowChangelogOnUpdateCheck";
+            ShowChangelogOnUpdateCheck.Size = new System.Drawing.Size( 174, 19 );
+            ShowChangelogOnUpdateCheck.TabIndex = 15;
+            ShowChangelogOnUpdateCheck.Text = "Show changelog on update:";
+            ShowChangelogOnUpdateCheck.UseVisualStyleBackColor = true;
             // 
             // CheckTortoiseGitOnPathCheck
             // 
-            this.CheckTortoiseGitOnPathCheck.AutoSize = true;
-            this.CheckTortoiseGitOnPathCheck.CheckAlign = System.Drawing.ContentAlignment.MiddleRight;
-            this.CheckTortoiseGitOnPathCheck.Location = new System.Drawing.Point(7, 173);
-            this.CheckTortoiseGitOnPathCheck.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
-            this.CheckTortoiseGitOnPathCheck.Name = "CheckTortoiseGitOnPathCheck";
-            this.CheckTortoiseGitOnPathCheck.Size = new System.Drawing.Size(255, 19);
-            this.CheckTortoiseGitOnPathCheck.TabIndex = 14;
-            this.CheckTortoiseGitOnPathCheck.Text = "Check if TortoiseGit is accessible on startup:";
-            this.CheckTortoiseGitOnPathCheck.UseVisualStyleBackColor = true;
+            CheckTortoiseGitOnPathCheck.AutoSize = true;
+            CheckTortoiseGitOnPathCheck.CheckAlign = System.Drawing.ContentAlignment.MiddleRight;
+            CheckTortoiseGitOnPathCheck.Location = new System.Drawing.Point( 7, 173 );
+            CheckTortoiseGitOnPathCheck.Margin = new Padding( 4, 3, 4, 3 );
+            CheckTortoiseGitOnPathCheck.Name = "CheckTortoiseGitOnPathCheck";
+            CheckTortoiseGitOnPathCheck.Size = new System.Drawing.Size( 256, 19 );
+            CheckTortoiseGitOnPathCheck.TabIndex = 14;
+            CheckTortoiseGitOnPathCheck.Text = "Check if TortoiseGit is accessible on startup:";
+            CheckTortoiseGitOnPathCheck.UseVisualStyleBackColor = true;
             // 
             // CloseWindowOnLastTabClosedCheck
             // 
-            this.CloseWindowOnLastTabClosedCheck.AutoSize = true;
-            this.CloseWindowOnLastTabClosedCheck.CheckAlign = System.Drawing.ContentAlignment.MiddleRight;
-            this.CloseWindowOnLastTabClosedCheck.Location = new System.Drawing.Point(7, 93);
-            this.CloseWindowOnLastTabClosedCheck.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
-            this.CloseWindowOnLastTabClosedCheck.Name = "CloseWindowOnLastTabClosedCheck";
-            this.CloseWindowOnLastTabClosedCheck.Size = new System.Drawing.Size(203, 19);
-            this.CloseWindowOnLastTabClosedCheck.TabIndex = 13;
-            this.CloseWindowOnLastTabClosedCheck.Text = "Close Window on Last Tab Closed";
-            this.CloseWindowOnLastTabClosedCheck.UseVisualStyleBackColor = true;
+            CloseWindowOnLastTabClosedCheck.AutoSize = true;
+            CloseWindowOnLastTabClosedCheck.CheckAlign = System.Drawing.ContentAlignment.MiddleRight;
+            CloseWindowOnLastTabClosedCheck.Location = new System.Drawing.Point( 7, 93 );
+            CloseWindowOnLastTabClosedCheck.Margin = new Padding( 4, 3, 4, 3 );
+            CloseWindowOnLastTabClosedCheck.Name = "CloseWindowOnLastTabClosedCheck";
+            CloseWindowOnLastTabClosedCheck.Size = new System.Drawing.Size( 204, 19 );
+            CloseWindowOnLastTabClosedCheck.TabIndex = 13;
+            CloseWindowOnLastTabClosedCheck.Text = "Close Window on Last Tab Closed";
+            CloseWindowOnLastTabClosedCheck.UseVisualStyleBackColor = true;
             // 
             // CloseToSystemTrayCheck
             // 
-            this.CloseToSystemTrayCheck.AutoSize = true;
-            this.CloseToSystemTrayCheck.CheckAlign = System.Drawing.ContentAlignment.MiddleRight;
-            this.CloseToSystemTrayCheck.Location = new System.Drawing.Point(7, 120);
-            this.CloseToSystemTrayCheck.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
-            this.CloseToSystemTrayCheck.Name = "CloseToSystemTrayCheck";
-            this.CloseToSystemTrayCheck.Size = new System.Drawing.Size(134, 19);
-            this.CloseToSystemTrayCheck.TabIndex = 12;
-            this.CloseToSystemTrayCheck.Text = "Close to System Tray";
-            this.CloseToSystemTrayCheck.UseVisualStyleBackColor = true;
+            CloseToSystemTrayCheck.AutoSize = true;
+            CloseToSystemTrayCheck.CheckAlign = System.Drawing.ContentAlignment.MiddleRight;
+            CloseToSystemTrayCheck.Location = new System.Drawing.Point( 7, 120 );
+            CloseToSystemTrayCheck.Margin = new Padding( 4, 3, 4, 3 );
+            CloseToSystemTrayCheck.Name = "CloseToSystemTrayCheck";
+            CloseToSystemTrayCheck.Size = new System.Drawing.Size( 135, 19 );
+            CloseToSystemTrayCheck.TabIndex = 12;
+            CloseToSystemTrayCheck.Text = "Close to System Tray";
+            CloseToSystemTrayCheck.UseVisualStyleBackColor = true;
             // 
             // DeveloperSettingsPage
             // 
-            this.DeveloperSettingsPage.Controls.Add(this.ShowHitTestCheck);
-            this.DeveloperSettingsPage.Location = new System.Drawing.Point(4, 24);
-            this.DeveloperSettingsPage.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
-            this.DeveloperSettingsPage.Name = "DeveloperSettingsPage";
-            this.DeveloperSettingsPage.Padding = new System.Windows.Forms.Padding(4, 3, 4, 3);
-            this.DeveloperSettingsPage.Size = new System.Drawing.Size(762, 385);
-            this.DeveloperSettingsPage.TabIndex = 3;
-            this.DeveloperSettingsPage.Text = "Developer Settings";
-            this.DeveloperSettingsPage.UseVisualStyleBackColor = true;
+            DeveloperSettingsPage.Controls.Add( ShowHitTestCheck );
+            DeveloperSettingsPage.Location = new System.Drawing.Point( 4, 24 );
+            DeveloperSettingsPage.Margin = new Padding( 4, 3, 4, 3 );
+            DeveloperSettingsPage.Name = "DeveloperSettingsPage";
+            DeveloperSettingsPage.Padding = new Padding( 4, 3, 4, 3 );
+            DeveloperSettingsPage.Size = new System.Drawing.Size( 762, 385 );
+            DeveloperSettingsPage.TabIndex = 3;
+            DeveloperSettingsPage.Text = "Developer Settings";
+            DeveloperSettingsPage.UseVisualStyleBackColor = true;
             // 
             // ShowHitTestCheck
             // 
-            this.ShowHitTestCheck.AutoSize = true;
-            this.ShowHitTestCheck.Location = new System.Drawing.Point(7, 7);
-            this.ShowHitTestCheck.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
-            this.ShowHitTestCheck.Name = "ShowHitTestCheck";
-            this.ShowHitTestCheck.Size = new System.Drawing.Size(97, 19);
-            this.ShowHitTestCheck.TabIndex = 0;
-            this.ShowHitTestCheck.Text = "Show Hit Test";
-            this.ShowHitTestCheck.UseVisualStyleBackColor = true;
+            ShowHitTestCheck.AutoSize = true;
+            ShowHitTestCheck.Location = new System.Drawing.Point( 7, 7 );
+            ShowHitTestCheck.Margin = new Padding( 4, 3, 4, 3 );
+            ShowHitTestCheck.Name = "ShowHitTestCheck";
+            ShowHitTestCheck.Size = new System.Drawing.Size( 98, 19 );
+            ShowHitTestCheck.TabIndex = 0;
+            ShowHitTestCheck.Text = "Show Hit Test";
+            ShowHitTestCheck.UseVisualStyleBackColor = true;
             // 
             // ModifiedTabFontDialog
             // 
-            this.ModifiedTabFontDialog.AllowScriptChange = false;
-            this.ModifiedTabFontDialog.FontMustExist = true;
-            this.ModifiedTabFontDialog.ShowColor = true;
+            ModifiedTabFontDialog.AllowScriptChange = false;
+            ModifiedTabFontDialog.FontMustExist = true;
+            ModifiedTabFontDialog.ShowColor = true;
             // 
             // NormalTabFontDialog
             // 
-            this.NormalTabFontDialog.AllowScriptChange = false;
-            this.NormalTabFontDialog.FontMustExist = true;
-            this.NormalTabFontDialog.ShowColor = true;
+            NormalTabFontDialog.AllowScriptChange = false;
+            NormalTabFontDialog.FontMustExist = true;
+            NormalTabFontDialog.ShowColor = true;
             // 
             // TortoiseGitProcExeLocationDialog
             // 
-            this.TortoiseGitProcExeLocationDialog.FileName = "TortoiseGitProc.exe";
+            TortoiseGitProcExeLocationDialog.FileName = "TortoiseGitProc.exe";
             // 
             // restoreSettingsButton
             // 
-            this.restoreSettingsButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.restoreSettingsButton.Location = new System.Drawing.Point(12, 436);
-            this.restoreSettingsButton.Name = "restoreSettingsButton";
-            this.restoreSettingsButton.Size = new System.Drawing.Size(120, 23);
-            this.restoreSettingsButton.TabIndex = 13;
-            this.restoreSettingsButton.Text = "Restore Settings";
-            this.restoreSettingsButton.UseVisualStyleBackColor = true;
+            restoreSettingsButton.Anchor =  AnchorStyles.Bottom  |  AnchorStyles.Left ;
+            restoreSettingsButton.Location = new System.Drawing.Point( 12, 436 );
+            restoreSettingsButton.Name = "restoreSettingsButton";
+            restoreSettingsButton.Size = new System.Drawing.Size( 120, 23 );
+            restoreSettingsButton.TabIndex = 13;
+            restoreSettingsButton.Text = "Restore Settings";
+            restoreSettingsButton.UseVisualStyleBackColor = true;
             // 
             // SettingsForm
             // 
-            this.AcceptButton = this.OK;
-            this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
-            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.CancelButton = this.Cancel;
-            this.ClientSize = new System.Drawing.Size(798, 474);
-            this.Controls.Add(this.restoreSettingsButton);
-            this.Controls.Add(this.SettingsTabs);
-            this.Controls.Add(this.Cancel);
-            this.Controls.Add(this.OK);
-            this.KeyPreview = true;
-            this.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
-            this.MaximizeBox = false;
-            this.MinimizeBox = false;
-            this.MinimumSize = new System.Drawing.Size(581, 456);
-            this.Name = "SettingsForm";
-            this.ShowInTaskbar = false;
-            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
-            this.Text = "Settings";
-            ((System.ComponentModel.ISupportInitialize)(this.MaxRecentReposNumeric)).EndInit();
-            this.SettingsTabs.ResumeLayout(false);
-            this.KeyboardShortcutsPage.ResumeLayout(false);
-            this.KeyboardShortcutsPage.PerformLayout();
-            this.StartupReposTab.ResumeLayout(false);
-            this.StartupReposTab.PerformLayout();
-            this.GitActionsTab.ResumeLayout(false);
-            this.GitActionsTab.PerformLayout();
-            this.GitActionsOptionsGroup.ResumeLayout(false);
-            this.GitActionsOptionsGroup.PerformLayout();
-            this.CustomActionsTab.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.CustomActionsDataGridView)).EndInit();
-            this.DisplaySettingsTab.ResumeLayout(false);
-            this.DisplaySettingsTab.PerformLayout();
-            this.NormalTabFontGroup.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.CheckForModifiedTabsIntervalNumeric)).EndInit();
-            this.ModifiedTabFontGroup.ResumeLayout(false);
-            this.OtherSettingsTab.ResumeLayout(false);
-            this.OtherSettingsTab.PerformLayout();
-            this.DeveloperSettingsPage.ResumeLayout(false);
-            this.DeveloperSettingsPage.PerformLayout();
-            this.ResumeLayout(false);
+            AcceptButton = OK;
+            AutoScaleDimensions = new System.Drawing.SizeF( 7F, 15F );
+            AutoScaleMode = AutoScaleMode.Font;
+            CancelButton = Cancel;
+            ClientSize = new System.Drawing.Size( 798, 474 );
+            Controls.Add( restoreSettingsButton );
+            Controls.Add( SettingsTabs );
+            Controls.Add( Cancel );
+            Controls.Add( OK );
+            KeyPreview = true;
+            Margin = new Padding( 4, 3, 4, 3 );
+            MaximizeBox = false;
+            MinimizeBox = false;
+            MinimumSize = new System.Drawing.Size( 581, 456 );
+            Name = "SettingsForm";
+            ShowInTaskbar = false;
+            StartPosition = FormStartPosition.CenterParent;
+            Text = "Settings";
+            ( (System.ComponentModel.ISupportInitialize)MaxRecentReposNumeric ).EndInit();
+            SettingsTabs.ResumeLayout( false );
+            KeyboardShortcutsPage.ResumeLayout( false );
+            KeyboardShortcutsPage.PerformLayout();
+            StartupReposTab.ResumeLayout( false );
+            StartupReposTab.PerformLayout();
+            GitActionsTab.ResumeLayout( false );
+            GitActionsTab.PerformLayout();
+            GitActionsOptionsGroup.ResumeLayout( false );
+            GitActionsOptionsGroup.PerformLayout();
+            CustomActionsTab.ResumeLayout( false );
+            ( (System.ComponentModel.ISupportInitialize)CustomActionsDataGridView ).EndInit();
+            DisplaySettingsTab.ResumeLayout( false );
+            DisplaySettingsTab.PerformLayout();
+            NormalTabFontGroup.ResumeLayout( false );
+            ( (System.ComponentModel.ISupportInitialize)CheckForModifiedTabsIntervalNumeric ).EndInit();
+            ModifiedTabFontGroup.ResumeLayout( false );
+            OtherSettingsTab.ResumeLayout( false );
+            OtherSettingsTab.PerformLayout();
+            DeveloperSettingsPage.ResumeLayout( false );
+            DeveloperSettingsPage.PerformLayout();
+            ResumeLayout( false );
 
         }
 

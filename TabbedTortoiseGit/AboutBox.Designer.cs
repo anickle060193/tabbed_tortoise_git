@@ -27,255 +27,263 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.TableLayout = new System.Windows.Forms.TableLayoutPanel();
-            this.AttributionsText = new System.Windows.Forms.TextBox();
-            this.Logo = new System.Windows.Forms.PictureBox();
-            this.ProductNameLabel = new System.Windows.Forms.Label();
-            this.DescriptionText = new System.Windows.Forms.TextBox();
-            this.label2 = new System.Windows.Forms.Label();
-            this.label1 = new System.Windows.Forms.Label();
-            this.ButtonLayout = new System.Windows.Forms.TableLayoutPanel();
-            this.ViewGithub = new System.Windows.Forms.Button();
-            this.OK = new System.Windows.Forms.Button();
-            this.VersionTableLayout = new System.Windows.Forms.TableLayoutPanel();
-            this.VersionLabel = new System.Windows.Forms.Label();
-            this.UpdateButton = new System.Windows.Forms.Button();
-            this.UpdateCheckLabel = new System.Windows.Forms.Label();
-            this.ChangelogButton = new System.Windows.Forms.Button();
-            this.TableLayout.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.Logo)).BeginInit();
-            this.ButtonLayout.SuspendLayout();
-            this.VersionTableLayout.SuspendLayout();
-            this.SuspendLayout();
+            TableLayout = new System.Windows.Forms.TableLayoutPanel();
+            AttributionsText = new System.Windows.Forms.TextBox();
+            Logo = new System.Windows.Forms.PictureBox();
+            ProductNameLabel = new System.Windows.Forms.Label();
+            DescriptionText = new System.Windows.Forms.TextBox();
+            label2 = new System.Windows.Forms.Label();
+            label1 = new System.Windows.Forms.Label();
+            ButtonLayout = new System.Windows.Forms.TableLayoutPanel();
+            ViewGithub = new System.Windows.Forms.Button();
+            OK = new System.Windows.Forms.Button();
+            ChangelogButton = new System.Windows.Forms.Button();
+            VersionTableLayout = new System.Windows.Forms.TableLayoutPanel();
+            VersionLabel = new System.Windows.Forms.Label();
+            UpdateButton = new System.Windows.Forms.Button();
+            UpdateCheckLabel = new System.Windows.Forms.Label();
+            TableLayout.SuspendLayout();
+            ( (System.ComponentModel.ISupportInitialize)Logo ).BeginInit();
+            ButtonLayout.SuspendLayout();
+            VersionTableLayout.SuspendLayout();
+            SuspendLayout();
             // 
             // TableLayout
             // 
-            this.TableLayout.ColumnCount = 2;
-            this.TableLayout.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 40F));
-            this.TableLayout.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 60F));
-            this.TableLayout.Controls.Add(this.AttributionsText, 1, 5);
-            this.TableLayout.Controls.Add(this.Logo, 0, 0);
-            this.TableLayout.Controls.Add(this.ProductNameLabel, 1, 0);
-            this.TableLayout.Controls.Add(this.DescriptionText, 1, 3);
-            this.TableLayout.Controls.Add(this.label2, 1, 4);
-            this.TableLayout.Controls.Add(this.label1, 1, 2);
-            this.TableLayout.Controls.Add(this.ButtonLayout, 1, 6);
-            this.TableLayout.Controls.Add(this.VersionTableLayout, 1, 1);
-            this.TableLayout.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.TableLayout.Location = new System.Drawing.Point(9, 9);
-            this.TableLayout.Name = "TableLayout";
-            this.TableLayout.RowCount = 7;
-            this.TableLayout.RowStyles.Add(new System.Windows.Forms.RowStyle());
-            this.TableLayout.RowStyles.Add(new System.Windows.Forms.RowStyle());
-            this.TableLayout.RowStyles.Add(new System.Windows.Forms.RowStyle());
-            this.TableLayout.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 40F));
-            this.TableLayout.RowStyles.Add(new System.Windows.Forms.RowStyle());
-            this.TableLayout.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 60F));
-            this.TableLayout.RowStyles.Add(new System.Windows.Forms.RowStyle());
-            this.TableLayout.Size = new System.Drawing.Size(639, 265);
-            this.TableLayout.TabIndex = 0;
+            TableLayout.ColumnCount = 2;
+            TableLayout.ColumnStyles.Add( new System.Windows.Forms.ColumnStyle( System.Windows.Forms.SizeType.Percent, 40F ) );
+            TableLayout.ColumnStyles.Add( new System.Windows.Forms.ColumnStyle( System.Windows.Forms.SizeType.Percent, 60F ) );
+            TableLayout.Controls.Add( AttributionsText, 1, 5 );
+            TableLayout.Controls.Add( Logo, 0, 0 );
+            TableLayout.Controls.Add( ProductNameLabel, 1, 0 );
+            TableLayout.Controls.Add( DescriptionText, 1, 3 );
+            TableLayout.Controls.Add( label2, 1, 4 );
+            TableLayout.Controls.Add( label1, 1, 2 );
+            TableLayout.Controls.Add( ButtonLayout, 1, 6 );
+            TableLayout.Controls.Add( VersionTableLayout, 1, 1 );
+            TableLayout.Dock = System.Windows.Forms.DockStyle.Fill;
+            TableLayout.Location = new System.Drawing.Point( 10, 10 );
+            TableLayout.Margin = new System.Windows.Forms.Padding( 4, 3, 4, 3 );
+            TableLayout.Name = "TableLayout";
+            TableLayout.RowCount = 7;
+            TableLayout.RowStyles.Add( new System.Windows.Forms.RowStyle() );
+            TableLayout.RowStyles.Add( new System.Windows.Forms.RowStyle() );
+            TableLayout.RowStyles.Add( new System.Windows.Forms.RowStyle() );
+            TableLayout.RowStyles.Add( new System.Windows.Forms.RowStyle( System.Windows.Forms.SizeType.Percent, 40F ) );
+            TableLayout.RowStyles.Add( new System.Windows.Forms.RowStyle() );
+            TableLayout.RowStyles.Add( new System.Windows.Forms.RowStyle( System.Windows.Forms.SizeType.Percent, 60F ) );
+            TableLayout.RowStyles.Add( new System.Windows.Forms.RowStyle() );
+            TableLayout.Size = new System.Drawing.Size( 746, 307 );
+            TableLayout.TabIndex = 0;
             // 
             // AttributionsText
             // 
-            this.AttributionsText.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.AttributionsText.Location = new System.Drawing.Point(261, 145);
-            this.AttributionsText.Margin = new System.Windows.Forms.Padding(6, 3, 3, 3);
-            this.AttributionsText.Multiline = true;
-            this.AttributionsText.Name = "AttributionsText";
-            this.AttributionsText.ReadOnly = true;
-            this.AttributionsText.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
-            this.AttributionsText.Size = new System.Drawing.Size(375, 87);
-            this.AttributionsText.TabIndex = 25;
-            this.AttributionsText.TabStop = false;
-            this.AttributionsText.Text = "Git log functionality provided by TortoiseGit\r\n\r\nTurtle icon made by Freepik from" +
-    " FlatIcon licensed by Creative Commons BY 3.0\r\n\r\nGit action Octicons created by " +
-    "GitHub.";
+            AttributionsText.Dock = System.Windows.Forms.DockStyle.Fill;
+            AttributionsText.Location = new System.Drawing.Point( 305, 164 );
+            AttributionsText.Margin = new System.Windows.Forms.Padding( 7, 3, 4, 3 );
+            AttributionsText.Multiline = true;
+            AttributionsText.Name = "AttributionsText";
+            AttributionsText.ReadOnly = true;
+            AttributionsText.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
+            AttributionsText.Size = new System.Drawing.Size( 437, 104 );
+            AttributionsText.TabIndex = 25;
+            AttributionsText.TabStop = false;
+            AttributionsText.Text = "Git log functionality provided by TortoiseGit\r\n\r\nTurtle icon made by Freepik from FlatIcon licensed by Creative Commons BY 3.0\r\n\r\nGit action Octicons created by GitHub.";
             // 
             // Logo
             // 
-            this.Logo.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.Logo.Image = global::TabbedTortoiseGit.Properties.Resources.Tortoise;
-            this.Logo.InitialImage = null;
-            this.Logo.Location = new System.Drawing.Point(3, 3);
-            this.Logo.Name = "Logo";
-            this.TableLayout.SetRowSpan(this.Logo, 7);
-            this.Logo.Size = new System.Drawing.Size(249, 259);
-            this.Logo.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
-            this.Logo.TabIndex = 12;
-            this.Logo.TabStop = false;
+            Logo.Dock = System.Windows.Forms.DockStyle.Fill;
+            Logo.Image = Properties.Resources.Tortoise;
+            Logo.InitialImage = null;
+            Logo.Location = new System.Drawing.Point( 4, 3 );
+            Logo.Margin = new System.Windows.Forms.Padding( 4, 3, 4, 3 );
+            Logo.Name = "Logo";
+            TableLayout.SetRowSpan( Logo, 7 );
+            Logo.Size = new System.Drawing.Size( 290, 301 );
+            Logo.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
+            Logo.TabIndex = 12;
+            Logo.TabStop = false;
             // 
             // ProductNameLabel
             // 
-            this.ProductNameLabel.AutoSize = true;
-            this.ProductNameLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.ProductNameLabel.Location = new System.Drawing.Point(261, 0);
-            this.ProductNameLabel.Margin = new System.Windows.Forms.Padding(6, 0, 3, 0);
-            this.ProductNameLabel.Name = "ProductNameLabel";
-            this.ProductNameLabel.Size = new System.Drawing.Size(148, 25);
-            this.ProductNameLabel.TabIndex = 19;
-            this.ProductNameLabel.Text = "Product Name";
-            this.ProductNameLabel.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            ProductNameLabel.AutoSize = true;
+            ProductNameLabel.Font = new System.Drawing.Font( "Microsoft Sans Serif", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, 0 );
+            ProductNameLabel.Location = new System.Drawing.Point( 305, 0 );
+            ProductNameLabel.Margin = new System.Windows.Forms.Padding( 7, 0, 4, 0 );
+            ProductNameLabel.Name = "ProductNameLabel";
+            ProductNameLabel.Size = new System.Drawing.Size( 148, 25 );
+            ProductNameLabel.TabIndex = 19;
+            ProductNameLabel.Text = "Product Name";
+            ProductNameLabel.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
             // DescriptionText
             // 
-            this.DescriptionText.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.DescriptionText.Location = new System.Drawing.Point(261, 70);
-            this.DescriptionText.Margin = new System.Windows.Forms.Padding(6, 3, 3, 3);
-            this.DescriptionText.Multiline = true;
-            this.DescriptionText.Name = "DescriptionText";
-            this.DescriptionText.ReadOnly = true;
-            this.DescriptionText.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
-            this.DescriptionText.Size = new System.Drawing.Size(375, 56);
-            this.DescriptionText.TabIndex = 23;
-            this.DescriptionText.TabStop = false;
-            this.DescriptionText.Text = "Description";
+            DescriptionText.Dock = System.Windows.Forms.DockStyle.Fill;
+            DescriptionText.Location = new System.Drawing.Point( 305, 76 );
+            DescriptionText.Margin = new System.Windows.Forms.Padding( 7, 3, 4, 3 );
+            DescriptionText.Multiline = true;
+            DescriptionText.Name = "DescriptionText";
+            DescriptionText.ReadOnly = true;
+            DescriptionText.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
+            DescriptionText.Size = new System.Drawing.Size( 437, 67 );
+            DescriptionText.TabIndex = 23;
+            DescriptionText.TabStop = false;
+            DescriptionText.Text = "Description";
             // 
             // label2
             // 
-            this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(258, 129);
-            this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(62, 13);
-            this.label2.TabIndex = 27;
-            this.label2.Text = "Attributions:";
+            label2.AutoSize = true;
+            label2.Location = new System.Drawing.Point( 302, 146 );
+            label2.Margin = new System.Windows.Forms.Padding( 4, 0, 4, 0 );
+            label2.Name = "label2";
+            label2.Size = new System.Drawing.Size( 73, 15 );
+            label2.TabIndex = 27;
+            label2.Text = "Attributions:";
             // 
             // label1
             // 
-            this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(258, 54);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(63, 13);
-            this.label1.TabIndex = 26;
-            this.label1.Text = "Description:";
+            label1.AutoSize = true;
+            label1.Location = new System.Drawing.Point( 302, 58 );
+            label1.Margin = new System.Windows.Forms.Padding( 4, 0, 4, 0 );
+            label1.Name = "label1";
+            label1.Size = new System.Drawing.Size( 70, 15 );
+            label1.TabIndex = 26;
+            label1.Text = "Description:";
             // 
             // ButtonLayout
             // 
-            this.ButtonLayout.AutoSize = true;
-            this.ButtonLayout.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
-            this.ButtonLayout.ColumnCount = 3;
-            this.ButtonLayout.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
-            this.ButtonLayout.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
-            this.ButtonLayout.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.ButtonLayout.Controls.Add(this.ViewGithub, 0, 0);
-            this.ButtonLayout.Controls.Add(this.OK, 2, 0);
-            this.ButtonLayout.Controls.Add(this.ChangelogButton, 1, 0);
-            this.ButtonLayout.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.ButtonLayout.Location = new System.Drawing.Point(255, 235);
-            this.ButtonLayout.Margin = new System.Windows.Forms.Padding(0);
-            this.ButtonLayout.Name = "ButtonLayout";
-            this.ButtonLayout.RowCount = 1;
-            this.ButtonLayout.RowStyles.Add(new System.Windows.Forms.RowStyle());
-            this.ButtonLayout.Size = new System.Drawing.Size(384, 30);
-            this.ButtonLayout.TabIndex = 28;
+            ButtonLayout.AutoSize = true;
+            ButtonLayout.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
+            ButtonLayout.ColumnCount = 3;
+            ButtonLayout.ColumnStyles.Add( new System.Windows.Forms.ColumnStyle() );
+            ButtonLayout.ColumnStyles.Add( new System.Windows.Forms.ColumnStyle() );
+            ButtonLayout.ColumnStyles.Add( new System.Windows.Forms.ColumnStyle( System.Windows.Forms.SizeType.Percent, 100F ) );
+            ButtonLayout.Controls.Add( ViewGithub, 0, 0 );
+            ButtonLayout.Controls.Add( OK, 2, 0 );
+            ButtonLayout.Controls.Add( ChangelogButton, 1, 0 );
+            ButtonLayout.Dock = System.Windows.Forms.DockStyle.Fill;
+            ButtonLayout.Location = new System.Drawing.Point( 298, 271 );
+            ButtonLayout.Margin = new System.Windows.Forms.Padding( 0 );
+            ButtonLayout.Name = "ButtonLayout";
+            ButtonLayout.RowCount = 1;
+            ButtonLayout.RowStyles.Add( new System.Windows.Forms.RowStyle() );
+            ButtonLayout.Size = new System.Drawing.Size( 448, 36 );
+            ButtonLayout.TabIndex = 28;
             // 
             // ViewGithub
             // 
-            this.ViewGithub.AutoSize = true;
-            this.ViewGithub.Location = new System.Drawing.Point(3, 3);
-            this.ViewGithub.Name = "ViewGithub";
-            this.ViewGithub.Size = new System.Drawing.Size(75, 23);
-            this.ViewGithub.TabIndex = 25;
-            this.ViewGithub.Text = "View Github";
-            this.ViewGithub.UseVisualStyleBackColor = true;
+            ViewGithub.AutoSize = true;
+            ViewGithub.Location = new System.Drawing.Point( 4, 3 );
+            ViewGithub.Margin = new System.Windows.Forms.Padding( 4, 3, 4, 3 );
+            ViewGithub.Name = "ViewGithub";
+            ViewGithub.Size = new System.Drawing.Size( 94, 29 );
+            ViewGithub.TabIndex = 25;
+            ViewGithub.Text = "View Github";
+            ViewGithub.UseVisualStyleBackColor = true;
             // 
             // OK
             // 
-            this.OK.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.OK.DialogResult = System.Windows.Forms.DialogResult.Cancel;
-            this.OK.Location = new System.Drawing.Point(306, 3);
-            this.OK.Name = "OK";
-            this.OK.Size = new System.Drawing.Size(75, 23);
-            this.OK.TabIndex = 24;
-            this.OK.Text = "&OK";
-            // 
-            // VersionTableLayout
-            // 
-            this.VersionTableLayout.AutoSize = true;
-            this.VersionTableLayout.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
-            this.VersionTableLayout.ColumnCount = 3;
-            this.VersionTableLayout.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
-            this.VersionTableLayout.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.VersionTableLayout.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
-            this.VersionTableLayout.Controls.Add(this.VersionLabel, 0, 0);
-            this.VersionTableLayout.Controls.Add(this.UpdateButton, 2, 0);
-            this.VersionTableLayout.Controls.Add(this.UpdateCheckLabel, 1, 0);
-            this.VersionTableLayout.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.VersionTableLayout.Location = new System.Drawing.Point(255, 25);
-            this.VersionTableLayout.Margin = new System.Windows.Forms.Padding(0);
-            this.VersionTableLayout.Name = "VersionTableLayout";
-            this.VersionTableLayout.RowCount = 1;
-            this.VersionTableLayout.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.VersionTableLayout.Size = new System.Drawing.Size(384, 29);
-            this.VersionTableLayout.TabIndex = 29;
-            // 
-            // VersionLabel
-            // 
-            this.VersionLabel.AutoSize = true;
-            this.VersionLabel.Dock = System.Windows.Forms.DockStyle.Left;
-            this.VersionLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.VersionLabel.Location = new System.Drawing.Point(6, 0);
-            this.VersionLabel.Margin = new System.Windows.Forms.Padding(6, 0, 3, 0);
-            this.VersionLabel.Name = "VersionLabel";
-            this.VersionLabel.Size = new System.Drawing.Size(63, 29);
-            this.VersionLabel.TabIndex = 0;
-            this.VersionLabel.Text = "Version";
-            this.VersionLabel.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            // 
-            // UpdateButton
-            // 
-            this.UpdateButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.UpdateButton.Enabled = false;
-            this.UpdateButton.Location = new System.Drawing.Point(306, 3);
-            this.UpdateButton.Name = "UpdateButton";
-            this.UpdateButton.Size = new System.Drawing.Size(75, 23);
-            this.UpdateButton.TabIndex = 1;
-            this.UpdateButton.Text = "Update";
-            this.UpdateButton.UseVisualStyleBackColor = true;
-            // 
-            // UpdateCheckLabel
-            // 
-            this.UpdateCheckLabel.AutoSize = true;
-            this.UpdateCheckLabel.Dock = System.Windows.Forms.DockStyle.Right;
-            this.UpdateCheckLabel.Location = new System.Drawing.Point(155, 0);
-            this.UpdateCheckLabel.Name = "UpdateCheckLabel";
-            this.UpdateCheckLabel.Size = new System.Drawing.Size(145, 29);
-            this.UpdateCheckLabel.TabIndex = 2;
-            this.UpdateCheckLabel.Text = "Checking for newer version...";
-            this.UpdateCheckLabel.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            OK.Anchor =  System.Windows.Forms.AnchorStyles.Top  |  System.Windows.Forms.AnchorStyles.Right ;
+            OK.DialogResult = System.Windows.Forms.DialogResult.Cancel;
+            OK.Location = new System.Drawing.Point( 356, 3 );
+            OK.Margin = new System.Windows.Forms.Padding( 4, 3, 4, 3 );
+            OK.Name = "OK";
+            OK.Size = new System.Drawing.Size( 88, 27 );
+            OK.TabIndex = 24;
+            OK.Text = "&OK";
             // 
             // ChangelogButton
             // 
-            this.ChangelogButton.Location = new System.Drawing.Point(84, 3);
-            this.ChangelogButton.Name = "ChangelogButton";
-            this.ChangelogButton.Size = new System.Drawing.Size(75, 23);
-            this.ChangelogButton.TabIndex = 26;
-            this.ChangelogButton.Text = "Changelog";
-            this.ChangelogButton.UseVisualStyleBackColor = true;
+            ChangelogButton.Location = new System.Drawing.Point( 106, 3 );
+            ChangelogButton.Margin = new System.Windows.Forms.Padding( 4, 3, 4, 3 );
+            ChangelogButton.Name = "ChangelogButton";
+            ChangelogButton.Size = new System.Drawing.Size( 88, 27 );
+            ChangelogButton.TabIndex = 26;
+            ChangelogButton.Text = "Changelog";
+            ChangelogButton.UseVisualStyleBackColor = true;
+            // 
+            // VersionTableLayout
+            // 
+            VersionTableLayout.AutoSize = true;
+            VersionTableLayout.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
+            VersionTableLayout.ColumnCount = 3;
+            VersionTableLayout.ColumnStyles.Add( new System.Windows.Forms.ColumnStyle() );
+            VersionTableLayout.ColumnStyles.Add( new System.Windows.Forms.ColumnStyle( System.Windows.Forms.SizeType.Percent, 100F ) );
+            VersionTableLayout.ColumnStyles.Add( new System.Windows.Forms.ColumnStyle() );
+            VersionTableLayout.Controls.Add( VersionLabel, 0, 0 );
+            VersionTableLayout.Controls.Add( UpdateButton, 2, 0 );
+            VersionTableLayout.Controls.Add( UpdateCheckLabel, 1, 0 );
+            VersionTableLayout.Dock = System.Windows.Forms.DockStyle.Fill;
+            VersionTableLayout.Location = new System.Drawing.Point( 298, 25 );
+            VersionTableLayout.Margin = new System.Windows.Forms.Padding( 0 );
+            VersionTableLayout.Name = "VersionTableLayout";
+            VersionTableLayout.RowCount = 1;
+            VersionTableLayout.RowStyles.Add( new System.Windows.Forms.RowStyle( System.Windows.Forms.SizeType.Percent, 100F ) );
+            VersionTableLayout.Size = new System.Drawing.Size( 448, 33 );
+            VersionTableLayout.TabIndex = 29;
+            // 
+            // VersionLabel
+            // 
+            VersionLabel.AutoSize = true;
+            VersionLabel.Dock = System.Windows.Forms.DockStyle.Left;
+            VersionLabel.Font = new System.Drawing.Font( "Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, 0 );
+            VersionLabel.Location = new System.Drawing.Point( 7, 0 );
+            VersionLabel.Margin = new System.Windows.Forms.Padding( 7, 0, 4, 0 );
+            VersionLabel.Name = "VersionLabel";
+            VersionLabel.Size = new System.Drawing.Size( 63, 33 );
+            VersionLabel.TabIndex = 0;
+            VersionLabel.Text = "Version";
+            VersionLabel.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            // 
+            // UpdateButton
+            // 
+            UpdateButton.Anchor =  System.Windows.Forms.AnchorStyles.Top  |  System.Windows.Forms.AnchorStyles.Right ;
+            UpdateButton.Enabled = false;
+            UpdateButton.Location = new System.Drawing.Point( 356, 3 );
+            UpdateButton.Margin = new System.Windows.Forms.Padding( 4, 3, 4, 3 );
+            UpdateButton.Name = "UpdateButton";
+            UpdateButton.Size = new System.Drawing.Size( 88, 27 );
+            UpdateButton.TabIndex = 1;
+            UpdateButton.Text = "Update";
+            UpdateButton.UseVisualStyleBackColor = true;
+            // 
+            // UpdateCheckLabel
+            // 
+            UpdateCheckLabel.AutoSize = true;
+            UpdateCheckLabel.Dock = System.Windows.Forms.DockStyle.Right;
+            UpdateCheckLabel.Location = new System.Drawing.Point( 188, 0 );
+            UpdateCheckLabel.Margin = new System.Windows.Forms.Padding( 4, 0, 4, 0 );
+            UpdateCheckLabel.Name = "UpdateCheckLabel";
+            UpdateCheckLabel.Size = new System.Drawing.Size( 160, 33 );
+            UpdateCheckLabel.TabIndex = 2;
+            UpdateCheckLabel.Text = "Checking for newer version...";
+            UpdateCheckLabel.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             // 
             // AboutBox
             // 
-            this.AcceptButton = this.OK;
-            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
-            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.CancelButton = this.OK;
-            this.ClientSize = new System.Drawing.Size(657, 283);
-            this.Controls.Add(this.TableLayout);
-            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.Fixed3D;
-            this.MaximizeBox = false;
-            this.MinimizeBox = false;
-            this.Name = "AboutBox";
-            this.Padding = new System.Windows.Forms.Padding(9);
-            this.ShowInTaskbar = false;
-            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
-            this.Text = "About";
-            this.TableLayout.ResumeLayout(false);
-            this.TableLayout.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.Logo)).EndInit();
-            this.ButtonLayout.ResumeLayout(false);
-            this.ButtonLayout.PerformLayout();
-            this.VersionTableLayout.ResumeLayout(false);
-            this.VersionTableLayout.PerformLayout();
-            this.ResumeLayout(false);
+            AcceptButton = OK;
+            AutoScaleDimensions = new System.Drawing.SizeF( 7F, 15F );
+            AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            CancelButton = OK;
+            ClientSize = new System.Drawing.Size( 766, 327 );
+            Controls.Add( TableLayout );
+            FormBorderStyle = System.Windows.Forms.FormBorderStyle.Fixed3D;
+            Margin = new System.Windows.Forms.Padding( 4, 3, 4, 3 );
+            MaximizeBox = false;
+            MinimizeBox = false;
+            Name = "AboutBox";
+            Padding = new System.Windows.Forms.Padding( 10, 10, 10, 10 );
+            ShowInTaskbar = false;
+            StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
+            Text = "About";
+            TableLayout.ResumeLayout( false );
+            TableLayout.PerformLayout();
+            ( (System.ComponentModel.ISupportInitialize)Logo ).EndInit();
+            ButtonLayout.ResumeLayout( false );
+            ButtonLayout.PerformLayout();
+            VersionTableLayout.ResumeLayout( false );
+            VersionTableLayout.PerformLayout();
+            ResumeLayout( false );
 
         }
 
