@@ -46,8 +46,7 @@ namespace TabbedTortoiseGit
                 {
                     if( _mutex.WaitOne( TimeSpan.Zero, true ) )
                     {
-                        Application.EnableVisualStyles();
-                        Application.SetCompatibleTextRenderingDefault( false );
+                        ApplicationConfiguration.Initialize();
 
                         LOG.Debug( "Starting Tabbed TortoiseGit" );
                         Application.Run( ProgramForm.Create( a.Startup ) );

@@ -10,6 +10,10 @@
     <Description>A simple tabbed wrapper for TortoiseGit to host multiple TortoiseGit logs within a single application.</Description>
     <Version>0.38.1</Version>
     <ApplicationIcon>Resources\tortoise.ico</ApplicationIcon>
+
+    <ApplicationVisualStyles>true</ApplicationVisualStyles>
+    <ApplicationUseCompatibleTextRendering>false</ApplicationUseCompatibleTextRendering>
+    <ApplicationHighDpiMode>SystemAware</ApplicationHighDpiMode>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
