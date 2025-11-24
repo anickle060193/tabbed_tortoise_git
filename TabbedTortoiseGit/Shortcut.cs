@@ -12,9 +12,6 @@ using System.Windows.Forms;
 
 namespace TabbedTortoiseGit
 {
-    [TypeConverter( typeof( ShortcutConverter ) )]
-    [JsonConverter( typeof( ForceJsonConverter<Shortcut> ) )]
-    [SettingsSerializeAs( SettingsSerializeAs.String )]
     public class Shortcut
     {
         public static readonly Shortcut Empty = new Shortcut( Keys.None, Keys.None );
@@ -88,43 +85,6 @@ namespace TabbedTortoiseGit
         public override string ToString()
         {
             return $"Shortcut( {this.Text} )";
-        }
-    }
-
-    class ShortcutConverter : TypeConverter
-    {
-        public override bool CanConvertFrom( ITypeDescriptorContext? context, Type sourceType )
-        {
-            return sourceType == typeof( String );
-        }
-
-        public override object? ConvertFrom( ITypeDescriptorContext? context, CultureInfo? culture, object value )
-        {
-            if( value is String s )
-            {
-                return JsonConvert.DeserializeObject<Shortcut>( s );
-            }
-            else
-            {
-                return base.ConvertFrom( context, culture, value );
-            }
-        }
-
-        public override bool CanConvertTo( ITypeDescriptorContext? context, Type? destinationType )
-        {
-            return destinationType == typeof( String );
-        }
-
-        public override object? ConvertTo( ITypeDescriptorContext? context, CultureInfo? culture, object? value, Type destinationType )
-        {
-            if( destinationType == typeof( String ) )
-            {
-                return JsonConvert.SerializeObject( value );
-            }
-            else
-            {
-                return base.ConvertTo( context, culture, value, destinationType );
-            }
         }
     }
 }

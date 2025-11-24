@@ -10,9 +10,6 @@ using System.Threading.Tasks;
 
 namespace TabbedTortoiseGit
 {
-    [TypeConverter( typeof( ShortcutConverter ) )]
-    [JsonConverter( typeof( ForceJsonConverter<CustomAction> ) )]
-    [SettingsSerializeAs( SettingsSerializeAs.String )]
     public class CustomAction
     {
         public String Name { get; private set; }
