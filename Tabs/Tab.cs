@@ -17,6 +17,7 @@ namespace Tabs
         private bool _dragging = false;
         private int _draggingOffset = 0;
         private int _draggingX = 0;
+        private string tooltipText = "";
 
         [DefaultValue( "" )]
         [Browsable( true )]
@@ -32,6 +33,25 @@ namespace Tabs
                 if( this.Text != value )
                 {
                     base.Text = value;
+                    this.Parent?.Invalidate();
+                }
+            }
+        }
+
+        [DefaultValue( "" )]
+        [Browsable( true )]
+        public string ToolTipText
+        {
+            get
+            {
+                return this.tooltipText;
+            }
+
+            set
+            {
+                if( this.tooltipText != value )
+                {
+                    this.tooltipText = value;
                     this.Parent?.Invalidate();
                 }
             }

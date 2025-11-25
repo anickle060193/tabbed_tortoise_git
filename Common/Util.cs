@@ -7,6 +7,7 @@ using System.Drawing.Imaging;
 using System.IO;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 
 namespace Common
@@ -69,6 +70,24 @@ namespace Common
                 g.DrawImage( icon, new Rectangle( 0, 0, icon.Width, icon.Height ), 0, 0, icon.Width, icon.Height, GraphicsUnit.Pixel, attributes );
             }
             return colorIcon;
+        }
+
+        public static bool IsRegexValid( string? pattern )
+        {
+            if( string.IsNullOrEmpty( pattern ) )
+            {
+                return false;
+            }
+
+            try
+            {
+                _ = new Regex( pattern );
+                return true;
+            }
+            catch
+            {
+                return false;
+            }
         }
     }
 }

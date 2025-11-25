@@ -121,6 +121,12 @@ namespace TabbedTortoiseGit
                 color = Settings.Default.NormalTabFontColor;
             }
 
+            string text = this.RepoItem;
+            foreach( var replacer in Settings.Default.RepoNameReplacers )
+            {
+                text = replacer.Replace( text );
+            }
+
             Tab tab = this.Tab;
             if( tab.InvokeRequired )
             {
@@ -128,12 +134,16 @@ namespace TabbedTortoiseGit
                 {
                     tab.Font = font;
                     tab.ForeColor = color;
+                    tab.Text = text;
+                    tab.ToolTipText = this.RepoItem;
                 } );
             }
             else
             {
                 tab.Font = font;
                 tab.ForeColor = color;
+                tab.Text = text;
+                tab.ToolTipText = this.RepoItem;
             }
         }
 

@@ -64,6 +64,10 @@ namespace TabbedTortoiseGit
             ShowProgressDialog = new DataGridViewCheckBoxColumn();
             CreateNoWindow = new DataGridViewCheckBoxColumn();
             DisplaySettingsTab = new TabPage();
+            repoNameReplacersGroup = new GroupBox();
+            repoNameReplacersHelperLabel = new Label();
+            repoNameReplacersGridView = new DataGridView();
+            repoNameReplacersBindingSource = new BindingSource( components );
             HideReferencesDisplayCheck = new CheckBox();
             ResetNormalTabFontButton = new Button();
             ChangeNormalTabFontButton = new Button();
@@ -91,6 +95,8 @@ namespace TabbedTortoiseGit
             TortoiseGitProcExeLocationDialog = new OpenFileDialog();
             folderDialog = new FolderBrowserDialog();
             restoreSettingsButton = new Button();
+            repoNameReplacersGridViewPatternColumn = new DataGridViewTextBoxColumn();
+            repoNameReplacersGridViewReplacementColumn = new DataGridViewTextBoxColumn();
             ( (System.ComponentModel.ISupportInitialize)MaxRecentReposNumeric ).BeginInit();
             SettingsTabs.SuspendLayout();
             KeyboardShortcutsPage.SuspendLayout();
@@ -100,6 +106,9 @@ namespace TabbedTortoiseGit
             CustomActionsTab.SuspendLayout();
             ( (System.ComponentModel.ISupportInitialize)CustomActionsDataGridView ).BeginInit();
             DisplaySettingsTab.SuspendLayout();
+            repoNameReplacersGroup.SuspendLayout();
+            ( (System.ComponentModel.ISupportInitialize)repoNameReplacersGridView ).BeginInit();
+            ( (System.ComponentModel.ISupportInitialize)repoNameReplacersBindingSource ).BeginInit();
             NormalTabFontGroup.SuspendLayout();
             ( (System.ComponentModel.ISupportInitialize)CheckForModifiedTabsIntervalNumeric ).BeginInit();
             ModifiedTabFontGroup.SuspendLayout();
@@ -134,7 +143,7 @@ namespace TabbedTortoiseGit
             // 
             OK.Anchor =  AnchorStyles.Bottom  |  AnchorStyles.Right ;
             OK.DialogResult = DialogResult.OK;
-            OK.Location = new System.Drawing.Point( 602, 434 );
+            OK.Location = new System.Drawing.Point( 603, 521 );
             OK.Margin = new Padding( 4, 3, 4, 3 );
             OK.Name = "OK";
             OK.Size = new System.Drawing.Size( 88, 27 );
@@ -146,7 +155,7 @@ namespace TabbedTortoiseGit
             // 
             Cancel.Anchor =  AnchorStyles.Bottom  |  AnchorStyles.Right ;
             Cancel.DialogResult = DialogResult.Cancel;
-            Cancel.Location = new System.Drawing.Point( 696, 434 );
+            Cancel.Location = new System.Drawing.Point( 697, 521 );
             Cancel.Margin = new Padding( 4, 3, 4, 3 );
             Cancel.Name = "Cancel";
             Cancel.Size = new System.Drawing.Size( 88, 27 );
@@ -259,7 +268,7 @@ namespace TabbedTortoiseGit
             SettingsTabs.Margin = new Padding( 4, 3, 4, 3 );
             SettingsTabs.Name = "SettingsTabs";
             SettingsTabs.SelectedIndex = 0;
-            SettingsTabs.Size = new System.Drawing.Size( 770, 413 );
+            SettingsTabs.Size = new System.Drawing.Size( 771, 500 );
             SettingsTabs.TabIndex = 12;
             // 
             // KeyboardShortcutsPage
@@ -270,7 +279,7 @@ namespace TabbedTortoiseGit
             KeyboardShortcutsPage.Margin = new Padding( 4, 3, 4, 3 );
             KeyboardShortcutsPage.Name = "KeyboardShortcutsPage";
             KeyboardShortcutsPage.Padding = new Padding( 4, 3, 4, 3 );
-            KeyboardShortcutsPage.Size = new System.Drawing.Size( 762, 385 );
+            KeyboardShortcutsPage.Size = new System.Drawing.Size( 763, 472 );
             KeyboardShortcutsPage.TabIndex = 5;
             KeyboardShortcutsPage.Text = "Keyboard Shortcuts";
             KeyboardShortcutsPage.UseVisualStyleBackColor = true;
@@ -293,7 +302,7 @@ namespace TabbedTortoiseGit
             KeyBoardShortcutsTableLayout.RowStyles.Add( new RowStyle( SizeType.Absolute, 1F ) );
             KeyBoardShortcutsTableLayout.RowStyles.Add( new RowStyle( SizeType.Absolute, 1F ) );
             KeyBoardShortcutsTableLayout.RowStyles.Add( new RowStyle( SizeType.Absolute, 1F ) );
-            KeyBoardShortcutsTableLayout.Size = new System.Drawing.Size( 754, 0 );
+            KeyBoardShortcutsTableLayout.Size = new System.Drawing.Size( 755, 0 );
             KeyBoardShortcutsTableLayout.TabIndex = 2;
             // 
             // StartupReposTab
@@ -306,7 +315,7 @@ namespace TabbedTortoiseGit
             StartupReposTab.Margin = new Padding( 4, 3, 4, 3 );
             StartupReposTab.Name = "StartupReposTab";
             StartupReposTab.Padding = new Padding( 4, 3, 4, 3 );
-            StartupReposTab.Size = new System.Drawing.Size( 762, 385 );
+            StartupReposTab.Size = new System.Drawing.Size( 763, 472 );
             StartupReposTab.TabIndex = 0;
             StartupReposTab.Text = "Startup Repos";
             StartupReposTab.UseVisualStyleBackColor = true;
@@ -320,7 +329,7 @@ namespace TabbedTortoiseGit
             GitActionsTab.Margin = new Padding( 4, 3, 4, 3 );
             GitActionsTab.Name = "GitActionsTab";
             GitActionsTab.Padding = new Padding( 4, 3, 4, 3 );
-            GitActionsTab.Size = new System.Drawing.Size( 762, 385 );
+            GitActionsTab.Size = new System.Drawing.Size( 763, 472 );
             GitActionsTab.TabIndex = 1;
             GitActionsTab.Text = "Git Actions";
             GitActionsTab.UseVisualStyleBackColor = true;
@@ -359,7 +368,7 @@ namespace TabbedTortoiseGit
             CustomActionsTab.Margin = new Padding( 4, 3, 4, 3 );
             CustomActionsTab.Name = "CustomActionsTab";
             CustomActionsTab.Padding = new Padding( 4, 3, 4, 3 );
-            CustomActionsTab.Size = new System.Drawing.Size( 762, 385 );
+            CustomActionsTab.Size = new System.Drawing.Size( 763, 472 );
             CustomActionsTab.TabIndex = 6;
             CustomActionsTab.Text = "Custom Actions";
             CustomActionsTab.UseVisualStyleBackColor = true;
@@ -491,6 +500,7 @@ namespace TabbedTortoiseGit
             // 
             // DisplaySettingsTab
             // 
+            DisplaySettingsTab.Controls.Add( repoNameReplacersGroup );
             DisplaySettingsTab.Controls.Add( HideReferencesDisplayCheck );
             DisplaySettingsTab.Controls.Add( ResetNormalTabFontButton );
             DisplaySettingsTab.Controls.Add( ChangeNormalTabFontButton );
@@ -505,10 +515,50 @@ namespace TabbedTortoiseGit
             DisplaySettingsTab.Margin = new Padding( 4, 3, 4, 3 );
             DisplaySettingsTab.Name = "DisplaySettingsTab";
             DisplaySettingsTab.Padding = new Padding( 4, 3, 4, 3 );
-            DisplaySettingsTab.Size = new System.Drawing.Size( 762, 385 );
+            DisplaySettingsTab.Size = new System.Drawing.Size( 763, 472 );
             DisplaySettingsTab.TabIndex = 4;
             DisplaySettingsTab.Text = "Display";
             DisplaySettingsTab.UseVisualStyleBackColor = true;
+            // 
+            // repoNameReplacersGroup
+            // 
+            repoNameReplacersGroup.Anchor =    AnchorStyles.Top  |  AnchorStyles.Bottom   |  AnchorStyles.Left   |  AnchorStyles.Right ;
+            repoNameReplacersGroup.Controls.Add( repoNameReplacersHelperLabel );
+            repoNameReplacersGroup.Controls.Add( repoNameReplacersGridView );
+            repoNameReplacersGroup.Location = new System.Drawing.Point( 7, 307 );
+            repoNameReplacersGroup.Name = "repoNameReplacersGroup";
+            repoNameReplacersGroup.Size = new System.Drawing.Size( 749, 159 );
+            repoNameReplacersGroup.TabIndex = 12;
+            repoNameReplacersGroup.TabStop = false;
+            repoNameReplacersGroup.Text = "Repo Name Tab Display";
+            // 
+            // repoNameReplacersHelperLabel
+            // 
+            repoNameReplacersHelperLabel.Anchor =  AnchorStyles.Bottom  |  AnchorStyles.Left ;
+            repoNameReplacersHelperLabel.AutoSize = true;
+            repoNameReplacersHelperLabel.Location = new System.Drawing.Point( 6, 141 );
+            repoNameReplacersHelperLabel.Name = "repoNameReplacersHelperLabel";
+            repoNameReplacersHelperLabel.Size = new System.Drawing.Size( 460, 15 );
+            repoNameReplacersHelperLabel.TabIndex = 12;
+            repoNameReplacersHelperLabel.Text = "Note: These values are used to replace parts of the repo folder path for the tab display.";
+            // 
+            // repoNameReplacersGridView
+            // 
+            repoNameReplacersGridView.AllowUserToResizeRows = false;
+            repoNameReplacersGridView.Anchor =    AnchorStyles.Top  |  AnchorStyles.Bottom   |  AnchorStyles.Left   |  AnchorStyles.Right ;
+            repoNameReplacersGridView.AutoGenerateColumns = false;
+            repoNameReplacersGridView.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.AllCells;
+            repoNameReplacersGridView.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            repoNameReplacersGridView.Columns.AddRange( new DataGridViewColumn[] { repoNameReplacersGridViewPatternColumn, repoNameReplacersGridViewReplacementColumn } );
+            repoNameReplacersGridView.DataSource = repoNameReplacersBindingSource;
+            repoNameReplacersGridView.Location = new System.Drawing.Point( 6, 22 );
+            repoNameReplacersGridView.Name = "repoNameReplacersGridView";
+            repoNameReplacersGridView.Size = new System.Drawing.Size( 737, 116 );
+            repoNameReplacersGridView.TabIndex = 11;
+            // 
+            // repoNameReplacersBindingSource
+            // 
+            repoNameReplacersBindingSource.DataSource = typeof( RepoNameReplacer );
             // 
             // HideReferencesDisplayCheck
             // 
@@ -666,7 +716,7 @@ namespace TabbedTortoiseGit
             OtherSettingsTab.Margin = new Padding( 4, 3, 4, 3 );
             OtherSettingsTab.Name = "OtherSettingsTab";
             OtherSettingsTab.Padding = new Padding( 4, 3, 4, 3 );
-            OtherSettingsTab.Size = new System.Drawing.Size( 762, 385 );
+            OtherSettingsTab.Size = new System.Drawing.Size( 763, 472 );
             OtherSettingsTab.TabIndex = 2;
             OtherSettingsTab.Text = "Other";
             OtherSettingsTab.UseVisualStyleBackColor = true;
@@ -756,7 +806,7 @@ namespace TabbedTortoiseGit
             DeveloperSettingsPage.Margin = new Padding( 4, 3, 4, 3 );
             DeveloperSettingsPage.Name = "DeveloperSettingsPage";
             DeveloperSettingsPage.Padding = new Padding( 4, 3, 4, 3 );
-            DeveloperSettingsPage.Size = new System.Drawing.Size( 762, 385 );
+            DeveloperSettingsPage.Size = new System.Drawing.Size( 763, 472 );
             DeveloperSettingsPage.TabIndex = 3;
             DeveloperSettingsPage.Text = "Developer Settings";
             DeveloperSettingsPage.UseVisualStyleBackColor = true;
@@ -791,12 +841,28 @@ namespace TabbedTortoiseGit
             // restoreSettingsButton
             // 
             restoreSettingsButton.Anchor =  AnchorStyles.Bottom  |  AnchorStyles.Left ;
-            restoreSettingsButton.Location = new System.Drawing.Point( 12, 436 );
+            restoreSettingsButton.Location = new System.Drawing.Point( 12, 523 );
             restoreSettingsButton.Name = "restoreSettingsButton";
             restoreSettingsButton.Size = new System.Drawing.Size( 120, 23 );
             restoreSettingsButton.TabIndex = 13;
             restoreSettingsButton.Text = "Restore Settings";
             restoreSettingsButton.UseVisualStyleBackColor = true;
+            // 
+            // repoNameReplacersGridViewPatternColumn
+            // 
+            repoNameReplacersGridViewPatternColumn.AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
+            repoNameReplacersGridViewPatternColumn.DataPropertyName = "Pattern";
+            repoNameReplacersGridViewPatternColumn.HeaderText = "Pattern";
+            repoNameReplacersGridViewPatternColumn.Name = "repoNameReplacersGridViewPatternColumn";
+            repoNameReplacersGridViewPatternColumn.ToolTipText = "Regex pattern text to match against repo folder path for tab name display.";
+            // 
+            // repoNameReplacersGridViewReplacementColumn
+            // 
+            repoNameReplacersGridViewReplacementColumn.AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
+            repoNameReplacersGridViewReplacementColumn.DataPropertyName = "Replacement";
+            repoNameReplacersGridViewReplacementColumn.HeaderText = "Replacement";
+            repoNameReplacersGridViewReplacementColumn.Name = "repoNameReplacersGridViewReplacementColumn";
+            repoNameReplacersGridViewReplacementColumn.ToolTipText = "Replacement text for tab name display.";
             // 
             // SettingsForm
             // 
@@ -804,7 +870,7 @@ namespace TabbedTortoiseGit
             AutoScaleDimensions = new System.Drawing.SizeF( 7F, 15F );
             AutoScaleMode = AutoScaleMode.Font;
             CancelButton = Cancel;
-            ClientSize = new System.Drawing.Size( 798, 474 );
+            ClientSize = new System.Drawing.Size( 799, 561 );
             Controls.Add( restoreSettingsButton );
             Controls.Add( SettingsTabs );
             Controls.Add( Cancel );
@@ -832,6 +898,10 @@ namespace TabbedTortoiseGit
             ( (System.ComponentModel.ISupportInitialize)CustomActionsDataGridView ).EndInit();
             DisplaySettingsTab.ResumeLayout( false );
             DisplaySettingsTab.PerformLayout();
+            repoNameReplacersGroup.ResumeLayout( false );
+            repoNameReplacersGroup.PerformLayout();
+            ( (System.ComponentModel.ISupportInitialize)repoNameReplacersGridView ).EndInit();
+            ( (System.ComponentModel.ISupportInitialize)repoNameReplacersBindingSource ).EndInit();
             NormalTabFontGroup.ResumeLayout( false );
             ( (System.ComponentModel.ISupportInitialize)CheckForModifiedTabsIntervalNumeric ).EndInit();
             ModifiedTabFontGroup.ResumeLayout( false );
@@ -904,5 +974,11 @@ namespace TabbedTortoiseGit
         private OpenFileDialog TortoiseGitProcExeLocationDialog;
         private FolderBrowserDialog folderDialog;
         private Button restoreSettingsButton;
+        private DataGridView repoNameReplacersGridView;
+        private BindingSource repoNameReplacersBindingSource;
+        private GroupBox repoNameReplacersGroup;
+        private Label repoNameReplacersHelperLabel;
+        private DataGridViewTextBoxColumn repoNameReplacersGridViewPatternColumn;
+        private DataGridViewTextBoxColumn repoNameReplacersGridViewReplacementColumn;
     }
 }

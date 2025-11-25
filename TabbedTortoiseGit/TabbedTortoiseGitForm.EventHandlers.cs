@@ -127,6 +127,10 @@ namespace TabbedTortoiseGit
             {
                 await UpdateFavoriteReposFromSettings();
             }
+            else if( e.PropertyName == nameof( Settings.Default.RepoNameReplacersJsonString ) )
+            {
+                UpdateAllTabDisplays();
+            }
             else
             {
                 LOG.Debug( $"{nameof( Settings_PropertyChanged )} - Unhandled setting change: {e.PropertyName}" );
@@ -322,7 +326,7 @@ namespace TabbedTortoiseGit
         {
             if( LogTabs.SelectedTab != null )
             {
-                this.Text = LogTabs.SelectedTab.Text + " - Tabbed TortoiseGit";
+                this.Text = LogTabs.SelectedTab.Controller().RepoItem + " - Tabbed TortoiseGit";
             }
             else
             {

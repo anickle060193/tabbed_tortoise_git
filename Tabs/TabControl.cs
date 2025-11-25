@@ -647,7 +647,7 @@ namespace Tabs
             {
                 Rectangle bounds = this.GetTabRect( index );
                 int x = this.PointToClient( MousePosition ).X;
-                _tabToolTip.Show( tab.Text, this, x, bounds.Bottom );
+                _tabToolTip.Show( tab.ToolTipText, this, x, bounds.Bottom );
             }
         }
 

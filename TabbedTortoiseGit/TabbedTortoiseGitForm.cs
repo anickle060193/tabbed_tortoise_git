@@ -170,15 +170,20 @@ namespace TabbedTortoiseGit
             }
         }
 
-        private void UpdateModifiedTabsStatusFromSettings()
+        private void UpdateAllTabDisplays()
         {
             lock( _tags )
             {
-                foreach( TabControllerTag tag in _tags.Values )
+                foreach( var tag in _tags.Values )
                 {
                     tag.UpdateTabDisplay();
                 }
             }
+        }
+
+        private void UpdateModifiedTabsStatusFromSettings()
+        {
+            this.UpdateAllTabDisplays();
 
             if( Settings.Default.IndicateModifiedTabs
              && !ModifiedRepoCheckBackgroundWorker.IsBusy )

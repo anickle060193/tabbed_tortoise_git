@@ -241,6 +241,36 @@ namespace TabbedTortoiseGit.Properties
             }
         }
 
+        public List<RepoNameReplacer> RepoNameReplacers
+        {
+            get
+            {
+                List<RepoNameReplacer>? replacers = null;
+                string replacersString = Settings.Default.RepoNameReplacersJsonString;
+                try
+                {
+                    replacers = JsonConvert.DeserializeObject<List<RepoNameReplacer>>( replacersString );
+                }
+                catch( JsonException e )
+                {
+                    LOG.Error( $"Failed to deserialize {nameof( RepoNameReplacers )}: {replacersString}", e );
+                }
+                return replacers ?? [];
+            }
+
+            set
+            {
+                try
+                {
+                    Settings.Default.RepoNameReplacersJsonString = JsonConvert.SerializeObject( value, Formatting.Indented );
+                }
+                catch( JsonException e )
+                {
+                    LOG.Error( $"Failed to serialize {nameof( RepoNameReplacers )}", e );
+                }
+            }
+        }
+
         public FavoriteFolder DefaultFavoriteRepos
         {
             get
@@ -567,6 +597,11 @@ namespace TabbedTortoiseGit.Properties
                 {
                     new CustomAction( "Open Console Here", "cmd.exe", "", "%r", false, false, false )
                 };
+            }
+
+            if( string.IsNullOrEmpty( Settings.Default.RepoNameReplacersJsonString ) )
+            {
+                Settings.Default.RepoNameReplacers = [];
             }
 
             Settings.Default.Save();

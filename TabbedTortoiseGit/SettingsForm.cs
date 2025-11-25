@@ -10,6 +10,7 @@ using System.Drawing;
 using System.IO;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using TabbedTortoiseGit.Properties;
@@ -41,6 +42,7 @@ namespace TabbedTortoiseGit
                 ModifiedTabFont = Settings.Default.ModifiedTabFont,
                 ModifiedTabFontColor = Settings.Default.ModifiedTabFontColor,
                 HideReferencesDisplay = Settings.Default.HideReferencesDisplay,
+                RepoNameReplacers = Settings.Default.RepoNameReplacers,
 
                 TortoiseGitProcExeLocation = Settings.Default.TortoiseGitProcExeLocation,
                 MaxRecentRepos = Settings.Default.MaxRecentRepos,
@@ -74,6 +76,7 @@ namespace TabbedTortoiseGit
                 Settings.Default.ModifiedTabFont = f.ModifiedTabFont;
                 Settings.Default.ModifiedTabFontColor = f.ModifiedTabFontColor;
                 Settings.Default.HideReferencesDisplay = f.HideReferencesDisplay;
+                Settings.Default.RepoNameReplacers = f.RepoNameReplacers;
 
                 Settings.Default.TortoiseGitProcExeLocation = f.TortoiseGitProcExeLocation;
                 Settings.Default.MaxRecentRepos = f.MaxRecentRepos;
@@ -424,9 +427,28 @@ namespace TabbedTortoiseGit
             }
         }
 
+        public List<RepoNameReplacer> RepoNameReplacers
+        {
+            get
+            {
+                return [ .. _repoNameReplacers ];
+            }
+
+            set
+            {
+                _repoNameReplacers.Clear();
+
+                foreach( RepoNameReplacer replacer in value )
+                {
+                    _repoNameReplacers.Add( replacer );
+                }
+            }
+        }
+
         private readonly CheckListDragDrophelper _dragDropHelper;
         private readonly Dictionary<KeyboardShortcuts, TextBox> _shortcutTextboxes = new Dictionary<KeyboardShortcuts, TextBox>();
         private readonly BindingList<CustomAction> _customActions = new BindingList<CustomAction>();
+        private readonly BindingList<RepoNameReplacer> _repoNameReplacers = [];
 
         private SettingsForm()
         {
@@ -452,6 +474,9 @@ namespace TabbedTortoiseGit
             this.ChangeModifiedTabFontButton.Click += ChangeModifiedTabFontButton_Click;
 
             this.TortoiseGitProcExeLocationBrowse.Click += TortoiseGitProcExeLocationBrowse_Click;
+
+            this.repoNameReplacersGridView.CellValidating += RepoNameReplacersGridView_CellValidating;
+            this.repoNameReplacersGridView.CellEndEdit += RepoNameReplacersGridView_CellEndEdit;
 
             _dragDropHelper = new CheckListDragDrophelper();
             _dragDropHelper.AddControl( GitActionsCheckList );
@@ -493,6 +518,8 @@ namespace TabbedTortoiseGit
 
             CustomActionsDataGridView.AutoGenerateColumns = false;
             CustomActionsDataGridView.DataSource = _customActions;
+
+            repoNameReplacersBindingSource.DataSource = _repoNameReplacers;
         }
 
         protected override bool ProcessTabKey( bool forward )
@@ -650,6 +677,25 @@ namespace TabbedTortoiseGit
             {
                 this.TortoiseGitProcExeLocation = TortoiseGitProcExeLocationDialog.FileName;
             }
+        }
+
+        private void RepoNameReplacersGridView_CellValidating( object? sender, DataGridViewCellValidatingEventArgs e )
+        {
+            if( repoNameReplacersGridView.Columns[ e.ColumnIndex ] == repoNameReplacersGridViewPatternColumn )
+            {
+                if( e.FormattedValue is string pattern
+                 && !string.IsNullOrEmpty( pattern )
+                 && !Util.IsRegexValid( e.FormattedValue as string ) )
+                {
+                    e.Cancel = true;
+                    repoNameReplacersGridView.Rows[ e.RowIndex ].ErrorText = "Invalid pattern regex";
+                }
+            }
+        }
+
+        private void RepoNameReplacersGridView_CellEndEdit( object? sender, DataGridViewCellEventArgs e )
+        {
+            repoNameReplacersGridView.Rows[ e.RowIndex ].ErrorText = "";
         }
 
         private void UpdateDefaultReposActions()
