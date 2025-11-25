@@ -771,12 +771,15 @@ namespace TabbedTortoiseGit
                 return;
             }
 
+            const int width = 512;
+            const int height = 512;
+            using Bitmap icon = new( width, height );
+            using Graphics g = Graphics.FromImage( icon );
+            g.DrawImage( Resources.TortoiseBody, 0, 0, width, height );
             using Bitmap shell = Resources.TortoiseShell;
             using Bitmap coloredShell = Util.ColorBitmap( shell, tag.Color );
-            using Bitmap background = Resources.TortoiseBody;
-            using Graphics g = Graphics.FromImage( background );
-            g.DrawImage( coloredShell, 0, 0 );
-            this.Icon = background.ToIcon();
+            g.DrawImage( coloredShell, 0, 0, width, height );
+            this.Icon = icon.ToIcon();
         }
 
         private async Task UpdateToolStripSubmodules()
