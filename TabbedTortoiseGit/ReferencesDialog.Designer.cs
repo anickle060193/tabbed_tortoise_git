@@ -64,14 +64,14 @@
             ReferencesTreeView.Location = new System.Drawing.Point( 4, 31 );
             ReferencesTreeView.Margin = new System.Windows.Forms.Padding( 4, 3, 4, 3 );
             ReferencesTreeView.Name = "ReferencesTreeView";
-            ReferencesTreeView.Size = new System.Drawing.Size( 203, 437 );
+            ReferencesTreeView.Size = new System.Drawing.Size( 203, 441 );
             ReferencesTreeView.TabIndex = 0;
             // 
             // OuterSplitContainer
             // 
             OuterSplitContainer.Anchor =    System.Windows.Forms.AnchorStyles.Top  |  System.Windows.Forms.AnchorStyles.Bottom   |  System.Windows.Forms.AnchorStyles.Left   |  System.Windows.Forms.AnchorStyles.Right ;
             OuterSplitContainer.FixedPanel = System.Windows.Forms.FixedPanel.Panel1;
-            OuterSplitContainer.Location = new System.Drawing.Point( 14, 14 );
+            OuterSplitContainer.Location = new System.Drawing.Point( 13, 12 );
             OuterSplitContainer.Margin = new System.Windows.Forms.Padding( 4, 3, 4, 3 );
             OuterSplitContainer.Name = "OuterSplitContainer";
             // 
@@ -82,7 +82,7 @@
             // OuterSplitContainer.Panel2
             // 
             OuterSplitContainer.Panel2.Controls.Add( InnerSplitContainer );
-            OuterSplitContainer.Size = new System.Drawing.Size( 1120, 471 );
+            OuterSplitContainer.Size = new System.Drawing.Size( 1122, 475 );
             OuterSplitContainer.SplitterDistance = 211;
             OuterSplitContainer.SplitterWidth = 5;
             OuterSplitContainer.TabIndex = 1;
@@ -100,7 +100,7 @@
             ReferencesTreeTableLayout.RowCount = 2;
             ReferencesTreeTableLayout.RowStyles.Add( new System.Windows.Forms.RowStyle( System.Windows.Forms.SizeType.Absolute, 28F ) );
             ReferencesTreeTableLayout.RowStyles.Add( new System.Windows.Forms.RowStyle( System.Windows.Forms.SizeType.Percent, 100F ) );
-            ReferencesTreeTableLayout.Size = new System.Drawing.Size( 211, 471 );
+            ReferencesTreeTableLayout.Size = new System.Drawing.Size( 211, 475 );
             ReferencesTreeTableLayout.TabIndex = 4;
             // 
             // ReferencesLabel
@@ -128,8 +128,8 @@
             // InnerSplitContainer.Panel2
             // 
             InnerSplitContainer.Panel2.Controls.Add( SelectedReferencesTableLayout );
-            InnerSplitContainer.Size = new System.Drawing.Size( 904, 471 );
-            InnerSplitContainer.SplitterDistance = 495;
+            InnerSplitContainer.Size = new System.Drawing.Size( 906, 475 );
+            InnerSplitContainer.SplitterDistance = 496;
             InnerSplitContainer.SplitterWidth = 5;
             InnerSplitContainer.TabIndex = 0;
             // 
@@ -150,7 +150,7 @@
             ReferencesListTableLayout.RowStyles.Add( new System.Windows.Forms.RowStyle( System.Windows.Forms.SizeType.Absolute, 28F ) );
             ReferencesListTableLayout.RowStyles.Add( new System.Windows.Forms.RowStyle( System.Windows.Forms.SizeType.Percent, 100F ) );
             ReferencesListTableLayout.RowStyles.Add( new System.Windows.Forms.RowStyle() );
-            ReferencesListTableLayout.Size = new System.Drawing.Size( 495, 471 );
+            ReferencesListTableLayout.Size = new System.Drawing.Size( 496, 475 );
             ReferencesListTableLayout.TabIndex = 1;
             // 
             // ReferencesFilterLabel
@@ -175,7 +175,7 @@
             ReferencesListBox.Margin = new System.Windows.Forms.Padding( 4, 3, 4, 3 );
             ReferencesListBox.Name = "ReferencesListBox";
             ReferencesListBox.SelectionMode = System.Windows.Forms.SelectionMode.MultiExtended;
-            ReferencesListBox.Size = new System.Drawing.Size( 487, 401 );
+            ReferencesListBox.Size = new System.Drawing.Size( 488, 405 );
             ReferencesListBox.TabIndex = 0;
             // 
             // ReferencesFilterText
@@ -184,17 +184,17 @@
             ReferencesFilterText.Location = new System.Drawing.Point( 48, 3 );
             ReferencesFilterText.Margin = new System.Windows.Forms.Padding( 4, 3, 4, 3 );
             ReferencesFilterText.Name = "ReferencesFilterText";
-            ReferencesFilterText.Size = new System.Drawing.Size( 443, 23 );
+            ReferencesFilterText.Size = new System.Drawing.Size( 444, 23 );
             ReferencesFilterText.TabIndex = 6;
             // 
             // AddSelectedReferencesButton
             // 
             AddSelectedReferencesButton.Anchor =  System.Windows.Forms.AnchorStyles.Left  |  System.Windows.Forms.AnchorStyles.Right ;
             ReferencesListTableLayout.SetColumnSpan( AddSelectedReferencesButton, 2 );
-            AddSelectedReferencesButton.Location = new System.Drawing.Point( 4, 438 );
+            AddSelectedReferencesButton.Location = new System.Drawing.Point( 4, 442 );
             AddSelectedReferencesButton.Margin = new System.Windows.Forms.Padding( 4, 3, 4, 3 );
             AddSelectedReferencesButton.Name = "AddSelectedReferencesButton";
-            AddSelectedReferencesButton.Size = new System.Drawing.Size( 487, 30 );
+            AddSelectedReferencesButton.Size = new System.Drawing.Size( 488, 30 );
             AddSelectedReferencesButton.TabIndex = 7;
             AddSelectedReferencesButton.Text = "Add Selected References";
             AddSelectedReferencesButton.UseVisualStyleBackColor = true;
@@ -214,7 +214,7 @@
             SelectedReferencesTableLayout.RowStyles.Add( new System.Windows.Forms.RowStyle( System.Windows.Forms.SizeType.Absolute, 28F ) );
             SelectedReferencesTableLayout.RowStyles.Add( new System.Windows.Forms.RowStyle( System.Windows.Forms.SizeType.Percent, 100F ) );
             SelectedReferencesTableLayout.RowStyles.Add( new System.Windows.Forms.RowStyle() );
-            SelectedReferencesTableLayout.Size = new System.Drawing.Size( 404, 471 );
+            SelectedReferencesTableLayout.Size = new System.Drawing.Size( 405, 475 );
             SelectedReferencesTableLayout.TabIndex = 4;
             // 
             // SelectedReferencesListBox
@@ -228,7 +228,7 @@
             SelectedReferencesListBox.Margin = new System.Windows.Forms.Padding( 4, 3, 4, 3 );
             SelectedReferencesListBox.Name = "SelectedReferencesListBox";
             SelectedReferencesListBox.SelectionMode = System.Windows.Forms.SelectionMode.MultiExtended;
-            SelectedReferencesListBox.Size = new System.Drawing.Size( 396, 401 );
+            SelectedReferencesListBox.Size = new System.Drawing.Size( 397, 405 );
             SelectedReferencesListBox.TabIndex = 1;
             // 
             // SelectedReferencesLabel
@@ -245,10 +245,10 @@
             // RemoveSelectedReferencesButton
             // 
             RemoveSelectedReferencesButton.Anchor =  System.Windows.Forms.AnchorStyles.Left  |  System.Windows.Forms.AnchorStyles.Right ;
-            RemoveSelectedReferencesButton.Location = new System.Drawing.Point( 4, 438 );
+            RemoveSelectedReferencesButton.Location = new System.Drawing.Point( 4, 442 );
             RemoveSelectedReferencesButton.Margin = new System.Windows.Forms.Padding( 4, 3, 4, 3 );
             RemoveSelectedReferencesButton.Name = "RemoveSelectedReferencesButton";
-            RemoveSelectedReferencesButton.Size = new System.Drawing.Size( 396, 30 );
+            RemoveSelectedReferencesButton.Size = new System.Drawing.Size( 397, 30 );
             RemoveSelectedReferencesButton.TabIndex = 3;
             RemoveSelectedReferencesButton.Text = "Remove Selected References";
             RemoveSelectedReferencesButton.UseVisualStyleBackColor = true;
@@ -257,7 +257,7 @@
             // 
             Cancel.Anchor =  System.Windows.Forms.AnchorStyles.Bottom  |  System.Windows.Forms.AnchorStyles.Right ;
             Cancel.DialogResult = System.Windows.Forms.DialogResult.Cancel;
-            Cancel.Location = new System.Drawing.Point( 1046, 492 );
+            Cancel.Location = new System.Drawing.Point( 1047, 493 );
             Cancel.Margin = new System.Windows.Forms.Padding( 4, 3, 4, 3 );
             Cancel.Name = "Cancel";
             Cancel.Size = new System.Drawing.Size( 88, 27 );
@@ -268,7 +268,7 @@
             // Ok
             // 
             Ok.Anchor =  System.Windows.Forms.AnchorStyles.Bottom  |  System.Windows.Forms.AnchorStyles.Right ;
-            Ok.Location = new System.Drawing.Point( 952, 492 );
+            Ok.Location = new System.Drawing.Point( 951, 493 );
             Ok.Margin = new System.Windows.Forms.Padding( 4, 3, 4, 3 );
             Ok.Name = "Ok";
             Ok.Size = new System.Drawing.Size( 88, 27 );
@@ -279,7 +279,7 @@
             // AddCurrentBranchButton
             // 
             AddCurrentBranchButton.Anchor =  System.Windows.Forms.AnchorStyles.Bottom  |  System.Windows.Forms.AnchorStyles.Left ;
-            AddCurrentBranchButton.Location = new System.Drawing.Point( 18, 492 );
+            AddCurrentBranchButton.Location = new System.Drawing.Point( 13, 493 );
             AddCurrentBranchButton.Margin = new System.Windows.Forms.Padding( 4, 3, 4, 3 );
             AddCurrentBranchButton.Name = "AddCurrentBranchButton";
             AddCurrentBranchButton.Size = new System.Drawing.Size( 204, 27 );
@@ -290,8 +290,8 @@
             // ReferencesDialog
             // 
             AcceptButton = Ok;
-            AutoScaleDimensions = new System.Drawing.SizeF( 7F, 15F );
-            AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            AutoScaleDimensions = new System.Drawing.SizeF( 96F, 96F );
+            AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi;
             CancelButton = Cancel;
             ClientSize = new System.Drawing.Size( 1148, 532 );
             Controls.Add( AddCurrentBranchButton );

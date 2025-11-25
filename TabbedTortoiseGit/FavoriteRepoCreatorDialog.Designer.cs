@@ -52,7 +52,7 @@
             // ChangeFavoriteColorButton
             // 
             ChangeFavoriteColorButton.Anchor =  System.Windows.Forms.AnchorStyles.Bottom  |  System.Windows.Forms.AnchorStyles.Left ;
-            ChangeFavoriteColorButton.Location = new System.Drawing.Point( 14, 302 );
+            ChangeFavoriteColorButton.Location = new System.Drawing.Point( 13, 304 );
             ChangeFavoriteColorButton.Margin = new System.Windows.Forms.Padding( 4, 3, 4, 3 );
             ChangeFavoriteColorButton.Name = "ChangeFavoriteColorButton";
             ChangeFavoriteColorButton.Size = new System.Drawing.Size( 35, 35 );
@@ -62,16 +62,16 @@
             // FavoriteNameText
             // 
             FavoriteNameText.Anchor =   System.Windows.Forms.AnchorStyles.Top  |  System.Windows.Forms.AnchorStyles.Left   |  System.Windows.Forms.AnchorStyles.Right ;
-            FavoriteNameText.Location = new System.Drawing.Point( 65, 46 );
+            FavoriteNameText.Location = new System.Drawing.Point( 63, 41 );
             FavoriteNameText.Margin = new System.Windows.Forms.Padding( 4, 3, 4, 3 );
             FavoriteNameText.Name = "FavoriteNameText";
-            FavoriteNameText.Size = new System.Drawing.Size( 426, 23 );
+            FavoriteNameText.Size = new System.Drawing.Size( 430, 23 );
             FavoriteNameText.TabIndex = 2;
             // 
             // Ok
             // 
             Ok.Anchor =  System.Windows.Forms.AnchorStyles.Bottom  |  System.Windows.Forms.AnchorStyles.Right ;
-            Ok.Location = new System.Drawing.Point( 310, 310 );
+            Ok.Location = new System.Drawing.Point( 309, 312 );
             Ok.Margin = new System.Windows.Forms.Padding( 4, 3, 4, 3 );
             Ok.Name = "Ok";
             Ok.Size = new System.Drawing.Size( 88, 27 );
@@ -83,7 +83,7 @@
             // 
             Cancel.Anchor =  System.Windows.Forms.AnchorStyles.Bottom  |  System.Windows.Forms.AnchorStyles.Right ;
             Cancel.DialogResult = System.Windows.Forms.DialogResult.Cancel;
-            Cancel.Location = new System.Drawing.Point( 405, 310 );
+            Cancel.Location = new System.Drawing.Point( 405, 312 );
             Cancel.Margin = new System.Windows.Forms.Padding( 4, 3, 4, 3 );
             Cancel.Name = "Cancel";
             Cancel.Size = new System.Drawing.Size( 88, 27 );
@@ -94,7 +94,7 @@
             // FavoriteNameLabel
             // 
             FavoriteNameLabel.AutoSize = true;
-            FavoriteNameLabel.Location = new System.Drawing.Point( 14, 50 );
+            FavoriteNameLabel.Location = new System.Drawing.Point( 13, 44 );
             FavoriteNameLabel.Margin = new System.Windows.Forms.Padding( 4, 0, 4, 0 );
             FavoriteNameLabel.Name = "FavoriteNameLabel";
             FavoriteNameLabel.Size = new System.Drawing.Size( 42, 15 );
@@ -110,7 +110,7 @@
             ReferencesListBox.Margin = new System.Windows.Forms.Padding( 4, 3, 4, 3 );
             ReferencesListBox.Name = "ReferencesListBox";
             ReferencesListBox.SelectionMode = System.Windows.Forms.SelectionMode.MultiExtended;
-            ReferencesListBox.Size = new System.Drawing.Size( 464, 156 );
+            ReferencesListBox.Size = new System.Drawing.Size( 464, 167 );
             ReferencesListBox.TabIndex = 0;
             // 
             // ReferencesGroup
@@ -119,11 +119,11 @@
             ReferencesGroup.Controls.Add( SelectReferencesButton );
             ReferencesGroup.Controls.Add( RemoveReferencesButton );
             ReferencesGroup.Controls.Add( ReferencesListBox );
-            ReferencesGroup.Location = new System.Drawing.Point( 14, 76 );
+            ReferencesGroup.Location = new System.Drawing.Point( 14, 70 );
             ReferencesGroup.Margin = new System.Windows.Forms.Padding( 4, 3, 4, 3 );
             ReferencesGroup.Name = "ReferencesGroup";
             ReferencesGroup.Padding = new System.Windows.Forms.Padding( 4, 3, 4, 3 );
-            ReferencesGroup.Size = new System.Drawing.Size( 478, 219 );
+            ReferencesGroup.Size = new System.Drawing.Size( 478, 228 );
             ReferencesGroup.TabIndex = 3;
             ReferencesGroup.TabStop = false;
             ReferencesGroup.Text = "References";
@@ -131,7 +131,7 @@
             // SelectReferencesButton
             // 
             SelectReferencesButton.Anchor =  System.Windows.Forms.AnchorStyles.Bottom  |  System.Windows.Forms.AnchorStyles.Right ;
-            SelectReferencesButton.Location = new System.Drawing.Point( 349, 186 );
+            SelectReferencesButton.Location = new System.Drawing.Point( 348, 195 );
             SelectReferencesButton.Margin = new System.Windows.Forms.Padding( 4, 3, 4, 3 );
             SelectReferencesButton.Name = "SelectReferencesButton";
             SelectReferencesButton.Size = new System.Drawing.Size( 122, 27 );
@@ -142,7 +142,7 @@
             // RemoveReferencesButton
             // 
             RemoveReferencesButton.Anchor =  System.Windows.Forms.AnchorStyles.Bottom  |  System.Windows.Forms.AnchorStyles.Left ;
-            RemoveReferencesButton.Location = new System.Drawing.Point( 7, 186 );
+            RemoveReferencesButton.Location = new System.Drawing.Point( 8, 195 );
             RemoveReferencesButton.Margin = new System.Windows.Forms.Padding( 4, 3, 4, 3 );
             RemoveReferencesButton.Name = "RemoveReferencesButton";
             RemoveReferencesButton.Size = new System.Drawing.Size( 88, 27 );
@@ -153,7 +153,7 @@
             // BrowseButton
             // 
             BrowseButton.Anchor =  System.Windows.Forms.AnchorStyles.Top  |  System.Windows.Forms.AnchorStyles.Right ;
-            BrowseButton.Location = new System.Drawing.Point( 463, 13 );
+            BrowseButton.Location = new System.Drawing.Point( 464, 10 );
             BrowseButton.Margin = new System.Windows.Forms.Padding( 4, 3, 4, 3 );
             BrowseButton.Name = "BrowseButton";
             BrowseButton.Size = new System.Drawing.Size( 29, 24 );
@@ -164,16 +164,16 @@
             // FavoriteRepoText
             // 
             FavoriteRepoText.Anchor =   System.Windows.Forms.AnchorStyles.Top  |  System.Windows.Forms.AnchorStyles.Left   |  System.Windows.Forms.AnchorStyles.Right ;
-            FavoriteRepoText.Location = new System.Drawing.Point( 65, 14 );
+            FavoriteRepoText.Location = new System.Drawing.Point( 63, 12 );
             FavoriteRepoText.Margin = new System.Windows.Forms.Padding( 4, 3, 4, 3 );
             FavoriteRepoText.Name = "FavoriteRepoText";
-            FavoriteRepoText.Size = new System.Drawing.Size( 391, 23 );
+            FavoriteRepoText.Size = new System.Drawing.Size( 392, 23 );
             FavoriteRepoText.TabIndex = 0;
             // 
             // FavoriteRepoLabel
             // 
             FavoriteRepoLabel.AutoSize = true;
-            FavoriteRepoLabel.Location = new System.Drawing.Point( 14, 17 );
+            FavoriteRepoLabel.Location = new System.Drawing.Point( 13, 15 );
             FavoriteRepoLabel.Margin = new System.Windows.Forms.Padding( 4, 0, 4, 0 );
             FavoriteRepoLabel.Name = "FavoriteRepoLabel";
             FavoriteRepoLabel.Size = new System.Drawing.Size( 37, 15 );
@@ -183,8 +183,8 @@
             // FavoriteRepoCreatorDialog
             // 
             AcceptButton = Ok;
-            AutoScaleDimensions = new System.Drawing.SizeF( 7F, 15F );
-            AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            AutoScaleDimensions = new System.Drawing.SizeF( 96F, 96F );
+            AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi;
             CancelButton = Cancel;
             ClientSize = new System.Drawing.Size( 506, 351 );
             Controls.Add( FavoriteRepoLabel );

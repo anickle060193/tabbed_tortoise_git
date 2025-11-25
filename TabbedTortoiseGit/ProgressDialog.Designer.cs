@@ -42,7 +42,7 @@
             // 
             Cancel.Anchor =  System.Windows.Forms.AnchorStyles.Bottom  |  System.Windows.Forms.AnchorStyles.Right ;
             Cancel.DialogResult = System.Windows.Forms.DialogResult.Cancel;
-            Cancel.Location = new System.Drawing.Point( 813, 399 );
+            Cancel.Location = new System.Drawing.Point( 814, 401 );
             Cancel.Margin = new System.Windows.Forms.Padding( 4, 3, 4, 3 );
             Cancel.Name = "Cancel";
             Cancel.Size = new System.Drawing.Size( 88, 27 );
@@ -55,21 +55,21 @@
             Output.Anchor =    System.Windows.Forms.AnchorStyles.Top  |  System.Windows.Forms.AnchorStyles.Bottom   |  System.Windows.Forms.AnchorStyles.Left   |  System.Windows.Forms.AnchorStyles.Right ;
             Output.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             Output.Font = new System.Drawing.Font( "Consolas", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, 0 );
-            Output.Location = new System.Drawing.Point( 14, 47 );
+            Output.Location = new System.Drawing.Point( 13, 45 );
             Output.Margin = new System.Windows.Forms.Padding( 4, 3, 4, 3 );
             Output.Name = "Output";
             Output.ReadOnly = true;
-            Output.Size = new System.Drawing.Size( 886, 344 );
+            Output.Size = new System.Drawing.Size( 889, 350 );
             Output.TabIndex = 2;
             Output.Text = "";
             // 
             // ProgressBar
             // 
-            ProgressBar.Location = new System.Drawing.Point( 14, 14 );
+            ProgressBar.Location = new System.Drawing.Point( 13, 12 );
             ProgressBar.Margin = new System.Windows.Forms.Padding( 4, 3, 4, 3 );
             ProgressBar.Maximum = 0;
             ProgressBar.Name = "ProgressBar";
-            ProgressBar.Size = new System.Drawing.Size( 887, 27 );
+            ProgressBar.Size = new System.Drawing.Size( 889, 27 );
             ProgressBar.Step = 1;
             ProgressBar.TabIndex = 3;
             // 
@@ -78,7 +78,7 @@
             ElapsedTimeLabel.Anchor =  System.Windows.Forms.AnchorStyles.Bottom  |  System.Windows.Forms.AnchorStyles.Left ;
             ElapsedTimeLabel.AutoSize = true;
             ElapsedTimeLabel.Font = new System.Drawing.Font( "Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, 0 );
-            ElapsedTimeLabel.Location = new System.Drawing.Point( 14, 405 );
+            ElapsedTimeLabel.Location = new System.Drawing.Point( 13, 408 );
             ElapsedTimeLabel.Margin = new System.Windows.Forms.Padding( 4, 0, 4, 0 );
             ElapsedTimeLabel.Name = "ElapsedTimeLabel";
             ElapsedTimeLabel.Size = new System.Drawing.Size( 87, 13 );
@@ -89,7 +89,7 @@
             // 
             ElapsedTime.Anchor =  System.Windows.Forms.AnchorStyles.Bottom  |  System.Windows.Forms.AnchorStyles.Left ;
             ElapsedTime.AutoSize = true;
-            ElapsedTime.Location = new System.Drawing.Point( 122, 405 );
+            ElapsedTime.Location = new System.Drawing.Point( 108, 407 );
             ElapsedTime.Margin = new System.Windows.Forms.Padding( 4, 0, 4, 0 );
             ElapsedTime.Name = "ElapsedTime";
             ElapsedTime.Size = new System.Drawing.Size( 49, 15 );
@@ -102,8 +102,8 @@
             // 
             // ProgressDialog
             // 
-            AutoScaleDimensions = new System.Drawing.SizeF( 7F, 15F );
-            AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            AutoScaleDimensions = new System.Drawing.SizeF( 96F, 96F );
+            AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi;
             CancelButton = Cancel;
             ClientSize = new System.Drawing.Size( 915, 440 );
             Controls.Add( ElapsedTime );

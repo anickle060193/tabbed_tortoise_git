@@ -46,7 +46,7 @@
             // 
             // ChangeFavoriteColorButton
             // 
-            ChangeFavoriteColorButton.Location = new System.Drawing.Point( 14, 77 );
+            ChangeFavoriteColorButton.Location = new System.Drawing.Point( 13, 76 );
             ChangeFavoriteColorButton.Margin = new System.Windows.Forms.Padding( 4, 3, 4, 3 );
             ChangeFavoriteColorButton.Name = "ChangeFavoriteColorButton";
             ChangeFavoriteColorButton.Size = new System.Drawing.Size( 35, 35 );
@@ -56,16 +56,16 @@
             // FavoriteNameText
             // 
             FavoriteNameText.Anchor =   System.Windows.Forms.AnchorStyles.Top  |  System.Windows.Forms.AnchorStyles.Left   |  System.Windows.Forms.AnchorStyles.Right ;
-            FavoriteNameText.Location = new System.Drawing.Point( 66, 44 );
+            FavoriteNameText.Location = new System.Drawing.Point( 64, 41 );
             FavoriteNameText.Margin = new System.Windows.Forms.Padding( 4, 3, 4, 3 );
             FavoriteNameText.Name = "FavoriteNameText";
-            FavoriteNameText.Size = new System.Drawing.Size( 420, 23 );
+            FavoriteNameText.Size = new System.Drawing.Size( 425, 23 );
             FavoriteNameText.TabIndex = 2;
             // 
             // Ok
             // 
             Ok.Anchor =  System.Windows.Forms.AnchorStyles.Top  |  System.Windows.Forms.AnchorStyles.Right ;
-            Ok.Location = new System.Drawing.Point( 306, 85 );
+            Ok.Location = new System.Drawing.Point( 305, 84 );
             Ok.Margin = new System.Windows.Forms.Padding( 4, 3, 4, 3 );
             Ok.Name = "Ok";
             Ok.Size = new System.Drawing.Size( 88, 27 );
@@ -77,7 +77,7 @@
             // 
             Cancel.Anchor =  System.Windows.Forms.AnchorStyles.Top  |  System.Windows.Forms.AnchorStyles.Right ;
             Cancel.DialogResult = System.Windows.Forms.DialogResult.Cancel;
-            Cancel.Location = new System.Drawing.Point( 400, 85 );
+            Cancel.Location = new System.Drawing.Point( 401, 84 );
             Cancel.Margin = new System.Windows.Forms.Padding( 4, 3, 4, 3 );
             Cancel.Name = "Cancel";
             Cancel.Size = new System.Drawing.Size( 88, 27 );
@@ -88,7 +88,7 @@
             // FavoriteNameLabel
             // 
             FavoriteNameLabel.AutoSize = true;
-            FavoriteNameLabel.Location = new System.Drawing.Point( 14, 47 );
+            FavoriteNameLabel.Location = new System.Drawing.Point( 13, 44 );
             FavoriteNameLabel.Margin = new System.Windows.Forms.Padding( 4, 0, 4, 0 );
             FavoriteNameLabel.Name = "FavoriteNameLabel";
             FavoriteNameLabel.Size = new System.Drawing.Size( 42, 15 );
@@ -98,7 +98,7 @@
             // BrowseButton
             // 
             BrowseButton.Anchor =  System.Windows.Forms.AnchorStyles.Top  |  System.Windows.Forms.AnchorStyles.Right ;
-            BrowseButton.Location = new System.Drawing.Point( 458, 13 );
+            BrowseButton.Location = new System.Drawing.Point( 460, 10 );
             BrowseButton.Margin = new System.Windows.Forms.Padding( 4, 3, 4, 3 );
             BrowseButton.Name = "BrowseButton";
             BrowseButton.Size = new System.Drawing.Size( 29, 24 );
@@ -109,16 +109,16 @@
             // FavoriteDirectoryText
             // 
             FavoriteDirectoryText.Anchor =   System.Windows.Forms.AnchorStyles.Top  |  System.Windows.Forms.AnchorStyles.Left   |  System.Windows.Forms.AnchorStyles.Right ;
-            FavoriteDirectoryText.Location = new System.Drawing.Point( 66, 14 );
+            FavoriteDirectoryText.Location = new System.Drawing.Point( 64, 12 );
             FavoriteDirectoryText.Margin = new System.Windows.Forms.Padding( 4, 3, 4, 3 );
             FavoriteDirectoryText.Name = "FavoriteDirectoryText";
-            FavoriteDirectoryText.Size = new System.Drawing.Size( 384, 23 );
+            FavoriteDirectoryText.Size = new System.Drawing.Size( 388, 23 );
             FavoriteDirectoryText.TabIndex = 0;
             // 
             // FavoriteDirectoryLabel
             // 
             FavoriteDirectoryLabel.AutoSize = true;
-            FavoriteDirectoryLabel.Location = new System.Drawing.Point( 14, 17 );
+            FavoriteDirectoryLabel.Location = new System.Drawing.Point( 13, 15 );
             FavoriteDirectoryLabel.Margin = new System.Windows.Forms.Padding( 4, 0, 4, 0 );
             FavoriteDirectoryLabel.Name = "FavoriteDirectoryLabel";
             FavoriteDirectoryLabel.Size = new System.Drawing.Size( 43, 15 );
@@ -128,8 +128,8 @@
             // FavoriteReposDirectoryCreatorDialog
             // 
             AcceptButton = Ok;
-            AutoScaleDimensions = new System.Drawing.SizeF( 7F, 15F );
-            AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            AutoScaleDimensions = new System.Drawing.SizeF( 96F, 96F );
+            AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi;
             CancelButton = Cancel;
             ClientSize = new System.Drawing.Size( 502, 123 );
             Controls.Add( FavoriteDirectoryLabel );

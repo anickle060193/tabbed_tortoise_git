@@ -48,7 +48,7 @@
             OptionsGroup.Controls.Add( MaxProcessesLabel );
             OptionsGroup.Controls.Add( PruneCheck );
             OptionsGroup.Controls.Add( TagsCheck );
-            OptionsGroup.Location = new System.Drawing.Point( 14, 14 );
+            OptionsGroup.Location = new System.Drawing.Point( 13, 12 );
             OptionsGroup.Margin = new System.Windows.Forms.Padding( 4, 3, 4, 3 );
             OptionsGroup.Name = "OptionsGroup";
             OptionsGroup.Padding = new System.Windows.Forms.Padding( 4, 3, 4, 3 );
@@ -114,7 +114,7 @@
             // Ok
             // 
             Ok.Anchor =  System.Windows.Forms.AnchorStyles.Bottom  |  System.Windows.Forms.AnchorStyles.Right ;
-            Ok.Location = new System.Drawing.Point( 135, 106 );
+            Ok.Location = new System.Drawing.Point( 134, 108 );
             Ok.Margin = new System.Windows.Forms.Padding( 4, 3, 4, 3 );
             Ok.Name = "Ok";
             Ok.Size = new System.Drawing.Size( 88, 27 );
@@ -126,7 +126,7 @@
             // 
             Cancel.Anchor =  System.Windows.Forms.AnchorStyles.Bottom  |  System.Windows.Forms.AnchorStyles.Right ;
             Cancel.DialogResult = System.Windows.Forms.DialogResult.Cancel;
-            Cancel.Location = new System.Drawing.Point( 230, 106 );
+            Cancel.Location = new System.Drawing.Point( 230, 108 );
             Cancel.Margin = new System.Windows.Forms.Padding( 4, 3, 4, 3 );
             Cancel.Name = "Cancel";
             Cancel.Size = new System.Drawing.Size( 88, 27 );
@@ -136,8 +136,8 @@
             // 
             // FastFetchDialog
             // 
-            AutoScaleDimensions = new System.Drawing.SizeF( 7F, 15F );
-            AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            AutoScaleDimensions = new System.Drawing.SizeF( 96F, 96F );
+            AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi;
             ClientSize = new System.Drawing.Size( 331, 147 );
             Controls.Add( Cancel );
             Controls.Add( Ok );

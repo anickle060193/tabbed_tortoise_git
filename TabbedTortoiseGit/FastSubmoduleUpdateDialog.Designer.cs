@@ -98,10 +98,10 @@
             SubmoduleCheckList.CheckOnClick = true;
             SubmoduleCheckList.FormattingEnabled = true;
             SubmoduleCheckList.IntegralHeight = false;
-            SubmoduleCheckList.Location = new System.Drawing.Point( 14, 14 );
+            SubmoduleCheckList.Location = new System.Drawing.Point( 14, 12 );
             SubmoduleCheckList.Margin = new System.Windows.Forms.Padding( 4, 3, 4, 3 );
             SubmoduleCheckList.Name = "SubmoduleCheckList";
-            SubmoduleCheckList.Size = new System.Drawing.Size( 513, 356 );
+            SubmoduleCheckList.Size = new System.Drawing.Size( 513, 358 );
             SubmoduleCheckList.TabIndex = 6;
             // 
             // InitCheck
@@ -223,8 +223,8 @@
             // 
             // FastSubmoduleUpdateDialog
             // 
-            AutoScaleDimensions = new System.Drawing.SizeF( 7F, 15F );
-            AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            AutoScaleDimensions = new System.Drawing.SizeF( 96F, 96F );
+            AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi;
             CancelButton = Cancel;
             ClientSize = new System.Drawing.Size( 541, 509 );
             Controls.Add( CheckModifiedSubmodulesByDefaultCheck );

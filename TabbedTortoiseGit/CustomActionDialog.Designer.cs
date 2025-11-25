@@ -50,7 +50,7 @@
             // NameLabel
             // 
             NameLabel.AutoSize = true;
-            NameLabel.Location = new System.Drawing.Point( 14, 17 );
+            NameLabel.Location = new System.Drawing.Point( 13, 15 );
             NameLabel.Margin = new System.Windows.Forms.Padding( 4, 0, 4, 0 );
             NameLabel.Name = "NameLabel";
             NameLabel.Size = new System.Drawing.Size( 42, 15 );
@@ -60,7 +60,7 @@
             // ProgramLabel
             // 
             ProgramLabel.AutoSize = true;
-            ProgramLabel.Location = new System.Drawing.Point( 14, 50 );
+            ProgramLabel.Location = new System.Drawing.Point( 13, 47 );
             ProgramLabel.Margin = new System.Windows.Forms.Padding( 4, 0, 4, 0 );
             ProgramLabel.Name = "ProgramLabel";
             ProgramLabel.Size = new System.Drawing.Size( 56, 15 );
@@ -70,25 +70,25 @@
             // ActionName
             // 
             ActionName.Anchor =   System.Windows.Forms.AnchorStyles.Top  |  System.Windows.Forms.AnchorStyles.Left   |  System.Windows.Forms.AnchorStyles.Right ;
-            ActionName.Location = new System.Drawing.Point( 132, 14 );
+            ActionName.Location = new System.Drawing.Point( 127, 12 );
             ActionName.Margin = new System.Windows.Forms.Padding( 4, 3, 4, 3 );
             ActionName.Name = "ActionName";
-            ActionName.Size = new System.Drawing.Size( 476, 23 );
+            ActionName.Size = new System.Drawing.Size( 483, 23 );
             ActionName.TabIndex = 2;
             // 
             // Program
             // 
             Program.Anchor =   System.Windows.Forms.AnchorStyles.Top  |  System.Windows.Forms.AnchorStyles.Left   |  System.Windows.Forms.AnchorStyles.Right ;
-            Program.Location = new System.Drawing.Point( 132, 46 );
+            Program.Location = new System.Drawing.Point( 127, 44 );
             Program.Margin = new System.Windows.Forms.Padding( 4, 3, 4, 3 );
             Program.Name = "Program";
-            Program.Size = new System.Drawing.Size( 440, 23 );
+            Program.Size = new System.Drawing.Size( 447, 23 );
             Program.TabIndex = 3;
             // 
             // ArgumentsLabel
             // 
             ArgumentsLabel.AutoSize = true;
-            ArgumentsLabel.Location = new System.Drawing.Point( 14, 81 );
+            ArgumentsLabel.Location = new System.Drawing.Point( 13, 76 );
             ArgumentsLabel.Margin = new System.Windows.Forms.Padding( 4, 0, 4, 0 );
             ArgumentsLabel.Name = "ArgumentsLabel";
             ArgumentsLabel.Size = new System.Drawing.Size( 69, 15 );
@@ -98,16 +98,16 @@
             // Arguments
             // 
             Arguments.Anchor =   System.Windows.Forms.AnchorStyles.Top  |  System.Windows.Forms.AnchorStyles.Left   |  System.Windows.Forms.AnchorStyles.Right ;
-            Arguments.Location = new System.Drawing.Point( 132, 77 );
+            Arguments.Location = new System.Drawing.Point( 127, 73 );
             Arguments.Margin = new System.Windows.Forms.Padding( 4, 3, 4, 3 );
             Arguments.Name = "Arguments";
-            Arguments.Size = new System.Drawing.Size( 476, 23 );
+            Arguments.Size = new System.Drawing.Size( 481, 23 );
             Arguments.TabIndex = 5;
             // 
             // ProgramBrowse
             // 
             ProgramBrowse.Anchor =  System.Windows.Forms.AnchorStyles.Top  |  System.Windows.Forms.AnchorStyles.Right ;
-            ProgramBrowse.Location = new System.Drawing.Point( 580, 44 );
+            ProgramBrowse.Location = new System.Drawing.Point( 579, 41 );
             ProgramBrowse.Margin = new System.Windows.Forms.Padding( 4, 3, 4, 3 );
             ProgramBrowse.Name = "ProgramBrowse";
             ProgramBrowse.Size = new System.Drawing.Size( 29, 27 );
@@ -119,7 +119,7 @@
             // Ok
             // 
             Ok.Anchor =  System.Windows.Forms.AnchorStyles.Bottom  |  System.Windows.Forms.AnchorStyles.Right ;
-            Ok.Location = new System.Drawing.Point( 427, 284 );
+            Ok.Location = new System.Drawing.Point( 426, 282 );
             Ok.Margin = new System.Windows.Forms.Padding( 4, 3, 4, 3 );
             Ok.Name = "Ok";
             Ok.Size = new System.Drawing.Size( 88, 27 );
@@ -132,7 +132,7 @@
             // 
             Cancel.Anchor =  System.Windows.Forms.AnchorStyles.Bottom  |  System.Windows.Forms.AnchorStyles.Right ;
             Cancel.DialogResult = System.Windows.Forms.DialogResult.Cancel;
-            Cancel.Location = new System.Drawing.Point( 522, 284 );
+            Cancel.Location = new System.Drawing.Point( 522, 282 );
             Cancel.Margin = new System.Windows.Forms.Padding( 4, 3, 4, 3 );
             Cancel.Name = "Cancel";
             Cancel.Size = new System.Drawing.Size( 88, 27 );
@@ -143,10 +143,10 @@
             // MacroLabel
             // 
             MacroLabel.Anchor =    System.Windows.Forms.AnchorStyles.Top  |  System.Windows.Forms.AnchorStyles.Bottom   |  System.Windows.Forms.AnchorStyles.Left   |  System.Windows.Forms.AnchorStyles.Right ;
-            MacroLabel.Location = new System.Drawing.Point( 18, 134 );
+            MacroLabel.Location = new System.Drawing.Point( 13, 132 );
             MacroLabel.Margin = new System.Windows.Forms.Padding( 4, 0, 4, 0 );
             MacroLabel.Name = "MacroLabel";
-            MacroLabel.Size = new System.Drawing.Size( 592, 93 );
+            MacroLabel.Size = new System.Drawing.Size( 597, 90 );
             MacroLabel.TabIndex = 10;
             MacroLabel.Text = resources.GetString( "MacroLabel.Text" );
             // 
@@ -158,16 +158,16 @@
             // WorkingDirectory
             // 
             WorkingDirectory.Anchor =   System.Windows.Forms.AnchorStyles.Top  |  System.Windows.Forms.AnchorStyles.Left   |  System.Windows.Forms.AnchorStyles.Right ;
-            WorkingDirectory.Location = new System.Drawing.Point( 132, 107 );
+            WorkingDirectory.Location = new System.Drawing.Point( 127, 102 );
             WorkingDirectory.Margin = new System.Windows.Forms.Padding( 4, 3, 4, 3 );
             WorkingDirectory.Name = "WorkingDirectory";
-            WorkingDirectory.Size = new System.Drawing.Size( 476, 23 );
+            WorkingDirectory.Size = new System.Drawing.Size( 483, 23 );
             WorkingDirectory.TabIndex = 11;
             // 
             // label1
             // 
             label1.AutoSize = true;
-            label1.Location = new System.Drawing.Point( 14, 111 );
+            label1.Location = new System.Drawing.Point( 13, 105 );
             label1.Margin = new System.Windows.Forms.Padding( 4, 0, 4, 0 );
             label1.Name = "label1";
             label1.Size = new System.Drawing.Size( 106, 15 );
@@ -178,7 +178,7 @@
             // 
             RefreshLogAfter.Anchor =  System.Windows.Forms.AnchorStyles.Bottom  |  System.Windows.Forms.AnchorStyles.Left ;
             RefreshLogAfter.AutoSize = true;
-            RefreshLogAfter.Location = new System.Drawing.Point( 14, 232 );
+            RefreshLogAfter.Location = new System.Drawing.Point( 13, 232 );
             RefreshLogAfter.Margin = new System.Windows.Forms.Padding( 4, 3, 4, 3 );
             RefreshLogAfter.Name = "RefreshLogAfter";
             RefreshLogAfter.Size = new System.Drawing.Size( 206, 19 );
@@ -190,7 +190,7 @@
             // 
             ShowProgressDialog.Anchor =  System.Windows.Forms.AnchorStyles.Bottom  |  System.Windows.Forms.AnchorStyles.Left ;
             ShowProgressDialog.AutoSize = true;
-            ShowProgressDialog.Location = new System.Drawing.Point( 14, 258 );
+            ShowProgressDialog.Location = new System.Drawing.Point( 13, 257 );
             ShowProgressDialog.Margin = new System.Windows.Forms.Padding( 4, 3, 4, 3 );
             ShowProgressDialog.Name = "ShowProgressDialog";
             ShowProgressDialog.Size = new System.Drawing.Size( 139, 19 );
@@ -202,7 +202,7 @@
             // 
             CreateNoWindow.Anchor =  System.Windows.Forms.AnchorStyles.Bottom  |  System.Windows.Forms.AnchorStyles.Left ;
             CreateNoWindow.AutoSize = true;
-            CreateNoWindow.Location = new System.Drawing.Point( 14, 285 );
+            CreateNoWindow.Location = new System.Drawing.Point( 13, 282 );
             CreateNoWindow.Margin = new System.Windows.Forms.Padding( 4, 3, 4, 3 );
             CreateNoWindow.Name = "CreateNoWindow";
             CreateNoWindow.Size = new System.Drawing.Size( 225, 19 );
@@ -213,10 +213,10 @@
             // CustomActionDialog
             // 
             AcceptButton = Ok;
-            AutoScaleDimensions = new System.Drawing.SizeF( 7F, 15F );
-            AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            AutoScaleDimensions = new System.Drawing.SizeF( 96F, 96F );
+            AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi;
             CancelButton = Cancel;
-            ClientSize = new System.Drawing.Size( 623, 324 );
+            ClientSize = new System.Drawing.Size( 623, 321 );
             Controls.Add( CreateNoWindow );
             Controls.Add( ShowProgressDialog );
             Controls.Add( RefreshLogAfter );
@@ -235,9 +235,7 @@
             FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
             Margin = new System.Windows.Forms.Padding( 4, 3, 4, 3 );
             MaximizeBox = false;
-            MaximumSize = new System.Drawing.Size( 1491, 363 );
             MinimizeBox = false;
-            MinimumSize = new System.Drawing.Size( 516, 363 );
             Name = "CustomActionDialog";
             StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
             Text = "Custom Action";

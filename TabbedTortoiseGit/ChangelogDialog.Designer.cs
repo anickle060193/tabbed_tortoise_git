@@ -72,8 +72,8 @@
             // ChangelogDialog
             // 
             AcceptButton = OkButton;
-            AutoScaleDimensions = new System.Drawing.SizeF( 7F, 15F );
-            AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            AutoScaleDimensions = new System.Drawing.SizeF( 96F, 96F );
+            AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi;
             CancelButton = OkButton;
             ClientSize = new System.Drawing.Size( 798, 590 );
             Controls.Add( ChangelogText );

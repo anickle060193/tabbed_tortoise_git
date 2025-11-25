@@ -50,11 +50,11 @@
             SubmodulesGroupBox.Anchor =   System.Windows.Forms.AnchorStyles.Top  |  System.Windows.Forms.AnchorStyles.Left   |  System.Windows.Forms.AnchorStyles.Right ;
             SubmodulesGroupBox.Controls.Add( SubmodulesModifiedOnly );
             SubmodulesGroupBox.Controls.Add( SubmodulesAll );
-            SubmodulesGroupBox.Location = new System.Drawing.Point( 14, 14 );
+            SubmodulesGroupBox.Location = new System.Drawing.Point( 13, 12 );
             SubmodulesGroupBox.Margin = new System.Windows.Forms.Padding( 4, 3, 4, 3 );
             SubmodulesGroupBox.Name = "SubmodulesGroupBox";
             SubmodulesGroupBox.Padding = new System.Windows.Forms.Padding( 4, 3, 4, 3 );
-            SubmodulesGroupBox.Size = new System.Drawing.Size( 286, 53 );
+            SubmodulesGroupBox.Size = new System.Drawing.Size( 288, 53 );
             SubmodulesGroupBox.TabIndex = 0;
             SubmodulesGroupBox.TabStop = false;
             SubmodulesGroupBox.Text = "Submodules";
@@ -92,11 +92,11 @@
             OptionsGroupBox.Controls.Add( MaxProcessCountLabel );
             OptionsGroupBox.Controls.Add( ForceCheck );
             OptionsGroupBox.Controls.Add( MaxProcessCountNumeric );
-            OptionsGroupBox.Location = new System.Drawing.Point( 14, 74 );
+            OptionsGroupBox.Location = new System.Drawing.Point( 13, 71 );
             OptionsGroupBox.Margin = new System.Windows.Forms.Padding( 4, 3, 4, 3 );
             OptionsGroupBox.Name = "OptionsGroupBox";
             OptionsGroupBox.Padding = new System.Windows.Forms.Padding( 4, 3, 4, 3 );
-            OptionsGroupBox.Size = new System.Drawing.Size( 286, 107 );
+            OptionsGroupBox.Size = new System.Drawing.Size( 288, 107 );
             OptionsGroupBox.TabIndex = 1;
             OptionsGroupBox.TabStop = false;
             OptionsGroupBox.Text = "Options";
@@ -178,7 +178,7 @@
             // UpdateSubmodulesButton
             // 
             UpdateSubmodulesButton.Anchor =  System.Windows.Forms.AnchorStyles.Bottom  |  System.Windows.Forms.AnchorStyles.Right ;
-            UpdateSubmodulesButton.Location = new System.Drawing.Point( 58, 188 );
+            UpdateSubmodulesButton.Location = new System.Drawing.Point( 58, 189 );
             UpdateSubmodulesButton.Margin = new System.Windows.Forms.Padding( 4, 3, 4, 3 );
             UpdateSubmodulesButton.Name = "UpdateSubmodulesButton";
             UpdateSubmodulesButton.Size = new System.Drawing.Size( 147, 27 );
@@ -190,7 +190,7 @@
             // 
             Cancel.Anchor =  System.Windows.Forms.AnchorStyles.Bottom  |  System.Windows.Forms.AnchorStyles.Right ;
             Cancel.DialogResult = System.Windows.Forms.DialogResult.Cancel;
-            Cancel.Location = new System.Drawing.Point( 212, 188 );
+            Cancel.Location = new System.Drawing.Point( 213, 189 );
             Cancel.Margin = new System.Windows.Forms.Padding( 4, 3, 4, 3 );
             Cancel.Name = "Cancel";
             Cancel.Size = new System.Drawing.Size( 88, 27 );
@@ -201,8 +201,8 @@
             // FasterSubmoduleUpdateDialog
             // 
             AcceptButton = UpdateSubmodulesButton;
-            AutoScaleDimensions = new System.Drawing.SizeF( 7F, 15F );
-            AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            AutoScaleDimensions = new System.Drawing.SizeF( 96F, 96F );
+            AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi;
             CancelButton = Cancel;
             ClientSize = new System.Drawing.Size( 314, 228 );
             Controls.Add( Cancel );

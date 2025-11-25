@@ -51,13 +51,13 @@
             FavoritesTree.HideSelection = false;
             FavoritesTree.ImageIndex = 0;
             FavoritesTree.ImageList = FavoritesTreeImageList;
-            FavoritesTree.Location = new System.Drawing.Point( 14, 14 );
+            FavoritesTree.Location = new System.Drawing.Point( 14, 12 );
             FavoritesTree.Margin = new System.Windows.Forms.Padding( 4, 3, 4, 3 );
             FavoritesTree.Name = "FavoritesTree";
             FavoritesTree.SelectedImageIndex = 0;
             FavoritesTree.ShowPlusMinus = false;
             FavoritesTree.ShowRootLines = false;
-            FavoritesTree.Size = new System.Drawing.Size( 303, 355 );
+            FavoritesTree.Size = new System.Drawing.Size( 303, 360 );
             FavoritesTree.TabIndex = 0;
             // 
             // FavoritesTreeImageList
@@ -121,7 +121,7 @@
             // 
             Cancel.Anchor =  System.Windows.Forms.AnchorStyles.Bottom  |  System.Windows.Forms.AnchorStyles.Right ;
             Cancel.DialogResult = System.Windows.Forms.DialogResult.Cancel;
-            Cancel.Location = new System.Drawing.Point( 230, 376 );
+            Cancel.Location = new System.Drawing.Point( 230, 378 );
             Cancel.Margin = new System.Windows.Forms.Padding( 4, 3, 4, 3 );
             Cancel.Name = "Cancel";
             Cancel.Size = new System.Drawing.Size( 88, 27 );
@@ -133,7 +133,7 @@
             // 
             Ok.Anchor =  System.Windows.Forms.AnchorStyles.Bottom  |  System.Windows.Forms.AnchorStyles.Right ;
             Ok.DialogResult = System.Windows.Forms.DialogResult.OK;
-            Ok.Location = new System.Drawing.Point( 135, 376 );
+            Ok.Location = new System.Drawing.Point( 134, 378 );
             Ok.Margin = new System.Windows.Forms.Padding( 4, 3, 4, 3 );
             Ok.Name = "Ok";
             Ok.Size = new System.Drawing.Size( 88, 27 );
@@ -144,8 +144,8 @@
             // FavoritesManagerDialog
             // 
             AcceptButton = Ok;
-            AutoScaleDimensions = new System.Drawing.SizeF( 7F, 15F );
-            AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            AutoScaleDimensions = new System.Drawing.SizeF( 96F, 96F );
+            AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi;
             CancelButton = Cancel;
             ClientSize = new System.Drawing.Size( 331, 417 );
             Controls.Add( FavoritesTree );

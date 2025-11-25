@@ -42,7 +42,7 @@
             // 
             // ChangeFavoriteColorButton
             // 
-            ChangeFavoriteColorButton.Location = new System.Drawing.Point( 18, 44 );
+            ChangeFavoriteColorButton.Location = new System.Drawing.Point( 13, 42 );
             ChangeFavoriteColorButton.Margin = new System.Windows.Forms.Padding( 4, 3, 4, 3 );
             ChangeFavoriteColorButton.Name = "ChangeFavoriteColorButton";
             ChangeFavoriteColorButton.Size = new System.Drawing.Size( 35, 35 );
@@ -52,7 +52,7 @@
             // FavoriteNameText
             // 
             FavoriteNameText.Anchor =   System.Windows.Forms.AnchorStyles.Top  |  System.Windows.Forms.AnchorStyles.Left   |  System.Windows.Forms.AnchorStyles.Right ;
-            FavoriteNameText.Location = new System.Drawing.Point( 65, 14 );
+            FavoriteNameText.Location = new System.Drawing.Point( 67, 12 );
             FavoriteNameText.Margin = new System.Windows.Forms.Padding( 4, 3, 4, 3 );
             FavoriteNameText.Name = "FavoriteNameText";
             FavoriteNameText.Size = new System.Drawing.Size( 422, 23 );
@@ -84,7 +84,7 @@
             // FavoriteNameLabel
             // 
             FavoriteNameLabel.AutoSize = true;
-            FavoriteNameLabel.Location = new System.Drawing.Point( 14, 17 );
+            FavoriteNameLabel.Location = new System.Drawing.Point( 13, 15 );
             FavoriteNameLabel.Margin = new System.Windows.Forms.Padding( 4, 0, 4, 0 );
             FavoriteNameLabel.Name = "FavoriteNameLabel";
             FavoriteNameLabel.Size = new System.Drawing.Size( 42, 15 );
@@ -94,8 +94,8 @@
             // FavoriteFolderCreatorDialog
             // 
             AcceptButton = Ok;
-            AutoScaleDimensions = new System.Drawing.SizeF( 7F, 15F );
-            AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            AutoScaleDimensions = new System.Drawing.SizeF( 96F, 96F );
+            AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi;
             CancelButton = Cancel;
             ClientSize = new System.Drawing.Size( 502, 89 );
             Controls.Add( FavoriteNameLabel );

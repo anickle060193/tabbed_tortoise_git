@@ -262,8 +262,8 @@
             // AboutBox
             // 
             AcceptButton = OK;
-            AutoScaleDimensions = new System.Drawing.SizeF( 7F, 15F );
-            AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            AutoScaleDimensions = new System.Drawing.SizeF( 96F, 96F );
+            AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi;
             CancelButton = OK;
             ClientSize = new System.Drawing.Size( 766, 327 );
             Controls.Add( TableLayout );
@@ -272,7 +272,7 @@
             MaximizeBox = false;
             MinimizeBox = false;
             Name = "AboutBox";
-            Padding = new System.Windows.Forms.Padding( 10, 10, 10, 10 );
+            Padding = new System.Windows.Forms.Padding( 10 );
             ShowInTaskbar = false;
             StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
             Text = "About";
