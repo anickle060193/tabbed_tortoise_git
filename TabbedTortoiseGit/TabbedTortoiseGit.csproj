@@ -32,6 +32,10 @@
     <PackageReference Include="InputSimulatorCore" Version="1.0.5" />
     <PackageReference Include="LibGit2Sharp" Version="0.31.0" />
     <PackageReference Include="log4net" Version="3.2.0" />
+    <PackageReference Include="Microsoft.Windows.CsWin32" Version="0.3.257">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
     <PackageReference Include="Newtonsoft.Json" Version="13.0.4" />
     <PackageReference Include="System.Management" Version="10.0.0" />
   </ItemGroup>

@@ -20,6 +20,8 @@ using log4net.Config;
 using Tabs;
 using System.IO;
 using System.Collections.Immutable;
+using Windows.Win32;
+using Windows.Win32.Foundation;
 
 namespace TabbedTortoiseGit
 {
@@ -97,7 +99,7 @@ namespace TabbedTortoiseGit
                 TabControllerTag? tag = LogTabs.SelectedTab?.Controller();
                 if( tag != null )
                 {
-                    Native.SetForegroundWindow( tag.Process.MainWindowHandle );
+                    PInvoke.SetForegroundWindow( (HWND)tag.Process.MainWindowHandle );
                     Native.SendKeyDown( tag.Process.MainWindowHandle, keyData );
                     return true;
                 }

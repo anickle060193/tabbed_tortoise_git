@@ -13,6 +13,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using TabbedTortoiseGit.Properties;
+using Windows.Win32;
 
 namespace TabbedTortoiseGit
 {
@@ -64,23 +65,23 @@ namespace TabbedTortoiseGit
         {
             base.WndProc( ref m );
 
-            if( m.Msg == Native.WindowMessage.NCHITTEST )
+            if( m.Msg == PInvoke.WM_NCHITTEST )
             {
-                switch( m.Result.ToInt32() )
+                switch( m.Result )
                 {
-                    case Native.HitTestValues.LEFT:
-                    case Native.HitTestValues.RIGHT:
-                        m.Result = new IntPtr( Native.HitTestValues.CAPTION );
+                    case (nint)PInvoke.HTLEFT:
+                    case (nint)PInvoke.HTRIGHT:
+                        m.Result = (nint)PInvoke.HTBORDER;
                         break;
 
-                    case Native.HitTestValues.TOPLEFT:
-                    case Native.HitTestValues.TOPRIGHT:
-                        m.Result = new IntPtr( Native.HitTestValues.TOP );
+                    case (nint)PInvoke.HTTOPLEFT:
+                    case (nint)PInvoke.HTTOPRIGHT:
+                        m.Result = (nint)PInvoke.HTTOP;
                         break;
 
-                    case Native.HitTestValues.BOTTOMLEFT:
-                    case Native.HitTestValues.BOTTOMRIGHT:
-                        m.Result = new IntPtr( Native.HitTestValues.BOTTOM );
+                    case (nint)PInvoke.HTBOTTOMLEFT:
+                    case (nint)PInvoke.HTBOTTOMRIGHT:
+                        m.Result = (nint)PInvoke.HTBOTTOM;
                         break;
                 }
             }

@@ -12,12 +12,14 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using TabbedTortoiseGit.Properties;
 using Tabs;
+using Windows.Win32;
+using Windows.Win32.Foundation;
 
 namespace TabbedTortoiseGit
 {
     class ProgramForm : Form
     {
-        public static readonly int WM_SHOWME = Native.RegisterWindowMessage( "{86ebc75b-fc1b-4370-86bb-2a5daaa51e78}" );
+        public static readonly uint WM_SHOWME = PInvoke.RegisterWindowMessage( "{86ebc75b-fc1b-4370-86bb-2a5daaa51e78}" );
 
         private static readonly ILog LOG = LogManager.GetLogger( typeof( ProgramForm ) );
 
@@ -135,7 +137,7 @@ namespace TabbedTortoiseGit
         {
             base.OnHandleCreated( e );
 
-            Native.SetParent( this.Handle, Native.HWND_MESSAGE );
+            PInvoke.SetParent( (HWND)this.Handle, HWND.HWND_MESSAGE );
             KeyboardShortcutsManager.Create( this.Handle );
             KeyboardShortcutsManager.Instance.KeyboardShortcutPressed += KeyboardShortcutsManager_KeyboardShortcutPressed;
 

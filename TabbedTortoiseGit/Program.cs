@@ -9,6 +9,8 @@ using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using Tabs;
+using Windows.Win32;
+using Windows.Win32.Foundation;
 
 namespace TabbedTortoiseGit
 {
@@ -55,7 +57,7 @@ namespace TabbedTortoiseGit
                     else
                     {
                         LOG.Debug( "Tabbed TortoiseGit instance already exists" );
-                        Native.PostMessage( (IntPtr)Native.HWND_BROADCAST, ProgramForm.WM_SHOWME, IntPtr.Zero, IntPtr.Zero );
+                        PInvoke.PostMessage( HWND.HWND_BROADCAST, ProgramForm.WM_SHOWME, 0, 0 );
                     }
                 } )
                 .WithNotParsed( ( errors ) =>

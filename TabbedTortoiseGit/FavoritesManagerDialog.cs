@@ -14,6 +14,8 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using TabbedTortoiseGit.Properties;
+using Windows.Win32;
+using Windows.Win32.Foundation;
 
 namespace TabbedTortoiseGit
 {
@@ -346,12 +348,12 @@ namespace TabbedTortoiseGit
                 {
                     if( before )
                     {
-                        Native.PostMessage( FavoritesTree.Handle, 0x111A, (IntPtr)0, node.Handle );
+                        PInvoke.PostMessage( (HWND)FavoritesTree.Handle, PInvoke.TVM_SETINSERTMARK, 0, node.Handle );
                         return;
                     }
                     else
                     {
-                        Native.PostMessage( FavoritesTree.Handle, 0x111A, (IntPtr)1, node.Handle );
+                        PInvoke.PostMessage( (HWND)FavoritesTree.Handle, PInvoke.TVM_SETINSERTMARK, 1, node.Handle );
                         return;
                     }
                 }
@@ -362,7 +364,7 @@ namespace TabbedTortoiseGit
 
         private void ClearInsertionMark()
         {
-            Native.PostMessage( FavoritesTree.Handle, 0x111A, (IntPtr)0, IntPtr.Zero );
+            PInvoke.PostMessage( (HWND)FavoritesTree.Handle, PInvoke.TVM_SETINSERTMARK, 0, 0 );
         }
 
         class FavoritesDraggingItem
