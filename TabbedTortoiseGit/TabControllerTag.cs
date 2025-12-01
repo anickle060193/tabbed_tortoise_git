@@ -69,7 +69,7 @@ namespace TabbedTortoiseGit
 
             this.Color = Color.Empty;
 
-            Tab.Resize += Tab_Resize;
+            Tab.SizeChanged += Tab_SizeChanged;
 
             Process.Exited += Process_Exited;
             Process.EnableRaisingEvents = true;
@@ -86,7 +86,6 @@ namespace TabbedTortoiseGit
 
             Native.RemoveBorder( this.Process.MainWindowHandle );
             Native.SetWindowParent( this.Process.MainWindowHandle, this.Tab );
-            this.ResizeTab();
         }
 
         public async Task LoadSubmodules()
@@ -191,7 +190,7 @@ namespace TabbedTortoiseGit
 
         public void Close()
         {
-            this.Tab.Resize -= Tab_Resize;
+            this.Tab.SizeChanged -= Tab_SizeChanged;
             this.Tab.Parent = null;
 
             this.Process.EnableRaisingEvents = false;
@@ -203,7 +202,7 @@ namespace TabbedTortoiseGit
             }
         }
 
-        private void ResizeTab()
+        public void ResizeTab()
         {
             Size sizeDiff = Native.ResizeToParent( this.Process.MainWindowHandle, this.Tab );
 
@@ -225,7 +224,7 @@ namespace TabbedTortoiseGit
             }
         }
 
-        private void Tab_Resize( object? sender, EventArgs e )
+        private void Tab_SizeChanged( object? sender, EventArgs e )
         {
             if( this.Tab.FindForm()?.WindowState != FormWindowState.Minimized )
             {

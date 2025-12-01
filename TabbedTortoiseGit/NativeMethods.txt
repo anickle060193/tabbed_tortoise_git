@@ -9,6 +9,7 @@ SendMessage
 SetForegroundWindow
 SetParent
 SetWindowLong
+ShowWindow
 
 HWND_*
 WM_*

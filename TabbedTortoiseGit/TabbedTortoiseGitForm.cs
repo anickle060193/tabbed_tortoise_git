@@ -61,6 +61,7 @@ namespace TabbedTortoiseGit
         private FavoriteFolder? _favoriteRepos;
 
         private bool _favoriteContextMenuOpen;
+        private bool _loadingWindowState = false;
 
         public TabbedTortoiseGitForm( bool showStartUpRepos, bool skipUpdateCheck, Point? createdAtPoint )
         {
@@ -128,6 +129,8 @@ namespace TabbedTortoiseGit
 
         private void UpdateWindowStateFromSettings()
         {
+            _loadingWindowState = true;
+
             if( !Settings.Default.Size.IsEmpty )
             {
                 this.Size = Settings.Default.Size;
@@ -152,6 +155,8 @@ namespace TabbedTortoiseGit
             {
                 this.WindowState = FormWindowState.Maximized;
             }
+
+            _loadingWindowState = false;
         }
 
         private void UpdateUiLayoutFromSettings()
@@ -536,6 +541,8 @@ namespace TabbedTortoiseGit
             LogTabs.Tabs.Add( tag.Tab );
             LogTabs.SelectedTab = tag.Tab;
 
+            tag.ResizeTab();
+
             ShowMe();
         }
 
@@ -657,13 +664,13 @@ namespace TabbedTortoiseGit
             }
         }
 
-        private void ShowMe()
+        public void ShowMe()
         {
-            this.Show();
             if( this.WindowState == FormWindowState.Minimized )
             {
-                this.WindowState = FormWindowState.Normal;
+                this.Restore();
             }
+
             this.BringToFront();
         }
 

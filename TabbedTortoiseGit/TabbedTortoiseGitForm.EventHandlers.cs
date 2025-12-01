@@ -30,7 +30,7 @@ namespace TabbedTortoiseGit
             this.Shown += TabbedTortoiseGitForm_Shown;
             this.DragOver += TabbedTortoiseGitForm_DragOver;
             this.DragDrop += TabbedTortoiseGitForm_DragDrop;
-            this.ResizeEnd += TabbedTortoiseGitForm_ResizeEnd;
+            this.Resize += TabbedTortoiseGitForm_Resize;
             this.FormClosing += TabbedTortoiseGitForm_FormClosing;
 
             SplitLayout.SplitterMoved += SplitLayout_SplitterMoved;
@@ -257,8 +257,13 @@ namespace TabbedTortoiseGit
             }
         }
 
-        private void TabbedTortoiseGitForm_ResizeEnd( object? sender, EventArgs e )
+        private void TabbedTortoiseGitForm_Resize( object? sender, EventArgs e )
         {
+            if( _loadingWindowState )
+            {
+                return;
+            }
+
             SaveWindowState();
         }
 

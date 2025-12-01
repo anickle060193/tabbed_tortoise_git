@@ -184,12 +184,7 @@ namespace TabbedTortoiseGit
                 CreateNewTabbedTortoiseGit( Settings.Default.OpenStartupReposOnReOpen, false, null );
             }
 
-            if( _activeForm!.WindowState == FormWindowState.Minimized )
-            {
-                _activeForm.WindowState = FormWindowState.Normal;
-            }
-
-            _activeForm.Show();
+            _activeForm!.ShowMe();
         }
 
         private async Task CaptureNewLog( Process p, String repo )

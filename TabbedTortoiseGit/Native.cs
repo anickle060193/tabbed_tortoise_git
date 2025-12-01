@@ -60,6 +60,11 @@ namespace TabbedTortoiseGit
             return Size.Empty;
         }
 
+        public static void Restore( this Form form )
+        {
+            PInvoke.ShowWindow( (HWND)form.Handle, SHOW_WINDOW_CMD.SW_RESTORE );
+        }
+
         public static void SendKeyDown( IntPtr windowHandle, Keys key )
         {
             PInvoke.PostMessage( (HWND)windowHandle, PInvoke.WM_KEYDOWN, (nuint)key, 0 );
