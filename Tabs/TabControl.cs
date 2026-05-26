@@ -1162,11 +1162,11 @@ namespace Tabs
                 _owner = owner;
             }
 
-            public override void Add( Control value )
+            public override void Add( Control? value )
             {
                 if( !( value is Tab ) )
                 {
-                    throw new ArgumentException( "Only Tabs are allowed to be added to TabControl", value.GetType().Name );
+                    throw new ArgumentException( "Only Tabs are allowed to be added to TabControl", value?.GetType().Name );
                 }
 
                 Tab tab = (Tab)value;
@@ -1186,7 +1186,7 @@ namespace Tabs
                 _owner.UpdateTabSelection();
             }
 
-            public override void Remove( Control value )
+            public override void Remove( Control? value )
             {
                 base.Remove( value );
 

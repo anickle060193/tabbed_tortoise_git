@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Diagnostics.CodeAnalysis;
 using System.Drawing;
 using System.Linq;
 using System.Text;
@@ -21,6 +22,7 @@ namespace Tabs
 
         [DefaultValue( "" )]
         [Browsable( true )]
+        [AllowNull]
         public override String Text
         {
             get
@@ -57,6 +59,7 @@ namespace Tabs
             }
         }
 
+        [AllowNull]
         public override Font Font
         {
             get
