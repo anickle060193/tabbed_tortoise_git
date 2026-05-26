@@ -45,14 +45,13 @@ namespace TabbedTortoiseGit
             { KeyboardShortcuts.Diff,                   GitAction.Diff                  },
         }.ToImmutableDictionary();
 
-        private static readonly Keys[] FORWARD_KEYS = new[]
-        {
+        private static readonly Keys[] FORWARD_KEYS = [
             Keys.F5,
             Keys.Up,
             Keys.Down
-        };
+        ];
 
-        private readonly Dictionary<int, TabControllerTag> _tags = new Dictionary<int, TabControllerTag>();
+        private readonly Dictionary<int, TabControllerTag> _tags = [];
         private readonly bool _showStartUpRepos;
         private readonly bool _skipUpdateCheck;
         private readonly Point? _createdAtPoint;
@@ -296,7 +295,7 @@ namespace TabbedTortoiseGit
                 }
             }
 
-            List<ToolStripItem> items = new List<ToolStripItem>();
+            List<ToolStripItem> items = [];
 
             await CreateFavoritesMenu( _favoriteRepos.Children, items );
 
@@ -388,10 +387,7 @@ namespace TabbedTortoiseGit
                 return;
             }
 
-            if( Settings.Default.RecentRepos.Contains( repo ) )
-            {
-                Settings.Default.RecentRepos.Remove( repo );
-            }
+            Settings.Default.RecentRepos.Remove( repo );
             Settings.Default.RecentRepos.Insert( 0, repo );
 
             int maxRecentRepos = Settings.Default.MaxRecentRepos;
@@ -818,7 +814,7 @@ namespace TabbedTortoiseGit
 
                         foreach( String submodule in currentTab.Submodules )
                         {
-                            String[] path = submodule.Split( new [] { Path.DirectorySeparatorChar, Path.AltDirectorySeparatorChar } );
+                            String[] path = submodule.Split( [ Path.DirectorySeparatorChar, Path.AltDirectorySeparatorChar ] );
 
                             var parent = SubmodulesToolStripDropDown.DropDownItems;
                             for( int i = 0; i < path.Length - 1; i++ )
@@ -893,16 +889,10 @@ namespace TabbedTortoiseGit
             }
         }
 
-        private class DisplayReference : IFormattable, IComparable<DisplayReference>
+        private class DisplayReference( String reference, String shortReference ) : IFormattable, IComparable<DisplayReference>
         {
-            public String Reference { get; private set; }
-            public String ShortReference { get; private set; }
-
-            public DisplayReference( String reference, String shortReference )
-            {
-                Reference = reference;
-                ShortReference = shortReference;
-            }
+            public String Reference { get; private set; } = reference;
+            public String ShortReference { get; private set; } = shortReference;
 
             public override String ToString()
             {
@@ -990,7 +980,7 @@ namespace TabbedTortoiseGit
                 if( !String.IsNullOrWhiteSpace( filter ) )
                 {
                     String[] filters = filter.Split();
-                    references = references.Where( ( reference ) => filters.All( ( f ) => reference.Reference.IndexOf( f, StringComparison.OrdinalIgnoreCase ) != -1 ) );
+                    references = references.Where( ( reference ) => filters.All( ( f ) => reference.Reference.Contains( f, StringComparison.OrdinalIgnoreCase ) ) );
                 }
 
                 ReferencesListBox.Items.AddRange( references.ToArray() );

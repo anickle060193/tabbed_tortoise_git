@@ -190,7 +190,7 @@ namespace TabbedTortoiseGit
         {
             get
             {
-                return new List<CustomAction>( _customActions );
+                return [ .._customActions ];
             }
 
             set
@@ -399,10 +399,7 @@ namespace TabbedTortoiseGit
             {
                 if( value )
                 {
-                    if( DeveloperSettingsPage.Parent == null )
-                    {
-                        DeveloperSettingsPage.Parent = SettingsTabs;
-                    }
+                    DeveloperSettingsPage.Parent ??= SettingsTabs;
                 }
                 else
                 {
@@ -446,8 +443,8 @@ namespace TabbedTortoiseGit
         }
 
         private readonly CheckListDragDrophelper _dragDropHelper;
-        private readonly Dictionary<KeyboardShortcuts, TextBox> _shortcutTextboxes = new Dictionary<KeyboardShortcuts, TextBox>();
-        private readonly BindingList<CustomAction> _customActions = new BindingList<CustomAction>();
+        private readonly Dictionary<KeyboardShortcuts, TextBox> _shortcutTextboxes = [];
+        private readonly BindingList<CustomAction> _customActions = [];
         private readonly BindingList<RepoNameReplacer> _repoNameReplacers = [];
 
         private SettingsForm()
@@ -483,7 +480,7 @@ namespace TabbedTortoiseGit
 
             KeyBoardShortcutsTableLayout.RowStyles.Clear();
 
-            foreach( KeyboardShortcuts keyboardShortcut in Enum.GetValues( typeof( KeyboardShortcuts ) ) )
+            foreach( KeyboardShortcuts keyboardShortcut in Enum.GetValues<KeyboardShortcuts>() )
             {
                 Label shortcutLabel = new Label()
                 {

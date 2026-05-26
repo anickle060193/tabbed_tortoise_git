@@ -17,14 +17,16 @@ using System.Xml.Linq;
 
 namespace TabbedTortoiseGit
 {
-    static class TTG
+    static partial class TTG
     {
         private static readonly ILog LOG = LogManager.GetLogger( typeof( TTG ) );
 
         private static readonly String RUN_ON_STARTUP_KEY_PATH = @"Software\Microsoft\Windows\CurrentVersion\Run";
         private static readonly String RUN_ON_STARTUP_KEY_NAME = "Tabbed TortoiseGit";
 
-        private static readonly Regex RELEASE_URL_RE = new Regex( ".*/(?<version>[0-9.]+)$" );
+        [GeneratedRegex( ".*/(?<version>[0-9.]+)$" )]
+        private static partial Regex ReleaseUrlRegex();
+        private static readonly Regex RELEASE_URL_REGEX = ReleaseUrlRegex();
 
         private static readonly HttpClient httpClient;
 
@@ -117,7 +119,7 @@ namespace TabbedTortoiseGit
                 string? requestUrl = response.RequestMessage?.RequestUri?.AbsoluteUri;
                 if( requestUrl != null )
                 {
-                    string? versionString = RELEASE_URL_RE.Match( requestUrl )?.Groups?[ "version" ].Value;
+                    string? versionString = RELEASE_URL_REGEX.Match( requestUrl )?.Groups?[ "version" ].Value;
                     if( versionString != null )
                     {
                         newestVersion = new Version( versionString );

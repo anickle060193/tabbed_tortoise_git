@@ -12,19 +12,19 @@ using System.Windows.Forms;
 
 namespace TabbedTortoiseGit
 {
-    public class Shortcut
+    [method: JsonConstructor]
+    public class Shortcut( Keys modifiers, Keys key )
     {
         public static readonly Shortcut Empty = new Shortcut( Keys.None, Keys.None );
 
-        private static readonly KeyValuePair<Keys, String>[] MODIFIER_MAPPING = new[]
-        {
+        private static readonly KeyValuePair<Keys, String>[] MODIFIER_MAPPING = [
             new KeyValuePair<Keys, string>( Keys.Control, "Ctrl" ),
             new KeyValuePair<Keys, string>( Keys.Shift, "Shift" ),
             new KeyValuePair<Keys, string>( Keys.Alt, "Alt" )
-        };
+        ];
 
-        public Keys Modifiers { get; private set; }
-        public Keys Key { get; set; }
+        public Keys Modifiers { get; private set; } = modifiers;
+        public Keys Key { get; set; } = key;
 
         [JsonIgnore]
         public bool IsValid
@@ -50,13 +50,6 @@ namespace TabbedTortoiseGit
                 }
                 return String.Join( "+", keyStrings );
             }
-        }
-
-        [JsonConstructor]
-        public Shortcut( Keys modifiers, Keys key )
-        {
-            Modifiers = modifiers;
-            Key = key;
         }
 
         public static Shortcut FromKeyEventArgs( KeyEventArgs e )

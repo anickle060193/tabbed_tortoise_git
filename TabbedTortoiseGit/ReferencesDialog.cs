@@ -14,16 +14,10 @@ namespace TabbedTortoiseGit
 {
     public partial class ReferencesDialog : Form
     {
-        class DisplayReference : IFormattable, IComparable<DisplayReference>
+        class DisplayReference( String reference, String shortReference ) : IFormattable, IComparable<DisplayReference>
         {
-            public String Reference { get; private set; }
-            public String ShortReference { get; private set; }
-
-            public DisplayReference( String reference, String shortReference )
-            {
-                Reference = reference;
-                ShortReference = shortReference;
-            }
+            public String Reference { get; private set; } = reference;
+            public String ShortReference { get; private set; } = shortReference;
 
             public override String ToString()
             {
@@ -68,7 +62,7 @@ namespace TabbedTortoiseGit
             }
         }
 
-        private readonly SortedSet<DisplayReference> _selectedReferences = new SortedSet<DisplayReference>();
+        private readonly SortedSet<DisplayReference> _selectedReferences = [];
 
         public ReferencesDialog( String repo )
         {
@@ -235,7 +229,7 @@ namespace TabbedTortoiseGit
                 String filter = ReferencesFilterText.Text.Trim().ToLower();
                 if( !String.IsNullOrEmpty( filter ) )
                 {
-                    references = references.Where( r => r.ShortReference.ToLower().Contains( filter ) );
+                    references = references.Where( r => r.ShortReference.Contains( filter, StringComparison.CurrentCultureIgnoreCase ) );
                 }
 
                 ReferencesListBox.Items.AddRange( references.ToArray() );

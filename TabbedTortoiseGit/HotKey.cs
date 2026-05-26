@@ -3,46 +3,48 @@ using log4net;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using Windows.Win32;
+using Windows.Win32.Foundation;
+using Windows.Win32.UI.Input.KeyboardAndMouse;
 using WindowsInput;
 using WindowsInput.Native;
 
 namespace TabbedTortoiseGit
 {
     [Flags]
-    public enum KeyModifier
+    public enum KeyModifier : uint
     {
         None = 0x0000,
-        Alt = 0x0001,
-        Control = 0x0002,
-        NoRepeat = 0x4000,
-        Shift = 0x0004,
-        Win = 0x0008
+        Alt = HOT_KEY_MODIFIERS.MOD_ALT,
+        Control = HOT_KEY_MODIFIERS.MOD_CONTROL,
+        NoRepeat = HOT_KEY_MODIFIERS.MOD_NOREPEAT,
+        Shift = HOT_KEY_MODIFIERS.MOD_SHIFT,
+        Win = HOT_KEY_MODIFIERS.MOD_WIN,
     }
 
-    public class HotKey : IDisposable
+    public class HotKey( IntPtr windowHandle ) : IDisposable
     {
         private static readonly ILog LOG = LogManager.GetLogger( typeof( HotKey ) );
 
-        private static readonly KeyValuePair<Keys, KeyModifier>[] MODIFIER_MAPPING = new[]
-        {
+        private static readonly KeyValuePair<Keys, KeyModifier>[] MODIFIER_MAPPING = [
             new KeyValuePair<Keys, KeyModifier>( Keys.Control, KeyModifier.Control ),
             new KeyValuePair<Keys, KeyModifier>( Keys.Shift, KeyModifier.Shift ),
             new KeyValuePair<Keys, KeyModifier>( Keys.Alt, KeyModifier.Alt )
-        };
+        ];
 
         private static int _nextId = 0;
         private static MessageFilter? _filter;
 
         private event EventHandler? HotKeyPressedInternal;
 
-        private readonly ISet<IntPtr> _handles = new HashSet<IntPtr>();
-        private bool _registered;
+        private readonly HashSet<IntPtr> _handles = new HashSet<IntPtr>();
+        private bool _registered = false;
 
         public event EventHandler HotKeyPressed
         {
@@ -77,9 +79,9 @@ namespace TabbedTortoiseGit
             }
         }
 
-        public IntPtr WindowHandle { get; private set; }
-        public Shortcut? Shortcut { get; private set; }
-        public int Id { get; private set; }
+        public IntPtr WindowHandle { get; private set; } = windowHandle;
+        public Shortcut? Shortcut { get; private set; } = null;
+        public int Id { get; private set; } = Interlocked.Increment( ref _nextId );
 
         public KeyModifier Modifiers
         {
@@ -98,16 +100,6 @@ namespace TabbedTortoiseGit
             {
                 return Shortcut?.Key ?? Keys.None;
             }
-        }
-
-        public HotKey( IntPtr windowHandle )
-        {
-            WindowHandle = windowHandle;
-
-            Shortcut = null;
-            Id = Interlocked.Increment( ref _nextId );
-
-            _registered = false;
         }
 
         private void OnHotKeyPressed( HotKeyPressedEventArgs e )
@@ -248,23 +240,18 @@ namespace TabbedTortoiseGit
         }
         #endregion
 
-        class MessageFilter : IMessageFilter
+        class MessageFilter( IntPtr mainWindowHandle ) : IMessageFilter
         {
             private static readonly int WM_HOTKEY = 0x0312;
 
             private static readonly InputSimulator INPUT_SIMULATOR = new InputSimulator();
 
-            private readonly IntPtr _mainWindowHandle;
-            private readonly Dictionary<int, HotKey> _hotKeys = new Dictionary<int, HotKey>();
-
-            public MessageFilter( IntPtr mainWindowHandle )
-            {
-                _mainWindowHandle = mainWindowHandle;
-            }
+            private readonly IntPtr _mainWindowHandle = mainWindowHandle;
+            private readonly Dictionary<int, HotKey> _hotKeys = [];
 
             public bool RegisterHotKey( HotKey hotkey )
             {
-                if( RegisterHotKey( _mainWindowHandle, hotkey.Id, (int)hotkey.Modifiers, (int)hotkey.Key ) )
+                if( PInvoke.RegisterHotKey( (HWND)_mainWindowHandle, hotkey.Id, (HOT_KEY_MODIFIERS)hotkey.Modifiers, (uint)hotkey.Key ) )
                 {
                     _hotKeys[ hotkey.Id ] = hotkey;
                     return true;
@@ -277,7 +264,7 @@ namespace TabbedTortoiseGit
 
             public bool UnregisterHotKey( HotKey hotkey )
             {
-                if( UnregisterHotKey( _mainWindowHandle, hotkey.Id ) )
+                if( PInvoke.UnregisterHotKey( (HWND)_mainWindowHandle , hotkey.Id ) )
                 {
                     _hotKeys.Remove( hotkey.Id );
                     return true;
@@ -287,12 +274,6 @@ namespace TabbedTortoiseGit
                     return false;
                 }
             }
-
-            [DllImport( "user32.dll" )]
-            private static extern bool RegisterHotKey( IntPtr hWnd, int id, int fsModifiers, int vlc );
-
-            [DllImport( "user32.dll" )]
-            private static extern bool UnregisterHotKey( IntPtr hWnd, int id );
 
             public bool PreFilterMessage( ref Message m )
             {

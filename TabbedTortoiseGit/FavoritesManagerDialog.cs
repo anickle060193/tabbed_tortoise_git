@@ -367,16 +367,10 @@ namespace TabbedTortoiseGit
             PInvoke.PostMessage( (HWND)FavoritesTree.Handle, PInvoke.TVM_SETINSERTMARK, 0, 0 );
         }
 
-        class FavoritesDraggingItem
+        class FavoritesDraggingItem( Favorite favorite, bool before )
         {
-            public Favorite Favorite { get; private set; }
-            public bool Before { get; private set; }
-
-            public FavoritesDraggingItem( Favorite favorite, bool before )
-            {
-                Favorite = favorite;
-                Before = before;
-            }
+            public Favorite Favorite { get; private set; } = favorite;
+            public bool Before { get; private set; } = before;
         }
 
         class FavoritesDragDropHelper : DragDropHelper<TreeView, FavoritesDraggingItem>

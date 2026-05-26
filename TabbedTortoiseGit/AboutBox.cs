@@ -93,7 +93,7 @@ namespace TabbedTortoiseGit
 
         #region Assembly Attribute Accessors
 
-        public string AssemblyTitle
+        public static string AssemblyTitle
         {
             get
             {
@@ -110,7 +110,7 @@ namespace TabbedTortoiseGit
             }
         }
 
-        public string AssemblyVersion
+        public static string AssemblyVersion
         {
             get
             {
@@ -118,7 +118,7 @@ namespace TabbedTortoiseGit
             }
         }
 
-        public string AssemblyDescription
+        public static string AssemblyDescription
         {
             get
             {
@@ -131,7 +131,7 @@ namespace TabbedTortoiseGit
             }
         }
 
-        public string AssemblyProduct
+        public static string AssemblyProduct
         {
             get
             {
@@ -144,7 +144,7 @@ namespace TabbedTortoiseGit
             }
         }
 
-        public string AssemblyCopyright
+        public static string AssemblyCopyright
         {
             get
             {
@@ -157,7 +157,7 @@ namespace TabbedTortoiseGit
             }
         }
 
-        public string AssemblyCompany
+        public static string AssemblyCompany
         {
             get
             {

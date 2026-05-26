@@ -10,35 +10,32 @@ using System.Threading.Tasks;
 
 namespace TabbedTortoiseGit
 {
-    public class CustomAction
+    [method: JsonConstructor]
+    public class CustomAction(
+        String name,
+        String program,
+        String arguments,
+        String workingDirectory,
+        bool refreshLogAfter,
+        bool showProgressDialog,
+        bool createNoWindow
+    )
     {
-        public String Name { get; private set; }
-        public String Program { get; private set; }
-        public String Arguments { get; private set; }
+        public String Name { get; private set; } = name;
+        public String Program { get; private set; } = program;
+        public String Arguments { get; private set; } = arguments;
 
         [DefaultValue( "%r" )]
-        public String WorkingDirectory { get; private set; }
+        public String WorkingDirectory { get; private set; } = workingDirectory;
 
         [DefaultValue( false )]
-        public bool RefreshLogAfter { get; private set; }
+        public bool RefreshLogAfter { get; private set; } = refreshLogAfter;
 
         [DefaultValue( false )]
-        public bool ShowProgressDialog { get; private set; }
+        public bool ShowProgressDialog { get; private set; } = showProgressDialog;
 
         [DefaultValue( false )]
-        public bool CreateNoWindow { get; private set; }
-
-        [JsonConstructor]
-        public CustomAction( String name, String program, String arguments, String workingDirectory, bool refreshLogAfter, bool showProgressDialog, bool createNoWindow )
-        {
-            Name = name;
-            Program = program;
-            Arguments = arguments;
-            WorkingDirectory = workingDirectory;
-            RefreshLogAfter = refreshLogAfter;
-            ShowProgressDialog = showProgressDialog;
-            CreateNoWindow = createNoWindow;
-        }
+        public bool CreateNoWindow { get; private set; } = createNoWindow;
 
         public override string ToString()
         {

@@ -202,15 +202,10 @@ namespace TabbedTortoiseGit
             return $"{Value} - Count: {Children.Count}";
         }
 
-        public class TreeNodeCollection<S> : IList<TreeNode<S>>
+        public class TreeNodeCollection<S>( TreeNode<S> owner ) : IList<TreeNode<S>>
         {
-            private readonly List<TreeNode<S>> _children = new List<TreeNode<S>>();
-            private readonly TreeNode<S> _owner;
-
-            public TreeNodeCollection( TreeNode<S> owner )
-            {
-                _owner = owner;
-            }
+            private readonly List<TreeNode<S>> _children = [];
+            private readonly TreeNode<S> _owner = owner;
 
             public TreeNode<S> this[ int index ]
             {

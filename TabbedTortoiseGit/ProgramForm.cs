@@ -17,7 +17,7 @@ using Windows.Win32.Foundation;
 
 namespace TabbedTortoiseGit
 {
-    class ProgramForm : Form
+    partial class ProgramForm : Form
     {
         public static readonly uint WM_SHOWME = PInvoke.RegisterWindowMessage( "{86ebc75b-fc1b-4370-86bb-2a5daaa51e78}" );
 
@@ -36,10 +36,13 @@ namespace TabbedTortoiseGit
                                                                    OR CommandLine LIKE '%/command log%'
                                                                    OR CommandLine LIKE '%-command:log%'
                                                                    OR CommandLine LIKE '%-command log%' )";
-        private static readonly Regex TORTOISE_GIT_COMMAND_LINE_REGEX = new Regex( @"(/|-)path:?\s*""?(?<path>.+?)""? *( /|$)", RegexOptions.IgnoreCase );
 
-        private readonly List<TabbedTortoiseGitForm> _forms = new List<TabbedTortoiseGitForm>();
-        private readonly HashSet<int> _capturedLogs = new HashSet<int>();
+        [GeneratedRegex( @"(/|-)path:?\s*""?(?<path>.+?)""? *( /|$)", RegexOptions.IgnoreCase, "en-US" )]
+        private static partial Regex TortoiseGitCommandLineRegex();
+        private static readonly Regex TORTOISE_GIT_COMMAND_LINE_REGEX = TortoiseGitCommandLineRegex();
+
+        private readonly List<TabbedTortoiseGitForm> _forms = [];
+        private readonly HashSet<int> _capturedLogs = [];
         private readonly ManagementEventWatcher _watcher;
         private readonly NotifyIcon _notifyIcon;
         private readonly Timer _watcherTimer;

@@ -11,7 +11,7 @@ using System.Windows.Forms;
 
 namespace Tabs
 {
-    internal class TabPainter
+    internal class TabPainter( TabControl tabControl )
     {
         private const int TOP_PADDING = 1;
         private const int LEFT_PADDING = 6;
@@ -47,12 +47,7 @@ namespace Tabs
             }
         }
 
-        public TabControl Owner { get; private set; }
-
-        public TabPainter( TabControl tabControl )
-        {
-            Owner = tabControl;
-        }
+        public TabControl Owner { get; private set; } = tabControl;
 
         public PointPath GetTabPath( int index )
         {
@@ -92,12 +87,12 @@ namespace Tabs
             int tY = TOP_PADDING;
             int bY = tY + TAB_HEIGHT;
 
-            return new PointPath( new[]{
+            return new PointPath( [
                 new Point( blX, bY ),
                 new Point( tlX, tY ),
                 new Point( trX, tY ),
                 new Point( brX, bY )
-            } );
+            ] );
         }
 
         public PointPath GetTabClosePath( int index )
@@ -108,13 +103,12 @@ namespace Tabs
             int left = right - 2 * TAB_CLOSE_BUTTON_RADIUS;
             int top = tabPath.Bounds.Top + ( tabPath.Bounds.Height / 2 - TAB_CLOSE_BUTTON_RADIUS );
             int bottom = top + 2 * TAB_CLOSE_BUTTON_RADIUS;
-            return new PointPath( new[]
-            {
+            return new PointPath( [
                 new Point( left, top ),
                 new Point( right, top ),
                 new Point( right, bottom ),
                 new Point( left, bottom )
-            } );
+            ] );
         }
 
         public PointPath GetNewTabPath()
@@ -137,13 +131,12 @@ namespace Tabs
             int brX = tlX + NEW_TAB_BUTTON_WIDTH;
             int trX = brX - tabInclineWidth;
 
-            return new PointPath( new[]
-            {
+            return new PointPath( [
                 new Point( blX, bY ),
                 new Point( tlX, tY ),
                 new Point( trX, tY ),
                 new Point( brX, bY )
-            } );
+            ] );
         }
 
         public PointPath GetOptionsPath()
@@ -154,13 +147,12 @@ namespace Tabs
             int top = TOP_PADDING + ( TAB_HEIGHT - height ) / 2;
             int bottom = top + height;
 
-            return new PointPath( new[]
-            {
+            return new PointPath( [
                 new Point( left, top ),
                 new Point( right, top ),
                 new Point( right, bottom ),
                 new Point( left, bottom )
-            } );
+            ] );
         }
 
         public Rectangle GetTabPanelBounds()
@@ -385,13 +377,13 @@ namespace Tabs
             {
                 Rectangle tabBounds = GetTabPath( this.Owner.SelectedIndex ).Bounds;
                 using Pen p = new Pen( this.Owner.TabBorderColor );
-                g.DrawLines( p, new[] { left, new Point( tabBounds.Left, bY ) } );
-                g.DrawLines( p, new[] { new Point( tabBounds.Right, bY ), right } );
+                g.DrawLines( p, [ left, new Point( tabBounds.Left, bY ) ] );
+                g.DrawLines( p, [ new Point( tabBounds.Right, bY ), right ] );
             }
             else
             {
                 using Pen p = new Pen( this.Owner.TabBorderColor );
-                g.DrawLines( p, new[] { left, right } );
+                g.DrawLines( p, [ left, right ] );
             }
         }
     }

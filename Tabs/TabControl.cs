@@ -856,14 +856,9 @@ namespace Tabs
             this.Invalidate();
         }
 
-        public class TabCollection : IList<Tab>
+        public class TabCollection( TabControl owner ) : IList<Tab>
         {
-            private readonly TabControl _owner;
-
-            public TabCollection( TabControl owner )
-            {
-                _owner = owner;
-            }
+            private readonly TabControl _owner = owner;
 
             public virtual Tab this[ int index ]
             {
@@ -1153,18 +1148,13 @@ namespace Tabs
             }
         }
 
-        public new class ControlCollection : Control.ControlCollection
+        public new class ControlCollection( TabControl owner ) : Control.ControlCollection( owner )
         {
-            private readonly TabControl _owner;
-
-            public ControlCollection( TabControl owner ) : base( owner )
-            {
-                _owner = owner;
-            }
+            private readonly TabControl _owner = owner;
 
             public override void Add( Control? value )
             {
-                if( !( value is Tab ) )
+                if( value is not Tab )
                 {
                     throw new ArgumentException( "Only Tabs are allowed to be added to TabControl", value?.GetType().Name );
                 }
@@ -1190,7 +1180,7 @@ namespace Tabs
             {
                 base.Remove( value );
 
-                if( !( value is Tab ) )
+                if( value is not Tab )
                 {
                     return;
                 }
@@ -1206,16 +1196,11 @@ namespace Tabs
             }
         }
 
-        class TabControlDragDropHelper : DragDropHelper<TabControl, Tab>
+        class TabControlDragDropHelper( TabControl owner ) : DragDropHelper<TabControl, Tab>
         {
-            private readonly TabControl _owner;
+            private readonly TabControl _owner = owner;
 
             private bool _partialMatch = false;
-
-            public TabControlDragDropHelper( TabControl owner )
-            {
-                _owner = owner;
-            }
 
             protected override bool AllowDrag( TabControl parent, Tab item, int index )
             {
@@ -1346,55 +1331,29 @@ namespace Tabs
         }
     }
 
-    public class TabClickEventArgs : MouseEventArgs
+    public class TabClickEventArgs( Tab t, MouseEventArgs e ) : MouseEventArgs( e.Button, e.Clicks, e.X, e.Y, e.Delta )
     {
-        public TabClickEventArgs( Tab t, MouseEventArgs e ) : base( e.Button, e.Clicks, e.X, e.Y, e.Delta )
-        {
-            Tab = t;
-        }
-
-        public Tab Tab { get; private set; }
+        public Tab Tab { get; private set; } = t;
     }
 
-    public class TabAddedEventArgs : EventArgs
+    public class TabAddedEventArgs( Tab tab ) : EventArgs
     {
-        public Tab Tab { get; private set; }
-
-        public TabAddedEventArgs( Tab tab )
-        {
-            Tab = tab;
-        }
+        public Tab Tab { get; private set; } = tab;
     }
 
-    public class TabRemovedEventArgs : EventArgs
+    public class TabRemovedEventArgs( Tab tab ) : EventArgs
     {
-        public Tab Tab { get; private set; }
-
-        public TabRemovedEventArgs( Tab tab )
-        {
-            Tab = tab;
-        }
+        public Tab Tab { get; private set; } = tab;
     }
 
-    public class TabClosedEventArgs : EventArgs
+    public class TabClosedEventArgs( Tab tab ) : EventArgs
     {
-        public Tab Tab { get; private set; }
-
-        public TabClosedEventArgs( Tab tab )
-        {
-            Tab = tab;
-        }
+        public Tab Tab { get; private set; } = tab;
     }
 
-    public class TabPulledOutEventArgs : EventArgs
+    public class TabPulledOutEventArgs( Tab tab, Point location ) : EventArgs
     {
-        public Tab Tab { get; private set; }
-        public Point Location { get; private set; }
-
-        public TabPulledOutEventArgs( Tab tab, Point location )
-        {
-            Tab = tab;
-            Location = location;
-        }
+        public Tab Tab { get; private set; } = tab;
+        public Point Location { get; private set; } = location;
     }
 }

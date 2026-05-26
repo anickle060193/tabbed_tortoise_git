@@ -823,7 +823,7 @@ namespace TabbedTortoiseGit
 
             DisplayReference reference = (DisplayReference)ReferencesListBox.SelectedItem!;
 
-            await OpenLog( controller.RepoItem, new[] { reference.Reference } );
+            await OpenLog( controller.RepoItem, [ reference.Reference ] );
         }
 
         private void ReferencesListBox_MouseUp( object? sender, MouseEventArgs e )
@@ -855,7 +855,7 @@ namespace TabbedTortoiseGit
                 return;
             }
 
-            await OpenLog( controller.RepoItem, new [] { reference } );
+            await OpenLog( controller.RepoItem, [ reference ] );
         }
 
         private void BackgroundFasterFetchDialog_ProgressChanged( object? sender, EventArgs e )
@@ -874,7 +874,7 @@ namespace TabbedTortoiseGit
 
         private async void SubmoduleToolStripDropDownItem_Click( object? sender, EventArgs e )
         {
-            if( ( sender as ToolStripItem )?.Tag is String submodule )
+            if( sender is ToolStripItem  { Tag: String submodule } )
             {
                 await OpenLog( submodule );
             }

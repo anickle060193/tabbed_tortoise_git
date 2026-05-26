@@ -8,6 +8,8 @@ using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using Windows.Win32;
+using Windows.Win32.UI.WindowsAndMessaging;
 
 namespace Common
 {
@@ -56,8 +58,7 @@ namespace Common
                 FieldInfo? field = type.GetField( name );
                 if( field != null )
                 {
-                    DescriptionAttribute? attr = Attribute.GetCustomAttribute( field, typeof( DescriptionAttribute ) ) as DescriptionAttribute;
-                    if( attr != null )
+                    if( Attribute.GetCustomAttribute( field, typeof( DescriptionAttribute ) ) is DescriptionAttribute attr )
                     {
                         return attr.Description;
                     }
@@ -69,16 +70,11 @@ namespace Common
         public static Icon ToIcon( this Bitmap bitmap )
         {
             IntPtr hIcon = bitmap.GetHicon();
-            using( Icon icon = Icon.FromHandle( hIcon ) )
-            {
-                Icon clonedIcon = (Icon)icon.Clone();
-                DestroyIcon( hIcon );
-                return clonedIcon;
-            }
+            using Icon icon = Icon.FromHandle( hIcon );
+            Icon clonedIcon = (Icon)icon.Clone();
+            PInvoke.DestroyIcon( (HICON)hIcon );
+            return clonedIcon;
         }
-
-        [DllImport( "user32.dll", CharSet = CharSet.Auto )]
-        private static extern bool DestroyIcon( IntPtr handle );
 
         public static Task WaitForClose( this Form form )
         {

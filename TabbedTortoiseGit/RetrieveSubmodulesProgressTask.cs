@@ -6,18 +6,15 @@ using System.Threading.Tasks;
 
 namespace TabbedTortoiseGit
 {
-    abstract class RetrieveSubmodulesProgressTask : ProgressTask
+    abstract class RetrieveSubmodulesProgressTask(
+        String repo,
+        bool modifiedOnly,
+        bool treatUninitializedSubmodulesAsModified
+    ) : ProgressTask
     {
-        public String Repo { get; private set; }
-        public bool ModifiedOnly { get; private set; }
-        public bool TreatUninitializedSubmodulesAsModified { get; private set; }
-
-        public RetrieveSubmodulesProgressTask( String repo, bool modifiedOnly, bool treatUninitializedSubmodulesAsModified )
-        {
-            this.Repo = repo;
-            this.ModifiedOnly = modifiedOnly;
-            this.TreatUninitializedSubmodulesAsModified = treatUninitializedSubmodulesAsModified;
-        }
+        public String Repo { get; private set; } = repo;
+        public bool ModifiedOnly { get; private set; } = modifiedOnly;
+        public bool TreatUninitializedSubmodulesAsModified { get; private set; } = treatUninitializedSubmodulesAsModified;
 
         public override string Description
         {

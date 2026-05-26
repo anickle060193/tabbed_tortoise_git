@@ -57,13 +57,13 @@ namespace Common
                 float blueScale = color.B / 255.0f;
 
                 float[][] matrix =
-                {
-                    new float[] { 1, 0, 0, 0, 0 },
-                    new float[] { 0, 1, 0, 0, 0 },
-                    new float[] { 0, 0, 1, 0, 0 },
-                    new float[] { 0, 0, 0, 1, 0 },
-                    new float[] { redScale, greenScale, blueScale, 0, 1 }
-                };
+                [
+                    [ 1, 0, 0, 0, 0 ],
+                    [ 0, 1, 0, 0, 0 ],
+                    [ 0, 0, 1, 0, 0 ],
+                    [ 0, 0, 0, 1, 0 ],
+                    [ redScale, greenScale, blueScale, 0, 1 ],
+                ];
 
                 attributes.SetColorMatrix( new ColorMatrix( matrix ), ColorMatrixFlag.Default, ColorAdjustType.Bitmap );
 

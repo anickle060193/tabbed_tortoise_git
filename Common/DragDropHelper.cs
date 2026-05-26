@@ -161,8 +161,7 @@ namespace Common
             {
                 if( _mouseDown )
                 {
-                    TControl? parent = sender as TControl;
-                    if( parent == null )
+                    if( sender is not TControl parent )
                     {
                         return;
                     }
@@ -238,20 +237,17 @@ namespace Common
         }
     }
 
-    public class DragDropItem<TControl, T> where TControl : Control
+    public class DragDropItem<TControl, T>(
+        TControl dragParent,
+        T dragItem,
+        int dragItemIndex,
+        Point dragStart
+    ) where TControl : Control
     {
-        public TControl DragParent { get; private set; }
-        public T DragItem { get; private set; }
-        public int DragItemIndex { get; private set; }
-        public Point DragStart { get; private set; }
-
-        public DragDropItem( TControl dragParent, T dragItem, int dragItemIndex, Point dragStart )
-        {
-            DragParent = dragParent;
-            DragItem = dragItem;
-            DragItemIndex = dragItemIndex;
-            DragStart = dragStart;
-        }
+        public TControl DragParent { get; private set; } = dragParent;
+        public T DragItem { get; private set; } = dragItem;
+        public int DragItemIndex { get; private set; } = dragItemIndex;
+        public Point DragStart { get; private set; } = dragStart;
 
         public void UpdateSwapped( TControl newDragParent, int newDragItemIndex )
         {
@@ -274,53 +270,53 @@ namespace Common
         }
     }
 
-    public class DragStartEventArgs<TControl, T> : DragEventArgs<TControl, T> where TControl : Control
+    public class DragStartEventArgs<TControl, T>(
+        TControl dragParent,
+        T dragItem,
+        int dragItemIndex,
+        Point dragStartPosition
+    ) : DragEventArgs<TControl, T>( dragParent, dragItem, dragItemIndex ) where TControl : Control
     {
-        public Point DragStartPosition { get; private set; }
-
-        public DragStartEventArgs( TControl dragParent, T dragItem, int dragItemIndex, Point dragStartPosition )
-            : base( dragParent, dragItem, dragItemIndex )
-        {
-            DragStartPosition = dragStartPosition;
-        }
+        public Point DragStartPosition { get; private set; } = dragStartPosition;
     }
 
-    public class DragMoveEventArgs<TControl, T> : DragStartEventArgs<TControl, T> where TControl : Control
+    public class DragMoveEventArgs<TControl, T>(
+        TControl dragParent,
+        T dragItem,
+        int dragItemIndex,
+        Point dragStartPosition,
+        Point dragCurrentPosition
+    ) : DragStartEventArgs<TControl, T>( dragParent, dragItem, dragItemIndex, dragStartPosition ) where TControl : Control
     {
-        public Point DragCurrentPosition { get; private set; }
-
-        public DragMoveEventArgs( TControl dragParent, T dragItem, int dragItemIndex, Point dragStartPosition, Point dragCurrentPosition )
-            : base( dragParent, dragItem, dragItemIndex, dragStartPosition )
-        {
-            DragCurrentPosition = dragCurrentPosition;
-        }
+        public Point DragCurrentPosition { get; private set; } = dragCurrentPosition;
     }
 
-    public class DragMoveOverEventArgs<TControl, T> : DragMoveEventArgs<TControl, T> where TControl : Control
+    public class DragMoveOverEventArgs<TControl, T>(
+        TControl dragParent,
+        T dragItem,
+        int dragItemIndex,
+        Point dragStartPosition,
+        Point dragCurrentPosition,
+        TControl pointedParent,
+        T pointedItem,
+        int pointedItemIndex
+    ) : DragMoveEventArgs<TControl, T>( dragParent, dragItem, dragItemIndex, dragStartPosition, dragCurrentPosition ) where TControl : Control
     {
-        public TControl PointedParent { get; private set; }
-        public T PointedItem { get; private set; }
-        public int PointedItemIndex { get; private set; }
-
-        public DragMoveOverEventArgs( TControl dragParent, T dragItem, int dragItemIndex, Point dragStartPosition, Point dragCurrentPosition, TControl pointedParent, T pointedItem, int pointedItemIndex )
-            : base( dragParent, dragItem, dragItemIndex, dragStartPosition, dragCurrentPosition )
-        {
-            PointedParent = pointedParent;
-            PointedItem = pointedItem;
-            PointedItemIndex = pointedItemIndex;
-        }
+        public TControl PointedParent { get; private set; } = pointedParent;
+        public T PointedItem { get; private set; } = pointedItem;
+        public int PointedItemIndex { get; private set; } = pointedItemIndex;
     }
 
-    public class DragEndEventArgs<TControl, T> : DragStartEventArgs<TControl, T> where TControl : Control
+    public class DragEndEventArgs<TControl, T>(
+        TControl dragParent,
+        T dragItem,
+        int dragItemIndex,
+        Point dragStartPosition,
+        Point dragEndPosition,
+        DragDropEffects effects
+    ) : DragStartEventArgs<TControl, T>( dragParent, dragItem, dragItemIndex, dragStartPosition ) where TControl : Control
     {
-        public Point DragEndPosition { get; private set; }
-        public DragDropEffects Effects { get; private set; }
-
-        public DragEndEventArgs( TControl dragParent, T dragItem, int dragItemIndex, Point dragStartPosition, Point dragEndPosition, DragDropEffects effects )
-            : base( dragParent, dragItem, dragItemIndex, dragStartPosition )
-        {
-            DragEndPosition = dragEndPosition;
-            Effects = effects;
-        }
+        public Point DragEndPosition { get; private set; } = dragEndPosition;
+        public DragDropEffects Effects { get; private set; } = effects;
     }
 }

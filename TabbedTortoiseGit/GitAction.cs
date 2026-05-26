@@ -17,7 +17,7 @@ namespace TabbedTortoiseGit
 {
     public delegate Task<bool> GitActionFunc( String path );
 
-    public class GitAction
+    public partial class GitAction
     {
         private static readonly ILog LOG = LogManager.GetLogger( typeof( GitAction ) );
 
@@ -38,12 +38,15 @@ namespace TabbedTortoiseGit
             new GitAction( "Diff",                      GitAction.Diff,                     Resources.Diff              ),
         }.ToImmutableDictionary( command => command.Name );
 
-        private static readonly String[] TORTOISE_GIT_EXES = new[]
-        {
+        private static readonly String[] TORTOISE_GIT_EXES = [
             @"C:\Program Files\TortoiseGit\bin\TortoiseGitProc.exe",
             @"C:\Program Files (x86)\TortoiseGit\bin\TortoiseGitProc.exe"
-        };
+        ];
         private static readonly String TORTOISE_GIT_EXE = "TortoiseGitProc.exe";
+
+        [GeneratedRegex( @"\bTortoiseGitProc\.exe$" )]
+        private static partial Regex TortoiseGitProcExeRegex();
+        private static readonly Regex TORTOISE_GIT_PROC_EXE_REGEX = TortoiseGitProcExeRegex();
 
         public String Name { get; private set; }
         public GitActionFunc Func { get; private set; }
@@ -59,7 +62,7 @@ namespace TabbedTortoiseGit
         private static String FindTortoiseGitExe()
         {
             if( File.Exists( Settings.Default.TortoiseGitProcExeLocation )
-             && Regex.IsMatch( Settings.Default.TortoiseGitProcExeLocation, @"\bTortoiseGitProc\.exe$" ) )
+             && TORTOISE_GIT_PROC_EXE_REGEX.IsMatch( Settings.Default.TortoiseGitProcExeLocation ) )
             {
                 return Settings.Default.TortoiseGitProcExeLocation;
             }

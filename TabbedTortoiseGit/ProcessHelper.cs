@@ -19,7 +19,7 @@ namespace TabbedTortoiseGit
             {
                 ManagementObjectSearcher searcher = new ManagementObjectSearcher( $"SELECT * FROM Win32_Process WHERE ParentProcessID={p.Id}" );
                 ManagementObjectCollection moc = searcher.Get();
-                foreach( ManagementObject mo in moc )
+                foreach( ManagementBaseObject mo in moc )
                 {
                     int pid = Convert.ToInt32( mo[ "ProcessID" ] );
                     Process child = Process.GetProcessById( pid );

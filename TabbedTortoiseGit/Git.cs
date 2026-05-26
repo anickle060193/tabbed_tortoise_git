@@ -11,9 +11,11 @@ using System.Threading.Tasks;
 
 namespace TabbedTortoiseGit
 {
-    public static class Git
+    public static partial class Git
     {
-        private static readonly Regex GIT_STATUS_REGEX = new Regex( @"^[ MADRCU](?<submoduleStatus>[ MADRCU]) (?<name>.+?)$", RegexOptions.Compiled );
+        [GeneratedRegex( @"^[ MADRCU](?<submoduleStatus>[ MADRCU]) (?<name>.+?)$", RegexOptions.Compiled )]
+        private static partial Regex GitStatusRegex();
+        private static readonly Regex GIT_STATUS_REGEX = GitStatusRegex();
 
         public static bool IsInRepo( String path )
         {
@@ -59,7 +61,7 @@ namespace TabbedTortoiseGit
 
         public static async Task<List<String>> GetSubmodules( String path )
         {
-            List<String> submodules = new List<String>();
+            List<String> submodules = [];
 
             String? repo = GetBaseRepoDirectory( path );
             if( repo == null )
@@ -79,7 +81,7 @@ namespace TabbedTortoiseGit
             String? repo = GetBaseRepoDirectory( path );
             if( repo == null )
             {
-                return new List<String>();
+                return [];
             }
 
             ProcessStartInfo info = CreateGitProcessStartInfo( repo, "status --porcelain --ignore-submodules=none" );
@@ -91,10 +93,10 @@ namespace TabbedTortoiseGit
 
             if( p.ExitCode != 0 )
             {
-                return new List<String>();
+                return [];
             }
 
-            SortedSet<String> modifiedSubmodules = new SortedSet<String>();
+            SortedSet<String> modifiedSubmodules = [];
 
             while( !p.StandardOutput.EndOfStream )
             {

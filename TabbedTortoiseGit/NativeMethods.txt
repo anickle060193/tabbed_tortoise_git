@@ -4,6 +4,7 @@ GetWindowLong
 GetWindowRect
 MoveWindow
 PostMessage
+RegisterHotKey
 RegisterWindowMessage
 SendMessage
 SetForegroundWindow
@@ -11,6 +12,7 @@ SetParent
 SetWindowLong
 SetWinEventHook
 ShowWindow
+UnregisterHotKey
 
 EVENT_*
 HWND_*

@@ -100,7 +100,7 @@ namespace TabbedTortoiseGit
             this.FavoriteRepo = "";
             this.FavoriteName = "";
             this.FavoriteColor = Color.Black;
-            this.FavoriteReferences = Enumerable.Empty<String>();
+            this.FavoriteReferences = [];
 
             BrowseButton.Click += BrowseButton_Click;
 

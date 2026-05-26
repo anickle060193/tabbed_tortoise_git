@@ -22,11 +22,11 @@ namespace TabbedTortoiseGit
         ReposDirectory
     }
 
-    public abstract class Favorite
+    public abstract class Favorite( String name, Color color, FavoriteType type )
     {
-        public String Name { get; private set; }
-        public Color Color { get; private set; }
-        public FavoriteType Type { get; private set; }
+        public String Name { get; private set; } = name;
+        public Color Color { get; private set; } = color;
+        public FavoriteType Type { get; private set; } = type;
 
         [JsonIgnore]
         public FavoriteFolder? Parent { get; set; }
@@ -129,32 +129,18 @@ namespace TabbedTortoiseGit
             }
         }
 
-        public Favorite( String name, Color color, FavoriteType type )
-        {
-            this.Name = name;
-            this.Color = color;
-            this.Type = type;
-        }
-
         public override string ToString()
         {
             return $"Name={this.Name}, Color={this.Color}, Type={this.Type}";
         }
     }
 
-    public class FavoriteRepo : Favorite
+    [method: JsonConstructor]
+    public class FavoriteRepo( String name, String repo, bool isDirectory, Color color, IEnumerable<String>? references ) : Favorite( name, color, FavoriteType.Repo )
     {
-        public String Repo { get; private set; }
-        public bool IsDirectory { get; private set; }
-        public IReadOnlyList<String> References { get; private set; }
-
-        [JsonConstructor]
-        public FavoriteRepo( String name, String repo, bool isDirectory, Color color, IEnumerable<String>? references ) : base( name, color, FavoriteType.Repo )
-        {
-            this.Repo = repo;
-            this.IsDirectory = isDirectory;
-            this.References = references?.ToList().AsReadOnly() ?? new List<String>().AsReadOnly();
-        }
+        public String Repo { get; private set; } = repo;
+        public bool IsDirectory { get; private set; } = isDirectory;
+        public IReadOnlyList<String> References { get; private set; } = references?.ToList().AsReadOnly() ?? new List<String>().AsReadOnly();
 
         public override string ToString()
         {
@@ -188,7 +174,7 @@ namespace TabbedTortoiseGit
 
         public Favorite? BreadthFirstSearch( Func<Favorite, bool> selector )
         {
-            Queue<Favorite> toSearch = new Queue<Favorite>( new[] { this } );
+            Queue<Favorite> toSearch = new Queue<Favorite>( [ this ] );
 
             while( toSearch.Count > 0 )
             {
@@ -293,7 +279,7 @@ namespace TabbedTortoiseGit
 
         public class FavoriteCollection : IList<Favorite>
         {
-            private readonly List<Favorite> _children = new List<Favorite>();
+            private readonly List<Favorite> _children = [];
             private readonly FavoriteFolder _owner;
 
             public FavoriteCollection( FavoriteFolder owner )
@@ -473,15 +459,10 @@ namespace TabbedTortoiseGit
         }
     }
 
-    public class FavoriteReposDirectory : Favorite
+    [method: JsonConstructor]
+    public class FavoriteReposDirectory( String name, String directory, Color color ) : Favorite( name, color, FavoriteType.ReposDirectory )
     {
-        public String Directory { get; private set; }
-
-        [JsonConstructor]
-        public FavoriteReposDirectory( String name, String directory, Color color ): base( name, color, FavoriteType.ReposDirectory )
-        {
-            this.Directory = directory;
-        }
+        public String Directory { get; private set; } = directory;
 
         public List<Favorite> GetDirectoryRepos()
         {
@@ -523,15 +504,10 @@ namespace TabbedTortoiseGit
         }
     }
 
-    public class FavoriteReposDirectoryRepo : Favorite
+    [method: JsonConstructor]
+    public class FavoriteReposDirectoryRepo( String name, String repo, Color color ) : Favorite( name, color, FavoriteType.Repo )
     {
-        public String Repo { get; private set; }
-
-        [JsonConstructor]
-        public FavoriteReposDirectoryRepo( String name, String repo, Color color ) : base( name, color, FavoriteType.Repo )
-        {
-            this.Repo = repo;
-        }
+        public String Repo { get; private set; } = repo;
 
         public override string ToString()
         {

@@ -113,18 +113,18 @@ namespace TabbedTortoiseGit
         }
     }
 
-    class UpdateSubmodulesProgressTask : RetrieveSubmodulesProgressTask
+    class UpdateSubmodulesProgressTask(
+        String repo,
+        bool modifiedOnly,
+        bool treatUninitializedSubmodulesAsModified,
+        bool init,
+        bool recursive,
+        bool force
+    ) : RetrieveSubmodulesProgressTask( repo, modifiedOnly, treatUninitializedSubmodulesAsModified )
     {
-        public bool Init { get; private set; }
-        public bool Recursive { get; private set; }
-        public bool Force { get; private set; }
-
-        public UpdateSubmodulesProgressTask( String repo, bool modifiedOnly, bool treatUninitializedSubmodulesAsModified, bool init, bool recursive, bool force ) : base( repo, modifiedOnly, treatUninitializedSubmodulesAsModified )
-        {
-            this.Init = init;
-            this.Recursive = recursive;
-            this.Force = force;
-        }
+        public bool Init { get; private set; } = init;
+        public bool Recursive { get; private set; } = recursive;
+        public bool Force { get; private set; } = force;
 
         protected override ProcessProgressTask GetTaskForSubmodule( string submodule )
         {

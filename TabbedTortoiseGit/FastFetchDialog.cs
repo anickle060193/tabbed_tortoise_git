@@ -195,18 +195,16 @@ namespace TabbedTortoiseGit
             return FastFetchDialog.PrepareFetch( repo + " - " + "Faster Fetch", "Faster Fetch Completed", repo, tags, prune, progress, maxProcesses );
         }
 
-        class FetchSubmodulesProgressTask : RetrieveSubmodulesProgressTask
+        class FetchSubmodulesProgressTask(
+            String repo,
+            bool tags,
+            bool prune,
+            bool progress
+         ) : RetrieveSubmodulesProgressTask( repo, false, false )
         {
-            public bool Tags { get; private set; }
-            public bool Prune { get; private set; }
-            public bool Progress { get; private set; }
-
-            public FetchSubmodulesProgressTask( String repo, bool tags, bool prune, bool progress ) : base( repo, false, false )
-            {
-                this.Tags = tags;
-                this.Prune = prune;
-                this.Progress = progress;
-            }
+            public bool Tags { get; private set; } = tags;
+            public bool Prune { get; private set; } = prune;
+            public bool Progress { get; private set; } = progress;
 
             protected override ProcessProgressTask GetTaskForSubmodule( string submodule )
             {

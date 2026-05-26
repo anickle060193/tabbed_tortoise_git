@@ -22,10 +22,12 @@ namespace TabbedTortoiseGit
     {
         private static readonly ILog LOG = LogManager.GetLogger( typeof( ProgressDialog ) );
 
-        private static readonly Regex NEWLINE_REGEX = new Regex( "[\r\n]+" );
+        [GeneratedRegex( "[\r\n]+" )]
+        private static partial Regex NewlineRegex();
+        private static readonly Regex NEWLINE_REGEX = NewlineRegex();
 
-        private readonly ConcurrentQueue<ProgressTask> _tasks = new ConcurrentQueue<ProgressTask>();
-        private readonly ConcurrentDictionary<ProgressTask, byte> _runningTasks = new ConcurrentDictionary<ProgressTask, byte>();
+        private readonly ConcurrentQueue<ProgressTask> _tasks = [];
+        private readonly ConcurrentDictionary<ProgressTask, byte> _runningTasks = [];
 
         private bool _started;
         private DateTime _start;
@@ -333,19 +335,14 @@ namespace TabbedTortoiseGit
         }
     }
 
-    public class OutputEventArgs : EventArgs
+    public class OutputEventArgs( String output ) : EventArgs
     {
-        public String Output { get; private set; }
-
-        public OutputEventArgs( String output )
-        {
-            Output = output;
-        }
+        public String Output { get; private set; } = output;
     }
 
-    public class ProgressCompletedEventArgs : EventArgs
+    public class ProgressCompletedEventArgs( IEnumerable<ProgressTask> additionalTasks ) : EventArgs
     {
-        private static readonly ProgressCompletedEventArgs _empty = new ProgressCompletedEventArgs( Enumerable.Empty<ProgressTask>() );
+        private static readonly ProgressCompletedEventArgs _empty = new ProgressCompletedEventArgs( [] );
         public static new ProgressCompletedEventArgs Empty
         {
             get
@@ -354,12 +351,7 @@ namespace TabbedTortoiseGit
             }
         }
 
-        public ImmutableList<ProgressTask> AdditionalTasks { get; private set; }
-
-        public ProgressCompletedEventArgs( IEnumerable<ProgressTask> additionalTasks )
-        {
-            AdditionalTasks = ImmutableList.CreateRange( additionalTasks );
-        }
+        public ImmutableList<ProgressTask> AdditionalTasks { get; private set; } = ImmutableList.CreateRange( additionalTasks );
     }
 
     public abstract class ProgressTask
@@ -413,10 +405,10 @@ namespace TabbedTortoiseGit
         public abstract void Cancel();
     }
 
-    public class ProcessProgressTask : ProgressTask
+    public class ProcessProgressTask( Process p, bool killOnCancel ) : ProgressTask
     {
-        public Process Process { get; private set; }
-        public bool KillOnCancel { get; private set; }
+        public Process Process { get; private set; } = p;
+        public bool KillOnCancel { get; private set; } = killOnCancel;
 
         public override string InitialOutput
         {
@@ -435,12 +427,6 @@ namespace TabbedTortoiseGit
                 String workingDirectory = this.Process.StartInfo.WorkingDirectory;
                 return $"Filename: {fileName} - Arguments: {arguments} - Working Directory: {workingDirectory}";
             }
-        }
-
-        public ProcessProgressTask( Process p, bool killOnCancel )
-        {
-            Process = p;
-            KillOnCancel = killOnCancel;
         }
 
         private void Process_OutputDataReceived( object? sender, DataReceivedEventArgs e )

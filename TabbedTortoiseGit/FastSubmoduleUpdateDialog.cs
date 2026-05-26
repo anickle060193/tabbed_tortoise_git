@@ -21,8 +21,8 @@ namespace TabbedTortoiseGit
     {
         private static readonly ILog LOG = LogManager.GetLogger( typeof( FastSubmoduleUpdateDialog ) );
 
-        private readonly List<String> _submodules = new List<String>();
-        private readonly Dictionary<String, bool> _checkedSubmodules = new Dictionary<String, bool>();
+        private readonly List<String> _submodules = [];
+        private readonly Dictionary<String, bool> _checkedSubmodules = [];
 
         private List<String>? _modifiedSubmodules;
         private bool _userModified;

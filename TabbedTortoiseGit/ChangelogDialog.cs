@@ -14,8 +14,14 @@ namespace TabbedTortoiseGit
 {
     public partial class ChangelogDialog : Form
     {
-        private static readonly Regex HEADER_REGEX = new Regex( @"^\#\s+(?<text>.*)$" );
-        private static readonly Regex BULLET_REGEX = new Regex( @"^\*\s+(?<text>.*)$" );
+
+        [GeneratedRegex( @"^\#\s+(?<text>.*)$" )]
+        private static partial Regex HeaderRegex();
+        private static readonly Regex HEADER_REGEX = HeaderRegex();
+
+        [GeneratedRegex( @"^\*\s+(?<text>.*)$" )]
+        private static partial Regex BulletRegex();
+        private static readonly Regex BULLET_REGEX = BulletRegex();
 
         public static void ShowChangelog()
         {
@@ -48,7 +54,7 @@ namespace TabbedTortoiseGit
 
         private void LoadChangelog()
         {
-            foreach( String line in Resources.Changelog.Replace( "\r", "" ).Split( new[] { '\n' } ) )
+            foreach( String line in Resources.Changelog.Replace( "\r", "" ).Split( [ '\n' ] ) )
             {
                 if( HEADER_REGEX.Match( line ) is Match headerMatch
                  && headerMatch.Success )

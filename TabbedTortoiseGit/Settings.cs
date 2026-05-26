@@ -150,7 +150,7 @@ namespace TabbedTortoiseGit.Properties
                 {
                     favoriteRepos = JsonConvert.DeserializeObject<FavoriteFolder>( Settings.Default.FavoriteReposJsonString, new JsonSerializerSettings()
                     {
-                        Converters = new [] { new FavoriteJsonConverter() }
+                        Converters = [ new FavoriteJsonConverter() ]
                     } );
                 }
                 catch( JsonException e )
@@ -195,7 +195,7 @@ namespace TabbedTortoiseGit.Properties
                 {
                     LOG.Error( $"Failed to deserialize KeyboardShortcuts setting - KeyboardShortcuts: {Settings.Default.KeyboardShortcutsString}", e );
                 }
-                return keyboardShortcuts ?? new Dictionary<KeyboardShortcuts, Shortcut>();
+                return keyboardShortcuts ?? [];
             }
 
             set
@@ -225,7 +225,7 @@ namespace TabbedTortoiseGit.Properties
                 {
                     LOG.Error( $"Failed to deserialize CustomActions setting - CustomActions: {Settings.Default.CustomActionsString}", e );
                 }
-                return customActions ?? new List<CustomAction>();
+                return customActions ?? [];
             }
 
             set
@@ -473,9 +473,9 @@ namespace TabbedTortoiseGit.Properties
                 try
                 {
                     Object oldValue = Settings.Default.GetPreviousVersion( "DefaultRepos" );
-                    if( oldValue != null && oldValue is List<String> )
+                    if( oldValue is List<String> startupRepos )
                     {
-                        Settings.Default.StartupRepos = (List<String>)oldValue;
+                        Settings.Default.StartupRepos = startupRepos;
                         LOG.Debug( "Upgraded DefaultRepos to StartupRepos" );
                     }
                 }
@@ -495,7 +495,7 @@ namespace TabbedTortoiseGit.Properties
                         { "ReopenClosedTabShortcut",    TabbedTortoiseGit.KeyboardShortcuts.ReopenClosedTab }
                     };
 
-                    Dictionary<KeyboardShortcuts, Shortcut> shortcuts = new Dictionary<KeyboardShortcuts, Shortcut>();
+                    Dictionary<KeyboardShortcuts, Shortcut> shortcuts = [];
 
                     foreach( KeyValuePair<String, KeyboardShortcuts> pair in shortcutsMapping )
                     {
@@ -518,7 +518,7 @@ namespace TabbedTortoiseGit.Properties
 
             if( Settings.Default.StartupRepos == null )
             {
-                Settings.Default.StartupRepos = new List<String>();
+                Settings.Default.StartupRepos = [];
             }
 
             if( Settings.Default.FavoriteReposJsonString == null )
@@ -528,12 +528,12 @@ namespace TabbedTortoiseGit.Properties
 
             if( Settings.Default.RecentRepos == null )
             {
-                Settings.Default.RecentRepos = new List<String>();
+                Settings.Default.RecentRepos = [];
             }
 
             if( Settings.Default.TabContextMenuGitActions == null )
             {
-                Settings.Default.TabContextMenuGitActions = new List<String>( GitAction.ACTIONS.Keys );
+                Settings.Default.TabContextMenuGitActions = [ ..GitAction.ACTIONS.Keys ];
             }
 
             if( Settings.Default.MaxRecentRepos <= 0 )
@@ -593,10 +593,9 @@ namespace TabbedTortoiseGit.Properties
 
             if( String.IsNullOrEmpty( Settings.Default.CustomActionsString ) )
             {
-                Settings.Default.CustomActions = new List<CustomAction>()
-                {
+                Settings.Default.CustomActions = [
                     new CustomAction( "Open Console Here", "cmd.exe", "", "%r", false, false, false )
-                };
+                ];
             }
 
             if( string.IsNullOrEmpty( Settings.Default.RepoNameReplacersJsonString ) )
