@@ -9,8 +9,10 @@ SendMessage
 SetForegroundWindow
 SetParent
 SetWindowLong
+SetWinEventHook
 ShowWindow
 
+EVENT_*
 HWND_*
 WM_*
 WS_*
@@ -19,3 +21,4 @@ PBST_*
 EM_*
 TVM_*
 HT*
+WINEVENT_*

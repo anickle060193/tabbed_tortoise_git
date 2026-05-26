@@ -30,10 +30,6 @@ namespace TabbedTortoiseGit
             int style = PInvoke.GetWindowLong( (HWND)windowHandle, WINDOW_LONG_PTR_INDEX.GWL_STYLE );
             style &= ~(int)WINDOW_STYLE.WS_CAPTION;
             _ = PInvoke.SetWindowLong( (HWND)windowHandle, WINDOW_LONG_PTR_INDEX.GWL_STYLE, style );
-
-            //int exstyle = PInvoke.GetWindowLong( (HWND)windowHandle, WINDOW_LONG_PTR_INDEX.GWL_EXSTYLE );
-            //exstyle |= (int)WINDOW_EX_STYLE.WS_EX_WINDOWEDGE;
-            //_ = PInvoke.SetWindowLong( (HWND)windowHandle, WINDOW_LONG_PTR_INDEX.GWL_EXSTYLE, exstyle );
         }
 
         public static void SetWindowParent( IntPtr windowHandle, Control parent )
