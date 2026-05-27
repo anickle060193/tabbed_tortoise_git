@@ -69,7 +69,6 @@ namespace TabbedTortoiseGit
             CreateNoWindow = new DataGridViewCheckBoxColumn();
             DisplaySettingsTab = new TabPage();
             repoNameReplacersGroup = new GroupBox();
-            repoNameReplacersPanel = new Panel();
             repoNameReplacersHelperLabel = new Label();
             repoNameReplacersGridView = new DataGridView();
             repoNameReplacersGridViewPatternColumn = new DataGridViewTextBoxColumn();
@@ -112,7 +111,6 @@ namespace TabbedTortoiseGit
             ( (System.ComponentModel.ISupportInitialize)CustomActionsDataGridView ).BeginInit();
             DisplaySettingsTab.SuspendLayout();
             repoNameReplacersGroup.SuspendLayout();
-            repoNameReplacersPanel.SuspendLayout();
             ( (System.ComponentModel.ISupportInitialize)repoNameReplacersGridView ).BeginInit();
             ( (System.ComponentModel.ISupportInitialize)repoNameReplacersBindingSource ).BeginInit();
             NormalTabFontGroup.SuspendLayout();
@@ -545,7 +543,8 @@ namespace TabbedTortoiseGit
             // repoNameReplacersGroup
             // 
             repoNameReplacersGroup.Anchor =    AnchorStyles.Top  |  AnchorStyles.Bottom   |  AnchorStyles.Left   |  AnchorStyles.Right ;
-            repoNameReplacersGroup.Controls.Add( repoNameReplacersPanel );
+            repoNameReplacersGroup.Controls.Add( repoNameReplacersHelperLabel );
+            repoNameReplacersGroup.Controls.Add( repoNameReplacersGridView );
             repoNameReplacersGroup.Location = new System.Drawing.Point( 7, 307 );
             repoNameReplacersGroup.Name = "repoNameReplacersGroup";
             repoNameReplacersGroup.Size = new System.Drawing.Size( 751, 158 );
@@ -553,21 +552,11 @@ namespace TabbedTortoiseGit
             repoNameReplacersGroup.TabStop = false;
             repoNameReplacersGroup.Text = "Repo Name Tab Display";
             // 
-            // repoNameReplacersPanel
-            // 
-            repoNameReplacersPanel.Controls.Add( repoNameReplacersHelperLabel );
-            repoNameReplacersPanel.Controls.Add( repoNameReplacersGridView );
-            repoNameReplacersPanel.Dock = DockStyle.Fill;
-            repoNameReplacersPanel.Location = new System.Drawing.Point( 3, 19 );
-            repoNameReplacersPanel.Name = "repoNameReplacersPanel";
-            repoNameReplacersPanel.Size = new System.Drawing.Size( 745, 136 );
-            repoNameReplacersPanel.TabIndex = 0;
-            // 
             // repoNameReplacersHelperLabel
             // 
-            repoNameReplacersHelperLabel.Anchor =  AnchorStyles.Bottom  |  AnchorStyles.Left ;
             repoNameReplacersHelperLabel.AutoSize = true;
-            repoNameReplacersHelperLabel.Location = new System.Drawing.Point( 3, 121 );
+            repoNameReplacersHelperLabel.Dock = DockStyle.Bottom;
+            repoNameReplacersHelperLabel.Location = new System.Drawing.Point( 3, 140 );
             repoNameReplacersHelperLabel.Name = "repoNameReplacersHelperLabel";
             repoNameReplacersHelperLabel.Size = new System.Drawing.Size( 460, 15 );
             repoNameReplacersHelperLabel.TabIndex = 12;
@@ -598,7 +587,7 @@ namespace TabbedTortoiseGit
             dataGridViewCellStyle4.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
             dataGridViewCellStyle4.WrapMode = DataGridViewTriState.False;
             repoNameReplacersGridView.DefaultCellStyle = dataGridViewCellStyle4;
-            repoNameReplacersGridView.Location = new System.Drawing.Point( 3, 3 );
+            repoNameReplacersGridView.Location = new System.Drawing.Point( 6, 22 );
             repoNameReplacersGridView.Name = "repoNameReplacersGridView";
             repoNameReplacersGridView.Size = new System.Drawing.Size( 739, 115 );
             repoNameReplacersGridView.TabIndex = 11;
@@ -926,7 +915,7 @@ namespace TabbedTortoiseGit
             Margin = new Padding( 4, 3, 4, 3 );
             MaximizeBox = false;
             MinimizeBox = false;
-            MinimumSize = new System.Drawing.Size( 581, 456 );
+            MinimumSize = new System.Drawing.Size( 815, 456 );
             Name = "SettingsForm";
             ShowInTaskbar = false;
             StartPosition = FormStartPosition.CenterParent;
@@ -946,8 +935,7 @@ namespace TabbedTortoiseGit
             DisplaySettingsTab.ResumeLayout( false );
             DisplaySettingsTab.PerformLayout();
             repoNameReplacersGroup.ResumeLayout( false );
-            repoNameReplacersPanel.ResumeLayout( false );
-            repoNameReplacersPanel.PerformLayout();
+            repoNameReplacersGroup.PerformLayout();
             ( (System.ComponentModel.ISupportInitialize)repoNameReplacersGridView ).EndInit();
             ( (System.ComponentModel.ISupportInitialize)repoNameReplacersBindingSource ).EndInit();
             NormalTabFontGroup.ResumeLayout( false );
@@ -1028,6 +1016,5 @@ namespace TabbedTortoiseGit
         private Label repoNameReplacersHelperLabel;
         private DataGridViewTextBoxColumn repoNameReplacersGridViewPatternColumn;
         private DataGridViewTextBoxColumn repoNameReplacersGridViewReplacementColumn;
-        private Panel repoNameReplacersPanel;
     }
 }
