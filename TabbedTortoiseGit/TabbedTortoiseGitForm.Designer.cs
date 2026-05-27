@@ -399,6 +399,7 @@
             ReferencesListBox.Dock = System.Windows.Forms.DockStyle.Fill;
             ReferencesListBox.FormatString = "long";
             ReferencesListBox.FormattingEnabled = true;
+            ReferencesListBox.HorizontalScrollbar = true;
             ReferencesListBox.IntegralHeight = false;
             ReferencesListBox.Location = new System.Drawing.Point( 0, 23 );
             ReferencesListBox.Margin = new System.Windows.Forms.Padding( 4, 3, 4, 3 );
